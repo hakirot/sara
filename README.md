@@ -5,6 +5,3 @@
 This extracurricular exam exists as an exercise 
 expressing exhaustive terminal exceptionalism
 
-TODO:
-    Title [w/ figlet]
-

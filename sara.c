@@ -17,14 +17,22 @@ const char * title[7][99] = {
   { "        SENTINELED ATMOSPHERIC RANGING AREA " },
 };
 
-int DELAY = 1500000;
+int main(int argc, char* argv[] ) {
 
-int main() {
+  enum { DEFAULT, ANIMATED } mode = DEFAULT;
+  int DELAY                       = 1500000;
+  int opt;
+
+  while ((opt = getopt(argc, argv, "a")) != -1){
+    switch (opt) {
+      case 'a': mode = ANIMATED; break;
+    }
+  }
 
   setlocale(LC_ALL, "");    // Needed to print special characters
 
   initscr();                // Initialize screen
-  //raw();                    // Pass F1, ^C to program w/o signals
+  //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()
   noecho();                 // Don't print input to screen
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
@@ -33,7 +41,6 @@ int main() {
 
   getmaxyx(stdscr,row,col); // Get total screen dimensions
 
-
   for(int i = 0; i < 7; i++){
     //printw("%s\n", title[i][0]);
     mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
@@ -41,22 +48,25 @@ int main() {
     usleep(50000);      // Add some sexy timing
   }
 
-  while(1){
+  if(mode == ANIMATED){
 
-    usleep(DELAY);      // Add some sexy timing
-    clear();
-    for(int i = 0; i < 7; i++){
-      //printw("%s\n", title[i][0]);
-      mvprintw(row/2 - 4 + i, (col-44)/2, "%s", title[i][0]);
-      refresh();
-    }
+    while(1){
 
-    usleep(DELAY);      // Add some sexy timing
-    clear();
-    for(int i = 0; i < 7; i++){
-      //printw("%s\n", title[i][0]);
-      mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
-      refresh();
+      usleep(DELAY);
+      clear();
+      for(int i = 0; i < 7; i++){
+        //printw("%s\n", title[i][0]);
+        mvprintw(row/2 - 4 + i, (col-44)/2, "%s", title[i][0]);
+        refresh();
+      }
+
+      usleep(DELAY);
+      clear();
+      for(int i = 0; i < 7; i++){
+        //printw("%s\n", title[i][0]);
+        mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+        refresh();
+      }
     }
   }
 

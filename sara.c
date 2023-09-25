@@ -30,8 +30,6 @@ int main() {
 //    printf("%s\n", title[i][0]);
 //  }
 
-  //int status = system("figlet -f 'ANSI Shadow' S.A.R.A");
-
   initscr();
   raw();                // Pass F1, ^C to program w/o signals
                         // Also disables line buffering like cbreak()
@@ -40,10 +38,9 @@ int main() {
   keypad(stdscr, TRUE); // Enable reading of F1/2, arrow keys, etc
 
   for(int i = 0; i < 7; i++){
-    printw(title[i][0]);
-    printw("\n");
+    printw("%s\n", title[i][0]);
     refresh();
-    usleep(50000);
+    usleep(50000);      // Add some sexy timing
   }
 
   refresh();

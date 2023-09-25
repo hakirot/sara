@@ -43,7 +43,7 @@ int main() {
     printw(title[i][0]);
     printw("\n");
     refresh();
-    sleep(0.1);
+    usleep(50000);
   }
 
   refresh();

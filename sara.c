@@ -14,7 +14,7 @@ const char * title[7][99] = {
   { "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   " },
   { "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗" },
   { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "        SENTINELED ATMOSPHERIC RANGING AREA " },
+  { "        SOFTWARE ARCHITECTURE RANGING AREA  " },
 };
 
 int main(int argc, char* argv[] ) {
@@ -45,7 +45,7 @@ int main(int argc, char* argv[] ) {
     //printw("%s\n", title[i][0]);
     mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
     refresh();
-    usleep(50000);      // Add some sexy timing
+    usleep(50000);          // Add some sexy timing
   }
 
   if(mode == ANIMATED){

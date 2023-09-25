@@ -6,29 +6,19 @@
 #include <string.h>
 #include <unistd.h>
 
-/*
-    (y,x)
-*/
-
-char * acronym = "SEMINAL ATMOSPHERE RANGING AREA";
+const char * title[7][100] = {
+  { "███████╗    █████╗    ██████╗     █████╗    " },
+  { "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   " },
+  { "███████╗   ███████║   ██████╔╝   ███████║   " },
+  { "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   " },
+  { "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗" },
+  { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
+  { "            SEMINAL ATMOSPHERE RANGING AREA " },
+};
 
 int main() {
 
-  setlocale(LC_ALL, "");
-
-  const char * title[7][100] = {
-    { "███████╗    █████╗    ██████╗     █████╗    " },
-    { "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   " },
-    { "███████╗   ███████║   ██████╔╝   ███████║   " },
-    { "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   " },
-    { "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗" },
-    { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-    { "            SEMINAL ATMOSPHERE RANGING AREA " },
-  };
-
-//  for(int i = 0; i < 7; i++){                       // PASS
-//    printf("%s\n", title[i][0]);
-//  }
+  setlocale(LC_ALL, ""); // Needed to print special characters
 
   initscr();
   raw();                // Pass F1, ^C to program w/o signals

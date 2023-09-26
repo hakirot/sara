@@ -1,4 +1,7 @@
-
+/* TODO
+ *    Press F1 to exit
+ *    Dynamically resize with window
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -17,7 +20,6 @@ const char * title[7][99] = {
   { "           SOFTWARE ARCHITECT RANGING AREA  " },
 };
 
-// How to press F1 to exit
 int main(int argc, char* argv[] ) {
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
@@ -35,7 +37,7 @@ int main(int argc, char* argv[] ) {
   initscr();                // Initialize screen
   //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()
-  noecho();                 // Don't print input to screen
+  noecho();                 // Don't print input to screen when using getch()
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
   int row, col;             // Store the number of rows/cols
   curs_set(FALSE);          // No cursor

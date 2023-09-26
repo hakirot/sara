@@ -76,6 +76,21 @@ int main(int argc, char* argv[] ) {
     }
   }
 
+  // TODO: Add stars w/ . and +
+  // Should the main title and animations be handled independently?
+  //   how would that work..?
+  //   never render over the center box..?
+  //   cut out the dimensions of the title itslef within in the terminal
+  //
+  // Will probably need to work with time instead of sleep, update
+  //   and print the screen with different objects after a certain 
+  //   amount of time.
+  //
+  // ANIMATION IDEAS
+  //  STARS: . and + twinkles
+  //  lIGHTSPEED: ----- lines moving right to left
+  //  FIREWORKS: Up and boom
+
   refresh();
   getch();
 

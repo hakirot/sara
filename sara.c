@@ -14,7 +14,7 @@ const char * title[7][99] = {
   { "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   " },
   { "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗" },
   { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "        SOFTWARE ARCHITECTURE RANGING AREA  " },
+  { "           SOFTWARE ARCHITECT RANGING AREA  " },
 };
 
 int main(int argc, char* argv[] ) {
@@ -40,6 +40,13 @@ int main(int argc, char* argv[] ) {
   curs_set(FALSE);          // No cursor
 
   getmaxyx(stdscr,row,col); // Get total screen dimensions
+  while (col < 44 || row < 7){
+    mvprintw(row/2, (col-10)/2, "%s", "Resize me!");
+    refresh();
+    sleep(1);
+    getmaxyx(stdscr,row,col); // Get total screen dimensions
+    clear();
+  }
 
   for(int i = 0; i < 7; i++){
     //printw("%s\n", title[i][0]);
@@ -51,7 +58,6 @@ int main(int argc, char* argv[] ) {
   if(mode == ANIMATED){
 
     while(1){
-
       usleep(DELAY);
       clear();
       for(int i = 0; i < 7; i++){

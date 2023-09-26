@@ -17,6 +17,7 @@ const char * title[7][99] = {
   { "           SOFTWARE ARCHITECT RANGING AREA  " },
 };
 
+// How to press F1 to exit
 int main(int argc, char* argv[] ) {
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;

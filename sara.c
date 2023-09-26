@@ -20,7 +20,7 @@ const char * title[7][99] = {
 int main(int argc, char* argv[] ) {
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
-  int DELAY                       = 1500000;
+  int DELAY                       = 2000000;
   int opt;
 
   while ((opt = getopt(argc, argv, "a")) != -1){

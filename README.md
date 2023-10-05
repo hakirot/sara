@@ -5,7 +5,7 @@
     ╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║
     ███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║
     ╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝
-    SEMINAL ATMOSPHERE RANGING AREA
+    SOFTWARE ARCHITECT RANGING AREA
 
 # Sara Title Screen
 

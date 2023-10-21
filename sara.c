@@ -39,20 +39,22 @@ int main(int argc, char* argv[] ) {
                             // Also disables line buffering like cbreak()
   noecho();                 // Don't print input to screen when using getch()
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
-  int row, col;             // Store the number of rows/cols
+  int row, col;             // For storing the number of rows/cols
   curs_set(FALSE);          // No cursor
 
   getmaxyx(stdscr,row,col); // Get total screen dimensions
+
+  // Check if screen is too small
   while (col < 44 || row < 7){
     mvprintw(row/2, (col-10)/2, "%s", "Resize me!");
     refresh();
-    sleep(1);
-    getmaxyx(stdscr,row,col); // Get total screen dimensions
+    sleep(1);                 // snooze
+    getmaxyx(stdscr,row,col); // Get total screen dimensions again
     clear();
   }
 
+  // Print dem rows
   for(int i = 0; i < 7; i++){
-    //printw("%s\n", title[i][0]);
     mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
     refresh();
     usleep(50000);          // Add some sexy timing
@@ -88,7 +90,9 @@ int main(int argc, char* argv[] ) {
   // Will probably need to work with time instead of sleep, update
   //   and print the screen with different objects after a certain 
   //   amount of time.
-  //
+
+
+
   // ANIMATION IDEAS
   //  STARS: . and + twinkles
   //  lIGHTSPEED: ----- lines moving right to left

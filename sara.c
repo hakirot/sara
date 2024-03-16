@@ -1,5 +1,5 @@
 /* TODO
- *    Press F1 to exit
+ *    Press q to exit
  *    Dynamically resize with window
 */
 #include <stdio.h>
@@ -39,46 +39,62 @@ int main(int argc, char* argv[] ) {
                             // Also disables line buffering like cbreak()
   noecho();                 // Don't print input to screen when using getch()
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
-  int row, col;             // For storing the number of rows/cols
   curs_set(FALSE);          // No cursor
 
-  getmaxyx(stdscr,row,col); // Get total screen dimensions
+  int cache = 10000;
+  int row, col;             // For storing the number of rows/cols
 
-  // Check if screen is too small
-  while (col < 44 || row < 7){
-    mvprintw(row/2, (col-10)/2, "%s", "Resize me!");
+  while(1){
+
     refresh();
-    sleep(1);                 // snooze
-    getmaxyx(stdscr,row,col); // Get total screen dimensions again
-    clear();
-  }
 
-  // Print dem rows
-  for(int i = 0; i < 7; i++){
-    mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
-    refresh();
-    usleep(50000);          // Add some sexy timing
-  }
+    getmaxyx(stdscr,row,col); // Get total screen dimensions
 
-  if(mode == ANIMATED){
-
-    while(1){
-      usleep(DELAY);
+    if (cache != row + col){
       clear();
-      for(int i = 0; i < 7; i++){
-        //printw("%s\n", title[i][0]);
-        mvprintw(row/2 - 4 + i, (col-44)/2, "%s", title[i][0]);
+
+      // Check if screen is too small
+      while (col < 44 || row < 7){
+        mvprintw(row/2, (col-10)/2, "%s", "Resize me!");
         refresh();
+        sleep(1);                 // snooze
+        getmaxyx(stdscr,row,col); // Get total screen dimensions again
       }
 
-      usleep(DELAY);
+      cache = row + col;
       clear();
-      for(int i = 0; i < 7; i++){
-        //printw("%s\n", title[i][0]);
-        mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
-        refresh();
+
+      if(mode == ANIMATED){
+
+        while(1){
+          usleep(DELAY);
+          clear();
+          for(int i = 0; i < 7; i++){
+            //printw("%s\n", title[i][0]);
+            mvprintw(row/2 - 4 + i, (col-44)/2, "%s", title[i][0]);
+            refresh();
+          }
+
+          usleep(DELAY);
+          clear();
+          for(int i = 0; i < 7; i++){
+            //printw("%s\n", title[i][0]);
+            mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+            refresh();
+          }
+        }
+      } 
+
+      if (mode == DEFAULT) {
+        // Print standard rows
+        for(int i = 0; i < 7; i++){
+          mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+          refresh();
+          usleep(50000);          // Add some sexy timing
+        }
       }
     }
+    sleep(1);
   }
 
   // TODO: Add stars w/ . and +

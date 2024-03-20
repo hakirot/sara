@@ -17,7 +17,7 @@ const char * title[7][99] = {
   { "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   " },
   { "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗" },
   { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "           SOFTWARE ARCHITECT RANGING AREA  " },
+  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
 
 int main(int argc, char* argv[] ) {

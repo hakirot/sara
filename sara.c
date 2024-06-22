@@ -55,7 +55,7 @@ int main(int argc, char* argv[] ) {
 
       // Check if screen is too small
       while (col < 44 || row < 7){
-        mvprintw(row/2, (col-10)/2, "%s", "Resize me!");
+        mvprintw(row/2, (col-10)/2, "%s", ".. resize me, human.");
         refresh();
         sleep(1);                 // snooze
         getmaxyx(stdscr,row,col); // Get total screen dimensions again

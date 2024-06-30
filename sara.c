@@ -21,9 +21,15 @@ const char * title[7][99] = {
   { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
 
-clock_t LAST_INPUT_TIME;
+typedef enum {
+  SMALL,
+  NORMAL
+} screen_size;
 
-void checkchar(int row, int col) {
+clock_t LAST_INPUT_TIME;
+screen_size CURRENT_WINDOW_SIZE;
+
+void checkchar(int row, int col, screen_size WIN_SIZE) {
 
   char ch;
   char input = getch();
@@ -33,7 +39,7 @@ void checkchar(int row, int col) {
     if(input == 'q'){
       endwin();
       exit(0);
-    } else {
+    } else if (WIN_SIZE == NORMAL) {
       LAST_INPUT_TIME = clock();
       ch = input;
       mvprintw(row/2, col/2, "%c", ch);
@@ -43,7 +49,7 @@ void checkchar(int row, int col) {
 
   // clear row if 1 second has elapsed
   double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-  if(elapsed_time >= 0.001){
+  if(elapsed_time >= 0.001 && WIN_SIZE == NORMAL){
     mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
     refresh();
   }
@@ -88,9 +94,15 @@ int main(int argc, char* argv[]) {
       while (col < 44 || row < 7){
         mvprintw(row/2, (col-10)/2, "%s", ".. resize me, human.");
         refresh();
-        sleep(1);                 // snooze
+
+        usleep(10000);
+        fflush(stdin);
+        CURRENT_WINDOW_SIZE = SMALL;
+        checkchar(row, col, CURRENT_WINDOW_SIZE);
+
         getmaxyx(stdscr,row,col); // Get total screen dimensions again
       }
+      CURRENT_WINDOW_SIZE = NORMAL;
 
       cache = row + col;
       clear();
@@ -126,7 +138,7 @@ int main(int argc, char* argv[]) {
     }
     usleep(10000);
     fflush(stdin);
-    checkchar(row, col);
+    checkchar(row, col, CURRENT_WINDOW_SIZE);
   }
 
   // TODO: Add stars w/ . and +

@@ -33,7 +33,6 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
 
   char ch;
   char input = getch();
-  fflush(stdin);
 
   if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
     if(input == 'q'){
@@ -96,7 +95,6 @@ int main(int argc, char* argv[]) {
         refresh();
 
         usleep(10000);
-        fflush(stdin);
         CURRENT_WINDOW_SIZE = SMALL;
         checkchar(row, col, CURRENT_WINDOW_SIZE);
 
@@ -137,7 +135,6 @@ int main(int argc, char* argv[]) {
       }
     }
     usleep(10000);
-    fflush(stdin);
     checkchar(row, col, CURRENT_WINDOW_SIZE);
   }
 

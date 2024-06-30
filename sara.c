@@ -27,26 +27,26 @@ void checkchar(int row, int col) {
 
   char ch;
   char input = getch();
-
   fflush(stdin);
+
   if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
     if(input == 'q'){
       endwin();
       exit(0);
     } else {
-      ch = input;
       LAST_INPUT_TIME = clock();
+      ch = input;
+      mvprintw(row/2, col/2, "%c", ch);
+      refresh();
     }
   }
 
+  // clear row if 1 second has elapsed
   double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
   if(elapsed_time >= 0.001){
     mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
     refresh();
   }
-
-  mvprintw(row/2, col/2, "%c", ch);
-  refresh();
 }
 
 int main(int argc, char* argv[]) {

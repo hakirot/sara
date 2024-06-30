@@ -52,6 +52,7 @@ void checkchar(int row, int col) {
 int main(int argc, char* argv[]) {
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
+  LAST_INPUT_TIME = clock();
   int DELAY                       = 2000000;
   int opt;
 

@@ -8,6 +8,7 @@
 #include <locale.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 // length 44 per line
 const char * title[7][99] = {
@@ -19,6 +20,8 @@ const char * title[7][99] = {
   { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
   { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
+
+clock_t LAST_INPUT_TIME;
 
 void checkchar(int row, int col) {
 
@@ -32,10 +35,16 @@ void checkchar(int row, int col) {
       exit(0);
     } else {
       ch = input;
+      LAST_INPUT_TIME = clock();
     }
   }
 
-//clear();
+  double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+  if(elapsed_time >= 0.001){
+    mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
+    refresh();
+  }
+
   mvprintw(row/2, col/2, "%c", ch);
   refresh();
 }
@@ -56,9 +65,8 @@ int main(int argc, char* argv[]) {
   initscr();                // Initialize screen
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()
-  noecho();                 // Don't print input to screen when using getch()
   cbreak();                 // Disables line buffering
-//timeout(-1);
+  noecho();                 // Don't print input to screen when using getch()
   nodelay(stdscr, TRUE);
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
   curs_set(FALSE);          // No cursor
@@ -112,11 +120,10 @@ int main(int argc, char* argv[]) {
           mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
           refresh();
           usleep(50000);          // Add some sexy timing
-//        checkchar(row, col);
         }
       }
     }
-//  usleep(100000);
+    usleep(10000);
     fflush(stdin);
     checkchar(row, col);
   }

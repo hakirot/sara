@@ -20,7 +20,27 @@ const char * title[7][99] = {
   { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
 
-int main(int argc, char* argv[] ) {
+void checkchar(int row, int col) {
+
+  char ch;
+  char input = getch();
+
+  fflush(stdin);
+  if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
+    if(input == 'q'){
+      endwin();
+      exit(0);
+    } else {
+      ch = input;
+    }
+  }
+
+//clear();
+  mvprintw(row/2, col/2, "%c", ch);
+  refresh();
+}
+
+int main(int argc, char* argv[]) {
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
   int DELAY                       = 2000000;
@@ -33,11 +53,13 @@ int main(int argc, char* argv[] ) {
   }
 
   setlocale(LC_ALL, "");    // Needed to print special characters
-
   initscr();                // Initialize screen
-  //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
+//raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()
   noecho();                 // Don't print input to screen when using getch()
+  cbreak();                 // Disables line buffering
+//timeout(-1);
+  nodelay(stdscr, TRUE);
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
   curs_set(FALSE);          // No cursor
 
@@ -84,30 +106,30 @@ int main(int argc, char* argv[] ) {
           }
         }
       } 
-
-      if (mode == DEFAULT) {
+      if(mode == DEFAULT){
         // Print standard rows
         for(int i = 0; i < 7; i++){
           mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
           refresh();
           usleep(50000);          // Add some sexy timing
+//        checkchar(row, col);
         }
       }
     }
-    sleep(1);
+//  usleep(100000);
+    fflush(stdin);
+    checkchar(row, col);
   }
 
   // TODO: Add stars w/ . and +
   // Should the main title and animations be handled independently?
   //   how would that work..?
   //   never render over the center box..?
-  //   cut out the dimensions of the title itslef within in the terminal
+  //   cut out the dimensions of the title itself within in the terminal
   //
   // Will probably need to work with time instead of sleep, update
   //   and print the screen with different objects after a certain 
   //   amount of time.
-
-
 
   // ANIMATION IDEAS
   //  STARS: . and + twinkles
@@ -115,9 +137,8 @@ int main(int argc, char* argv[] ) {
   //  FIREWORKS: Up and boom
 
   refresh();
-  getch();
-
   endwin();
 
   return 0;
 }
+

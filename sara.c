@@ -50,6 +50,7 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
       endwin();
       exit(0);
     } else if (input == 'v') {
+      endwin();
       execv("/usr/bin/nvim", NULL);
     } else if (WIN_SIZE == NORMAL) {
       LAST_INPUT_TIME = clock();

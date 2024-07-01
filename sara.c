@@ -103,7 +103,7 @@ void glitch(int row, int col){
 
     int rng_row, rng_shift, rng_backdrop = 0;
 
-    for( int i = 0 ; i < 20; i++ ) {
+    for( int i = 0 ; i < 28; i++ ) {
       // RNG between 0 and 6 (inclusive)
       rng_row   = rand() % 7;
       // RNG between 0 and 1 (inclusive)
@@ -117,7 +117,7 @@ void glitch(int row, int col){
         mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", backdrop[rng_row][0]);
       }
       refresh();
-      usleep(20000);
+      usleep(23000);
     }
     quickprint(row, col);
     LAST_GLITCH = (double)clock();

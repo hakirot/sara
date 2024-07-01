@@ -188,7 +188,7 @@ int main(int argc, char* argv[]) {
         for(int i = 0; i < 7; i++){
           mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
           refresh();
-          usleep(50000);          // Add some sexy timing
+          usleep(5000);          // Add some sexy timing
         }
       }
     }

@@ -46,13 +46,33 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
     }
   }
 
-  // clear row if 1 second has elapsed
+  // clear center row if 1 second has elapsed
   double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
   if(elapsed_time >= 0.001 && WIN_SIZE == NORMAL){
     mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
     refresh();
   }
 }
+
+// Check if screen is too small
+void checksize(int row, int col){
+  while (col < 44 || row < 7){
+    mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
+    refresh();
+
+    usleep(10000);
+    CURRENT_WINDOW_SIZE = SMALL;
+    checkchar(row, col, CURRENT_WINDOW_SIZE);
+
+    getmaxyx(stdscr,row,col); // Get total screen dimensions again
+  }
+
+  CURRENT_WINDOW_SIZE = NORMAL;
+}
+
+void glitch(){
+
+};
 
 int main(int argc, char* argv[]) {
 
@@ -88,19 +108,7 @@ int main(int argc, char* argv[]) {
 
     if (cache != row + col){
       clear();
-
-      // Check if screen is too small
-      while (col < 44 || row < 7){
-        mvprintw(row/2, (col-10)/2, "%s", ".. resize me, human.");
-        refresh();
-
-        usleep(10000);
-        CURRENT_WINDOW_SIZE = SMALL;
-        checkchar(row, col, CURRENT_WINDOW_SIZE);
-
-        getmaxyx(stdscr,row,col); // Get total screen dimensions again
-      }
-      CURRENT_WINDOW_SIZE = NORMAL;
+      checksize(row, col);
 
       cache = row + col;
       clear();
@@ -136,6 +144,8 @@ int main(int argc, char* argv[]) {
     }
     usleep(10000);
     checkchar(row, col, CURRENT_WINDOW_SIZE);
+
+    glitch();
   }
 
   // TODO: Add stars w/ . and +

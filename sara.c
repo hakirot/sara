@@ -105,7 +105,7 @@ void glitch(int row, int col){
       // RNG between 0 and 6 (inclusive)
       rng_row   = rand() % 7;
       // RNG between 0 and 1 (inclusive)
-      rng_shift = rand() % 2;
+      rng_shift = (rand() % 3) - 1;
       // RNG between 0 and 1 (inclusive)
       rng_backdrop = rand() % 2;
 
@@ -193,7 +193,7 @@ int main(int argc, char* argv[]) {
     checkchar(row, col, CURRENT_WINDOW_SIZE);
 
     double time_idle = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-    if(time_idle >= 0.040){
+    if(time_idle >= 0.060){
       glitch(row, col);
     }
   }

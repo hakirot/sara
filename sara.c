@@ -38,6 +38,7 @@ typedef enum {
 
 clock_t LAST_INPUT_TIME;
 screen_size CURRENT_WINDOW_SIZE;
+double LAST_GLITCH;
 
 void checkchar(int row, int col, screen_size WIN_SIZE) {
 
@@ -50,6 +51,7 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
       exit(0);
     } else if (WIN_SIZE == NORMAL) {
       LAST_INPUT_TIME = clock();
+      LAST_GLITCH = clock();
       ch = input;
       mvprintw(row/2, col/2, "%c", ch);
       refresh();
@@ -80,30 +82,6 @@ void checksize(int row, int col){
   CURRENT_WINDOW_SIZE = NORMAL;
 }
 
-void glitch(int row, int col){
-  time_t t;
-  srand((unsigned) time(&t));
-  
-  int rng_row, rng_shift, rng_backdrop = 0;
-
-  for( int i = 0 ; i < 20; i++ ) {
-    // RNG between 0 and 6 (inclusive)
-    rng_row   = rand() % 7;
-    // RNG between 0 and 1 (inclusive)
-    rng_shift = rand() % 2;
-    // RNG between 0 and 1 (inclusive)
-    rng_backdrop = rand() % 2;
-
-    if (rng_backdrop == 0){
-      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", title[rng_row][0]);
-    } else {
-      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", backdrop[rng_row][0]);
-    }
-    refresh();
-    usleep(10000);
-  }
-}
-
 void quickprint(int row, int col){
   clear();
   for(int i = 0; i < 7; i++){
@@ -112,10 +90,43 @@ void quickprint(int row, int col){
   }
 }
 
+void glitch(int row, int col){
+
+  double interval = (double)(clock() - LAST_GLITCH) / CLOCKS_PER_SEC;
+
+  if(interval >= 0.040){
+
+    time_t t = clock();
+    srand((unsigned) time(&t));
+
+    int rng_row, rng_shift, rng_backdrop = 0;
+
+    for( int i = 0 ; i < 20; i++ ) {
+      // RNG between 0 and 6 (inclusive)
+      rng_row   = rand() % 7;
+      // RNG between 0 and 1 (inclusive)
+      rng_shift = rand() % 2;
+      // RNG between 0 and 1 (inclusive)
+      rng_backdrop = rand() % 2;
+
+      if (rng_backdrop == 0){
+        mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", title[rng_row][0]);
+      } else {
+        mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+      }
+      refresh();
+      usleep(20000);
+    }
+    quickprint(row, col);
+    LAST_GLITCH = (double)clock();
+  }
+}
+
 int main(int argc, char* argv[]) {
 
-  enum { DEFAULT, ANIMATED } mode = DEFAULT;
   LAST_INPUT_TIME = clock();
+  LAST_GLITCH = clock();
+  enum { DEFAULT, ANIMATED } mode = DEFAULT;
   int DELAY                       = 2000000;
   int opt;
 
@@ -181,10 +192,8 @@ int main(int argc, char* argv[]) {
     usleep(10000);
     checkchar(row, col, CURRENT_WINDOW_SIZE);
 
-    int set = 0;
-
-    double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-    if(elapsed_time >= 0.005){
+    double time_idle = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+    if(time_idle >= 0.040){
       glitch(row, col);
     }
   }

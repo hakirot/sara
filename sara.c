@@ -21,6 +21,16 @@ const char * title[7][99] = {
   { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
 
+const char * backdrop[7][99] = {
+  { "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    " },
+  { "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   " },
+  { "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   " },
+  { "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   " },
+  { "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗" },
+  { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
+  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
+};
+
 typedef enum {
   SMALL,
   NORMAL
@@ -71,7 +81,10 @@ void checksize(int row, int col){
 }
 
 void glitch(){
+  double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+  if(elapsed_time >= 0.010){
 
+  }
 };
 
 int main(int argc, char* argv[]) {
@@ -103,13 +116,11 @@ int main(int argc, char* argv[]) {
   while(1){
 
     refresh();
-
     getmaxyx(stdscr,row,col); // Get total screen dimensions
 
     if (cache != row + col){
       clear();
       checksize(row, col);
-
       cache = row + col;
       clear();
 
@@ -144,7 +155,6 @@ int main(int argc, char* argv[]) {
     }
     usleep(10000);
     checkchar(row, col, CURRENT_WINDOW_SIZE);
-
     glitch();
   }
 

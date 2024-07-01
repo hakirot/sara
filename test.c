@@ -4,9 +4,9 @@
 #include <locale.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
-int main(int argc, char* argv[]) {
-
+void test_one(){
   initscr();                // Initialize screen
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
   noecho();                 // Don't print input to screen when using getch()
@@ -39,5 +39,25 @@ int main(int argc, char* argv[]) {
   }
 
   endwin();
+
+};
+
+void test_two(){
+  int i;
+  int n = 50;
+  time_t t;
+  srand((unsigned) time(&t));
+
+   /* Print 5 random numbers from 0 to 49 */
+   for( i = 0 ; i < n ; i++ ) {
+      printf("%d\n", rand() % 2);
+   }
+}
+
+int main(int argc, char* argv[]) {
+
+  test_two();
+
   return 0;
 }
+

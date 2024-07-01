@@ -11,7 +11,7 @@
 #include <time.h>
 
 // length 44 per line
-const char * title[7][99] = {
+char * title[7][99] = {
   { "███████╗    █████╗    ██████╗     █████╗    " },
   { "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   " },
   { "███████╗   ███████║   ██████╔╝   ███████║   " },
@@ -21,7 +21,7 @@ const char * title[7][99] = {
   { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
 
-const char * backdrop[7][99] = {
+char * backdrop[7][99] = {
   { "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    " },
   { "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   " },
   { "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   " },
@@ -80,12 +80,37 @@ void checksize(int row, int col){
   CURRENT_WINDOW_SIZE = NORMAL;
 }
 
-void glitch(){
-  double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-  if(elapsed_time >= 0.010){
+void glitch(int row, int col){
+  time_t t;
+  srand((unsigned) time(&t));
+  
+  int rng_row, rng_shift, rng_backdrop = 0;
 
+  for( int i = 0 ; i < 20; i++ ) {
+    // RNG between 0 and 6 (inclusive)
+    rng_row   = rand() % 7;
+    // RNG between 0 and 1 (inclusive)
+    rng_shift = rand() % 2;
+    // RNG between 0 and 1 (inclusive)
+    rng_backdrop = rand() % 2;
+
+    if (rng_backdrop == 0){
+      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", title[rng_row][0]);
+    } else {
+      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+    }
+    refresh();
+    usleep(10000);
   }
-};
+}
+
+void quickprint(int row, int col){
+  clear();
+  for(int i = 0; i < 7; i++){
+    mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+    refresh();
+  }
+}
 
 int main(int argc, char* argv[]) {
 
@@ -155,7 +180,13 @@ int main(int argc, char* argv[]) {
     }
     usleep(10000);
     checkchar(row, col, CURRENT_WINDOW_SIZE);
-    glitch();
+
+    int set = 0;
+
+    double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+    if(elapsed_time >= 0.005){
+      glitch(row, col);
+    }
   }
 
   // TODO: Add stars w/ . and +

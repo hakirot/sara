@@ -12,6 +12,7 @@
 This extracurricular exam exists as an exercise 
 expressing exhaustive terminal exceptionalism
 
-Serving basically as a simple dashboard page' for my system.
-An exercise in C programming, terminal animations, and custom options.
+Serving as a lighting-fast scratch program for any newly spawned terminal by
+default. An exercise in C programming, terminal animations, and fast execution
+of custom options from any workspace.
 

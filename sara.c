@@ -54,7 +54,7 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.01000;
+const double WAIT_BUFFER = 0.05000;
 
 void checkchar(int row, int col) {
 
@@ -93,6 +93,7 @@ void checksize(int row, int col){
 
   while (col < 44 || row < 7){
     WIN_SIZE = SMALL;
+    clear();
     mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
     refresh();
 
@@ -140,7 +141,6 @@ void glitch(int row, int col){
 
   }
   quickprint(row, col);
-  WAIT_START = clock();
 }
 
 int main(int argc, char* argv[]) {
@@ -230,6 +230,7 @@ int main(int argc, char* argv[]) {
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
+      WAIT_START = clock();
     }
   }
 

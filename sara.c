@@ -70,8 +70,6 @@ void checkchar(int row, int col) {
       execv("/usr/bin/nvim", NULL);
     } else if (WIN_SIZE == NORMAL) {
       LAST_INPUT_TIME = clock();
-//    WAIT_START = clock();                 << glitching regardless of input
-//                                          << draw char into arrays
       ch = input;
       mvprintw(row/2, col/2, "%c", ch);
       refresh();
@@ -88,22 +86,13 @@ void checkchar(int row, int col) {
   }
 }
 
-// Check if screen is too small
-void checksize(int row, int col){
-
-  while (col < 44 || row < 7){
-    WIN_SIZE = SMALL;
-    clear();
-    mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
-    refresh();
-
-    usleep(10000);
+void printstandard(int row, int col){
+  for(int i = 0; i < 7; i++){
     checkchar(row, col);
-
-    getmaxyx(stdscr,row,col); // Get total screen dimensions again
+    mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+    refresh();
+    usleep(20000);          // Add some sexy timing
   }
-
-  WIN_SIZE = NORMAL;
 }
 
 void quickprint(int row, int col){
@@ -114,9 +103,31 @@ void quickprint(int row, int col){
   }
 }
 
-void glitch(int row, int col){
+// Check if screen is too small, returns new cache
+int checksize(int row, int col, int cache){
 
-//double interval = (double)((clock() - WAIT_START)) / CLOCKS_PER_SEC;
+  if (cache != row + col){
+    clear();
+    while (col < 44 || row < 7){
+      WIN_SIZE = SMALL;
+      clear();
+      mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
+      refresh();
+
+      usleep(10000);
+      checkchar(row, col);
+
+      getmaxyx(stdscr,row,col); // Get total screen dimensions again
+    }
+
+    printstandard(row, col);
+    WIN_SIZE = NORMAL;
+  }
+
+  return row + col;
+}
+
+void glitch(int row, int col){
 
   time_t t = clock();
   srand((unsigned) time(&t));     // << check this, should we move it out
@@ -176,58 +187,15 @@ int main(int argc, char* argv[]) {
 
   while(1){
 
-    getmaxyx(stdscr,row,col); // Get total screen dimensions
+    getmaxyx(stdscr, row, col); // Get total screen dimensions
 
-    if (cache != row + col){
-//  cache = checksize(row, col, cache);                                       << refactor
-//    if (cache != row + col){
-//      clear()
-//      while (col < 44 || row < 7){
-//        ...
-//      }
-//      
-//    }
-
-      clear();
-      checksize(row, col);
-      cache = row + col;
-
-      if(mode == ANIMATED){
-
-        while(1){
-          usleep(DELAY);
-          clear();
-          for(int i = 0; i < 7; i++){
-            //printw("%s\n", title[i][0]);
-            mvprintw(row/2 - 4 + i, (col-44)/2, "%s", title[i][0]);
-            refresh();
-          }
-
-          usleep(DELAY);
-          clear();
-          for(int i = 0; i < 7; i++){
-            //printw("%s\n", title[i][0]);
-            mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
-            refresh();
-          }
-        }
-      } 
-
-      if(mode == DEFAULT){
-        // Print standard rows
-        for(int i = 0; i < 7; i++){
-          checkchar(row, col);
-          mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
-          refresh();
-          usleep(20000);          // Add some sexy timing
-        }
-      }
-    }
+    cache = checksize(row, col, cache);
 
     usleep(10000); // Simple wait to reduce overhead
     checkchar(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
       WAIT_START = clock();

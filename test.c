@@ -7,7 +7,7 @@
 #include <time.h>
 
 clock_t WAIT_START;
-double WAIT_BUFFER = 0.00010;
+const double WAIT_BUFFER = 0.010;
 
 void test_one(){
   initscr();                // Initialize screen
@@ -74,14 +74,20 @@ void test_three() {
   getmaxyx(stdscr,row,col); // Get total screen dimensions
   refresh();                // clear screen
 
+  usleep(270000);
   WAIT_START = clock();
+  mvprintw(row/2 - 1, (col-32)/2, "wait_start: %f", WAIT_START);
   double time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
-  while(time_idle <= WAIT_BUFFER){
-    double time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+  while(WAIT_BUFFER > time_idle){
+    time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+    mvprintw(row/2, (col-30)/2, "time_idle: %f", time_idle);
+    mvprintw(row/2 + 1, (col-34)/2, "wait_buffer: %f", WAIT_BUFFER);
+    refresh();
     usleep(10000);
-    //printf("time_idle: %f\n", time_idle);
   }
+
+  endwin();
 }
 
 int main(int argc, char* argv[]) {

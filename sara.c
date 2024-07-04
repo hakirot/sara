@@ -52,11 +52,11 @@ typedef enum {
 } screen_size;
 
 clock_t LAST_INPUT_TIME;
-screen_size CURRENT_WINDOW_SIZE;
-double WAIT_START;
-double WAIT_BUFFER = 0.00010;
+screen_size WIN_SIZE;
+clock_t WAIT_START;
+const double WAIT_BUFFER = 0.01000;
 
-void checkchar(int row, int col, screen_size WIN_SIZE) {
+void checkchar(int row, int col) {
 
   char ch;
   char input = getch();
@@ -70,7 +70,8 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
       execv("/usr/bin/nvim", NULL);
     } else if (WIN_SIZE == NORMAL) {
       LAST_INPUT_TIME = clock();
-      WAIT_START = clock();
+//    WAIT_START = clock();                 << glitching regardless of input
+//                                          << draw char into arrays
       ch = input;
       mvprintw(row/2, col/2, "%c", ch);
       refresh();
@@ -79,6 +80,7 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
 
 
   // Clear center row if 1 second has elapsed
+  //                                              << Remove char from arrays
   double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
   if(elapsed_time >= 0.001 && WIN_SIZE == NORMAL){
     mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
@@ -90,17 +92,17 @@ void checkchar(int row, int col, screen_size WIN_SIZE) {
 void checksize(int row, int col){
 
   while (col < 44 || row < 7){
-    CURRENT_WINDOW_SIZE = SMALL;
+    WIN_SIZE = SMALL;
     mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
     refresh();
 
     usleep(10000);
-    checkchar(row, col, CURRENT_WINDOW_SIZE);
+    checkchar(row, col);
 
     getmaxyx(stdscr,row,col); // Get total screen dimensions again
   }
 
-  CURRENT_WINDOW_SIZE = NORMAL;
+  WIN_SIZE = NORMAL;
 }
 
 void quickprint(int row, int col){
@@ -113,42 +115,40 @@ void quickprint(int row, int col){
 
 void glitch(int row, int col){
 
-  double interval = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+//double interval = (double)((clock() - WAIT_START)) / CLOCKS_PER_SEC;
 
-  if(interval >= 0.040){
+  time_t t = clock();
+  srand((unsigned) time(&t));     // << check this, should we move it out
 
-    time_t t = clock();
-    srand((unsigned) time(&t));
+  int rng_row, rng_shift, rng_backdrop = 0;
 
-    int rng_row, rng_shift, rng_backdrop = 0;
+  for( int i = 0 ; i < 28; i++ ) {
+    rng_row   = rand() % 7;             // RNG between 0 and 6 (inclusive)
+    rng_shift = (rand() % 3) - 1;       // RNG between 0 and 1 (inclusive)
+    rng_backdrop = rand() % 3;          // RNG between 0 and 2 (inclusive)
 
-    for( int i = 0 ; i < 28; i++ ) {
-      // RNG between 0 and 6 (inclusive)
-      rng_row   = rand() % 7;
-      // RNG between 0 and 1 (inclusive)
-      rng_shift = (rand() % 3) - 1;
-      // RNG between 0 and 1 (inclusive)
-      rng_backdrop = rand() % 3;
-
-      if (rng_backdrop == 0){
-        mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", title[rng_row][0]);
-      } else if (rng_backdrop == 1){
-        mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", backdrop[rng_row][0]);
-      } else {
-        mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", foreground[rng_row][0]);
-      }
-      refresh();
-      usleep(23000);
+    if (rng_backdrop == 0){
+      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", title[rng_row][0]);
+    } else if (rng_backdrop == 1){
+      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+    } else {
+      mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", foreground[rng_row][0]);
     }
-    quickprint(row, col);
-    WAIT_START = (double)clock();
+    refresh();
+    usleep(23000);
+    checkchar(row, col);
+
   }
+  quickprint(row, col);
+  WAIT_START = clock();
 }
 
 int main(int argc, char* argv[]) {
 
   LAST_INPUT_TIME = clock();
   WAIT_START = clock();
+  double time_idle;
+
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
   int DELAY                       = 2000000;
   int opt;
@@ -173,6 +173,7 @@ int main(int argc, char* argv[]) {
   int row, col;             // For storing the number of rows/cols
 
   refresh();                // clear screen
+
   while(1){
 
     getmaxyx(stdscr,row,col); // Get total screen dimensions
@@ -215,7 +216,7 @@ int main(int argc, char* argv[]) {
       if(mode == DEFAULT){
         // Print standard rows
         for(int i = 0; i < 7; i++){
-          checkchar(row, col, CURRENT_WINDOW_SIZE);
+          checkchar(row, col);
           mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
           refresh();
           usleep(20000);          // Add some sexy timing
@@ -224,9 +225,9 @@ int main(int argc, char* argv[]) {
     }
 
     usleep(10000); // Simple wait to reduce overhead
-    checkchar(row, col, CURRENT_WINDOW_SIZE); // check input for this cycle
+    checkchar(row, col); // check input for this cycle
 
-    double time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+    time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
     }

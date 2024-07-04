@@ -1,4 +1,4 @@
-/* TODO
+/* FEATLIST
  *  Boot animations
  *  Interval animations
  *  X Glitch animation
@@ -54,7 +54,7 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.05000;
+const double WAIT_BUFFER = 0.01000;
 
 void checkchar(int row, int col) {
 
@@ -75,7 +75,6 @@ void checkchar(int row, int col) {
       refresh();
     }
   } 
-
 
   // Clear center row if 1 second has elapsed
   //                                              << Remove char from arrays
@@ -135,9 +134,9 @@ void glitch(int row, int col){
   int rng_row, rng_shift, rng_backdrop = 0;
 
   for( int i = 0 ; i < 28; i++ ) {
-    rng_row   = rand() % 7;             // RNG between 0 and 6 (inclusive)
-    rng_shift = (rand() % 3) - 1;       // RNG between 0 and 1 (inclusive)
-    rng_backdrop = rand() % 3;          // RNG between 0 and 2 (inclusive)
+    rng_row   = rand() % 7;             // RNG 0 and 6
+    rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
+    rng_backdrop = rand() % 3;          // RNG 0 and 2
 
     if (rng_backdrop == 0){
       mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", title[rng_row][0]);
@@ -188,7 +187,6 @@ int main(int argc, char* argv[]) {
   while(1){
 
     getmaxyx(stdscr, row, col); // Get total screen dimensions
-
     cache = checksize(row, col, cache);
 
     usleep(10000); // Simple wait to reduce overhead

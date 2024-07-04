@@ -55,10 +55,10 @@ clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
 const double WAIT_BUFFER = 0.01000;
+char HOLD_CHAR;
 
 void checkchar(int row, int col) {
 
-  char ch;
   char input = getch();
 
   if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
@@ -70,25 +70,25 @@ void checkchar(int row, int col) {
       execv("/usr/bin/nvim", NULL);
     } else if (WIN_SIZE == NORMAL) {
       LAST_INPUT_TIME = clock();
-      ch = input;
-      mvprintw(row/2, col/2, "%c", ch);
+      HOLD_CHAR = input;
+      mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
     }
   } 
 
-  // Clear center row if 1 second has elapsed
-  //                                              << Remove char from arrays
-  double elapsed_time = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-  if(elapsed_time >= 0.001 && WIN_SIZE == NORMAL){
+  double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+  if(time_since_input >= 0.001 && WIN_SIZE == NORMAL){
     mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
+    HOLD_CHAR = '\0';
     refresh();
   }
 }
 
 void printstandard(int row, int col){
   for(int i = 0; i < 7; i++){
-    checkchar(row, col);
     mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+    checkchar(row, col);
+    if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
     usleep(20000);          // Add some sexy timing
   }
@@ -98,8 +98,9 @@ void quickprint(int row, int col){
   clear();
   for(int i = 0; i < 7; i++){
     mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
-    refresh();
   }
+  if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+  refresh();
 }
 
 // Check if screen is too small, returns new cache
@@ -145,9 +146,11 @@ void glitch(int row, int col){
     } else {
       mvprintw(row/2 - 3 + rng_row, (col - 44)/2 - rng_shift, "%s", foreground[rng_row][0]);
     }
+
+    checkchar(row, col);
+    if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
     usleep(23000);
-    checkchar(row, col);
 
   }
   quickprint(row, col);

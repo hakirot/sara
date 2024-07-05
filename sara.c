@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include <time.h>
 
+int checksize(int row, int col, int cache);
+
 typedef enum {
   SMALL,
   NORMAL
@@ -126,10 +128,6 @@ void neon(int row, int col) {
 
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
-    // debug
-//  mvprintw(row - 1, col/2, "elapsed_time: %f", elapsed_time);
-//  refresh();
-
     if(elapsed_time > 0.2 && first_frame == 0){
       for(int i = 0; i < 6; i++){
         mvprintw(row/2 - 3 + i, (col-44)/2, "%s", backdrop[i][0]);
@@ -195,8 +193,8 @@ int checksize(int row, int col, int cache){
       getmaxyx(stdscr,row,col); // Get total screen dimensions again
     }
 
-    print_start_animation(row, col);
     WIN_SIZE = NORMAL;
+    print_start_animation(row, col);
   }
 
   return row + col;
@@ -232,7 +230,6 @@ void glitch(int row, int col){
 int main(int argc, char* argv[]) {
 
   LAST_INPUT_TIME = clock();
-  WAIT_START = clock();
   double time_idle;
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
@@ -260,6 +257,7 @@ int main(int argc, char* argv[]) {
 
   refresh();                // clear screen
 
+  WAIT_START = clock();
   while(1){
 
     getmaxyx(stdscr, row, col); // Get total screen dimensions

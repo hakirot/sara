@@ -9,8 +9,6 @@
 clock_t WAIT_START;
 const double WAIT_BUFFER = 0.010;
 
-char * hi = "asdf";
-
 void test_one(){
   initscr();                // Initialize screen
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
@@ -82,14 +80,10 @@ void test_three() {
   double time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
   while(WAIT_BUFFER > time_idle){
+
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
     mvprintw(row/2, (col-30)/2, "time_idle: %f", time_idle);
     mvprintw(row/2 + 1, (col-34)/2, "wait_buffer: %f", WAIT_BUFFER);
-    mvprintw(row/2 + 2, (col-16)/2, "hi: %s", hi);
-
-    if (time_idle > 0.005){
-      *hi = 'z';
-    }
 
     refresh();
     usleep(10000);

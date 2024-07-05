@@ -19,13 +19,19 @@ typedef enum {
   NORMAL
 } screen_size;
 
+typedef enum {
+  QUICK,
+  STANDARD,
+  NEON,
+  EMPTY
+} start_animation;
+
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.00500;
+const double WAIT_BUFFER = 0.02000;
 char HOLD_CHAR;
-
-char * empty_line = "                                            ";
+start_animation START_ANIMATION = EMPTY;
 
 // length 44 per line
 char * title[7][99] = {
@@ -104,30 +110,6 @@ void quickprint(int row, int col){
   refresh();
 }
 
-// Check if screen is too small, returns new cache
-int checksize(int row, int col, int cache){
-
-  if (cache != row + col){
-    clear();
-    while (col < 44 || row < 7){
-      WIN_SIZE = SMALL;
-      clear();
-      mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
-      refresh();
-
-      usleep(10000);
-      checkchar(row, col);
-
-      getmaxyx(stdscr,row,col); // Get total screen dimensions again
-    }
-
-    printstandard(row, col);
-    WIN_SIZE = NORMAL;
-  }
-
-  return row + col;
-}
-
 void neon(int row, int col) {
 
   clock_t cycle_start = clock();
@@ -171,10 +153,56 @@ void neon(int row, int col) {
   refresh();
 }
 
-void glitch(int row, int col){
 
-  time_t t = clock();
-  srand((unsigned) time(&t));     // << check this, should we move it out
+void print_start_animation(int row, int col) {
+
+  srand((unsigned)time(0));
+
+  if (START_ANIMATION == EMPTY){
+    int start_roll = rand() % 3;
+    if (start_roll == 0){
+      START_ANIMATION = QUICK;
+    } else if (start_roll == 1){
+      START_ANIMATION = STANDARD;
+    } else {
+      START_ANIMATION = NEON;
+    }
+  }
+
+  if (START_ANIMATION == NEON){
+    neon(row, col);
+  } else if (START_ANIMATION == QUICK){
+    quickprint(row, col);
+  } else {
+    printstandard(row, col);
+  }
+}
+
+// Check if screen is too small, returns new cache
+int checksize(int row, int col, int cache){
+
+  if (cache != row + col){
+    clear();
+    while (col < 44 || row < 7){
+      WIN_SIZE = SMALL;
+      clear();
+      mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
+      refresh();
+
+      usleep(10000);
+      checkchar(row, col);
+
+      getmaxyx(stdscr,row,col); // Get total screen dimensions again
+    }
+
+    print_start_animation(row, col);
+    WIN_SIZE = NORMAL;
+  }
+
+  return row + col;
+}
+
+void glitch(int row, int col){
 
   int rng_row, rng_shift, rng_backdrop = 0;
 
@@ -245,7 +273,6 @@ int main(int argc, char* argv[]) {
 
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
-      //neon(row, col);
       WAIT_START = clock();
     }
 
@@ -254,7 +281,7 @@ int main(int argc, char* argv[]) {
       mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
       HOLD_CHAR = '\0';
       refresh();
-  }
+    }
   }
 
   // TODO: Add stars w/ . and +

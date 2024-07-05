@@ -14,6 +14,19 @@
 #include <unistd.h>
 #include <time.h>
 
+typedef enum {
+  SMALL,
+  NORMAL
+} screen_size;
+
+clock_t LAST_INPUT_TIME;
+screen_size WIN_SIZE;
+clock_t WAIT_START;
+const double WAIT_BUFFER = 0.00100;
+char HOLD_CHAR;
+
+char * empty_line = "                                            ";
+
 // length 44 per line
 char * title[7][99] = {
   { "███████╗    █████╗    ██████╗     █████╗    " },
@@ -46,17 +59,6 @@ char * foreground[7][99] = {
 };
 
 
-typedef enum {
-  SMALL,
-  NORMAL
-} screen_size;
-
-clock_t LAST_INPUT_TIME;
-screen_size WIN_SIZE;
-clock_t WAIT_START;
-const double WAIT_BUFFER = 0.01000;
-char HOLD_CHAR;
-
 void checkchar(int row, int col) {
 
   char input = getch();
@@ -78,7 +80,7 @@ void checkchar(int row, int col) {
 
   double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
   if(time_since_input >= 0.001 && WIN_SIZE == NORMAL){
-    mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
+//  mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
     HOLD_CHAR = '\0';
     refresh();
   }
@@ -127,6 +129,58 @@ int checksize(int row, int col, int cache){
   return row + col;
 }
 
+void neon(int row, int col) {
+
+  clock_t cycle_start = clock();
+  double cycle_length = 1.2;
+  double elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+  int first_frame = 0;
+  int second_frame = 0;
+
+  clear();
+  refresh();
+
+  while(cycle_length > elapsed_time){
+
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+    // debug
+//  mvprintw(row - 1, col/2, "elapsed_time: %f", elapsed_time);
+//  refresh();
+
+    if(elapsed_time > 0.2 && first_frame == 0){
+      for(int i = 0; i < 6; i++){
+        mvprintw(row/2 - 3 + i, (col-44)/2, "%s", backdrop[i][0]);
+      }
+      first_frame = 1;
+    }
+
+    if(elapsed_time > 0.7 && second_frame == 0){
+      for(int i = 0; i < 6; i++){
+        mvprintw(row/2 - 3 + i, (col-44)/2, "%s", title[i][0]);
+      }
+      second_frame = 1;
+    }
+
+    checkchar(row, col);
+
+//  if(first_frame == 0 && second_frame == 0) {
+//    mvprintw(row/2, (col-44)/2, "%s", " ");
+//  } else if (first_frame == 1 && second_frame == 0) {
+//    mvprintw(row/2, (col-44)/2, "%s", backdrop[3][0]);
+//  } else {
+//    mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
+//  }
+
+    if (HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+    refresh();
+  }
+
+  mvprintw(row/2 + 3, (col-44)/2, "%s", title[6][0]);
+  refresh();
+}
+
 void glitch(int row, int col){
 
   time_t t = clock();
@@ -153,6 +207,7 @@ void glitch(int row, int col){
     usleep(23000);
 
   }
+
   quickprint(row, col);
 }
 
@@ -190,15 +245,17 @@ int main(int argc, char* argv[]) {
   while(1){
 
     getmaxyx(stdscr, row, col); // Get total screen dimensions
+
     cache = checksize(row, col, cache);
 
-    usleep(10000); // Simple wait to reduce overhead
+    usleep(10000); // Simple wait to reduce some overhead
     checkchar(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
+      neon(row, col);
       WAIT_START = clock();
     }
   }

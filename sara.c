@@ -22,7 +22,7 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.00100;
+const double WAIT_BUFFER = 0.00500;
 char HOLD_CHAR;
 
 char * empty_line = "                                            ";
@@ -80,10 +80,9 @@ void checkchar(int row, int col) {
 
   double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
   if(time_since_input >= 0.001 && WIN_SIZE == NORMAL){
-//  mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
     HOLD_CHAR = '\0';
-    refresh();
   }
+
 }
 
 void printstandard(int row, int col){
@@ -164,16 +163,7 @@ void neon(int row, int col) {
     }
 
     checkchar(row, col);
-
-//  if(first_frame == 0 && second_frame == 0) {
-//    mvprintw(row/2, (col-44)/2, "%s", " ");
-//  } else if (first_frame == 1 && second_frame == 0) {
-//    mvprintw(row/2, (col-44)/2, "%s", backdrop[3][0]);
-//  } else {
-//    mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
-//  }
-
-    if (HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+    if (HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
   }
 
@@ -255,9 +245,16 @@ int main(int argc, char* argv[]) {
 
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
-      neon(row, col);
+      //neon(row, col);
       WAIT_START = clock();
     }
+
+    double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+    if(time_since_input >= 0.001 && WIN_SIZE == NORMAL){
+      mvprintw(row/2, (col-44)/2, "%s", title[3][0]);
+      HOLD_CHAR = '\0';
+      refresh();
+  }
   }
 
   // TODO: Add stars w/ . and +

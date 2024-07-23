@@ -31,7 +31,7 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.02000;
+const double WAIT_BUFFER = 0.04000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 

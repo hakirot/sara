@@ -36,6 +36,7 @@ char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
 // length 44 per line
+// TODO: Make me a constant so the title can change
 char * title[7][99] = {
   { "███████╗    █████╗    ██████╗     █████╗    " },
   { "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   " },

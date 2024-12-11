@@ -1,6 +1,6 @@
 /* FEATLIST
  *  Boot animations
- *  Interval animations
+ *  . Different Interval animations
  *  X Glitch animation
  *  X Display chars
  *  X Dynamically resize with window
@@ -18,7 +18,8 @@ int checksize(int row, int col, int cache);
 
 typedef enum {
   SMALL,
-  NORMAL
+  NORMAL,
+  BIG
 } screen_size;
 
 typedef enum {
@@ -34,6 +35,55 @@ clock_t WAIT_START;
 const double WAIT_BUFFER = 0.04000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
+
+/*
+
+char * arch[19][99] = {
+  { "                    -`                      " },
+  { "                   .o+`                     " },
+  { "                  `ooo/                     " },
+  { "                 `+oooo:                    " },
+  { "                `+oooooo:                   " },
+  { "                -+oooooo+:                  " },
+  { "              `/:-:++oooo+:                 " },
+  { "             `/++++/+++++++:                " },
+  { "            `/++++++++++++++:               " },
+  { "           `/+++ooooooooooooo/`             " },
+  { "          ./ooosssso++osssssso+`            " },
+  { "         .oossssso-````/ossssss+`           " },
+  { "        -osssssso.      :ssssssso.          " },
+  { "       :osssssss/        osssso+++.         " },
+  { "      /ossssssss/        +ssssooo/-         " },
+  { "    `/ossssso+/:-        -:/+osssso+-       " },
+  { "   `+sso+:-`                 `.-/+oso:      " },
+  { "  `++:.                           `-/+/     " },
+  { "  .`                                 `/     " },
+};
+*/
+
+/*
+char * archsara[19][99] = {
+  { "                    -`                      " },
+  { "                   .o+`                     " },
+  { "                  `ooo/                     " },
+  { "                 `+oooo:                    " },
+  { "                `+oooooo:                   " },
+  { "                -+oooooo+:                  " },
+  { "              `/:-:++oooo+:                 " },
+  { "███████╗    █████╗ /++██████╗     █████╗    " },
+  { "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   " },
+  { "███████╗   ███████║ooo██████╔╝`  ███████║   " },
+  { "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   " },
+  { "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗" },
+  { "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
+  { "       : SOFTWARE ARCHITECTED RANGING AREA  " },
+  { "      /ossssssss/        +ssssooo/-         " },
+  { "    `/ossssso+/:-        -:/+osssso+-       " },
+  { "   `+sso+:-`                 `.-/+oso:      " },
+  { "  `++:.                           `-/+/     " },
+  { "  .`                                 `/     " },
+};
+*/
 
 // length 44 per line
 // TODO: Make me a constant so the title can change
@@ -66,7 +116,6 @@ char * foreground[7][99] = {
   { "                                            " },
   { "         SOFTWARE ARCHITECTED RANGING AREA  " },
 };
-
 
 void checkchar(int row, int col) {
 
@@ -239,6 +288,7 @@ int main(int argc, char* argv[]) {
 
   while ((opt = getopt(argc, argv, "a")) != -1){
     switch (opt) {
+			// Removed implementation
       case 'a': mode = ANIMATED; break;
     }
   }

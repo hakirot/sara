@@ -137,7 +137,7 @@ void checkchar(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
-    } else if (WIN_SIZE == NORMAL) {
+    } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;
       mvprintw(row/2, col/2, "%c", HOLD_CHAR);
@@ -146,7 +146,7 @@ void checkchar(int row, int col) {
   } 
 
   double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-  if(time_since_input >= 0.001 && WIN_SIZE == NORMAL){
+  if(time_since_input >= 0.00005 && WIN_SIZE != SMALL){
     HOLD_CHAR = '\0';
   }
 
@@ -340,7 +340,7 @@ int main(int argc, char* argv[]) {
     }
 
     double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-    if(time_since_input >= 0.001 && WIN_SIZE == NORMAL){
+    if(time_since_input >= 0.001 && WIN_SIZE != SMALL){
       mvprintw(row/2, (col-LENGTH)/2, "%s", title[3][0]);
       HOLD_CHAR = '\0';
       refresh();

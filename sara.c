@@ -251,12 +251,15 @@ int checksize(int row, int col, int cache){
 
       getmaxyx(stdscr,row,col); // Get total screen dimensions again
     }
-
-//  if (col < LENGTH || row < HEIGHT){
-
-    WIN_SIZE = NORMAL;
-    print_start_animation(row, col);
   }
+
+  if (row > MAX_HEIGHT && col > MAX_LENGTH){
+    WIN_SIZE = BIG;
+  } else {
+    WIN_SIZE = NORMAL;
+  }
+
+  print_start_animation(row, col);
 
   return row + col;
 }

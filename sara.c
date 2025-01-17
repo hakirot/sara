@@ -42,10 +42,6 @@ const double WAIT_BUFFER = 0.04000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
-/*
-
-int checksize(int row, int col, int cache);
-
 
 char * arch[19][99] = {
   { "                    -`                      " },
@@ -68,10 +64,8 @@ char * arch[19][99] = {
   { "  `++:.                           `-/+/     " },
   { "  .`                                 `/     " },
 };
-*/
 
-/*
-char * archsara[19][99] = {
+char * archsarafull[19][99] = {
   { "                    -`                      " },
   { "                   .o+`                     " },
   { "                  `ooo/                     " },
@@ -92,7 +86,16 @@ char * archsara[19][99] = {
   { "  `++:.                           `-/+/     " },
   { "  .`                                 `/     " },
 };
-*/
+
+char * titlefill[7][99] = {
+  { "███████╗    █████╗ /++██████╗     █████╗    " },
+  { "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   " },
+  { "███████╗   ███████║ooo██████╔╝`  ███████║   " },
+  { "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   " },
+  { "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗" },
+  { "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
+  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
+};
 
 // length LENGTH
 // height HEIGHT
@@ -188,15 +191,27 @@ void neon(int row, int col) {
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.2 && first_frame == 0){
-      for(int i = 0; i < 6; i++){
-        mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", backdrop[i][0]);
+      if (WIN_SIZE == NORMAL){
+        for(int i = 0; i < 6; i++){
+          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", backdrop[i][0]);
+        }
+      } else { // screen is BIG
+        for(int i = 0; i < 19; i++){
+          mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i][0]);
+        }
       }
       first_frame = 1;
     }
 
     if(elapsed_time > 0.7 && second_frame == 0){
-      for(int i = 0; i < 6; i++){
-        mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+      if (WIN_SIZE == NORMAL){
+        for(int i = 0; i < 6; i++){
+          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+        }
+      } else { // screen is big
+        for(int i = 0; i < 6; i++){
+          mvprintw(row/2 - 2 + i, (col-LENGTH)/2, "%s", titlefill[i][0]);
+        }
       }
       second_frame = 1;
     }
@@ -217,13 +232,14 @@ void print_start_animation(int row, int col) {
 
   if (START_ANIMATION == EMPTY){
     int start_roll = rand() % 3;
-    if (start_roll == 0){
-      START_ANIMATION = QUICK;
-    } else if (start_roll == 1){
-      START_ANIMATION = STANDARD;
-    } else {
-      START_ANIMATION = NEON;
-    }
+//  if (start_roll == 0){
+//    START_ANIMATION = QUICK;
+//  } else if (start_roll == 1){
+//    START_ANIMATION = STANDARD;
+//  } else {
+//    START_ANIMATION = NEON;
+//  }
+    START_ANIMATION = NEON;
   }
 
   if (START_ANIMATION == NEON){
@@ -255,8 +271,12 @@ int checksize(int row, int col, int cache){
 
   if (row > MAX_HEIGHT && col > MAX_LENGTH){
     WIN_SIZE = BIG;
+    LENGTH = MAX_LENGTH;
+    HEIGHT = MAX_HEIGHT;
   } else {
     WIN_SIZE = NORMAL;
+    LENGTH = MID_LENGTH;
+    HEIGHT = MID_HEIGHT;
   }
 
   print_start_animation(row, col);
@@ -269,17 +289,31 @@ void glitch(int row, int col){
   int rng_row, rng_shift, rng_backdrop = 0;
 
   for( int i = 0 ; i < 28; i++ ) {
-    rng_row   = rand() % HEIGHT;             // RNG 0 and 6
+    rng_row   = rand() % MID_HEIGHT;             // RNG 0 and 6
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
     rng_backdrop = rand() % 3;          // RNG 0 and 2
 
-    if (rng_backdrop == 0){
-      mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row][0]);
-    } else if (rng_backdrop == 1){
-      mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row][0]);
-    } else {
-      mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row][0]);
+
+    if (WIN_SIZE == NORMAL) {
+      if (rng_backdrop == 0){
+        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row][0]);
+      } else if (rng_backdrop == 1){
+        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+      } else {
+        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row][0]);
+      }
     }
+
+    if (WIN_SIZE == BIG) {
+      if (rng_backdrop == 0){
+        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row][0]);
+      } else if (rng_backdrop == 1){
+        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+      } else {
+        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row][0]);
+      }
+    }
+
 
     checkchar(row, col);
     if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);

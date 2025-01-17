@@ -167,8 +167,15 @@ void printstandard(int row, int col){
 
 void quickprint(int row, int col){
   clear();
-  for(int i = 0; i < HEIGHT; i++){
-    mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+  if (WIN_SIZE == NORMAL){
+    for(int i = 0; i < HEIGHT; i++){
+      mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+    }
+  }
+  if (WIN_SIZE == BIG){
+    for(int i = 0; i < HEIGHT; i++){
+      mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", archsarafull[i][0]);
+    }
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
   refresh();
@@ -255,6 +262,7 @@ void print_start_animation(int row, int col) {
 int checksize(int row, int col, int cache){
 
   if (cache != row + col){
+    START_ANIMATION = EMPTY;
     clear();
     while (col < MID_LENGTH || row < MID_HEIGHT){
       WIN_SIZE = SMALL;
@@ -278,8 +286,6 @@ int checksize(int row, int col, int cache){
     LENGTH = MID_LENGTH;
     HEIGHT = MID_HEIGHT;
   }
-
-  print_start_animation(row, col);
 
   return row + col;
 }
@@ -363,6 +369,8 @@ int main(int argc, char* argv[]) {
 
     cache = checksize(row, col, cache);
 
+    if (START_ANIMATION == EMPTY) print_start_animation(row, col);
+
     usleep(10000); // Simple wait to reduce some overhead
     checkchar(row, col); // check input for this cycle
 
@@ -375,7 +383,7 @@ int main(int argc, char* argv[]) {
 
     double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
     if(time_since_input >= 0.001 && WIN_SIZE != SMALL){
-      mvprintw(row/2, (col-LENGTH)/2, "%s", title[3][0]);
+//    mvprintw(row/2, (col-LENGTH)/2, "%s", title[3][0]);
       HOLD_CHAR = '\0';
       refresh();
     }

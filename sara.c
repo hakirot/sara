@@ -382,8 +382,12 @@ int main(int argc, char* argv[]) {
     }
 
     double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-    if(time_since_input >= 0.001 && WIN_SIZE != SMALL){
-//    mvprintw(row/2, (col-LENGTH)/2, "%s", title[3][0]);
+    if(time_since_input >= 0.0001 && WIN_SIZE != SMALL){
+      if (WIN_SIZE == NORMAL) {
+        mvprintw(row/2, (col-LENGTH)/2, "%s", title[3][0]);
+      } else {
+        mvprintw(row/2, (col-LENGTH)/2, "%s", titlefill[2][0]);
+      }
       HOLD_CHAR = '\0';
       refresh();
     }

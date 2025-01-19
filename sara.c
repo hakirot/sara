@@ -54,90 +54,90 @@ start_animation START_ANIMATION = EMPTY;
 
 const char * SEARCH_STR = "`+so:-./";
 
-char * arch[19][99] = {
-  { "                     -`                     " },
-  { "                    .o+`                    " },
-  { "                   `ooo/                    " },
-  { "                  `+oooo:                   " },
-  { "                 `+oooooo:                  " },
-  { "                 -+oooooo+:                 " },
-  { "               `/:-:++oooo+:                " },
-  { "              `/++++/+++++++:               " },
-  { "             `/++++++++++++++:              " },
-  { "            `/+++ooooooooooooo/`            " },
-  { "           ./ooosssso++osssssso+`           " },
-  { "          .oossssso-````/ossssss+`          " },
-  { "         -osssssso.      :ssssssso.         " },
-  { "        :osssssss/        osssso+++.        " },
-  { "       /ossssssss/        +ssssooo/-        " },
-  { "     `/ossssso+/:-        -:/+osssso+-      " },
-  { "    `+sso+:-`                 `.-/+oso:     " },
-  { "   `++:.                           `-/+/    " },
-  { "   .`                                 `/    " },
+char * arch[19] = {
+  "                     -`                     ",
+  "                    .o+`                    ",
+  "                   `ooo/                    ",
+  "                  `+oooo:                   ",
+  "                 `+oooooo:                  ",
+  "                 -+oooooo+:                 ",
+  "               `/:-:++oooo+:                ",
+  "              `/++++/+++++++:               ",
+  "             `/++++++++++++++:              ",
+  "            `/+++ooooooooooooo/`            ",
+  "           ./ooosssso++osssssso+`           ",
+  "          .oossssso-````/ossssss+`          ",
+  "         -osssssso.      :ssssssso.         ",
+  "        :osssssss/        osssso+++.        ",
+  "       /ossssssss/        +ssssooo/-        ",
+  "     `/ossssso+/:-        -:/+osssso+-      ",
+  "    `+sso+:-`                 `.-/+oso:     ",
+  "   `++:.                           `-/+/    ",
+  "   .`                                 `/    ",
 };
 
-char * archsarafull[19][99] = {
-  { "                     -`                     " },
-  { "                    .o+`                    " },
-  { "                   `ooo/                    " },
-  { "                  `+oooo:                   " },
-  { "                 `+oooooo:                  " },
-  { "                 -+oooooo+:                 " },
-  { "               `/:-:++oooo+:                " },
-  { "███████╗    █████╗++/+██████╗     █████╗    " },
-  { "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   " },
-  { "███████╗   ███████║ooo██████╔╝/` ███████║   " },
-  { "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   " },
-  { "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗" },
-  { "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "        :SOFTWARE ARCHITECTED RANGING AREA  " },
-  { "       /ossssssss/        +ssssooo/-        " },
-  { "     `/ossssso+/:-        -:/+osssso+-      " },
-  { "    `+sso+:-`                 `.-/+oso:     " },
-  { "   `++:.                           `-/+/    " },
-  { "   .`                                 `/    " },
+char * archsarafull[19] = {
+ "                     -`                     ",
+ "                    .o+`                    ",
+ "                   `ooo/                    ",
+ "                  `+oooo:                   ",
+ "                 `+oooooo:                  ",
+ "                 -+oooooo+:                 ",
+ "               `/:-:++oooo+:                ",
+ "███████╗    █████╗++/+██████╗     █████╗    ",
+ "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   ",
+ "███████╗   ███████║ooo██████╔╝/` ███████║   ",
+ "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
+ "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
+ "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
+ "        :SOFTWARE ARCHITECTED RANGING AREA  ",
+ "       /ossssssss/        +ssssooo/-        ",
+ "     `/ossssso+/:-        -:/+osssso+-      ",
+ "    `+sso+:-`                 `.-/+oso:     ",
+ "   `++:.                           `-/+/    ",
+ "   .`                                 `/    ",
 };
 
-char * titlefill[7][99] = {
-  { "███████╗    █████╗ /++██████╗     █████╗    " },
-  { "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   " },
-  { "███████╗   ███████║ooo██████╔╝`  ███████║   " },
-  { "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   " },
-  { "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗" },
-  { "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
+char * titlefill[7] = {
+  "███████╗    █████╗ /++██████╗     █████╗    ",
+  "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   ",
+  "███████╗   ███████║ooo██████╔╝`  ███████║   ",
+  "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   ",
+  "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗",
+  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
+  "         SOFTWARE ARCHITECTED RANGING AREA  ",
 };
 
 // length LENGTH
 // height HEIGHT
-char * title[7][99] = {
-  { "███████╗    █████╗    ██████╗     █████╗    " },
-  { "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   " },
-  { "███████╗   ███████║   ██████╔╝   ███████║   " },
-  { "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   " },
-  { "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗" },
-  { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
+char * title[7] = {
+  "███████╗    █████╗    ██████╗     █████╗    ",
+  "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   ",
+  "███████╗   ███████║   ██████╔╝   ███████║   ",
+  "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   ",
+  "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗",
+  "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
+  "         SOFTWARE ARCHITECTED RANGING AREA  ",
 };
 
-char * backdrop[7][99] = {
-  { "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    " },
-  { "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   " },
-  { "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   " },
-  { "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   " },
-  { "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗" },
-  { "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝" },
-  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
+char * backdrop[7] = {
+  "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
+  "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
+  "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   ",
+  "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
+  "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
+  "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
+  "         SOFTWARE ARCHITECTED RANGING AREA  ",
 };
 
-char * foreground[7][99] = {
-  { "███████     █████     ██████      █████     " },
-  { "██         ██   ██    ██   ██    ██   ██    " },
-  { "███████    ███████    ██████     ███████    " },
-  { "     ██    ██   ██    ██   ██    ██   ██    " },
-  { "███████ ██ ██   ██ ██ ██   ██ ██ ██   ██ ██ " },
-  { "                                            " },
-  { "         SOFTWARE ARCHITECTED RANGING AREA  " },
+char * foreground[7] = {
+  "███████     █████     ██████      █████     ",
+  "██         ██   ██    ██   ██    ██   ██    ",
+  "███████    ███████    ██████     ███████    ",
+  "     ██    ██   ██    ██   ██    ██   ██    ",
+  "███████ ██ ██   ██ ██ ██   ██ ██ ██   ██ ██ ",
+  "                                            ",
+  "         SOFTWARE ARCHITECTED RANGING AREA  ",
 };
 
 void checkchar(int row, int col) {
@@ -168,7 +168,7 @@ void checkchar(int row, int col) {
 
 void printstandard(int row, int col){
   for(int i = 0; i < HEIGHT; i++){
-    mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+    mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
     checkchar(row, col);
     if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
@@ -180,12 +180,12 @@ void quickprint(int row, int col){
   clear();
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < HEIGHT; i++){
-      mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+      mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
     }
   }
   if (WIN_SIZE == BIG){
     for(int i = 0; i < HEIGHT; i++){
-      mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", archsarafull[i][0]);
+      mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", archsarafull[i]);
     }
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
@@ -211,12 +211,12 @@ void neon(int row, int col) {
     if(elapsed_time > 0.2 && first_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
-          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", backdrop[i][0]);
+          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", backdrop[i]);
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
           attron(COLOR_PAIR(2));
-          mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i][0]);
+          mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
           attroff(COLOR_PAIR(2));
         }
       }
@@ -226,18 +226,18 @@ void neon(int row, int col) {
     if(elapsed_time > 0.7 && second_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
-          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i][0]);
+          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
         }
       } else { // screen is big
-        for(int i = 0; i < 6; i++){
 
-          //mvprintw(row/2 - 2 + i, (col-LENGTH)/2, "%s", titlefill[i][0]);
+        for(int i = 0; i < 6; i++){
+//        mvprintw(row/2 - 2 + i, (col-LENGTH)/2, "%s", titlefill[i]);
 
           for(int j = 0; j < LENGTH; j++){
-            char ch = titlefill[i][j];
-//          if(strchr(SEARCH_STR, *titlefill[i][j]) != NULL){
+//          char * ch = titlefill[i];
+//          if(strchr(SEARCH_STR, *titlefill[i]) != NULL){
 //            attron(COLOR_PAIR(2));
-//            mvaddch(row/2 - 2 + i, (col-LENGTH)/2 + j, ch);
+              mvaddch(row/2 - 2 + i, (col-LENGTH)/2 + j, 'o');
 //            attroff(COLOR_PAIR(2));
 //          }
           }
@@ -251,7 +251,7 @@ void neon(int row, int col) {
     refresh();
   }
 
-  mvprintw(row/2 + 3, (col-LENGTH)/2, "%s", title[6][0]);
+  mvprintw(row/2 + 3, (col-LENGTH)/2, "%s", title[6]);
   refresh();
 }
 
@@ -325,21 +325,21 @@ void glitch(int row, int col){
 
     if (WIN_SIZE == NORMAL) {
       if (rng_backdrop == 0){
-        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row][0]);
+        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
-        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
       } else {
-        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row][0]);
+        mvprintw(row/2 - 3 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
     }
 
     if (WIN_SIZE == BIG) {
       if (rng_backdrop == 0){
-        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row][0]);
+        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
-        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row][0]);
+        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
       } else {
-        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row][0]);
+        mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
     }
 
@@ -412,9 +412,9 @@ int main(int argc, char* argv[]) {
 
     if (HOLD_CHAR == '\0'){
       if (WIN_SIZE == NORMAL) {
-        mvprintw(row/2, (col-LENGTH)/2, "%s", title[3][0]);
+        mvprintw(row/2, (col-LENGTH)/2, "%s", title[3]);
       } else {
-        mvprintw(row/2, (col-LENGTH)/2, "%s", titlefill[2][0]);
+        mvprintw(row/2, (col-LENGTH)/2, "%s", titlefill[2]);
       }
     }
   }

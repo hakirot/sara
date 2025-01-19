@@ -30,6 +30,8 @@ const int MAX_LENGTH = 44;
 const int MID_HEIGHT = 7;
 const int MID_LENGTH = 44;
 
+void glitch(int row, int col);
+
 int LENGTH = 44;
 int HEIGHT = 7;
 
@@ -178,12 +180,48 @@ void checkchar(int row, int col) {
 }
 
 void printstandard(int row, int col){
-  for(int i = 0; i < HEIGHT; i++){
-    mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
-    checkchar(row, col);
-    if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
-    refresh();
-    usleep(20000);          // Add some sexy timing
+  if (WIN_SIZE == NORMAL){
+    for(int i = 0; i < HEIGHT; i++){
+      mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
+      checkchar(row, col);
+      if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+      refresh();
+      usleep(20000);          // Add some sexy timing
+    }
+  } else if (WIN_SIZE == BIG){
+
+    attron(COLOR_PAIR(1));
+    for(int i = 0; i < HEIGHT; i++){
+      mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
+      if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+      refresh();
+      usleep(20000);          // Add some sexy timing
+    }
+    attroff(COLOR_PAIR(1));
+
+    for(int i = 0; i < 6; i++){
+
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = titlefill[5 - i];
+      int iter_col = 0; // Track the column position
+      while (*iter_row) {
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+        cchar_t cchar;
+        setcchar(&cchar, &wc, 0, 0, NULL);
+
+        is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
+        mvadd_wch(row/2 + 3 - i, (col-LENGTH)/2 + iter_col, &cchar);
+        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR(2));
+        iter_row += len;
+        iter_col++;
+      }
+        usleep(20000);          // Add some sexy timing
+        refresh();
+    }
   }
 }
 
@@ -209,7 +247,6 @@ void quickprint(int row, int col){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-//      if(is_char_in_search(wc)) attron(COLOR_PAIR(1));
         is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2));
         mvadd_wch(row/2 - 9 + i, (col-LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(1));
@@ -317,6 +354,7 @@ void print_start_animation(int row, int col) {
     quickprint(row, col);
   } else {
     printstandard(row, col);
+    glitch(row, col);
   }
 }
 

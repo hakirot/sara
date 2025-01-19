@@ -260,7 +260,6 @@ void neon(int row, int col) {
         }
       } else { // screen is big
 
-
         for(int i = 0; i < 6; i++){
 
           mbstate_t state;
@@ -270,10 +269,8 @@ void neon(int row, int col) {
           while (*iter_row) {
             wchar_t wc;
             size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
             cchar_t cchar;
-
-
-
             setcchar(&cchar, &wc, 0, 0, NULL);
 
             is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
@@ -363,7 +360,6 @@ void glitch(int row, int col){
     rng_row   = rand() % MID_HEIGHT;    // RNG 0 and 6
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
     rng_backdrop = rand() % 3;          // RNG 0 and 2
-
 
     if (WIN_SIZE == NORMAL) {
       if (rng_backdrop == 0){

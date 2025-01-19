@@ -209,9 +209,10 @@ void quickprint(int row, int col){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        if(is_char_in_search(wc)) attron(COLOR_PAIR(2));
+//      if(is_char_in_search(wc)) attron(COLOR_PAIR(1));
+        is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2));
         mvadd_wch(row/2 - 9 + i, (col-LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(2));
+        attroff(COLOR_PAIR(1));
         iter_row += len;
         iter_col++;
       }
@@ -244,9 +245,9 @@ void neon(int row, int col) {
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
-          attron(COLOR_PAIR(2));
+          attron(COLOR_PAIR(1));
           mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
-          attroff(COLOR_PAIR(2));
+          attroff(COLOR_PAIR(1));
         }
       }
       first_frame = 1;
@@ -275,9 +276,9 @@ void neon(int row, int col) {
 
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            if(is_char_in_search(wc)) attron(COLOR_PAIR(2));
+            is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
-            attroff(COLOR_PAIR(2));
+            attroff(COLOR_PAIR(1));
             iter_row += len;
             iter_col++;
           }
@@ -375,6 +376,7 @@ void glitch(int row, int col){
     }
 
     if (WIN_SIZE == BIG) {
+      attron(COLOR_PAIR(2));
       if (rng_backdrop == 0){
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
@@ -382,6 +384,7 @@ void glitch(int row, int col){
       } else {
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
+      attroff(COLOR_PAIR(2));
     }
 
 
@@ -468,8 +471,9 @@ int main(int argc, char* argv[]) {
 
           setcchar(&cchar, &wc, 0, 0, NULL);
 
-          if(is_char_in_search(wc)) attron(COLOR_PAIR(2));
+          is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2));
           mvadd_wch(row/2, (col-LENGTH)/2 + iter_col, &cchar);
+          attroff(COLOR_PAIR(1));
           attroff(COLOR_PAIR(2));
           iter_row += len;
           iter_col++;

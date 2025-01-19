@@ -53,7 +53,7 @@ const double WAIT_BUFFER = 0.04000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
-const char * SEARCH_STR = "`+so:-./";
+wchar_t SEARCH_STR[] = L"`+so:-./";
 
 char * arch[19] = {
   "                     -`                     ",
@@ -140,6 +140,16 @@ char * foreground[7] = {
   "                                            ",
   "         SOFTWARE ARCHITECTED RANGING AREA  ",
 };
+
+int is_char_in_search(wchar_t wc) {
+    // Iterate through the wide-character array
+    for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
+        if (wc == SEARCH_STR[i]) {
+            return 1; // Character found
+        }
+    }
+    return 0; // not found
+}
 
 void checkchar(int row, int col) {
 
@@ -236,24 +246,22 @@ void neon(int row, int col) {
 
           mbstate_t state;
           memset(&state, 0, sizeof(mbstate_t));
-          const char *jrow = titlefill[i];
-          int jcol = 0; // Track the column position
-          while (*jrow) {
+          const char *iter_row = titlefill[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
             wchar_t wc;
-            size_t len = mbrtowc(&wc, jrow, MB_CUR_MAX, &state); // Convert to wide char
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
             cchar_t cchar;
 
 
 
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-//          if(strchr(SEARCH_STR, titlefill[i]) != NULL){
-//            attron(COLOR_PAIR(2));
-              mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + jcol, &cchar);
-//            attroff(COLOR_PAIR(2));
-              jrow += len;
-              jcol++;
-//          }
+            if(is_char_in_search(wc)) attron(COLOR_PAIR(2));
+            mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(2));
+            iter_row += len;
+            iter_col++;
           }
         }
 

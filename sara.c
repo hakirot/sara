@@ -52,6 +52,7 @@ const double WAIT_BUFFER = 0.04000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
+const char * SEARCH_STR = "`+so:-./";
 
 char * arch[19][99] = {
   { "                     -`                     " },
@@ -214,7 +215,9 @@ void neon(int row, int col) {
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
+          attron(COLOR_PAIR(2));
           mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i][0]);
+          attroff(COLOR_PAIR(2));
         }
       }
       first_frame = 1;
@@ -227,7 +230,17 @@ void neon(int row, int col) {
         }
       } else { // screen is big
         for(int i = 0; i < 6; i++){
-          mvprintw(row/2 - 2 + i, (col-LENGTH)/2, "%s", titlefill[i][0]);
+
+          //mvprintw(row/2 - 2 + i, (col-LENGTH)/2, "%s", titlefill[i][0]);
+
+          for(int j = 0; j < LENGTH; j++){
+            char ch = titlefill[i][j];
+//          if(strchr(SEARCH_STR, *titlefill[i][j]) != NULL){
+//            attron(COLOR_PAIR(2));
+//            mvaddch(row/2 - 2 + i, (col-LENGTH)/2 + j, ch);
+//            attroff(COLOR_PAIR(2));
+//          }
+          }
         }
       }
       second_frame = 1;
@@ -359,6 +372,12 @@ int main(int argc, char* argv[]) {
 
   setlocale(LC_ALL, "");    // Needed to print special characters
   initscr();                // Initialize screen
+
+  start_color();
+  use_default_colors();
+  init_pair(1, COLOR_RED, -1); // Red text, black background
+  init_pair(2, COLOR_GREEN, -1); // Green text, black background
+
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()
   cbreak();                 // Disables line buffering
@@ -397,7 +416,6 @@ int main(int argc, char* argv[]) {
       } else {
         mvprintw(row/2, (col-LENGTH)/2, "%s", titlefill[2][0]);
       }
-
     }
   }
 

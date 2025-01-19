@@ -196,7 +196,25 @@ void quickprint(int row, int col){
   }
   if (WIN_SIZE == BIG){
     for(int i = 0; i < HEIGHT; i++){
-      mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", archsarafull[i]);
+
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = archsarafull[i];
+      int iter_col = 0; // Track the column position
+      while (*iter_row) {
+
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+        cchar_t cchar;
+
+        setcchar(&cchar, &wc, 0, 0, NULL);
+
+        if(is_char_in_search(wc)) attron(COLOR_PAIR(2));
+        mvadd_wch(row/2 - 9 + i, (col-LENGTH)/2 + iter_col, &cchar);
+        attroff(COLOR_PAIR(2));
+        iter_row += len;
+        iter_col++;
+      }
     }
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
@@ -436,8 +454,26 @@ int main(int argc, char* argv[]) {
     if (HOLD_CHAR == '\0'){
       if (WIN_SIZE == NORMAL) {
         mvprintw(row/2, (col-LENGTH)/2, "%s", title[3]);
-      } else {
-        mvprintw(row/2, (col-LENGTH)/2, "%s", titlefill[2]);
+
+      } else { // BIG :D
+
+        mbstate_t state;
+        memset(&state, 0, sizeof(mbstate_t));
+        const char *iter_row = titlefill[2];
+        int iter_col = 0; // Track the column position
+        while (*iter_row) {
+          wchar_t wc;
+          size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+          cchar_t cchar;
+
+          setcchar(&cchar, &wc, 0, 0, NULL);
+
+          if(is_char_in_search(wc)) attron(COLOR_PAIR(2));
+          mvadd_wch(row/2, (col-LENGTH)/2 + iter_col, &cchar);
+          attroff(COLOR_PAIR(2));
+          iter_row += len;
+          iter_col++;
+        }
       }
     }
   }

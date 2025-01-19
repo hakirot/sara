@@ -23,6 +23,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <wchar.h>
 
 const int MAX_HEIGHT = 19;
 const int MAX_LENGTH = 44;
@@ -230,18 +231,32 @@ void neon(int row, int col) {
         }
       } else { // screen is big
 
-        for(int i = 0; i < 6; i++){
-//        mvprintw(row/2 - 2 + i, (col-LENGTH)/2, "%s", titlefill[i]);
 
-          for(int j = 0; j < LENGTH; j++){
-//          char * ch = titlefill[i];
-//          if(strchr(SEARCH_STR, *titlefill[i]) != NULL){
+        for(int i = 0; i < 6; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *jrow = titlefill[i];
+          int jcol = 0; // Track the column position
+          while (*jrow) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, jrow, MB_CUR_MAX, &state); // Convert to wide char
+            cchar_t cchar;
+
+
+
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+//          if(strchr(SEARCH_STR, titlefill[i]) != NULL){
 //            attron(COLOR_PAIR(2));
-              mvaddch(row/2 - 2 + i, (col-LENGTH)/2 + j, 'o');
+              mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + jcol, &cchar);
 //            attroff(COLOR_PAIR(2));
+              jrow += len;
+              jcol++;
 //          }
           }
         }
+
       }
       second_frame = 1;
     }
@@ -370,7 +385,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  setlocale(LC_ALL, "");    // Needed to print special characters
+  setlocale(LC_ALL, "");    // Needed to print special characters, also needed b4 initscr()
   initscr();                // Initialize screen
 
   start_color();

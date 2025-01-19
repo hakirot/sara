@@ -1,16 +1,12 @@
 # Makefile #
 
 CC=gcc
-CFLAGS=-I -Wall -g -lncurses
+CFLAGS=-I -Wall -g -lncursesw -DNCURSES_WIDECHAR=1
 
-all: sara test
+all: sara
 
 sara: sara.c
 	$(CC) sara.c -o sara $(CFLAGS)
 
-test: test.c
-	$(CC) test.c -o test $(CFLAGS)
-
 clean:
 	rm -f sara
-	rm -f test

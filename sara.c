@@ -453,8 +453,10 @@ int main(int argc, char* argv[]) {
 
   start_color();
   use_default_colors();
-  init_pair(1, COLOR_RED, -1); // Red text, black background
-  init_pair(2, COLOR_GREEN, -1); // Green text, black background
+  // Background
+  init_pair(1, COLOR_WHITE, -1); // Background text, no background
+  // Foreground
+  init_pair(2, COLOR_GREEN, -1); // Foreground text, no background
 
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()

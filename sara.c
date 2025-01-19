@@ -49,7 +49,7 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.04000;
+const double WAIT_BUFFER = 0.08000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
@@ -276,6 +276,7 @@ void neon(int row, int col) {
             is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(1));
+            attroff(COLOR_PAIR(2));
             iter_row += len;
             iter_col++;
           }
@@ -290,7 +291,7 @@ void neon(int row, int col) {
     refresh();
   }
 
-  mvprintw(row/2 + 3, (col-LENGTH)/2, "%s", title[6]);
+//mvprintw(row/2 + 3, (col-LENGTH)/2, "%s", title[6]);
   refresh();
 }
 
@@ -301,14 +302,13 @@ void print_start_animation(int row, int col) {
 
   if (START_ANIMATION == EMPTY){
     int start_roll = rand() % 3;
-//  if (start_roll == 0){
-//    START_ANIMATION = QUICK;
-//  } else if (start_roll == 1){
-//    START_ANIMATION = STANDARD;
-//  } else {
-//    START_ANIMATION = NEON;
-//  }
-    START_ANIMATION = NEON;
+    if (start_roll == 0){
+      START_ANIMATION = QUICK;
+    } else if (start_roll == 1){
+      START_ANIMATION = STANDARD;
+    } else {
+      START_ANIMATION = NEON;
+    }
   }
 
   if (START_ANIMATION == NEON){

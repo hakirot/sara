@@ -93,7 +93,7 @@ char * archsarafull[19] = {
  "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
  "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
- "        :SOFTWARE ARCHITECTED RANGING AREA  ",
+ "        :SOFTWARE APPLICATION RANGING AREA  ",
  "       /ossssssss/        +ssssooo/-        ",
  "     `/ossssso+/:-        -:/+osssso+-      ",
  "    `+sso+:-`                 `.-/+oso:     ",
@@ -108,7 +108,7 @@ char * titlefill[7] = {
   "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   ",
   "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SOFTWARE ARCHITECTED RANGING AREA  ",
+  "         SOFTWARE APPLICATION RANGING AREA  ",
 };
 
 // length LENGTH
@@ -120,7 +120,7 @@ char * title[7] = {
   "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   ",
   "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SOFTWARE ARCHITECTED RANGING AREA  ",
+  "         SOFTWARE APPLICATION RANGING AREA  ",
 };
 
 char * backdrop[7] = {
@@ -130,7 +130,7 @@ char * backdrop[7] = {
   "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
   "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SOFTWARE ARCHITECTED RANGING AREA  ",
+  "         SOFTWARE APPLICATION RANGING AREA  ",
 };
 
 char * foreground[7] = {
@@ -140,7 +140,7 @@ char * foreground[7] = {
   "     ██    ██   ██    ██   ██    ██   ██    ",
   "███████ ██ ██   ██ ██ ██   ██ ██ ██   ██ ██ ",
   "                                            ",
-  "         SOFTWARE ARCHITECTED RANGING AREA  ",
+  "         SOFTWARE APPLICATION RANGING AREA  ",
 };
 
 int is_char_in_search(wchar_t wc) {
@@ -173,7 +173,7 @@ void checkchar(int row, int col) {
   } 
 
   double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
-  if(time_since_input >= 0.00005 && WIN_SIZE != SMALL){
+  if(time_since_input >= 0.0005 && WIN_SIZE != SMALL){
     HOLD_CHAR = '\0';
   }
 
@@ -454,7 +454,7 @@ int main(int argc, char* argv[]) {
   start_color();
   use_default_colors();
   // Background
-  init_pair(1, COLOR_WHITE, -1); // Background text, no background
+  init_pair(1, COLOR_RED, -1); // Background text, no background
   // Foreground
   init_pair(2, COLOR_GREEN, -1); // Foreground text, no background
 

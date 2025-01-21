@@ -10,7 +10,12 @@
 
 /* FEATLIST
  *  Boot animations
- *  . Different Interval animations
+ *  . More Interval animations (+3)
+ *    . Double SARA + clear() + Arch + SARA + SOFTWARE APPLICATION RANGING AREA
+ *    . Wide glitch
+ *    . Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+ *  X Colored
+ *  X Add Arch logo
  *  X Glitch animation
  *  X Display chars
  *  X Dynamically resize with window
@@ -480,7 +485,7 @@ int main(int argc, char* argv[]) {
 
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
 
-    usleep(10000); // Simple wait to reduce some overhead
+    usleep(10000); // reduce load
     checkchar(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;

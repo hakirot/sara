@@ -11,7 +11,7 @@
 /* FEATLIST
  *  Boot animations
  *  . More Interval animations (+3)
- *    . Double SARA + clear() + Arch + SARA + SOFTWARE APPLICATION RANGING AREA
+ *    . Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
  *    . Wide glitch
  *    . Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
  *  X Colored
@@ -98,7 +98,7 @@ char * archsarafull[19] = {
  "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
  "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
- "        :SOFTWARE APPLICATION RANGING AREA  ",
+ "        :SPECIAL APPLICATIONS RANGING AREA  ",
  "       /ossssssss/        +ssssooo/-        ",
  "     `/ossssso+/:-        -:/+osssso+-      ",
  "    `+sso+:-`                 `.-/+oso:     ",
@@ -113,7 +113,7 @@ char * titlefill[7] = {
   "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   ",
   "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SOFTWARE APPLICATION RANGING AREA  ",
+  "         SPECIAL APPLICATIONS RANGING AREA  ",
 };
 
 // length LENGTH
@@ -125,7 +125,7 @@ char * title[7] = {
   "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   ",
   "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SOFTWARE APPLICATION RANGING AREA  ",
+  "         SPECIAL APPLICATIONS RANGING AREA  ",
 };
 
 char * backdrop[7] = {
@@ -135,7 +135,7 @@ char * backdrop[7] = {
   "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
   "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SOFTWARE APPLICATION RANGING AREA  ",
+  "         SPECIAL APPLICATIONS RANGING AREA  ",
 };
 
 char * foreground[7] = {
@@ -145,7 +145,7 @@ char * foreground[7] = {
   "     ██    ██   ██    ██   ██    ██   ██    ",
   "███████ ██ ██   ██ ██ ██   ██ ██ ██   ██ ██ ",
   "                                            ",
-  "         SOFTWARE APPLICATION RANGING AREA  ",
+  "         SPECIAL APPLICATIONS RANGING AREA  ",
 };
 
 int is_char_in_search(wchar_t wc) {

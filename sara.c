@@ -6,10 +6,11 @@
 --  ╚════██║██╔══██║██╔══██╗██╔══██║  --
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝  --
-                       2025 PUNKMONK -- */
+                       2025 PUNKMONK  -- */
 
 /* FEATLIST
  *  Boot animations
+ *  . Use archsarazap
  *  . More Interval animations (+3)
  *    . Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
  *    . Wide glitch
@@ -97,6 +98,28 @@ char * archsarafull[19] = {
  "███████╗   ███████║ooo██████╔╝/` ███████║   ",
  "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
  "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
+ "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
+ "        :SPECIAL APPLICATIONS RANGING AREA  ",
+ "       /ossssssss/        +ssssooo/-        ",
+ "     `/ossssso+/:-        -:/+osssso+-      ",
+ "    `+sso+:-`                 `.-/+oso:     ",
+ "   `++:.                           `-/+/    ",
+ "   .`                                 `/    ",
+};
+
+char * archsarazap[19] = {
+ "                     -`                     ",
+ "                    .o+`                    ",
+ "                   `ooo/                    ",
+ "                  `+oooo:                   ",
+ "                 `+oooooo:                  ",
+ "                 -+oooooo+:                 ",
+ "               `/:-:++oooo+:                ",
+ "╔══════╗    ╔════╗++/+╔═════╗     ╔════╗    ",
+ "║ ╔════╝   ╔╝╔══╗╚╗+++║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
+ "║ ╚════╗   ║ ╚══╝ ║ooo║ ╚══╝╔╝/` ║ ╚══╝ ║   ",
+ "╚════╗ ║  .║ ╔══╗ ║so+║ ╔══╗╚╗o+ ║ ╔══╗ ║   ",
+ "╔════╝ ║╔═╗║ ║ss║ ║╔═╗║ ║os║ ║╔═╗║ ║  ║ ║╔═╗",
  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
  "        :SPECIAL APPLICATIONS RANGING AREA  ",
  "       /ossssssss/        +ssssooo/-        ",
@@ -426,7 +449,6 @@ void glitch(int row, int col){
       attroff(COLOR_PAIR(2));
     }
 
-
     checkchar(row, col);
     if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
@@ -522,11 +544,6 @@ int main(int argc, char* argv[]) {
       }
     }
   }
-
-  // ANIMATION IDEAS
-  //  STARS: . and + twinkles
-  //  lIGHTSPEED: ----- lines moving right to left
-  //  FIREWORKS: Up and boom
 
   refresh();
   endwin();

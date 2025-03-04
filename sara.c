@@ -107,6 +107,8 @@ char * archsarafull[19] = {
  "   .`                                 `/    ",
 };
 
+char * specialApplicationsRangingArea = "SPECIAL APPLICATIONS RANGING AREA";
+
 char * archsarazap[19] = {
  "                     -`                     ",
  "                    .o+`                    ",
@@ -192,6 +194,8 @@ void checkchar(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
+    } else if (input == 'g') {
+      glitch(row, col);
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;
@@ -282,6 +286,11 @@ void quickprint(int row, int col){
         iter_col++;
       }
     }
+    // print name with background
+    attron(COLOR_PAIR(3));
+    mvprintw(row/2 + 4, (col-LENGTH)/2 + 9, "%s", specialApplicationsRangingArea);
+    attroff(COLOR_PAIR(3));
+
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
   refresh();
@@ -439,6 +448,7 @@ void glitch(int row, int col){
 
     if (WIN_SIZE == BIG) {
       attron(COLOR_PAIR(2));
+      //attron(COLOR_PAIR(3));
       if (rng_backdrop == 0){
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
@@ -447,6 +457,7 @@ void glitch(int row, int col){
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
       attroff(COLOR_PAIR(2));
+      //attroff(COLOR_PAIR(3));
     }
 
     checkchar(row, col);
@@ -484,6 +495,7 @@ int main(int argc, char* argv[]) {
   init_pair(1, COLOR_RED, -1); // Background text, no background
   // Foreground
   init_pair(2, COLOR_GREEN, -1); // Foreground text, no background
+  init_pair(3, COLOR_GREEN, COLOR_BLACK); // Foreground text, no background
 
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()

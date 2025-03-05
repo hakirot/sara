@@ -495,7 +495,7 @@ int main(int argc, char* argv[]) {
   init_pair(1, COLOR_RED, -1); // Background text, no background
   // Foreground
   init_pair(2, COLOR_GREEN, -1); // Foreground text, no background
-  init_pair(3, COLOR_GREEN, COLOR_BLACK); // Foreground text, no background
+  init_pair(3, COLOR_BLACK, COLOR_GREEN); // Foreground text, no background
 
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()

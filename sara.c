@@ -99,7 +99,7 @@ char * archsarafull[19] = {
  "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
  "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
- "        :SPECIAL APPLICATIONS RANGING AREA  ",
+ "        : SPECIAL APPLICATION RANGING AREA  ",
  "       /ossssssss/        +ssssooo/-        ",
  "     `/ossssso+/:-        -:/+osssso+-      ",
  "    `+sso+:-`                 `.-/+oso:     ",
@@ -107,7 +107,7 @@ char * archsarafull[19] = {
  "   .`                                 `/    ",
 };
 
-char * specialApplicationsRangingArea = "SPECIAL APPLICATIONS RANGING AREA";
+char * specialApplicationRangingArea = "SPECIAL APPLICATION RANGING AREA";
 
 char * archsarazap[19] = {
  "                     -`                     ",
@@ -123,7 +123,7 @@ char * archsarazap[19] = {
  "╚════╗ ║  .║ ╔══╗ ║so+║ ╔══╗╚╗o+ ║ ╔══╗ ║   ",
  "╔════╝ ║╔═╗║ ║ss║ ║╔═╗║ ║os║ ║╔═╗║ ║  ║ ║╔═╗",
  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
- "        :SPECIAL APPLICATIONS RANGING AREA  ",
+ "        : SPECIAL APPLICATION RANGING AREA  ",
  "       /ossssssss/        +ssssooo/-        ",
  "     `/ossssso+/:-        -:/+osssso+-      ",
  "    `+sso+:-`                 `.-/+oso:     ",
@@ -138,7 +138,7 @@ char * titlefill[7] = {
   "╚════██║  .██╔══██║o++██╔══██╗+  ██╔══██║   ",
   "███████║██╗██║ss██║██╗██║  ██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SPECIAL APPLICATIONS RANGING AREA  ",
+  "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
 // length LENGTH
@@ -150,7 +150,7 @@ char * title[7] = {
   "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   ",
   "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SPECIAL APPLICATIONS RANGING AREA  ",
+  "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
 char * backdrop[7] = {
@@ -160,7 +160,7 @@ char * backdrop[7] = {
   "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
   "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "         SPECIAL APPLICATIONS RANGING AREA  ",
+  "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
 char * foreground[7] = {
@@ -170,7 +170,7 @@ char * foreground[7] = {
   "     ██    ██   ██    ██   ██    ██   ██    ",
   "███████ ██ ██   ██ ██ ██   ██ ██ ██   ██ ██ ",
   "                                            ",
-  "         SPECIAL APPLICATIONS RANGING AREA  ",
+  "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
 int is_char_in_search(wchar_t wc) {
@@ -288,7 +288,7 @@ void quickprint(int row, int col){
     }
     // print name with background
     attron(COLOR_PAIR(3));
-    mvprintw(row/2 + 4, (col-LENGTH)/2 + 9, "%s", specialApplicationsRangingArea);
+    mvprintw(row/2 + 4, (col-LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
     attroff(COLOR_PAIR(3));
 
   }

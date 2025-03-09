@@ -206,6 +206,9 @@ void checkchar(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
+    } else if (input == 'c') {
+      endwin();
+      execv("/home/hakirot/.local/bin/colortest", NULL);
     } else if (input == 'g') {
       glitch(row, col);
     } else if (WIN_SIZE != SMALL) {

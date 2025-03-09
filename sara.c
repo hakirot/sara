@@ -11,8 +11,9 @@
 /* FEATLIST
  *  Boot animations
  *  . Use archsarazap
- *  . x -> sets skpass env_var -> Prints Notification
+ *  . Add Input 'x' -> sets skpass env_var -> Prints Notification
  *  .   -> unlocks 'y' command (yay)
+ *  . Add Shutdown procedure
  *  . More Interval animations (+3)
  *    . Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
  *    . Wide glitch

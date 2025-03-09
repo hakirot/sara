@@ -11,6 +11,8 @@
 /* FEATLIST
  *  Boot animations
  *  . Use archsarazap
+ *  . x -> sets skpass env_var -> Prints Notification
+ *  .   -> unlocks 'y' command (yay)
  *  . More Interval animations (+3)
  *    . Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
  *    . Wide glitch
@@ -163,6 +165,16 @@ char * backdrop[7] = {
   "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
+char * backdropfill[7] = {
+  "╔══════╗    ╔════╗ /++╔═════╗     ╔════╗    ",
+  "║ ╔════╝   ╔╝╔══╗╚╗+++║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
+  "║ ╚════╗   ║ ╚══╝ ║ooo║ ╚══╝╔╝`  ║ ╚══╝ ║   ",
+  "╚════╗ ║  .║ ╔══╗ ║o++║ ╔══╗╚╗+  ║ ╔══╗ ║   ",
+  "╔════╝ ║╔═╗║ ║ss║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
+  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
+  "          SPECIAL APPLICATION RANGING AREA  ",
+};
+
 char * foreground[7] = {
   "███████     █████     ██████      █████     ",
   "██         ██   ██    ██   ██    ██   ██    ",
@@ -304,6 +316,7 @@ void neon(int row, int col) {
 
   int first_frame = 0;
   int second_frame = 0;
+  int third_frame = 0;
 
   clear();
   refresh();
@@ -312,7 +325,7 @@ void neon(int row, int col) {
 
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
-    if(elapsed_time > 0.2 && first_frame == 0){
+    if(elapsed_time > 0.05 && first_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
           mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", backdrop[i]);
@@ -327,7 +340,40 @@ void neon(int row, int col) {
       first_frame = 1;
     }
 
-    if(elapsed_time > 0.7 && second_frame == 0){
+    if(elapsed_time > 0.1 && second_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        for(int i = 0; i < 6; i++){
+          mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
+        }
+      } else { // screen is big
+
+        for(int i = 0; i < 6; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = backdropfill[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+            is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
+            mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(1));
+            attroff(COLOR_PAIR(2));
+            iter_row += len;
+            iter_col++;
+          }
+        }
+
+      }
+      second_frame = 1;
+    }
+
+    if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
           mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);

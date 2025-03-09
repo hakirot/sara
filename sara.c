@@ -243,7 +243,7 @@ void printstandard(int row, int col){
       mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
       if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
-      usleep(20000);          // Add some sexy timing
+      usleep(10000);          // Add some sexy timing
     }
     attroff(COLOR_PAIR(1));
 

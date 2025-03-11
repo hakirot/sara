@@ -12,12 +12,15 @@
  *  Boot animations
  *  . Use archsarazap
  *  . Add Input 'x' -> sets skpass env_var -> Prints Notification
- *  .   -> unlocks 'y' command (yay)
+ *      > unlocks 'y' command (yay)
  *  . Add Shutdown procedure
+ *  . Keep colors in ncurses window, no exit
  *  . More Interval animations (+3)
- *    . Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
- *    . Wide glitch
- *    . Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+ *      > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
+ *      > Wide glitch
+ *      > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+ *
+ * BESTIARY
  *  X Colored
  *  X Add Arch logo
  *  X Glitch animation
@@ -25,6 +28,7 @@
  *  X Dynamically resize with window
  *  X Press q to exit
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>

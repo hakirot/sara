@@ -14,7 +14,7 @@
  *  . Add Input 'x' -> sets skpass env_var -> Prints Notification
  *      > unlocks 'y' command (yay)
  *  . Add Shutdown procedure
- *  . Keep colors in ncurses window, no exit
+ *  . Display colors
  *  . More Interval animations (+3)
  *      > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
  *      > Wide glitch

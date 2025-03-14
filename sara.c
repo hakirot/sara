@@ -9,27 +9,30 @@
                        2025 PUNKMONK  -- */
 
 /* FEATLIST
- *  Boot animations
- *  . Use archsarazap
- *  . Add char input 'x' -> sets skpass env_var -> Prints Notification
- *      > unlocks 'y' command (yay)
- *  . Add pattern of color characters
- *      > replace char input 'c' -> goes to ~/.config
- *  . Add char input 'p' -> run polybar as forked process
- *  . Add Shutdown procedure
- *  . Display colors
- *  . More Interval animations (+3)
- *      > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
- *      > Wide glitch
- *      > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
- *
- * BESTIARY
- *  X Colored
- *  X Add Arch logo
- *  X Glitch animation
- *  X Display chars
- *  X Dynamically resize with window
- *  X Press q to exit
+
+    . FIX neon animation pause 
+
+    . Boot animations
+    . Use archsarazap
+    . Add char input 'x' -> sets skpass env_var -> Prints Notification
+        > unlocks 'y' command (yay)
+    . Add pattern of color characters
+        > replace char input 'c' -> goes to ~/.config
+    . Add char input 'p' -> run polybar as forked process
+    . Add Shutdown procedure
+    . Display colors
+    . More Interval animations (+3)
+        > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
+        > Wide glitch
+        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+
+   BESTIARY
+    X Colored
+    X Add Arch logo
+    X Glitch animation
+    X Display chars
+    X Dynamically resize with window
+    X Press q to exit
 */
 
 #include <stdio.h>

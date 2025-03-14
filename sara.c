@@ -11,8 +11,11 @@
 /* FEATLIST
  *  Boot animations
  *  . Use archsarazap
- *  . Add Input 'x' -> sets skpass env_var -> Prints Notification
+ *  . Add char input 'x' -> sets skpass env_var -> Prints Notification
  *      > unlocks 'y' command (yay)
+ *  . Add pattern of color characters
+ *      > replace char input 'c' -> goes to ~/.config
+ *  . Add char input 'p' -> run polybar as forked process
  *  . Add Shutdown procedure
  *  . Display colors
  *  . More Interval animations (+3)

@@ -18,7 +18,6 @@
         > unlocks 'y' command (yay)
     . Replace char input 'c' -> goes to ~/.config
     . Add char input 'p' -> run polybar as forked process
-    . Add char input 'g' -> git status
     . Add char input 'n' -> prompt for newlook argument
     . Add Shutdown procedure
     . More Interval animations (+3)
@@ -27,6 +26,7 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X Add char input 'g' -> git status
     X Add char input 't' -> nvim open tasks
     X Display colors
     X Add pattern of color characters
@@ -348,7 +348,7 @@ void quickprint(int row, int col){
     // print colorbar
     for(int i = 1; i < 9; i++){
       attron(COLOR_PAIR(i));
-      mvaddwstr(row/2 + 6, (col-LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      mvaddwstr(row/2 + 5, (col-LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
       attroff(COLOR_PAIR(i));
     }
 

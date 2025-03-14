@@ -9,6 +9,6 @@
 
 # Terminal Decorator & Custom Launcher
 
-This extracurricular exam exists as an exercise 
-expressing exhaustive terminal exceptionalism
+This extracurricular exam exists to exercise 
+exaustive expression of terminal exceptionalism
 

@@ -20,15 +20,15 @@
     . Add char input 'p' -> run polybar as forked process
     . Add char input 'g' -> git status
     . Add char input 'n' -> prompt for newlook argument
-    . Add char input 't' -> nvim open tasks
     . Add Shutdown procedure
-    . Display colors
     . More Interval animations (+3)
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
         > Wide glitch
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X Add char input 't' -> nvim open tasks
+    X Display colors
     X Add pattern of color characters
     X Add char input 'p' -> run polybar as forked process
     X Add char input 'g' -> git status
@@ -276,14 +276,14 @@ void printstandard(int row, int col){
     }
   } else if (WIN_SIZE == BIG){
 
-    attron(COLOR_PAIR(1));
+    attron(COLOR_PAIR(2));
     for(int i = 0; i < HEIGHT; i++){
       mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
       if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
       usleep(10000);          // Add some sexy timing
     }
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(2));
 
     for(int i = 0; i < 6; i++){
 
@@ -298,10 +298,10 @@ void printstandard(int row, int col){
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
+        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
         mvadd_wch(row/2 + 3 - i, (col-LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(1));
         attroff(COLOR_PAIR(2));
+        attroff(COLOR_PAIR(3));
         iter_row += len;
         iter_col++;
       }
@@ -333,17 +333,24 @@ void quickprint(int row, int col){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2));
+        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
         mvadd_wch(row/2 - 9 + i, (col-LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR(2));
         iter_row += len;
         iter_col++;
       }
     }
     // print name with background
-    attron(COLOR_PAIR(3));
+    attron(COLOR_PAIR(9));
     mvprintw(row/2 + 4, (col-LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
-    attroff(COLOR_PAIR(3));
+    attroff(COLOR_PAIR(9));
+
+    // print colorbar
+    for(int i = 1; i < 9; i++){
+      attron(COLOR_PAIR(i));
+      mvaddwstr(row/2 + 6, (col-LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      attroff(COLOR_PAIR(i));
+    }
 
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
@@ -374,9 +381,9 @@ void neon(int row, int col) {
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
-          attron(COLOR_PAIR(1));
+          attron(COLOR_PAIR(2));
           mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
-          attroff(COLOR_PAIR(1));
+          attroff(COLOR_PAIR(2));
         }
       }
       first_frame = 1;
@@ -402,10 +409,10 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
+            is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
-            attroff(COLOR_PAIR(1));
             attroff(COLOR_PAIR(2));
+            attroff(COLOR_PAIR(3));
             iter_row += len;
             iter_col++;
           }
@@ -435,10 +442,10 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2)) ;
+            is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
-            attroff(COLOR_PAIR(1));
             attroff(COLOR_PAIR(2));
+            attroff(COLOR_PAIR(3));
             iter_row += len;
             iter_col++;
           }
@@ -535,8 +542,7 @@ void glitch(int row, int col){
     }
 
     if (WIN_SIZE == BIG) {
-      attron(COLOR_PAIR(2));
-      //attron(COLOR_PAIR(3));
+      attron(COLOR_PAIR(3));
       if (rng_backdrop == 0){
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
@@ -544,8 +550,7 @@ void glitch(int row, int col){
       } else {
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
-      attroff(COLOR_PAIR(2));
-      //attroff(COLOR_PAIR(3));
+      attroff(COLOR_PAIR(3));
     }
 
     checkchar(row, col);
@@ -579,11 +584,15 @@ int main(int argc, char* argv[]) {
 
   start_color();
   use_default_colors();
-  // Background
-  init_pair(1, COLOR_RED, -1); // Background text, no background
-  // Foreground
-  init_pair(2, COLOR_GREEN, -1); // Foreground text, no background
-  init_pair(3, COLOR_BLACK, COLOR_GREEN); // Foreground text, no background
+  init_pair(1, COLOR_BLACK, COLOR_BLACK);
+  init_pair(2, COLOR_RED, -1); // Background text, no background
+  init_pair(3, COLOR_GREEN, -1); // Foreground text, no background
+  init_pair(4, COLOR_YELLOW, -1); // Foreground text, no background
+  init_pair(5, COLOR_BLUE, -1);
+  init_pair(6, COLOR_MAGENTA, -1);
+  init_pair(7, COLOR_CYAN, -1);
+  init_pair(8, COLOR_WHITE, -1);
+  init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
 
 //raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
                             // Also disables line buffering like cbreak()
@@ -634,7 +643,7 @@ int main(int argc, char* argv[]) {
 
           setcchar(&cchar, &wc, 0, 0, NULL);
 
-          is_char_in_search(wc) ? attron(COLOR_PAIR(1)) : attron(COLOR_PAIR(2));
+          is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
           mvadd_wch(row/2, (col-LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(1));
           attroff(COLOR_PAIR(2));

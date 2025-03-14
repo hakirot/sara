@@ -16,11 +16,11 @@
     . Use archsarazap
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
         > unlocks 'y' command (yay)
-    . Add pattern of color characters
-        > replace char input 'c' -> goes to ~/.config
+    . Replace char input 'c' -> goes to ~/.config
     . Add char input 'p' -> run polybar as forked process
-    . Add char input 'r' -> exec ranger
-    . Add char input 'w' -> exec ranger $HOME/pix/wall/
+    . Add char input 'g' -> git status
+    . Add char input 'n' -> prompt for newlook argument
+    . Add char input 't' -> nvim open tasks
     . Add Shutdown procedure
     . Display colors
     . More Interval animations (+3)
@@ -29,6 +29,9 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X Add pattern of color characters
+    X Add char input 'p' -> run polybar as forked process
+    X Add char input 'g' -> git status
     X Add char input 'w' -> exec ranger $HOME/pix/wall/
     X Add char input 'r' -> exec ranger
     X Colored
@@ -225,6 +228,18 @@ void checkchar(int row, int col) {
     } else if(input == 'w'){
       endwin();
       execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
+      exit(1);
+    } else if(input == 'g'){
+      endwin();
+      execlp("git", "git", "status", "-s", NULL);
+      exit(1);
+    } else if(input == 't'){
+      endwin();
+      execlp("nvim", "nvim", "/home/hakirot/dox/notes2/tasks", NULL);
+      exit(1);
+    } else if(input == 'p'){
+      endwin();
+      execv("/home/hakirot/.config/polybar/bar.sh", NULL);
       exit(1);
     } else if (input == 'v') {
       endwin();

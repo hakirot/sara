@@ -19,6 +19,8 @@
     . Add pattern of color characters
         > replace char input 'c' -> goes to ~/.config
     . Add char input 'p' -> run polybar as forked process
+    . Add char input 'r' -> exec ranger
+    . Add char input 'w' -> exec ranger $HOME/pix/wall/
     . Add Shutdown procedure
     . Display colors
     . More Interval animations (+3)
@@ -27,6 +29,8 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X Add char input 'w' -> exec ranger $HOME/pix/wall/
+    X Add char input 'r' -> exec ranger
     X Colored
     X Add Arch logo
     X Glitch animation
@@ -214,12 +218,21 @@ void checkchar(int row, int col) {
     if(input == 'q'){
       endwin();
       exit(0);
+    } else if(input == 'r'){
+      endwin();
+      execv("/usr/bin/ranger", NULL);
+      exit(1);
+    } else if(input == 'w'){
+      endwin();
+      execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
+      exit(1);
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
     } else if (input == 'c') {
       endwin();
       execv("/home/hakirot/.local/bin/colortest", NULL);
+      exit(1);
     } else if (input == 'g') {
       glitch(row, col);
     } else if (WIN_SIZE != SMALL) {

@@ -17,8 +17,8 @@
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
         > unlocks 'y' command (yay)
     . Replace char input 'c' -> goes to ~/.config
-    . Add char input 'p' -> run polybar as forked process
     . Add char input 'n' -> prompt for newlook argument
+    . Add char input 'b' -> prompt for laptop brightness
     . Add Shutdown procedure
     . More Interval animations (+3)
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
@@ -26,6 +26,7 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X Add char input 'p' -> run polybar as forked process
     X Add char input 'g' -> git status
     X Add char input 't' -> nvim open tasks
     X Display colors
@@ -50,6 +51,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <wchar.h>
+#include <wait.h>
 
 const int MAX_HEIGHT = 19;
 const int MAX_LENGTH = 44;
@@ -57,6 +59,7 @@ const int MID_HEIGHT = 7;
 const int MID_LENGTH = 44;
 
 void glitch(int row, int col);
+void neon(int row, int col);
 
 int LENGTH = 44;
 int HEIGHT = 7;
@@ -237,10 +240,23 @@ void checkchar(int row, int col) {
       endwin();
       execlp("nvim", "nvim", "/home/hakirot/dox/notes2/tasks", NULL);
       exit(1);
+
     } else if(input == 'p'){
-      endwin();
-      execv("/home/hakirot/.config/polybar/bar.sh", NULL);
-      exit(1);
+      pid_t pid = fork();
+
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
+        perror("execl");
+      } else {
+        int status;
+        waitpid(pid, &status, 0);
+      }
+
+      neon(row, col);
+
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
@@ -311,7 +327,7 @@ void printstandard(int row, int col){
   }
 }
 
-void quickprint(int row, int col){
+void quickprint(int row, int col, int printColorbar){
   clear();
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < HEIGHT; i++){
@@ -346,12 +362,13 @@ void quickprint(int row, int col){
     attroff(COLOR_PAIR(9));
 
     // print colorbar
-    for(int i = 1; i < 9; i++){
-      attron(COLOR_PAIR(i));
-      mvaddwstr(row/2 + 5, (col-LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
-      attroff(COLOR_PAIR(i));
+    if (printColorbar == 1){
+      for(int i = 1; i < 9; i++){
+        attron(COLOR_PAIR(i));
+        mvaddwstr(row/2 + 5, (col-LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+        attroff(COLOR_PAIR(i));
+      }
     }
-
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
   refresh();
@@ -360,7 +377,7 @@ void quickprint(int row, int col){
 void neon(int row, int col) {
 
   clock_t cycle_start = clock();
-  double cycle_length = 1.2;
+  double cycle_length = 0.3;
   double elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
   int first_frame = 0;
@@ -452,7 +469,7 @@ void neon(int row, int col) {
         }
 
       }
-      second_frame = 1;
+      third_frame = 1;
     }
 
     checkchar(row, col);
@@ -483,7 +500,7 @@ void print_start_animation(int row, int col) {
   if (START_ANIMATION == NEON){
     neon(row, col);
   } else if (START_ANIMATION == QUICK){
-    quickprint(row, col);
+    quickprint(row, col, 1);
   } else {
     printstandard(row, col);
     glitch(row, col);
@@ -525,6 +542,7 @@ int checksize(int row, int col, int cache){
 void glitch(int row, int col){
 
   int rng_row, rng_shift, rng_backdrop = 0;
+  quickprint(row, col, 0);
 
   for( int i = 0 ; i < 28; i++ ) {
     rng_row   = rand() % MID_HEIGHT;    // RNG 0 and 6
@@ -560,7 +578,7 @@ void glitch(int row, int col){
 
   }
 
-  quickprint(row, col);
+  quickprint(row, col, 1);
 }
 
 int main(int argc, char* argv[]) {

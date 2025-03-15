@@ -17,6 +17,9 @@
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
         > unlocks 'y' command (yay)
     . Replace char input 'c' -> goes to ~/.config
+        > Writes "~/.config" to file
+        > New shells will check if this file exists
+          > If so, cd to that file
     . Add char input 'n' -> prompt for newlook argument
     . Add char input 'b' -> prompt for laptop brightness
     . Add Shutdown procedure
@@ -249,6 +252,22 @@ void checkchar(int row, int col) {
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
         execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
+        perror("execl");
+      } else {
+        int status;
+        waitpid(pid, &status, 0);
+      }
+
+      neon(row, col);
+
+    } else if(input == 'n'){
+      pid_t pid = fork();
+
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        execl("/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
         perror("execl");
       } else {
         int status;

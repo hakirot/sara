@@ -10,16 +10,15 @@
 
 /* FEATLIST
 
-    . FIX neon animation pause 
-
+    . Create input for alternate acronyms in headers
     . Boot animations
     . Use archsarazap
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
-        > unlocks 'y' command (yay)
+    |   > unlocks 'y' command (yay)
     . Replace char input 'c' -> goes to ~/.config
-        > Writes "~/.config" to file
-        > New shells will check if this file exists
-          > If so, cd to that file
+    |   > Writes "~/.config" to file
+    |   > New shells will check if this file exists
+    |     > If so, cd to that file
     . Add char input 'n' -> prompt for newlook argument
     . Add char input 'b' -> prompt for laptop brightness
     . Add Shutdown procedure
@@ -29,6 +28,7 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X FIX neon animation pause 
     X Add char input 'p' -> run polybar as forked process
     X Add char input 'g' -> git status
     X Add char input 't' -> nvim open tasks
@@ -83,7 +83,7 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.08000;
+const double WAIT_BUFFER = 0.24000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 

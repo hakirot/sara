@@ -24,7 +24,7 @@
     . Add Shutdown procedure
     . More Interval animations (+3)
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
-        > Wide glitch
+        > Wide (fullscreen) glitch
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY

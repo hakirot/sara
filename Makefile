@@ -1,7 +1,7 @@
 # Makefile #
 
 CC=gcc
-CFLAGS=-I -Wall -g -lncursesw -DNCURSES_WIDECHAR=1
+CFLAGS=-I -Wall -g -lncursesw -DNCURSES_WIDECHAR=1 -Wimplicit-function-declaration
 
 all: sara
 

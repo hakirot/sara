@@ -237,9 +237,7 @@ void checkchar(int row, int col) {
       execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
       exit(1);
     } else if(input == 'g'){
-      endwin();
-      execlp("git", "git", "status", "-s", NULL);
-      exit(1);
+      glitch(row, col);
     } else if(input == 't'){
       endwin();
       execlp("nvim", "nvim", "/home/hakirot/dox/notes2/tasks", NULL);
@@ -654,7 +652,7 @@ int main(int argc, char* argv[]) {
 
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
 
-    usleep(10000); // reduce load
+    usleep(10000); // chill
     checkchar(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;

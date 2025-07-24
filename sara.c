@@ -83,7 +83,8 @@ typedef enum {
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-const double WAIT_BUFFER = 0.24000;
+//const double WAIT_BUFFER = 0.24000;
+const double WAIT_BUFFER = 1.14000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
@@ -210,7 +211,9 @@ char * foreground[7] = {
 };
 
 int is_char_in_search(wchar_t wc) {
-    // Iterate through the wide-character array
+
+//      SEARCH_STR[] = L"`+so:-./";
+//      Iterate through the wide-character array
     for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
         if (wc == SEARCH_STR[i]) {
             return 1; // Character found
@@ -296,7 +299,6 @@ void checkchar(int row, int col) {
   if(time_since_input >= 0.0005 && WIN_SIZE != SMALL){
     HOLD_CHAR = '\0';
   }
-
 }
 
 void printstandard(int row, int col){
@@ -534,7 +536,7 @@ int checksize(int row, int col, int cache){
     while (col < MID_LENGTH || row < MID_HEIGHT){
       WIN_SIZE = SMALL;
       clear();
-      mvprintw(row/2, (col-10)/2, "%s", ".. kill me.");
+      mvprintw(row/2, (col-10)/2, "%s", "S.A.R.A.");
       refresh();
 
       usleep(10000);
@@ -560,9 +562,9 @@ int checksize(int row, int col, int cache){
 void glitch(int row, int col){
 
   int rng_row, rng_shift, rng_backdrop = 0;
-  quickprint(row, col, 0);
+  quickprint(row, col, 1);
 
-  for( int i = 0 ; i < 28; i++ ) {
+  for( int i = 0 ; i < 23; i++ ) {
     rng_row   = rand() % MID_HEIGHT;    // RNG 0 and 6
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
     rng_backdrop = rand() % 3;          // RNG 0 and 2
@@ -593,7 +595,6 @@ void glitch(int row, int col){
     if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
     usleep(23000);
-
   }
 
   quickprint(row, col, 1);
@@ -630,7 +631,7 @@ int main(int argc, char* argv[]) {
   init_pair(8, COLOR_WHITE, -1);
   init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
 
-//raw();                    // Pass F1, ^C to program w/o signals, needed for ANIMATED
+//raw();                    // Pass F1, ^C to program w/o signals
                             // Also disables line buffering like cbreak()
   cbreak();                 // Disables line buffering
   noecho();                 // Don't print input to screen when using getch()
@@ -663,30 +664,31 @@ int main(int argc, char* argv[]) {
     }
 
     if (HOLD_CHAR == '\0'){
-      if (WIN_SIZE == NORMAL) {
-        mvprintw(row/2, (col-LENGTH)/2, "%s", title[3]);
+      quickprint(row, col, 0);
+//    if (WIN_SIZE == NORMAL) {
+//      mvprintw(row/2, (col-LENGTH)/2, "%s", title[3]);
 
-      } else { // BIG :D
+//    } else { // BIG :D
 
-        mbstate_t state;
-        memset(&state, 0, sizeof(mbstate_t));
-        const char *iter_row = titlefill[2];
-        int iter_col = 0; // Track the column position
-        while (*iter_row) {
-          wchar_t wc;
-          size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
-          cchar_t cchar;
+//      mbstate_t state;
+//      memset(&state, 0, sizeof(mbstate_t));
+//      const char *iter_row = titlefill[2];
+//      int iter_col = 0; // Track the column position
+//      while (*iter_row) {
+//        wchar_t wc;
+//        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+//        cchar_t cchar;
 
-          setcchar(&cchar, &wc, 0, 0, NULL);
+//        setcchar(&cchar, &wc, 0, 0, NULL);
 
-          is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
-          mvadd_wch(row/2, (col-LENGTH)/2 + iter_col, &cchar);
-          attroff(COLOR_PAIR(1));
-          attroff(COLOR_PAIR(2));
-          iter_row += len;
-          iter_col++;
-        }
-      }
+//        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
+//        mvadd_wch(row/2, (col-LENGTH)/2 + iter_col, &cchar);
+//        attroff(COLOR_PAIR(1));
+//        attroff(COLOR_PAIR(2));
+//        iter_row += len;
+//        iter_col++;
+//      }
+//    }
     }
   }
 

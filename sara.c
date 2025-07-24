@@ -665,30 +665,6 @@ int main(int argc, char* argv[]) {
 
     if (HOLD_CHAR == '\0'){
       quickprint(row, col, 0);
-//    if (WIN_SIZE == NORMAL) {
-//      mvprintw(row/2, (col-LENGTH)/2, "%s", title[3]);
-
-//    } else { // BIG :D
-
-//      mbstate_t state;
-//      memset(&state, 0, sizeof(mbstate_t));
-//      const char *iter_row = titlefill[2];
-//      int iter_col = 0; // Track the column position
-//      while (*iter_row) {
-//        wchar_t wc;
-//        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
-//        cchar_t cchar;
-
-//        setcchar(&cchar, &wc, 0, 0, NULL);
-
-//        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
-//        mvadd_wch(row/2, (col-LENGTH)/2 + iter_col, &cchar);
-//        attroff(COLOR_PAIR(1));
-//        attroff(COLOR_PAIR(2));
-//        iter_row += len;
-//        iter_col++;
-//      }
-//    }
     }
   }
 

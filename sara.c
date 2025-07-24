@@ -10,7 +10,7 @@
 
 /* FEATLIST
 
-    . Create input for alternate acronyms in headers
+    . Create input for alternate acronyms from headers
     . Boot animations
     . Use archsarazap
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
@@ -21,8 +21,9 @@
     |     > If so, cd to that file
     . Add char input 'n' -> prompt for newlook argument
     . Add char input 'b' -> prompt for laptop brightness
-    . Add Shutdown procedure
-    . More Interval animations (+3)
+    . mega_glitch()
+    . Add Shutdown procedure (?)
+    . More Interval animations
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
         > Wide (fullscreen) glitch
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)

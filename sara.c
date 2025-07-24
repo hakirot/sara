@@ -222,7 +222,7 @@ int is_char_in_search(wchar_t wc) {
     return 0; // not found
 }
 
-void checkchar(int row, int col) {
+void check_char(int row, int col) {
 
   char input = getch();
 
@@ -305,7 +305,7 @@ void printstandard(int row, int col){
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < HEIGHT; i++){
       mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
-      checkchar(row, col);
+      check_char(row, col);
       if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
       usleep(20000);          // Add some sexy timing
@@ -492,7 +492,7 @@ void neon(int row, int col) {
       third_frame = 1;
     }
 
-    checkchar(row, col);
+    check_char(row, col);
     if (HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
   }
@@ -540,7 +540,7 @@ int checksize(int row, int col, int cache){
       refresh();
 
       usleep(10000);
-      checkchar(row, col);
+      check_char(row, col);
 
       getmaxyx(stdscr,row,col); // Get total screen dimensions again
     }
@@ -591,7 +591,7 @@ void glitch(int row, int col){
       attroff(COLOR_PAIR(3));
     }
 
-    checkchar(row, col);
+    check_char(row, col);
     if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
     usleep(23000);
@@ -654,7 +654,7 @@ int main(int argc, char* argv[]) {
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
 
     usleep(10000); // chill
-    checkchar(row, col); // check input for this cycle
+    check_char(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 

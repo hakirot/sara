@@ -532,29 +532,35 @@ void print_start_animation(int row, int col) {
 int checksize(int row, int col, int cache){
 
   if (cache != row + col){
+
+//  optionally changing animations when resized
     START_ANIMATION = EMPTY;
+
     clear();
+
+//  small win size jail
     while (col < MID_LENGTH || row < MID_HEIGHT){
       WIN_SIZE = SMALL;
       clear();
       mvprintw(row/2, (col-10)/2, "%s", "S.A.R.A.");
       refresh();
 
-      usleep(10000);
+//    sleep 2 milliseconds
+      usleep(2000);
       check_char(row, col);
 
       getmaxyx(stdscr,row,col); // Get total screen dimensions again
     }
-  }
 
-  if (row > MAX_HEIGHT && col > MAX_LENGTH){
-    WIN_SIZE = BIG;
-    LENGTH = MAX_LENGTH;
-    HEIGHT = MAX_HEIGHT;
-  } else {
-    WIN_SIZE = NORMAL;
-    LENGTH = MID_LENGTH;
-    HEIGHT = MID_HEIGHT;
+    if (row > MAX_HEIGHT && col > MAX_LENGTH){
+      WIN_SIZE = BIG;
+      LENGTH = MAX_LENGTH;
+      HEIGHT = MAX_HEIGHT;
+    } else {
+      WIN_SIZE = NORMAL;
+      LENGTH = MID_LENGTH;
+      HEIGHT = MID_HEIGHT;
+    }
   }
 
   return row + col;
@@ -562,10 +568,13 @@ int checksize(int row, int col, int cache){
 
 void glitch(int row, int col){
 
+  int cache = row + col;
+
   int rng_row, rng_shift, rng_backdrop = 0;
   quickprint(row, col, 1);
 
-  for( int i = 0 ; i < 23; i++ ) {
+//for( int i = 0 ; i < 23; i++ ) {
+  for( int i = 0 ; i < 46; i++ ) {
     rng_row   = rand() % MID_HEIGHT;    // RNG 0 and 6
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
     rng_backdrop = rand() % 3;          // RNG 0 and 2
@@ -595,7 +604,12 @@ void glitch(int row, int col){
     check_char(row, col);
     if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
-    usleep(23000);
+
+    getmaxyx(stdscr, row, col);
+    if (cache != row + col) break;
+
+//  usleep(23000);
+    usleep(10000);
   }
 
   quickprint(row, col, 1);
@@ -641,14 +655,15 @@ int main(int argc, char* argv[]) {
   curs_set(FALSE);          // No cursor
 
   int cache = 10000;
-  int row, col;             // For storing the number of rows/cols
+  int row, col = 0;             // For storing the number of rows/cols
 
   refresh();                // clear screen
 
   WAIT_START = clock();
   while(1){
 
-    getmaxyx(stdscr, row, col); // Get total screen dimensions
+//  get current screen dimensions
+    getmaxyx(stdscr, row, col);
 
     cache = checksize(row, col, cache);
 

@@ -30,7 +30,7 @@
 
    BESTIARY
     X FIX neon animation pause 
-    X Add char input 'p' -> run polybar as forked process
+    X Add char input 'p' -> fork polybar restart
     X Add char input 'g' -> git status
     X Add char input 't' -> nvim open tasks
     X Display colors
@@ -309,7 +309,7 @@ void printstandard(int row, int col){
       check_char(row, col);
       if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
-      usleep(20000);          // Add some sexy timing
+      usleep(20000);
     }
   } else if (WIN_SIZE == BIG){
 
@@ -318,7 +318,7 @@ void printstandard(int row, int col){
       mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
       if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
-      usleep(10000);          // Add some sexy timing
+      usleep(10000);
     }
     attroff(COLOR_PAIR(2));
 
@@ -342,7 +342,7 @@ void printstandard(int row, int col){
         iter_row += len;
         iter_col++;
       }
-        usleep(20000);          // Add some sexy timing
+        usleep(20000);
         refresh();
     }
   }

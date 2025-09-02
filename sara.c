@@ -507,16 +507,18 @@ void print_start_animation(int row, int col) {
 
   srand((unsigned)time(0));
 
-  if (START_ANIMATION == EMPTY){
-    int start_roll = rand() % 3;
-    if (start_roll == 0){
-      START_ANIMATION = QUICK;
-    } else if (start_roll == 1){
-      START_ANIMATION = STANDARD;
-    } else {
-      START_ANIMATION = NEON;
-    }
-  }
+//if (START_ANIMATION == EMPTY){
+//  int start_roll = rand() % 3;
+//  if (start_roll == 0){
+//    START_ANIMATION = QUICK;
+//  } else if (start_roll == 1){
+//    START_ANIMATION = STANDARD;
+//  } else {
+//    START_ANIMATION = NEON;
+//  }
+//}
+
+  START_ANIMATION = NEON; // overwrite 'cus is's my favorite
 
   if (START_ANIMATION == NEON){
     neon(row, col);

@@ -404,6 +404,7 @@ void neon(int row, int col) {
   int first_frame = 0;
   int second_frame = 0;
   int third_frame = 0;
+  bool colorbar_printed = 0;
 
   clear();
   refresh();
@@ -424,6 +425,18 @@ void neon(int row, int col) {
           attroff(COLOR_PAIR(2));
         }
       }
+
+      if (colorbar_printed == false ){
+        if (WIN_SIZE == BIG) {
+          for(int i = 1; i < 9; i++){
+            attron(COLOR_PAIR(i));
+            mvaddwstr(row/2 + 4, (col-LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+            attroff(COLOR_PAIR(i));
+          }
+        }
+        colorbar_printed == true;
+      }
+
       first_frame = 1;
     }
 
@@ -497,6 +510,8 @@ void neon(int row, int col) {
     if (HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
     refresh();
   }
+
+  quickprint(row, col, 0);
 
 //mvprintw(row/2 + 3, (col-LENGTH)/2, "%s", title[6]);
   refresh();
@@ -614,7 +629,7 @@ void glitch(int row, int col){
     usleep(10000);
   }
 
-  quickprint(row, col, 1);
+  quickprint(row, col, 0);
 }
 
 int main(int argc, char* argv[]) {

@@ -662,6 +662,8 @@ int main(int argc, char* argv[]) {
   refresh();                // clear screen
 
   WAIT_START = clock();
+  bool should_print = false;
+
   while(1){
 
 //  get current screen dimensions
@@ -681,8 +683,11 @@ int main(int argc, char* argv[]) {
       WAIT_START = clock();
     }
 
-    if (HOLD_CHAR == '\0'){
+    if (HOLD_CHAR == '\0' && should_print == 1){
       quickprint(row, col, 0);
+      should_print == false;
+    } else if (HOLD_CHAR != '\0'){
+      should_print = true;
     }
   }
 

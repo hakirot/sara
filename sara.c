@@ -698,9 +698,9 @@ int main(int argc, char* argv[]) {
       WAIT_START = clock();
     }
 
-    if (HOLD_CHAR == '\0' && should_print == 1){
+    if (HOLD_CHAR == '\0' && should_print == true){
       quickprint(row, col, 0);
-      should_print == false;
+      should_print = false;
     } else if (HOLD_CHAR != '\0'){
       should_print = true;
     }

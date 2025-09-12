@@ -223,6 +223,24 @@ int is_char_in_search(wchar_t wc) {
     return 0; // not found
 }
 
+int get_confirmation(int row, int col) {
+
+  attron(COLOR_PAIR(2));
+  mvprintw(row/2+9, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
+  attroff(COLOR_PAIR(2));
+  refresh();
+
+  char confirmation = getchar();
+
+  attron(COLOR_PAIR(2));
+  mvprintw(row/2 + 9, (col-LENGTH)/2, "%s", archsarafull[18]);
+  attroff(COLOR_PAIR(2));
+  refresh();
+
+  if (confirmation == 'y' || confirmation == 'Y') return 1;
+  return 0;
+}
+
 void check_char(int row, int col) {
 
   char input = getch();
@@ -236,7 +254,6 @@ void check_char(int row, int col) {
       execv("/usr/bin/ranger", NULL);
       exit(1);
     } else if(input == 'w'){
-      // write /home/hakirot/pix/wall/ to ~/.saraexit
       endwin();
       execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
       exit(1);
@@ -264,20 +281,24 @@ void check_char(int row, int col) {
       neon(row, col);
 
     } else if(input == 'n'){
-      pid_t pid = fork();
 
-      if (pid < 0) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-      } else if (pid == 0) {
-        execl("/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
-        perror("execl");
-      } else {
-        int status;
-        waitpid(pid, &status, 0);
+      if (get_confirmation(row, col) == 1){
+
+        pid_t pid = fork();
+
+        if (pid < 0) {
+          perror("fork");
+          exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+          execl("/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+          perror("execl");
+        } else {
+          int status;
+          waitpid(pid, &status, 0);
+        }
+
+        neon(row, col);
       }
-
-      neon(row, col);
 
     } else if (input == 'v') {
       endwin();
@@ -698,6 +719,7 @@ int main(int argc, char* argv[]) {
       WAIT_START = clock();
     }
 
+    // print only once after the HOLD_CHAR goes back to EOF
     if (HOLD_CHAR == '\0' && should_print == true){
       quickprint(row, col, 0);
       should_print = false;
@@ -711,4 +733,3 @@ int main(int argc, char* argv[]) {
 
   return 0;
 }
-

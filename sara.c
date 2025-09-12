@@ -225,9 +225,9 @@ int is_char_in_search(wchar_t wc) {
 
 int get_confirmation(int row, int col) {
 
-  attron(COLOR_PAIR(2));
+  attron(COLOR_PAIR(10));
   mvprintw(row/2+9, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
-  attroff(COLOR_PAIR(2));
+  attroff(COLOR_PAIR(9));
   refresh();
 
   char confirmation = getchar();
@@ -683,6 +683,7 @@ int main(int argc, char* argv[]) {
   init_pair(7, COLOR_CYAN, -1);
   init_pair(8, COLOR_WHITE, -1);
   init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
+  init_pair(10, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
 
 //raw();                    // Pass F1, ^C to program w/o signals
                             // Also disables line buffering like cbreak()

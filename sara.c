@@ -19,7 +19,6 @@
     |   > Writes "~/.config" to file
     |   > New shells will check if this file exists
     |     > If so, cd to that file
-    . Add char input 'n' -> prompt for newlook argument
     . Add char input 'b' -> prompt for laptop brightness
     . mega_glitch()
     . Add Shutdown procedure (?)
@@ -29,6 +28,7 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
 
    BESTIARY
+    X Add char input 'n' -> prompt for newlook
     X FIX neon animation pause 
     X Add char input 'p' -> fork polybar restart
     X Add char input 'g' -> git status
@@ -226,14 +226,14 @@ int is_char_in_search(wchar_t wc) {
 int get_confirmation(int row, int col) {
 
   attron(COLOR_PAIR(10));
-  mvprintw(row/2+9, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
+  mvprintw(row/2+8, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
   attroff(COLOR_PAIR(9));
   refresh();
 
   char confirmation = getchar();
 
   attron(COLOR_PAIR(2));
-  mvprintw(row/2 + 9, (col-LENGTH)/2, "%s", archsarafull[18]);
+  mvprintw(row/2 + 8, (col-LENGTH)/2, "%s", archsarafull[17]);
   attroff(COLOR_PAIR(2));
   refresh();
 
@@ -303,10 +303,10 @@ void check_char(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
-    } else if (input == 'c') {
-      endwin();
-      execv("/home/hakirot/.local/bin/colortest", NULL);
-      exit(1);
+//  } else if (input == 'c') {
+//    endwin();
+//    execv("/home/hakirot/.local/bin/colortest", NULL);
+//    exit(1);
     } else if (input == 'g') {
       glitch(row, col);
     } else if (WIN_SIZE != SMALL) {

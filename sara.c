@@ -670,11 +670,10 @@ int main(int argc, char* argv[]) {
 
   setlocale(LC_ALL, "");    // Needed to print special characters, also needed b4 initscr()
   initscr();                // Initialize screen
-
-  start_color();
+  start_color();            // Must be called right after initscr()
   use_default_colors();
   init_pair(1, COLOR_BLACK, COLOR_BLACK);
-  init_pair(2, COLOR_RED, -1); // Background text, no background
+  init_pair(2, COLOR_RED, -1); // Foreground text, no background
   init_pair(3, COLOR_GREEN, -1); // Foreground text, no background
   init_pair(4, COLOR_YELLOW, -1); // Foreground text, no background
   init_pair(5, COLOR_BLUE, -1);

@@ -15,10 +15,8 @@
     . Use archsarazap
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
     |   > unlocks 'y' command (yay)
-    . Replace char input 'c' -> goes to ~/.config
-    |   > Writes "~/.config" to file
-    |   > New shells will check if this file exists
-    |     > If so, cd to that file
+    . Replace char input 'c'
+    |   > cd to psha
     . Add char input 'b' -> prompt for laptop brightness
     . mega_glitch()
     . Add Shutdown procedure (?)
@@ -227,14 +225,14 @@ int get_confirmation(int row, int col) {
 
   attron(COLOR_PAIR(10));
   mvprintw(row/2+8, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
-  attroff(COLOR_PAIR(9));
+  attroff(COLOR_PAIR(10));
   refresh();
 
   char confirmation = getchar();
 
-  attron(COLOR_PAIR(2));
+  attron(COLOR_PAIR(3));
   mvprintw(row/2 + 8, (col-LENGTH)/2, "%s", archsarafull[17]);
-  attroff(COLOR_PAIR(2));
+  attroff(COLOR_PAIR(3));
   refresh();
 
   if (confirmation == 'y' || confirmation == 'Y') return 1;
@@ -356,7 +354,7 @@ void printstandard(int row, int col){
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
+        is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2)) ;
         mvadd_wch(row/2 + 3 - i, (col-LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(2));
         attroff(COLOR_PAIR(3));
@@ -391,17 +389,18 @@ void quickprint(int row, int col, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
+        is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2));
         mvadd_wch(row/2 - 9 + i, (col-LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(2));
+        attroff(COLOR_PAIR(3));
         iter_row += len;
         iter_col++;
       }
     }
     // print name with background
-    attron(COLOR_PAIR(9));
+    attron(COLOR_PAIR(10));
     mvprintw(row/2 + 4, (col-LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
-    attroff(COLOR_PAIR(9));
+    attroff(COLOR_PAIR(10));
 
     // print colorbar
     if (printColorbar == 1){
@@ -441,9 +440,9 @@ void neon(int row, int col) {
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
-          attron(COLOR_PAIR(2));
+          attron(COLOR_PAIR(3));
           mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
-          attroff(COLOR_PAIR(2));
+          attroff(COLOR_PAIR(3));
         }
       }
 
@@ -466,7 +465,7 @@ void neon(int row, int col) {
         for(int i = 0; i < 6; i++){
           mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
         }
-      } else { // screen is big
+      } else { // screen is BIG
 
         for(int i = 0; i < 6; i++){
 
@@ -481,7 +480,7 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
+            is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(2));
             attroff(COLOR_PAIR(3));
@@ -514,7 +513,7 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
+            is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(2));
             attroff(COLOR_PAIR(3));
@@ -566,7 +565,7 @@ void print_start_animation(int row, int col) {
   }
 }
 
-// Check if screen is too small, returns new cache
+// Check screen size, return updated sum of dimensions
 int checksize(int row, int col, int cache){
 
   if (cache != row + col){
@@ -628,7 +627,7 @@ void glitch(int row, int col){
     }
 
     if (WIN_SIZE == BIG) {
-      attron(COLOR_PAIR(3));
+      attron(COLOR_PAIR(2));
       if (rng_backdrop == 0){
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
@@ -664,7 +663,7 @@ int main(int argc, char* argv[]) {
 
   while ((opt = getopt(argc, argv, "a")) != -1){
     switch (opt) {
-			// Removed implementation
+			// removed!
       case 'a': mode = ANIMATED; break;
     }
   }
@@ -684,6 +683,7 @@ int main(int argc, char* argv[]) {
   init_pair(8, COLOR_WHITE, -1);
   init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
   init_pair(10, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
+  init_pair(11, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
 
 //raw();                    // Pass F1, ^C to program w/o signals
                             // Also disables line buffering like cbreak()

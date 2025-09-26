@@ -16,6 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <wchar.h>
+#include <time.h>
 #include <wait.h>
 
 clock_t LAST_INPUT_TIME;
@@ -29,9 +30,7 @@ start_animation START_ANIMATION = EMPTY;
 wchar_t SEARCH_STR[] = L"`+so:-./";
 char HOLD_CHAR;
 
-char * specialApplicationRangingArea = "SPECIAL APPLICATION RANGING AREA";
-
-char * arch[19] = {
+const char * arch[19] = {
   "                     -`                     ",
   "                    .o+`                    ",
   "                   `ooo/                    ",
@@ -53,7 +52,7 @@ char * arch[19] = {
   "   .`                                 `/    ",
 };
 
-char * archsarafull[19] = {
+const char * archsarafull[19] = {
  "                     -`                     ",
  "                    .o+`                    ",
  "                   `ooo/                    ",
@@ -75,7 +74,7 @@ char * archsarafull[19] = {
  "   .`                                 `/    ",
 };
 
-char * archsarazap[19] = {
+const char * archsarazap[19] = {
  "                     -`                     ",
  "                    .o+`                    ",
  "                   `ooo/                    ",
@@ -97,7 +96,7 @@ char * archsarazap[19] = {
  "   .`                                 `/    ",
 };
 
-char * titlefill[7] = {
+const char * titlefill[7] = {
   "███████╗    █████╗++/+██████╗     █████╗    ",
   "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   ",
   "███████╗   ███████║ooo██████╔╝/` ███████║   ",
@@ -109,7 +108,7 @@ char * titlefill[7] = {
 
 // length LENGTH
 // height HEIGHT
-char * title[7] = {
+const char * title[7] = {
   "███████╗    █████╗    ██████╗     █████╗    ",
   "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   ",
   "███████╗   ███████║   ██████╔╝   ███████║   ",
@@ -119,7 +118,7 @@ char * title[7] = {
   "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
-char * backdrop[7] = {
+const char * backdrop[7] = {
   "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
   "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
   "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   ",
@@ -129,7 +128,7 @@ char * backdrop[7] = {
   "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
-char * backdropfill[7] = {
+const char * backdropfill[7] = {
   "╔══════╗    ╔════╗++/+╔═════╗     ╔════╗    ",
   "║ ╔════╝   ╔╝╔══╗╚╗+++║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
   "║ ╚════╗   ║ ╚══╝ ║ooo║ ╚══╝╔╝/` ║ ╚══╝ ║   ",
@@ -139,7 +138,7 @@ char * backdropfill[7] = {
   "          SPECIAL APPLICATION RANGING AREA  ",
 };
 
-char * foreground[7] = {
+const char * foreground[7] = {
   "███████     █████     ██████      █████     ",
   "██         ██   ██    ██   ██    ██   ██    ",
   "███████    ███████    ██████     ███████    ",
@@ -148,6 +147,91 @@ char * foreground[7] = {
   "                                            ",
   "          SPECIAL APPLICATION RANGING AREA  ",
 };
+
+const char * specialApplicationRangingArea = 
+        "SPECIAL APPLICATION RANGING AREA";
+
+int main(int argc, char* argv[]) {
+
+  LAST_INPUT_TIME = clock();
+  double time_idle;
+
+  enum { DEFAULT, ANIMATED } mode = DEFAULT;
+  int DELAY                       = 2000000;
+  int opt;
+
+  while ((opt = getopt(argc, argv, "a")) != -1){
+    switch (opt) {
+			// removed!
+      case 'a': mode = ANIMATED; break;
+    }
+  }
+
+  setlocale(LC_ALL, "");    // Needed to print special characters, also needed b4 initscr()
+  initscr();                // Initialize screen
+  start_color();            // Must be called right after initscr()
+  use_default_colors();
+  init_pair(1, COLOR_BLACK, COLOR_BLACK);
+  init_pair(2, COLOR_RED, -1); // Foreground text, no background
+  init_pair(3, COLOR_GREEN, -1); // Foreground text, no background
+  init_pair(4, COLOR_YELLOW, -1); // Foreground text, no background
+  init_pair(5, COLOR_BLUE, -1);
+  init_pair(6, COLOR_MAGENTA, -1);
+  init_pair(7, COLOR_CYAN, -1);
+  init_pair(8, COLOR_WHITE, -1);
+  init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
+  init_pair(10, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
+  init_pair(11, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
+
+//raw();                    // Pass F1, ^C to program w/o signals
+                            // Also disables line buffering like cbreak()
+  cbreak();                 // Disables line buffering
+  noecho();                 // Don't print input to screen when using getch()
+  nodelay(stdscr, TRUE);
+  keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
+  curs_set(FALSE);          // No cursor
+
+  int cache = 10000;
+  int row, col = 0;             // For storing the number of rows/cols
+
+  refresh();                // clear screen
+
+  WAIT_START = clock();
+  bool should_print = false;
+
+  while(1){
+
+//  get current screen dimensions
+    getmaxyx(stdscr, row, col);
+
+    cache = checksize(row, col, cache);
+
+    if (START_ANIMATION == EMPTY) print_start_animation(row, col);
+
+    usleep(10000); // chill
+    check_char(row, col); // check input for this cycle
+
+    time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+
+    if(time_idle >= WAIT_BUFFER){
+      glitch(row, col);
+      WAIT_START = clock();
+    }
+
+    // print only once after the HOLD_CHAR goes back to EOF
+    if (HOLD_CHAR == '\0' && should_print == true){
+      quickprint(row, col, 0);
+      should_print = false;
+    } else if (HOLD_CHAR != '\0'){
+      should_print = true;
+    }
+  }
+
+  refresh();
+  endwin();
+
+  return 0;
+}
 
 int is_char_in_search(wchar_t wc) {
 
@@ -471,7 +555,6 @@ void neon(int row, int col) {
   refresh();
 }
 
-
 void print_start_animation(int row, int col) {
 
   srand((unsigned)time(0));
@@ -584,86 +667,4 @@ void glitch(int row, int col){
   }
 
   quickprint(row, col, 0);
-}
-
-int main(int argc, char* argv[]) {
-
-  LAST_INPUT_TIME = clock();
-  double time_idle;
-
-  enum { DEFAULT, ANIMATED } mode = DEFAULT;
-  int DELAY                       = 2000000;
-  int opt;
-
-  while ((opt = getopt(argc, argv, "a")) != -1){
-    switch (opt) {
-			// removed!
-      case 'a': mode = ANIMATED; break;
-    }
-  }
-
-  setlocale(LC_ALL, "");    // Needed to print special characters, also needed b4 initscr()
-  initscr();                // Initialize screen
-  start_color();            // Must be called right after initscr()
-  use_default_colors();
-  init_pair(1, COLOR_BLACK, COLOR_BLACK);
-  init_pair(2, COLOR_RED, -1); // Foreground text, no background
-  init_pair(3, COLOR_GREEN, -1); // Foreground text, no background
-  init_pair(4, COLOR_YELLOW, -1); // Foreground text, no background
-  init_pair(5, COLOR_BLUE, -1);
-  init_pair(6, COLOR_MAGENTA, -1);
-  init_pair(7, COLOR_CYAN, -1);
-  init_pair(8, COLOR_WHITE, -1);
-  init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
-  init_pair(10, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
-  init_pair(11, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
-
-//raw();                    // Pass F1, ^C to program w/o signals
-                            // Also disables line buffering like cbreak()
-  cbreak();                 // Disables line buffering
-  noecho();                 // Don't print input to screen when using getch()
-  nodelay(stdscr, TRUE);
-  keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
-  curs_set(FALSE);          // No cursor
-
-  int cache = 10000;
-  int row, col = 0;             // For storing the number of rows/cols
-
-  refresh();                // clear screen
-
-  WAIT_START = clock();
-  bool should_print = false;
-
-  while(1){
-
-//  get current screen dimensions
-    getmaxyx(stdscr, row, col);
-
-    cache = checksize(row, col, cache);
-
-    if (START_ANIMATION == EMPTY) print_start_animation(row, col);
-
-    usleep(10000); // chill
-    check_char(row, col); // check input for this cycle
-
-    time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
-
-    if(time_idle >= WAIT_BUFFER){
-      glitch(row, col);
-      WAIT_START = clock();
-    }
-
-    // print only once after the HOLD_CHAR goes back to EOF
-    if (HOLD_CHAR == '\0' && should_print == true){
-      quickprint(row, col, 0);
-      should_print = false;
-    } else if (HOLD_CHAR != '\0'){
-      should_print = true;
-    }
-  }
-
-  refresh();
-  endwin();
-
-  return 0;
 }

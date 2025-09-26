@@ -83,7 +83,7 @@ clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
 //const double WAIT_BUFFER = 0.24000;
-const double WAIT_BUFFER = 1.14000;
+const double WAIT_BUFFER = 0.10000;
 char HOLD_CHAR;
 start_animation START_ANIMATION = EMPTY;
 
@@ -301,12 +301,6 @@ void check_char(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
-//  } else if (input == 'c') {
-//    endwin();
-//    execv("/home/hakirot/.local/bin/colortest", NULL);
-//    exit(1);
-    } else if (input == 'g') {
-      glitch(row, col);
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;

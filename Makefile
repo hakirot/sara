@@ -6,7 +6,7 @@ CFLAGS=-I -Wall -g -lncursesw -DNCURSES_WIDECHAR=1 -Wimplicit-function-declarati
 all: sara
 
 sara: sara.c sara.h
-	$(CC) sara.c -o sara $(CFLAGS)
+	$(CC) sara.c glyphs.c -o sara $(CFLAGS)
 
 clean:
 	rm -f sara

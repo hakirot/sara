@@ -9,6 +9,7 @@
                        2025 PUNKMONK  -- */
 
 #include "sara.h"
+#include "glyphs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -29,127 +30,6 @@ int HEIGHT = 7;
 start_animation START_ANIMATION = EMPTY;
 wchar_t SEARCH_STR[] = L"`+so:-./";
 char HOLD_CHAR;
-
-const char * arch[19] = {
-  "                     -`                     ",
-  "                    .o+`                    ",
-  "                   `ooo/                    ",
-  "                  `+oooo:                   ",
-  "                 `+oooooo:                  ",
-  "                 -+oooooo+:                 ",
-  "               `/:-:++oooo+:                ",
-  "              `/++++/+++++++:               ",
-  "             `/++++++++++++++:              ",
-  "            `/+++ooooooooooooo/`            ",
-  "           ./ooosssso++osssssso+`           ",
-  "          .oossssso-````/ossssss+`          ",
-  "         -osssssso.      :ssssssso.         ",
-  "        :osssssss/        osssso+++.        ",
-  "       /ossssssss/        +ssssooo/-        ",
-  "     `/ossssso+/:-        -:/+osssso+-      ",
-  "    `+sso+:-`                 `.-/+oso:     ",
-  "   `++:.                           `-/+/    ",
-  "   .`                                 `/    ",
-};
-
-const char * archsarafull[19] = {
- "                     -`                     ",
- "                    .o+`                    ",
- "                   `ooo/                    ",
- "                  `+oooo:                   ",
- "                 `+oooooo:                  ",
- "                 -+oooooo+:                 ",
- "               `/:-:++oooo+:                ",
- "███████╗    █████╗++/+██████╗     █████╗    ",
- "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   ",
- "███████╗   ███████║ooo██████╔╝/` ███████║   ",
- "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
- "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
- "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
- "        : SPECIAL APPLICATION RANGING AREA  ",
- "       /ossssssss/        +ssssooo/-        ",
- "     `/ossssso+/:-        -:/+osssso+-      ",
- "    `+sso+:-`                 `.-/+oso:     ",
- "   `++:.                           `-/+/    ",
- "   .`                                 `/    ",
-};
-
-const char * archsarazap[19] = {
- "                     -`                     ",
- "                    .o+`                    ",
- "                   `ooo/                    ",
- "                  `+oooo:                   ",
- "                 `+oooooo:                  ",
- "                 -+oooooo+:                 ",
- "               `/:-:++oooo+:                ",
- "╔══════╗    ╔════╗++/+╔═════╗     ╔════╗    ",
- "║ ╔════╝   ╔╝╔══╗╚╗+++║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
- "║ ╚════╗   ║ ╚══╝ ║ooo║ ╚══╝╔╝/` ║ ╚══╝ ║   ",
- "╚════╗ ║  .║ ╔══╗ ║so+║ ╔══╗╚╗o+ ║ ╔══╗ ║   ",
- "╔════╝ ║╔═╗║ ║ss║ ║╔═╗║ ║os║ ║╔═╗║ ║  ║ ║╔═╗",
- "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
- "        : SPECIAL APPLICATION RANGING AREA  ",
- "       /ossssssss/        +ssssooo/-        ",
- "     `/ossssso+/:-        -:/+osssso+-      ",
- "    `+sso+:-`                 `.-/+oso:     ",
- "   `++:.                           `-/+/    ",
- "   .`                                 `/    ",
-};
-
-const char * titlefill[7] = {
-  "███████╗    █████╗++/+██████╗     █████╗    ",
-  "██╔════╝   ██╔══██╗+++██╔══██╗   ██╔══██╗   ",
-  "███████╗   ███████║ooo██████╔╝/` ███████║   ",
-  "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
-  "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
-  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "          SPECIAL APPLICATION RANGING AREA  ",
-};
-
-// length LENGTH
-// height HEIGHT
-const char * title[7] = {
-  "███████╗    █████╗    ██████╗     █████╗    ",
-  "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   ",
-  "███████╗   ███████║   ██████╔╝   ███████║   ",
-  "╚════██║   ██╔══██║   ██╔══██╗   ██╔══██║   ",
-  "███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗",
-  "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "          SPECIAL APPLICATION RANGING AREA  ",
-};
-
-const char * backdrop[7] = {
-  "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
-  "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
-  "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   ",
-  "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
-  "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
-  "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "          SPECIAL APPLICATION RANGING AREA  ",
-};
-
-const char * backdropfill[7] = {
-  "╔══════╗    ╔════╗++/+╔═════╗     ╔════╗    ",
-  "║ ╔════╝   ╔╝╔══╗╚╗+++║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
-  "║ ╚════╗   ║ ╚══╝ ║ooo║ ╚══╝╔╝/` ║ ╚══╝ ║   ",
-  "╚════╗ ║  .║ ╔══╗ ║so+║ ╔══╗╚╗o+ ║ ╔══╗ ║   ",
-  "╔════╝ ║╔═╗║ ║ss║ ║╔═╗║ ║os║ ║╔═╗║ ║  ║ ║╔═╗",
-  "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "          SPECIAL APPLICATION RANGING AREA  ",
-};
-
-const char * foreground[7] = {
-  "███████     █████     ██████      █████     ",
-  "██         ██   ██    ██   ██    ██   ██    ",
-  "███████    ███████    ██████     ███████    ",
-  "     ██    ██   ██    ██   ██    ██   ██    ",
-  "███████ ██ ██   ██ ██ ██   ██ ██ ██   ██ ██ ",
-  "                                            ",
-  "          SPECIAL APPLICATION RANGING AREA  ",
-};
-
-const char * specialApplicationRangingArea = 
-        "SPECIAL APPLICATION RANGING AREA";
 
 int main(int argc, char* argv[]) {
 

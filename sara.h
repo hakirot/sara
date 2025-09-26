@@ -51,7 +51,7 @@
 #define SARA_H
 
 const double WAIT_BUFFER = 0.10000;
-//const double WAIT_BUFFER = 0.10005; // onstnat
+//const double WAIT_BUFFER = 0.00005; // onstnat
 
 typedef enum {
   SMALL,
@@ -66,16 +66,15 @@ typedef enum {
   EMPTY
 } start_animation;
 
-void glitch(int row, int col);
-void neon(int row, int col);
+void check_char(int row, int col);
+int checksize(int row, int col, int cache);
 int is_char_in_search(wchar_t wc);
 int get_confirmation(int row, int col);
-void check_char(int row, int col);
+void print_start_animation(int row, int col);
 void printstandard(int row, int col);
 void quickprint(int row, int col, int printColorbar);
 void neon(int row, int col);
-void print_start_animation(int row, int col);
-int checksize(int row, int col, int cache);
+void neon(int row, int col);
 void glitch(int row, int col);
 
 // Global variable declaration

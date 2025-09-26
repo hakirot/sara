@@ -50,6 +50,9 @@
 #ifndef SARA_H
 #define SARA_H
 
+const double WAIT_BUFFER = 0.10000;
+//const double WAIT_BUFFER = 0.10005; // onstnat
+
 typedef enum {
   SMALL,
   NORMAL,
@@ -65,6 +68,15 @@ typedef enum {
 
 void glitch(int row, int col);
 void neon(int row, int col);
+int is_char_in_search(wchar_t wc);
+int get_confirmation(int row, int col);
+void check_char(int row, int col);
+void printstandard(int row, int col);
+void quickprint(int row, int col, int printColorbar);
+void neon(int row, int col);
+void print_start_animation(int row, int col);
+int checksize(int row, int col, int cache);
+void glitch(int row, int col);
 
 // Global variable declaration
 //extern int global_variable;
@@ -72,7 +84,5 @@ const int MAX_HEIGHT = 19;
 const int MAX_LENGTH = 44;
 const int MID_HEIGHT = 7;
 const int MID_LENGTH = 44;
-
-const double WAIT_BUFFER = 0.10000;
 
 #endif

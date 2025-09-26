@@ -1,93 +1,35 @@
 
 /*
---  ███████╗ █████╗ ██████╗  █████╗   --
---  ██╔════╝██╔══██╗██╔══██╗██╔══██╗  --
---  ███████╗███████║██████╔╝███████║  --
---  ╚════██║██╔══██║██╔══██╗██╔══██║  --
---  ███████║██║  ██║██║  ██║██║  ██║  --
---  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝  --
+--   ███████╗ █████╗ ██████╗  █████╗    --
+--   ██╔════╝██╔══██╗██╔══██╗██╔══██╗   --
+--   ███████╗███████║██████╔╝███████║   --
+--   ╚════██║██╔══██║██╔══██╗██╔══██║   --
+--   ███████║██║  ██║██║  ██║██║  ██║   --
+--   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.c --
                        2025 PUNKMONK  -- */
 
-/* FEATLIST
-
-    . Create input for alternate acronyms from headers
-    . Boot animations
-    . Use archsarazap
-    . Add char input 'x' -> sets skpass env_var -> Prints Notification
-    |   > unlocks 'y' command (yay)
-    . Replace char input 'c'
-    |   > cd to psha
-    . Add char input 'b' -> prompt for laptop brightness
-    . mega_glitch()
-    . Add Shutdown procedure (?)
-    . More Interval animations
-        > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
-        > Wide (fullscreen) glitch
-        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
-
-   BESTIARY
-    X Add char input 'n' -> prompt for newlook
-    X FIX neon animation pause 
-    X Add char input 'p' -> fork polybar restart
-    X Add char input 'g' -> git status
-    X Add char input 't' -> nvim open tasks
-    X Display colors
-    X Add pattern of color characters
-    X Add char input 'p' -> run polybar as forked process
-    X Add char input 'g' -> git status
-    X Add char input 'w' -> exec ranger $HOME/pix/wall/
-    X Add char input 'r' -> exec ranger
-    X Colored
-    X Add Arch logo
-    X Glitch animation
-    X Display chars
-    X Dynamically resize with window
-    X Press q to exit
-*/
-
+#include "sara.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
 #include <locale.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 #include <wchar.h>
 #include <wait.h>
-
-const int MAX_HEIGHT = 19;
-const int MAX_LENGTH = 44;
-const int MID_HEIGHT = 7;
-const int MID_LENGTH = 44;
-
-void glitch(int row, int col);
-void neon(int row, int col);
-
-int LENGTH = 44;
-int HEIGHT = 7;
-
-typedef enum {
-  SMALL,
-  NORMAL,
-  BIG
-} screen_size;
-
-typedef enum {
-  QUICK,
-  STANDARD,
-  NEON,
-  EMPTY
-} start_animation;
 
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
-//const double WAIT_BUFFER = 0.24000;
-const double WAIT_BUFFER = 0.10000;
-char HOLD_CHAR;
-start_animation START_ANIMATION = EMPTY;
 
+int LENGTH = 44;
+int HEIGHT = 7;
+
+start_animation START_ANIMATION = EMPTY;
 wchar_t SEARCH_STR[] = L"`+so:-./";
+char HOLD_CHAR;
+
+char * specialApplicationRangingArea = "SPECIAL APPLICATION RANGING AREA";
 
 char * arch[19] = {
   "                     -`                     ",
@@ -132,8 +74,6 @@ char * archsarafull[19] = {
  "   `++:.                           `-/+/    ",
  "   .`                                 `/    ",
 };
-
-char * specialApplicationRangingArea = "SPECIAL APPLICATION RANGING AREA";
 
 char * archsarazap[19] = {
  "                     -`                     ",

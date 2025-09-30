@@ -2,11 +2,18 @@
 
 CC=gcc
 CFLAGS=-I -Wall -g -lncursesw -DNCURSES_WIDECHAR=1 -Wimplicit-function-declaration
+DEPS = sara.h glyphs.h
+OBJ = sara.o glyphs.o
 
-all: sara
+all: sara clean
 
-sara: sara.c sara.h
-	$(CC) sara.c glyphs.c -o sara $(CFLAGS)
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+sara: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
+
+.PHONY: clean
 
 clean:
-	rm -f sara
+	rm -f *.o

@@ -74,7 +74,6 @@ void print_start_animation(int row, int col);
 void printstandard(int row, int col);
 void quickprint(int row, int col, int printColorbar);
 void neon(int row, int col);
-void neon(int row, int col);
 void glitch(int row, int col);
 
 // Global variable declaration

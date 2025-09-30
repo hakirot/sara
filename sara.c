@@ -542,6 +542,7 @@ void glitch(int row, int col){
     getmaxyx(stdscr, row, col);
     if (cache != row + col) break;
 
+
 //  usleep(23000);
     usleep(10000);
   }

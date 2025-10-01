@@ -73,6 +73,7 @@ void printstandard(int row, int col);
 void quickprint(int row, int col, int printColorbar);
 void neon(int row, int col);
 void glitch(int row, int col);
+void mega_glitch(int row, int col);
 
 const int MAX_HEIGHT = 19;
 const int MAX_LENGTH = 44;

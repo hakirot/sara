@@ -560,15 +560,15 @@ void glitch(int row, int col){
 }
 
 void mega_glitch(int row, int col){
-
 }
 
 void get_helped() {
+  printf("\n");
   for (int i = 0; i < 6; i++) {
     printf("\e[31m%s\n\e[0m", title[i]);
   }
-  printf("Usage: %s [OPTIONS]\n", "sara");
+  printf("\nUsage: %s [OPTIONS]\n", "sara");
   printf("  --help, -h    Display this help message\n");
   printf("  -c            Constant glitch effect\n");
-  exit(0); // Exit after displaying help
+  exit(0);
 }

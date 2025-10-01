@@ -10,7 +10,7 @@
 
 /* FEATLIST
 
-    . Create input for alternate acronyms from headers
+    . Create input for alternate acronyms from headers (?)
     . Boot animations
     . Use archsarazap
     . Add char input 'x' -> sets skpass env_var -> Prints Notification
@@ -74,8 +74,6 @@ void quickprint(int row, int col, int printColorbar);
 void neon(int row, int col);
 void glitch(int row, int col);
 
-// Global variable declaration
-//extern int global_variable;
 const int MAX_HEIGHT = 19;
 const int MAX_LENGTH = 44;
 const int MID_HEIGHT = 7;

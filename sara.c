@@ -49,11 +49,11 @@ int main(int argc, char* argv[]) {
 
   int opt;
 
-  while ((opt = getopt(argc, argv, "ac")) != -1){
+  while ((opt = getopt(argc, argv, "cM")) != -1){
     switch (opt) {
 			// removed!
-      case 'a': mode = ANIMATED; break;
-      case 'c': WAIT_BUFFER = 0.00005; break;// constant
+      case 'c': WAIT_BUFFER = 0.00005; break; // constant glitch
+//    case 'M': mega_glitch();
     }
   }
 
@@ -460,7 +460,7 @@ void print_start_animation(int row, int col) {
 //  }
 //}
 
-  START_ANIMATION = NEON; // overwrite 'cus is's my favorite
+  START_ANIMATION = NEON; // override 'cus is's my favorite
 
   if (START_ANIMATION == NEON){
     neon(row, col);
@@ -557,6 +557,10 @@ void glitch(int row, int col){
   }
 
   quickprint(row, col, 0);
+}
+
+void mega_glitch(int row, int col){
+
 }
 
 void get_helped() {

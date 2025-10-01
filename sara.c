@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 //  get current screen dimensions
     getmaxyx(stdscr, row, col);
 
-    cache = checksize(row, col, cache);
+    cache = check_size(row, col, cache);
 
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
 
@@ -463,7 +463,7 @@ void print_start_animation(int row, int col) {
 }
 
 // Check screen size, return updated sum of dimensions
-int checksize(int row, int col, int cache){
+int check_size(int row, int col, int cache){
 
   if (cache != row + col){
 

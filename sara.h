@@ -67,7 +67,7 @@ typedef enum {
 } start_animation;
 
 void check_char(int row, int col);
-int checksize(int row, int col, int cache);
+int check_size(int row, int col, int cache);
 int is_char_in_search(wchar_t wc);
 int get_confirmation(int row, int col);
 void print_start_animation(int row, int col);

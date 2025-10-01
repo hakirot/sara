@@ -34,16 +34,20 @@ char HOLD_CHAR;
 int main(int argc, char* argv[]) {
 
   LAST_INPUT_TIME = clock();
+  double WAIT_BUFFER = 0.10000;
   double time_idle;
 
   enum { DEFAULT, ANIMATED } mode = DEFAULT;
-  int DELAY                       = 2000000;
+
+//int DELAY                       = 2000000;
+
   int opt;
 
-  while ((opt = getopt(argc, argv, "a")) != -1){
+  while ((opt = getopt(argc, argv, "ac")) != -1){
     switch (opt) {
 			// removed!
       case 'a': mode = ANIMATED; break;
+      case 'c': WAIT_BUFFER = 0.00005; break;// constant
     }
   }
 
@@ -541,7 +545,6 @@ void glitch(int row, int col){
 
     getmaxyx(stdscr, row, col);
     if (cache != row + col) break;
-
 
 //  usleep(23000);
     usleep(10000);

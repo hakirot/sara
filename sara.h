@@ -50,9 +50,6 @@
 #ifndef SARA_H
 #define SARA_H
 
-const double WAIT_BUFFER = 0.10000;
-//const double WAIT_BUFFER = 0.00005; // onstnat
-
 typedef enum {
   SMALL,
   NORMAL,

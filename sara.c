@@ -33,6 +33,12 @@ char HOLD_CHAR;
 
 int main(int argc, char* argv[]) {
 
+  for (int i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+      get_helped();
+    }
+  }
+
   LAST_INPUT_TIME = clock();
   double WAIT_BUFFER = 0.10000;
   double time_idle;
@@ -551,4 +557,14 @@ void glitch(int row, int col){
   }
 
   quickprint(row, col, 0);
+}
+
+void get_helped() {
+  for (int i = 0; i < 6; i++) {
+    printf("\e[31m%s\n\e[0m", title[i]);
+  }
+  printf("Usage: %s [OPTIONS]\n", "sara");
+  printf("  --help, -h    Display this help message\n");
+  printf("  -c            Constant glitch effect\n");
+  exit(0); // Exit after displaying help
 }

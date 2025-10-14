@@ -10,20 +10,18 @@
 
 /* FEATLIST
 
-    . Create input for alternate acronyms from headers (?)
+    . Add options to change the colors (and a random option maybe?)
+    . Add -s --small options to force small size
     . Boot animations
-    . Use archsarazap
-    . Add char input 'x' -> sets skpass env_var -> Prints Notification
-    |   > unlocks 'y' command (yay)
-    . Replace char input 'c'
-    |   > cd to psha
     . Add char input 'b' -> prompt for laptop brightness
     . mega_glitch()
-    . Add Shutdown procedure (?)
     . More Interval animations
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
         > Wide (fullscreen) glitch
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+    . Use archsarazap
+    . Create input for alternate acronyms from headers (low priority)
+    . Replace char input 'c' (with what ..? .. there was something)
 
    BESTIARY
     X Add char input 'n' -> prompt for newlook

@@ -173,7 +173,7 @@ void check_char(int row, int col) {
       glitch(row, col);
     } else if(input == 't'){
       endwin();
-      execlp("nvim", "nvim", "/home/hakirot/dox/notes2/tasks", NULL);
+      execlp("nvim", "nvim", "/home/hakirot/dox/notes/tasks", NULL);
       exit(1);
 
     } else if(input == 'p'){
@@ -570,5 +570,6 @@ void get_helped() {
   printf("\nUsage: %s [OPTIONS]\n", "sara");
   printf("  --help, -h    Display this help message\n");
   printf("  -c            Constant glitch effect\n");
+  printf("  -M            Constant MEGA glitch effect\n");
   exit(0);
 }

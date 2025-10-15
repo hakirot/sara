@@ -137,16 +137,16 @@ int is_char_in_search(wchar_t wc) {
 
 int get_confirmation(int row, int col) {
 
-  attron(COLOR_PAIR(10));
+  attron(COLOR_PAIR(9));
   mvprintw(row/2+8, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
-  attroff(COLOR_PAIR(10));
+  attroff(COLOR_PAIR(9));
   refresh();
 
   char confirmation = getchar();
 
-  attron(COLOR_PAIR(3));
+  attron(COLOR_PAIR(2));
   mvprintw(row/2 + 8, (col-LENGTH)/2, "%s", archsarafull[17]);
-  attroff(COLOR_PAIR(3));
+  attroff(COLOR_PAIR(2));
   refresh();
 
   if (confirmation == 'y' || confirmation == 'Y') return 1;
@@ -240,14 +240,14 @@ void printstandard(int row, int col){
     }
   } else if (WIN_SIZE == BIG){
 
-    attron(COLOR_PAIR(2));
+    attron(COLOR_PAIR(3));
     for(int i = 0; i < HEIGHT; i++){
       mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
       if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
       refresh();
       usleep(10000);
     }
-    attroff(COLOR_PAIR(2));
+    attroff(COLOR_PAIR(3));
 
     for(int i = 0; i < 6; i++){
 
@@ -262,10 +262,10 @@ void printstandard(int row, int col){
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2)) ;
+        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
         mvadd_wch(row/2 + 3 - i, (col-LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(2));
         attroff(COLOR_PAIR(3));
+        attroff(COLOR_PAIR(2));
         iter_row += len;
         iter_col++;
       }
@@ -297,18 +297,18 @@ void quickprint(int row, int col, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2));
+        is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3));
         mvadd_wch(row/2 - 9 + i, (col-LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(2));
         attroff(COLOR_PAIR(3));
+        attroff(COLOR_PAIR(2));
         iter_row += len;
         iter_col++;
       }
     }
     // print name with background
-    attron(COLOR_PAIR(10));
+    attron(COLOR_PAIR(9));
     mvprintw(row/2 + 4, (col-LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
-    attroff(COLOR_PAIR(10));
+    attroff(COLOR_PAIR(9));
 
     // print colorbar
     if (printColorbar == 1){
@@ -348,9 +348,9 @@ void neon(int row, int col) {
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
-          attron(COLOR_PAIR(3));
+          attron(COLOR_PAIR(2));
           mvprintw(row/2 - 9 + i, (col-LENGTH)/2, "%s", arch[i]);
-          attroff(COLOR_PAIR(3));
+          attroff(COLOR_PAIR(2));
         }
       }
 
@@ -388,7 +388,7 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2)) ;
+            is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(2));
             attroff(COLOR_PAIR(3));
@@ -421,7 +421,7 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(3)) : attron(COLOR_PAIR(2)) ;
+            is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
             mvadd_wch(row/2 - 2 + i, (col-LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(2));
             attroff(COLOR_PAIR(3));
@@ -534,7 +534,7 @@ void glitch(int row, int col){
     }
 
     if (WIN_SIZE == BIG) {
-      attron(COLOR_PAIR(2));
+      attron(COLOR_PAIR(3));
       if (rng_backdrop == 0){
         mvprintw(row/2 - 2 + rng_row, (col - LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){

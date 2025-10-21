@@ -28,7 +28,6 @@ int LENGTH = 44;
 int HEIGHT = 7;
 
 start_animation START_ANIMATION = EMPTY;
-wchar_t SEARCH_STR[] = L"`+so:-./";
 char HOLD_CHAR;
 
 int main(int argc, char* argv[]) {
@@ -125,8 +124,8 @@ int main(int argc, char* argv[]) {
 
 int is_char_in_search(wchar_t wc) {
 
-//      SEARCH_STR[] = L"`+so:-./";
-//      Iterate through the wide-character array
+    wchar_t SEARCH_STR[] = L"`+so:-./";
+//  Iterate through the wide-character array
     for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
         if (wc == SEARCH_STR[i]) {
             return 1; // Character found
@@ -173,7 +172,7 @@ void check_char(int row, int col) {
       glitch(row, col);
     } else if(input == 't'){
       endwin();
-      execlp("nvim", "nvim", "/home/hakirot/dox/notes/tasks", NULL);
+      execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
       exit(1);
 
     } else if(input == 'p'){
@@ -230,6 +229,7 @@ void check_char(int row, int col) {
 }
 
 void printstandard(int row, int col){
+
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < HEIGHT; i++){
       mvprintw(row/2 - 3 + i, (col-LENGTH)/2, "%s", title[i]);
@@ -238,6 +238,7 @@ void printstandard(int row, int col){
       refresh();
       usleep(20000);
     }
+
   } else if (WIN_SIZE == BIG){
 
     attron(COLOR_PAIR(3));

@@ -201,15 +201,36 @@ void check_char(int row, int col) {
           perror("fork");
           exit(EXIT_FAILURE);
         } else if (pid == 0) {
-          execl("/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+          execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
           perror("execl");
         } else {
+          clear();
+          refresh();
           int status;
           waitpid(pid, &status, 0);
         }
 
         neon(row, col);
       }
+
+    } else if(input == 'b'){
+
+      pid_t pid = fork();
+
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "AC:80:0A:19:89:A8", (char *)NULL);
+        perror("execl");
+      } else {
+        clear();
+        refresh();
+        int status;
+        waitpid(pid, &status, 0);
+      }
+
+      neon(row, col);
 
     } else if (input == 'v') {
       endwin();
@@ -554,7 +575,8 @@ void glitch(int row, int col){
     if (cache != row + col) break;
 
 //  usleep(23000);
-    usleep(10000);
+//  usleep(10000);
+    usleep(07000);
   }
 
   quickprint(row, col, 0);

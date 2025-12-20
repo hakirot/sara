@@ -1,11 +1,11 @@
 
 /*
---   ███████╗ █████╗ ██████╗  █████╗    --
---   ██╔════╝██╔══██╗██╔══██╗██╔══██╗   --
---   ███████╗███████║██████╔╝███████║   --
---   ╚════██║██╔══██║██╔══██╗██╔══██║   --
---   ███████║██║  ██║██║  ██║██║  ██║   --
---   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h --
+--  ███████╗ █████╗ ██████╗  █████╗   --
+--  ██╔════╝██╔══██╗██╔══██╗██╔══██╗  --
+--  ███████╗███████║██████╔╝███████║  --
+--  ╚════██║██╔══██║██╔══██╗██╔══██║  --
+--  ███████║██║  ██║██║  ██║██║  ██║  --
+--  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h --
                        2025 PUNKMONK  -- */
 
 /* FEATLIST
@@ -14,6 +14,7 @@
     . Add -s --small options to force small size
     . Boot animations
     . Add char input 'b' -> prompt for laptop brightness
+                         -> and/or bluetooth
     . mega_glitch()
     . More Interval animations
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
@@ -73,9 +74,9 @@ void neon(int row, int col);
 void glitch(int row, int col);
 void mega_glitch(int row, int col);
 
-const int MAX_HEIGHT = 19;
-const int MAX_LENGTH = 44;
-const int MID_HEIGHT = 7;
-const int MID_LENGTH = 44;
+const int BIG_GLYPH_HEIGHT = 19;
+const int BIG_GLYPH_LENGTH = 44;
+const int NORMAL_GLYPH_HEIGHT = 7;
+const int NORMAL_GLYPH_LENGTH = 44;
 
 #endif

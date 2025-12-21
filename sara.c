@@ -861,6 +861,9 @@ void prompt_newlook(int row, int col) {
   wchar_t SEARCH_STR[] = L"█";
   wchar_t exec_newlook_str[] = L"EXC NWLOK";
 
+  int offset = 0;
+  if (WIN_SIZE != BIG) offset = 1;
+
   for(int i = 0; i < 7; i++){
 
     mbstate_t state;
@@ -880,13 +883,15 @@ void prompt_newlook(int row, int col) {
             attron(COLOR_PAIR(GREEN));
           } else {
             attron(COLOR_PAIR(RED));
+            wc = L'.';
+            setcchar(&cchar, &wc, 0, 0, NULL);
           }
         } else {
           attron(COLOR_PAIR(RED));
         }
       }
 
-      mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+      mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
       attroff(COLOR_PAIR(GREEN));
       attroff(COLOR_PAIR(RED));
       iter_row += len;
@@ -896,6 +901,7 @@ void prompt_newlook(int row, int col) {
   refresh();
 
   int selection = 0;
+  int cache = row + col;
   while(1){
 
     int input = getch();
@@ -929,14 +935,15 @@ void prompt_newlook(int row, int col) {
                 attron(COLOR_PAIR(GREEN));
               } else {
                 attron(COLOR_PAIR(RED));
+                wc = L'.';
+                setcchar(&cchar, &wc, 0, 0, NULL);
               }
             } else {
               attron(COLOR_PAIR(RED));
             }
           }
 
-          mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
-          attroff(COLOR_PAIR(WHITE));
+          mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(GREEN));
           attroff(COLOR_PAIR(RED));
           iter_row += len;
@@ -973,5 +980,7 @@ void prompt_newlook(int row, int col) {
     }
 
     usleep(10000);
+    getmaxyx(stdscr, row, col);
+    if (cache != row + col) break;
   }
 }

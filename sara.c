@@ -333,14 +333,19 @@ void check_char(int row, int col) {
           int brightness;
           sscanf(buff, "%d", &brightness);
 
+          int offset = 0;
+          if(WIN_SIZE != BIG) offset = 1;
+
           // print file contents
           attron(COLOR_PAIR(BLACK_GREEN));
-          mvaddstr(row/2, col/2 - 11, buff);
+          mvaddstr(row/2 - offset, col/2 - 11, buff);
           attroff(COLOR_PAIR(BLACK_GREEN));
 
           patch_backlight(row, col);
           patch_border(row, col);
           refresh();
+
+          int cache = row + col;
 
           while(1){
 
@@ -359,10 +364,14 @@ void check_char(int row, int col) {
 
               // Update UI
               sprintf(str, "%d", brightness);
-              mvaddstr(row/2, col/2 - 11, "     ");
+
+              mvaddstr(row/2 - offset, col/2 - 11, "     ");
               attron(COLOR_PAIR(BLACK_GREEN));
-              mvaddstr(row/2, col/2 - 11, str);
+              mvaddstr(row/2 - offset, col/2 - 11, str);
               attroff(COLOR_PAIR(BLACK_GREEN));
+
+              patch_border(row, col);
+
               refresh();
 
               FILE *writeptr = fopen("/sys/class/backlight/intel_backlight/brightness", "w");
@@ -376,6 +385,8 @@ void check_char(int row, int col) {
               break;
             }
 
+            getmaxyx(stdscr, row, col);
+            if (cache != row + col) break;
             usleep(1000);
           }
         }
@@ -820,6 +831,9 @@ void patch_backlight(int row, int col){
 
 void patch_border(int row, int col){
 
+  int offset = 0;
+  if (WIN_SIZE != BIG) offset = 1;
+
   wchar_t wc;
   mbstate_t state;  // Tracks state of mbrtowc function when converting between types of chars
   // Converts character from iter_row to wide char `wc`
@@ -827,8 +841,8 @@ void patch_border(int row, int col){
   size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
-  attron(COLOR_PAIR(YELLOW));
-  mvadd_wch(row/2, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
-  attroff(COLOR_PAIR(YELLOW));
+  attron(COLOR_PAIR(RED));
+  mvadd_wch(row/2 - offset, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
+  attroff(COLOR_PAIR(RED));
 
 }

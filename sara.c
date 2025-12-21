@@ -320,7 +320,7 @@ void check_char(int row, int col) {
 
         neon(row, col);
 
-      } if (selection == choices[1]){ // backlight
+      } if (selection == choices[1]){
 				FILE *fptr = fopen("/sys/class/backlight/intel_backlight/brightness", "r");
         if(fptr){
 
@@ -351,29 +351,29 @@ void check_char(int row, int col) {
               if (input == 'j'){
                 // Decrement the string and write it to file
                 brightness -= 20;
+                if (brightness < 0) brightness = 0;
               } else if (input == 'k'){
                 brightness += 20;
+                if (brightness > 1500) brightness = 1500;
               }
 
               // Update UI
               sprintf(str, "%d", brightness);
+              mvaddstr(row/2, col/2 - 11, "     ");
               attron(COLOR_PAIR(BLACK_GREEN));
               mvaddstr(row/2, col/2 - 11, str);
               attroff(COLOR_PAIR(BLACK_GREEN));
               refresh();
 
-            } else if (input == 'q'){
-              break;
-            } else if (input == '\n'){
-              mvprintw(row/2, col/2, "asdf"); //asdf
-              refresh();
               FILE *writeptr = fopen("/sys/class/backlight/intel_backlight/brightness", "w");
               if(writeptr){
                 // Write brightness to file
                 fprintf(writeptr, "%s", str);
                 fclose(writeptr);
-                break;
               }
+
+            } else if (input == 'q' || input == '\n'){
+              break;
             }
 
             usleep(1000);

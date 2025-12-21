@@ -26,6 +26,19 @@ clock_t WAIT_START;
 int GLYPH_LENGTH = 44;
 int GLYPH_HEIGHT = 7;
 
+const int BLACK         = 0; // not used
+const int RED           = 2;
+const int GREEN         = 3;
+const int YELLOW        = 4;
+const int BLUE          = 5;
+const int MAGENTA       = 6;
+const int CYAN          = 7;
+const int WHITE         = 8;
+const int BLACK_BLACK   = 1;
+const int BLACK_GREEN   = 9;
+const int BLACK_RED     = 10;
+const int BLUE_BLACK    = 11;
+
 start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
 
@@ -59,15 +72,15 @@ int main(int argc, char* argv[]) {
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()
   use_default_colors();
+  init_pair(RED, COLOR_RED, -1); // Foreground text, no background
+  init_pair(GREEN, COLOR_GREEN, -1); // Foreground text, no background
+  init_pair(YELLOW, COLOR_YELLOW, -1); // Foreground text, no background
+  init_pair(BLUE, COLOR_BLUE, -1);
+  init_pair(MAGENTA, COLOR_MAGENTA, -1);
+  init_pair(CYAN, COLOR_CYAN, -1);
+  init_pair(WHITE, COLOR_WHITE, -1);
+  init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
   init_pair(1, COLOR_BLACK, COLOR_BLACK);
-  init_pair(2, COLOR_RED, -1); // Foreground text, no background
-  init_pair(3, COLOR_GREEN, -1); // Foreground text, no background
-  init_pair(4, COLOR_YELLOW, -1); // Foreground text, no background
-  init_pair(5, COLOR_BLUE, -1);
-  init_pair(6, COLOR_MAGENTA, -1);
-  init_pair(7, COLOR_CYAN, -1);
-  init_pair(8, COLOR_WHITE, -1);
-  init_pair(9, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
   init_pair(10, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
   init_pair(11, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
 
@@ -135,9 +148,9 @@ int is_char_in_search(wchar_t wc) {
 
 int get_confirmation(int row, int col) {
 
-  attron(COLOR_PAIR(9));
+  attron(COLOR_PAIR(BLACK_GREEN));
   mvprintw(row/2+8, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
-  attroff(COLOR_PAIR(9));
+  attroff(COLOR_PAIR(BLACK_GREEN));
   refresh();
 
   char confirmation = getchar();

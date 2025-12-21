@@ -13,8 +13,6 @@
     . Add options to change the colors (and a random option maybe?)
     . Add -s --small options to force small size
     . More boot animations
-    . Add char input 'b' -> prompt for laptop brightness
-                         -> and/or bluetooth
     . mega_glitch()
     . More Interval animations
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
@@ -25,6 +23,8 @@
     . Replace char input 'c' (with what ..? .. there was something)
 
    BESTIARY
+    X Add menues for 'b' prompt (bluetooth and backlight)
+    X Create a cooler newlook prompt
     X Add char input 'n' -> prompt for newlook
     X FIX neon animation pause 
     X Add char input 'p' -> fork polybar restart

@@ -26,7 +26,7 @@ clock_t WAIT_START;
 int GLYPH_LENGTH = 44;
 int GLYPH_HEIGHT = 7;
 
-const int BLACK         = 0; // not used
+const int BLACK         = 0;
 const int RED           = 1;
 const int GREEN         = 2;
 const int YELLOW        = 3;
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
   init_pair(WHITE, COLOR_WHITE, -1);
   init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
   init_pair(12, COLOR_BLACK, COLOR_BLACK);
-  init_pair(13, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
+  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
   init_pair(14, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
 
 //raw();                    // Pass F1, ^C to program w/o signals
@@ -832,7 +832,6 @@ void patch_border(int row, int col){
 
 void prompt_newlook(int row, int col) {
 
-
 //wchar_t SEARCH_STR[] = L"╔╗╚╝═║█";
   wchar_t SEARCH_STR[] = L"█";
   wchar_t exec_newlook_str[] = L"EXC NWLOK";
@@ -855,11 +854,11 @@ void prompt_newlook(int row, int col) {
 
       for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
         if (wc == SEARCH_STR[i]) {
-          if (iter_col < 19) {
+          if (iter_col < 20) {
             attron(COLOR_PAIR(GREEN));
           } else {
             attron(COLOR_PAIR(RED));
-            wc = L'+';
+            wc = L'.';
             setcchar(&cchar, &wc, 0, 0, NULL);
           }
         } else {
@@ -875,6 +874,11 @@ void prompt_newlook(int row, int col) {
     }
   }
   refresh();
+
+  attron(COLOR_PAIR(BLACK_RED));
+  mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 2, " EXEC NEWLOOK ? ");
+  refresh();
+  attroff(COLOR_PAIR(BLACK_RED));
 
   int selection = 0;
   int cache = row + col;
@@ -905,13 +909,13 @@ void prompt_newlook(int row, int col) {
 
           for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
             if (wc == SEARCH_STR[i]) {
-              if (iter_col < 19 && selection == 0) {
+              if (iter_col < 20 && selection == 0) {
                 attron(COLOR_PAIR(GREEN));
-              } else if (iter_col > 18 && selection == 1) {
+              } else if (iter_col > 19 && selection == 1) {
                 attron(COLOR_PAIR(GREEN));
               } else {
                 attron(COLOR_PAIR(RED));
-                wc = L'+';
+                wc = L'.';
                 setcchar(&cchar, &wc, 0, 0, NULL);
               }
             } else {
@@ -926,13 +930,17 @@ void prompt_newlook(int row, int col) {
           iter_col++;
         }
       }
+      attron(COLOR_PAIR(BLACK_RED));
+      mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 2, " EXEC NEWLOOK ? ");
+      refresh();
+      attroff(COLOR_PAIR(BLACK_RED));
       refresh();
 
-    } else if (input == 'q') {
+    } else if (input == 'q' || input == 'n') {
       glitch(row, col);
       break;
-    } else if (input == '\n') {
-      if (selection == 1){
+    } else if (input == '\n' || input == 'y') {
+      if (selection == 1 || input == 'y'){
         pid_t pid = fork();
 
         if (pid < 0) {

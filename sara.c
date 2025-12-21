@@ -883,7 +883,7 @@ void prompt_newlook(int row, int col) {
             attron(COLOR_PAIR(GREEN));
           } else {
             attron(COLOR_PAIR(RED));
-            wc = L'.';
+            wc = L'+';
             setcchar(&cchar, &wc, 0, 0, NULL);
           }
         } else {
@@ -935,7 +935,7 @@ void prompt_newlook(int row, int col) {
                 attron(COLOR_PAIR(GREEN));
               } else {
                 attron(COLOR_PAIR(RED));
-                wc = L'.';
+                wc = L'+';
                 setcchar(&cchar, &wc, 0, 0, NULL);
               }
             } else {

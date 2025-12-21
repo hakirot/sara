@@ -236,22 +236,62 @@ void check_char(int row, int col) {
       const char * selection = select_option_window(row, col, choices, 2);
 
       if (selection == choices[0]){ // When selected with `selection`
-        pid_t pid = fork();
 
-        if (pid < 0) {
-          perror("fork");
-          exit(EXIT_FAILURE);
-        } else if (pid == 0) {
-          execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "AC:80:0A:19:89:A8", (char *)NULL);
-          perror("execl");
-        } else {
-          clear();
-          refresh();
-          int status;
-          waitpid(pid, &status, 0);
+        char* bluetooth_choices[2]={'\0'};
+        bluetooth_choices[0]="CONNECT";
+        bluetooth_choices[1]="DISCONNECT";
+        selection = select_option_window(row, col, bluetooth_choices, 2);
+
+        if (selection == bluetooth_choices[0]){
+          char* connect_choices[2]={'\0'};
+          connect_choices[0]="XM5";
+          connect_choices[1]="ACOUSTIC";
+          selection = select_option_window(row, col, connect_choices, 2);
+
+          if (selection == connect_choices[0]){
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "AC:80:0A:19:89:A8", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
+          }
+        } else if (selection == bluetooth_choices[1]){
+          char* disconnect_choices[2]={'\0'};
+          disconnect_choices[0]="XM5";
+          disconnect_choices[1]="ACOUSTIC";
+          selection = select_option_window(row, col, disconnect_choices, 2);
+
+          if (selection == disconnect_choices[0]){
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "disconnect", "AC:80:0A:19:89:A8", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
+          }
         }
 
         neon(row, col);
+
+      } if (selection == choices[1]){
+        // backlight
       }
 
     neon(row, col);
@@ -378,14 +418,14 @@ const char * select_option_window(int row, int col, char** choices, int len){
   int selection = 0;
   int cache = row + col;
 
-  quickprint(row, col, BLACK, 0, 0);
+  quickprint(row, col, WHITE, YELLOW, 0);
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(RED));
   for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-    mvprintw(row/2-2 + i, (col-GLYPH_LENGTH)/2, "%s", option_window[i]);
+    mvprintw(row/2-2 + i - offset, (col-GLYPH_LENGTH)/2, "%s", option_window[i]);
   }
   attroff(COLOR_PAIR(RED));
 
@@ -411,7 +451,7 @@ const char * select_option_window(int row, int col, char** choices, int len){
       }
 
     } else if (input == 'q'){
-      break;
+      return NULL;
     } else if (input == '\n'){
       return choices[selection];
     }

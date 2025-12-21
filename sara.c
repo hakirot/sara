@@ -27,14 +27,14 @@ int GLYPH_LENGTH = 44;
 int GLYPH_HEIGHT = 7;
 
 const int BLACK         = 0; // not used
-const int RED           = 2;
-const int GREEN         = 3;
-const int YELLOW        = 4;
-const int BLUE          = 5;
-const int MAGENTA       = 6;
-const int CYAN          = 7;
-const int WHITE         = 8;
-const int BLACK_BLACK   = 1;
+const int RED           = 1;
+const int GREEN         = 2;
+const int YELLOW        = 3;
+const int BLUE          = 4;
+const int MAGENTA       = 5;
+const int CYAN          = 6;
+const int WHITE         = 7;
+const int BLACK_BLACK   = 8;
 const int BLACK_GREEN   = 9;
 const int BLACK_RED     = 10;
 const int BLUE_BLACK    = 11;
@@ -82,9 +82,9 @@ int main(int argc, char* argv[]) {
   init_pair(CYAN, COLOR_CYAN, -1);
   init_pair(WHITE, COLOR_WHITE, -1);
   init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
-  init_pair(1, COLOR_BLACK, COLOR_BLACK);
-  init_pair(10, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
-  init_pair(11, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
+  init_pair(12, COLOR_BLACK, COLOR_BLACK);
+  init_pair(13, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
+  init_pair(14, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
 
 //raw();                    // Pass F1, ^C to program w/o signals
                             // Also disables line buffering like cbreak()
@@ -536,7 +536,7 @@ const char * select_option_window(int row, int col, char** choices, int len){
     }
 
     for (int i = 0; i < len; i++){
-      i == selection ? attron(COLOR_PAIR(BLACK_RED)) : attron(COLOR_PAIR(GREEN));
+      i == selection ? attron(COLOR_PAIR(BLACK_GREEN)) : attron(COLOR_PAIR(GREEN));
       mvprintw(row/2 + i - 1 - offset, (col-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
       attroff(COLOR_PAIR(BLACK_RED));
       attroff(COLOR_PAIR(GREEN));

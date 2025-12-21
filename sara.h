@@ -75,6 +75,8 @@ void neon(int row, int col);
 void glitch(int row, int col);
 void mega_glitch(int row, int col);
 const char * select_option_window(int row, int col, char** choices, int len);
+void patch_backlight(int row, int col);
+void patch_border(int row, int col);
 
 const int BIG_GLYPH_HEIGHT = 19;
 const int BIG_GLYPH_LENGTH = 44;

@@ -244,7 +244,7 @@ void check_char(int row, int col) {
 
         if (selection == bluetooth_choices[0]){
           char* connect_choices[2]={'\0'};
-          connect_choices[0]="XM5";
+          connect_choices[0]="WH-1000XM5";
           connect_choices[1]="ACOUSTIC";
           selection = select_option_window(row, col, connect_choices, 2);
 
@@ -281,7 +281,7 @@ void check_char(int row, int col) {
           }
         } else if (selection == bluetooth_choices[1]){
           char* disconnect_choices[2]={'\0'};
-          disconnect_choices[0]="XM5";
+          disconnect_choices[0]="WH-1000XM5";
           disconnect_choices[1]="ACOUSTIC";
           selection = select_option_window(row, col, disconnect_choices, 2);
 
@@ -329,47 +329,55 @@ void check_char(int row, int col) {
           fgets(buff, 8, fptr);
           fclose(fptr);
 
-          attron(COLOR_PAIR(GREEN));
-          int offset = 0;
-          mvaddstr(row/2 - offset, (col-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
-          attroff(COLOR_PAIR(GREEN));
+          // Read buff to int
+          int brightness;
+          sscanf(buff, "%d", &brightness);
 
+          // print file contents
           attron(COLOR_PAIR(BLACK_GREEN));
           mvaddstr(row/2, col/2 - 11, buff);
           attroff(COLOR_PAIR(BLACK_GREEN));
-          wchar_t wc;
-          mbstate_t state;  // Tracks state of mbrtowc function when converting between types of chars
-          // Converts character from iter_row to wide char `wc`
-          // Also records length of character at *iter_row in len
-          size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
-          cchar_t cchar;
-          setcchar(&cchar, &wc, 0, 0, NULL);
-          // patch
-          attron(COLOR_PAIR(YELLOW));
-          mvadd_wch(row/2, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
-          attroff(COLOR_PAIR(YELLOW));
+
+          patch_backlight(row, col);
+          patch_border(row, col);
           refresh();
 
           while(1){
+
             int input = getch();
+            char str[16];
 
             if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
-
               if (input == 'j'){
-
-              } else {
-
+                // Decrement the string and write it to file
+                brightness -= 20;
+              } else if (input == 'k'){
+                brightness += 20;
               }
+
+              // Update UI
+              sprintf(str, "%d", brightness);
+              attron(COLOR_PAIR(BLACK_GREEN));
+              mvaddstr(row/2, col/2 - 11, str);
+              attroff(COLOR_PAIR(BLACK_GREEN));
+              refresh();
 
             } else if (input == 'q'){
               break;
+            } else if (input == '\n'){
+              mvprintw(row/2, col/2, "asdf"); //asdf
+              refresh();
+              FILE *writeptr = fopen("/sys/class/backlight/intel_backlight/brightness", "w");
+              if(writeptr){
+                // Write brightness to file
+                fprintf(writeptr, "%s", str);
+                fclose(writeptr);
+                break;
+              }
             }
-            usleep(100000);
-          }
 
-        } else {
-          endwin();
-          exit(1);
+            usleep(1000);
+          }
         }
       }
 
@@ -798,4 +806,29 @@ void get_helped() {
   printf("  -f [INT]      set custom FOREGROUND color\n");
   printf("  -b [INT]      set custom BACKGROUND color\n");
   exit(0);
+}
+
+void patch_backlight(int row, int col){
+
+  attron(COLOR_PAIR(GREEN));
+  int offset = 0;
+  if (WIN_SIZE != BIG) offset = 1;
+  mvaddstr(row/2 - offset, (col-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
+  attroff(COLOR_PAIR(GREEN));
+
+}
+
+void patch_border(int row, int col){
+
+  wchar_t wc;
+  mbstate_t state;  // Tracks state of mbrtowc function when converting between types of chars
+  // Converts character from iter_row to wide char `wc`
+  // Also records length of character at *iter_row in len
+  size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
+  cchar_t cchar;
+  setcchar(&cchar, &wc, 0, 0, NULL);
+  attron(COLOR_PAIR(YELLOW));
+  mvadd_wch(row/2, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
+  attroff(COLOR_PAIR(YELLOW));
+
 }

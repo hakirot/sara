@@ -39,6 +39,8 @@ const int BLACK_GREEN   = 9;
 const int BLACK_RED     = 10;
 const int BLUE_BLACK    = 11;
 
+const int EFFECT_MUTE   = 0;
+
 start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
 
@@ -104,7 +106,6 @@ int main(int argc, char* argv[]) {
 
 //  get current screen dimensions
     getmaxyx(stdscr, row, col);
-
     cache = check_size(row, col, cache);
 
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
@@ -121,7 +122,7 @@ int main(int argc, char* argv[]) {
 
     // print only once after the HOLD_CHAR goes back to EOF
     if (HOLD_CHAR == '\0' && should_print == true){
-      quickprint(row, col, 0);
+      quickprint(row, col, GREEN, RED, 0);
       should_print = false;
     } else if (HOLD_CHAR != '\0'){
       should_print = true;
@@ -228,16 +229,13 @@ void check_char(int row, int col) {
     } else if(input == 'b'){
 
       // Display menu
-      // Print and prompt
 
-      attron(COLOR_PAIR(BLACK_GREEN));
-      mvprintw(row/2, col/2 - 4, "%s", "BLUETOOTH");
-      attroff(COLOR_PAIR(BLACK_GREEN));
+      char* choices[2]={'\0'};
+      choices[0]="BLUETOOTH";
+      choices[1]="BACKLIGHT";
+      const char * selection = select_option_window(row, col, choices, 2);
 
-      refresh();
-      char confirmation = getchar();
-
-      if (false){ // When navved to
+      if (selection == choices[0]){ // When selected with `selection`
         pid_t pid = fork();
 
         if (pid < 0) {
@@ -256,6 +254,7 @@ void check_char(int row, int col) {
         neon(row, col);
       }
 
+    neon(row, col);
 
     } else if (input == 'v') {
       endwin();
@@ -326,7 +325,7 @@ void printstandard(int row, int col){
   }
 }
 
-void quickprint(int row, int col, int printColorbar){
+void quickprint(int row, int col, int fg, int bg, int printColorbar){
   clear();
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < GLYPH_HEIGHT; i++){
@@ -348,10 +347,10 @@ void quickprint(int row, int col, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(RED)) : attron(COLOR_PAIR(GREEN));
+        is_char_in_search(wc) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
         mvadd_wch(row/2 - 9 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(GREEN));
-        attroff(COLOR_PAIR(RED));
+        attroff(COLOR_PAIR(fg));
+        attroff(COLOR_PAIR(bg));
         iter_row += len;
         iter_col++;
       }
@@ -372,6 +371,62 @@ void quickprint(int row, int col, int printColorbar){
   }
   if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
   refresh();
+}
+
+const char * select_option_window(int row, int col, char** choices, int len){
+
+  int selection = 0;
+  int cache = row + col;
+
+  quickprint(row, col, BLACK, 0, 0);
+
+  int offset = 0;
+  if (WIN_SIZE != BIG) offset = 1;
+
+  attron(COLOR_PAIR(RED));
+  for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+    mvprintw(row/2-2 + i, (col-GLYPH_LENGTH)/2, "%s", option_window[i]);
+  }
+  attroff(COLOR_PAIR(RED));
+
+  while(1){
+
+    if (WIN_SIZE != BIG){
+      offset = 1;
+    } else {
+      offset = 0;
+    }
+
+    getmaxyx(stdscr, row, col);
+    if (cache != row + col) break;
+
+    int input = getch();
+
+    if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
+
+      if (input == 'j'){
+        selection = (selection + 1) % len;
+      } else {
+        selection = (selection + (len - 1)) % len;
+      }
+
+    } else if (input == 'q'){
+      break;
+    } else if (input == '\n'){
+      return choices[selection];
+    }
+
+    for (int i = 0; i < len; i++){
+      i == selection ? attron(COLOR_PAIR(BLACK_GREEN)) : attron(COLOR_PAIR(GREEN));
+      mvprintw(row/2 + i - 1 - offset, (col-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
+      attroff(COLOR_PAIR(BLACK_GREEN));
+      attroff(COLOR_PAIR(GREEN));
+    }
+
+    refresh();
+    usleep(1000); // chill
+  }
+
 }
 
 void neon(int row, int col) {
@@ -490,7 +545,7 @@ void neon(int row, int col) {
     refresh();
   }
 
-  quickprint(row, col, 0);
+  quickprint(row, col, GREEN, RED, 0);
 
 //mvprintw(row/2 + 3, (col-GLYPH_LENGTH)/2, "%s", title[6]);
   refresh();
@@ -516,7 +571,7 @@ void print_start_animation(int row, int col) {
   if (START_ANIMATION == NEON){
     neon(row, col);
   } else if (START_ANIMATION == QUICK){
-    quickprint(row, col, 0);
+    quickprint(row, col, GREEN, RED, 0);
   } else {
     printstandard(row, col);
     glitch(row, col);
@@ -566,7 +621,7 @@ void glitch(int row, int col){
   int cache = row + col;
 
   int rng_row, rng_shift, rng_backdrop = 0;
-  quickprint(row, col, 1); // only printing for colorbar, should create
+  quickprint(row, col, GREEN, RED, 1); // only printing for colorbar, should create
                            // separate print_colorbar
 
 //for( int i = 0 ; i < 23; i++ ) {
@@ -609,7 +664,7 @@ void glitch(int row, int col){
     usleep(07000);
   }
 
-  quickprint(row, col, 0);
+  quickprint(row, col, GREEN, RED, 0);
 }
 
 void mega_glitch(int row, int col){
@@ -618,7 +673,8 @@ void mega_glitch(int row, int col){
 void get_helped() {
   printf("Usage: %s [OPTIONS]\n", "sara");
   printf("  --help, -h    Display this help message\n");
-  printf("  -c            Constant glitch effect\n");
+  printf("  -c            Constant effects\n");
+  printf("  -G            Constant glitch effect\n");
   printf("  -M            Constant MEGA glitch effect\n");
   exit(0);
 }

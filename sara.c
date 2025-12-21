@@ -207,26 +207,6 @@ void check_char(int row, int col) {
 
     } else if(input == 'n'){
 
-//    if (get_confirmation(row, col) == 1){
-
-//      pid_t pid = fork();
-
-//      if (pid < 0) {
-//        perror("fork");
-//        exit(EXIT_FAILURE);
-//      } else if (pid == 0) {
-//        execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
-//        perror("execl");
-//      } else {
-//        clear();
-//        refresh();
-//        int status;
-//        waitpid(pid, &status, 0);
-//      }
-
-//      neon(row, col);
-//    }
-
       prompt_newlook(row, col);
 
     } else if(input == 'b'){
@@ -851,10 +831,6 @@ void patch_border(int row, int col){
 }
 
 void prompt_newlook(int row, int col) {
-
-//for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++) {
-//  mvprintw(row/2 - 2 + i, (col-GLYPH_LENGTH)/2, "%s", no_yes_window[i]);
-//}
 
 
 //wchar_t SEARCH_STR[] = L"╔╗╚╝═║█";

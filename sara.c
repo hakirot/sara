@@ -19,7 +19,6 @@
 #include <wchar.h>
 #include <time.h>
 #include <wait.h>
-
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
@@ -215,22 +214,34 @@ void check_char(int row, int col) {
 
     } else if(input == 'b'){
 
-      pid_t pid = fork();
+      // Display menu
+      // Print and prompt
 
-      if (pid < 0) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-      } else if (pid == 0) {
-        execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "AC:80:0A:19:89:A8", (char *)NULL);
-        perror("execl");
-      } else {
-        clear();
-        refresh();
-        int status;
-        waitpid(pid, &status, 0);
+      attron(COLOR_PAIR(9));
+      mvprintw(row/2, col/2 - 4, "%s", "BLUETOOTH");
+      attroff(COLOR_PAIR(9));
+      refresh();
+      char confirmation = getchar();
+
+      if (false){ // When navved to
+        pid_t pid = fork();
+
+        if (pid < 0) {
+          perror("fork");
+          exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+          execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "AC:80:0A:19:89:A8", (char *)NULL);
+          perror("execl");
+        } else {
+          clear();
+          refresh();
+          int status;
+          waitpid(pid, &status, 0);
+        }
+
+        neon(row, col);
       }
 
-      neon(row, col);
 
     } else if (input == 'v') {
       endwin();
@@ -273,19 +284,19 @@ void printstandard(int row, int col){
 
     for(int i = 0; i < 6; i++){
 
-      mbstate_t state;                            // Tracks state of mbrtowc function
+      mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
       memset(&state, 0, sizeof(mbstate_t));
       const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
       int iter_col = 0;                           // Track the column position
       while (*iter_row) {                         // Iterate through chars in row
         wchar_t wc;                               // Create wide character var
-        // Converts character from iter_row to wide char
-        // Also records length of character in `len`
+        // Converts character from iter_row to wide char `wc`
+        // Also records length of character at *iter_row in len
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
         is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
 
-        // Write wide char to cchar type for mvaddwc()
+        // Write wide char to `cchar` for mvaddwc()
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
         mvadd_wch(row/2 + 3 - i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);

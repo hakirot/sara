@@ -323,13 +323,32 @@ void check_char(int row, int col) {
       } if (selection == choices[1]){ // backlight
 				FILE *fptr = fopen("/sys/class/backlight/intel_backlight/brightness", "r");
         if(fptr){
-          char buff[6] = {'\0'};
-          fgets(buff, 6, fptr);
+
+          char buff[8];
+          memset(&buff, '\0', 8 * sizeof(char));
+          fgets(buff, 8, fptr);
           fclose(fptr);
+
+          attron(COLOR_PAIR(GREEN));
+          int offset = 0;
+          mvaddstr(row/2 - offset, (col-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
+          attroff(COLOR_PAIR(GREEN));
+
           attron(COLOR_PAIR(BLACK_GREEN));
           mvaddstr(row/2, col/2 - 11, buff);
-          refresh();
           attroff(COLOR_PAIR(BLACK_GREEN));
+          wchar_t wc;
+          mbstate_t state;  // Tracks state of mbrtowc function when converting between types of chars
+          // Converts character from iter_row to wide char `wc`
+          // Also records length of character at *iter_row in len
+          size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
+          cchar_t cchar;
+          setcchar(&cchar, &wc, 0, 0, NULL);
+          // patch
+          attron(COLOR_PAIR(YELLOW));
+          mvadd_wch(row/2, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
+          attroff(COLOR_PAIR(YELLOW));
+          refresh();
 
           while(1){
             int input = getch();

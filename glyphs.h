@@ -12,5 +12,6 @@ extern const char * foreground[7];
 extern const char * backdrop[7];
 extern const char * backdropfill[7];
 extern const char * option_window[7];
+extern const char * no_yes_window[7];
 
 #endif

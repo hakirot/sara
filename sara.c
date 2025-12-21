@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()
   use_default_colors();
+  init_pair(BLACK, COLOR_BLACK, -1); // Foreground text, no background
   init_pair(RED, COLOR_RED, -1); // Foreground text, no background
   init_pair(GREEN, COLOR_GREEN, -1); // Foreground text, no background
   init_pair(YELLOW, COLOR_YELLOW, -1); // Foreground text, no background
@@ -206,25 +207,27 @@ void check_char(int row, int col) {
 
     } else if(input == 'n'){
 
-      if (get_confirmation(row, col) == 1){
+//    if (get_confirmation(row, col) == 1){
 
-        pid_t pid = fork();
+//      pid_t pid = fork();
 
-        if (pid < 0) {
-          perror("fork");
-          exit(EXIT_FAILURE);
-        } else if (pid == 0) {
-          execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
-          perror("execl");
-        } else {
-          clear();
-          refresh();
-          int status;
-          waitpid(pid, &status, 0);
-        }
+//      if (pid < 0) {
+//        perror("fork");
+//        exit(EXIT_FAILURE);
+//      } else if (pid == 0) {
+//        execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+//        perror("execl");
+//      } else {
+//        clear();
+//        refresh();
+//        int status;
+//        waitpid(pid, &status, 0);
+//      }
 
-        neon(row, col);
-      }
+//      neon(row, col);
+//    }
+
+      prompt_newlook(row, col);
 
     } else if(input == 'b'){
 
@@ -845,4 +848,130 @@ void patch_border(int row, int col){
   mvadd_wch(row/2 - offset, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
   attroff(COLOR_PAIR(RED));
 
+}
+
+void prompt_newlook(int row, int col) {
+
+//for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++) {
+//  mvprintw(row/2 - 2 + i, (col-GLYPH_LENGTH)/2, "%s", no_yes_window[i]);
+//}
+
+
+//wchar_t SEARCH_STR[] = L"╔╗╚╝═║█";
+  wchar_t SEARCH_STR[] = L"█";
+  wchar_t exec_newlook_str[] = L"EXC NWLOK";
+
+  for(int i = 0; i < 7; i++){
+
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = no_yes_window[i];
+    int iter_col = 0; // Track the column position
+    while (*iter_row) {
+      wchar_t wc;
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+      cchar_t cchar;
+      setcchar(&cchar, &wc, 0, 0, NULL);
+
+      for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
+        if (wc == SEARCH_STR[i]) {
+          if (iter_col < 19) {
+            attron(COLOR_PAIR(GREEN));
+          } else {
+            attron(COLOR_PAIR(RED));
+          }
+        } else {
+          attron(COLOR_PAIR(RED));
+        }
+      }
+
+      mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+      attroff(COLOR_PAIR(GREEN));
+      attroff(COLOR_PAIR(RED));
+      iter_row += len;
+      iter_col++;
+    }
+  }
+  refresh();
+
+  int selection = 0;
+  while(1){
+
+    int input = getch();
+
+    if (input == 'j' || input == 'k' || input == 'l' || input == 'h') {
+
+      if (selection == 0) {
+        selection = 1;
+      } else {
+        selection = 0;
+      }
+
+      for(int i = 0; i < 7; i++){
+
+        mbstate_t state;
+        memset(&state, 0, sizeof(mbstate_t));
+        const char *iter_row = no_yes_window[i];
+        int iter_col = 0; // Track the column position
+        while (*iter_row) {
+          wchar_t wc;
+          size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+          cchar_t cchar;
+          setcchar(&cchar, &wc, 0, 0, NULL);
+
+          for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
+            if (wc == SEARCH_STR[i]) {
+              if (iter_col < 19 && selection == 0) {
+                attron(COLOR_PAIR(GREEN));
+              } else if (iter_col > 18 && selection == 1) {
+                attron(COLOR_PAIR(GREEN));
+              } else {
+                attron(COLOR_PAIR(RED));
+              }
+            } else {
+              attron(COLOR_PAIR(RED));
+            }
+          }
+
+          mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+          attroff(COLOR_PAIR(WHITE));
+          attroff(COLOR_PAIR(GREEN));
+          attroff(COLOR_PAIR(RED));
+          iter_row += len;
+          iter_col++;
+        }
+      }
+      refresh();
+
+    } else if (input == 'q') {
+      glitch(row, col);
+      break;
+    } else if (input == '\n') {
+      if (selection == 1){
+        pid_t pid = fork();
+
+        if (pid < 0) {
+          perror("fork");
+          exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+          execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+          perror("execl");
+        } else {
+          clear();
+          refresh();
+          int status;
+          waitpid(pid, &status, 0);
+        }
+
+        neon(row, col);
+
+      }
+      glitch(row, col);
+      break;
+    }
+
+    usleep(10000);
+  }
 }

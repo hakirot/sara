@@ -263,6 +263,21 @@ void check_char(int row, int col) {
               int status;
               waitpid(pid, &status, 0);
             }
+          } else if (selection == connect_choices[1]){
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "FC:58:FA:9B:D7:3D", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
           }
         } else if (selection == bluetooth_choices[1]){
           char* disconnect_choices[2]={'\0'};
@@ -285,13 +300,58 @@ void check_char(int row, int col) {
               int status;
               waitpid(pid, &status, 0);
             }
+          } else if (selection == disconnect_choices[1]){
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "disconnect", "FC:58:FA:9B:D7:3D", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
           }
         }
 
         neon(row, col);
 
-      } if (selection == choices[1]){
-        // backlight
+      } if (selection == choices[1]){ // backlight
+				FILE *fptr = fopen("/sys/class/backlight/intel_backlight/brightness", "r");
+        if(fptr){
+          char buff[6] = {'\0'};
+          fgets(buff, 6, fptr);
+          fclose(fptr);
+          attron(COLOR_PAIR(BLACK_GREEN));
+          mvaddstr(row/2, col/2 - 11, buff);
+          refresh();
+          attroff(COLOR_PAIR(BLACK_GREEN));
+
+          while(1){
+            int input = getch();
+
+            if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
+
+              if (input == 'j'){
+
+              } else {
+
+              }
+
+            } else if (input == 'q'){
+              break;
+            }
+            usleep(100000);
+          }
+
+        } else {
+          endwin();
+          exit(1);
+        }
       }
 
     neon(row, col);
@@ -457,9 +517,9 @@ const char * select_option_window(int row, int col, char** choices, int len){
     }
 
     for (int i = 0; i < len; i++){
-      i == selection ? attron(COLOR_PAIR(BLACK_GREEN)) : attron(COLOR_PAIR(GREEN));
+      i == selection ? attron(COLOR_PAIR(BLACK_RED)) : attron(COLOR_PAIR(GREEN));
       mvprintw(row/2 + i - 1 - offset, (col-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
-      attroff(COLOR_PAIR(BLACK_GREEN));
+      attroff(COLOR_PAIR(BLACK_RED));
       attroff(COLOR_PAIR(GREEN));
     }
 
@@ -712,9 +772,11 @@ void mega_glitch(int row, int col){
 
 void get_helped() {
   printf("Usage: %s [OPTIONS]\n", "sara");
-  printf("  --help, -h    Display this help message\n");
+  printf("  --help, -h    Get help\n");
   printf("  -c            Constant effects\n");
   printf("  -G            Constant glitch effect\n");
   printf("  -M            Constant MEGA glitch effect\n");
+  printf("  -f [INT]      set custom FOREGROUND color\n");
+  printf("  -b [INT]      set custom BACKGROUND color\n");
   exit(0);
 }

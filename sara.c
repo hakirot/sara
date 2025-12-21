@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  setlocale(LC_ALL, "");    // Needed to print special characters, also needed b4 initscr()
+  setlocale(LC_ALL, "");    // Allow special characters, initscr()
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()
   use_default_colors();
@@ -273,23 +273,27 @@ void printstandard(int row, int col){
 
     for(int i = 0; i < 6; i++){
 
-      mbstate_t state;
+      mbstate_t state;                            // Tracks state of mbrtowc function
       memset(&state, 0, sizeof(mbstate_t));
-      const char *iter_row = titlefill[5 - i];
-      int iter_col = 0; // Track the column position
-      while (*iter_row) {
-        wchar_t wc;
-        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
-
-        cchar_t cchar;
-        setcchar(&cchar, &wc, 0, 0, NULL);
+      const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
+      int iter_col = 0;                           // Track the column position
+      while (*iter_row) {                         // Iterate through chars in row
+        wchar_t wc;                               // Create wide character var
+        // Converts character from iter_row to wide char
+        // Also records length of character in `len`
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
         is_char_in_search(wc) ? attron(COLOR_PAIR(2)) : attron(COLOR_PAIR(3)) ;
+
+        // Write wide char to cchar type for mvaddwc()
+        cchar_t cchar;
+        setcchar(&cchar, &wc, 0, 0, NULL);
         mvadd_wch(row/2 + 3 - i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+
         attroff(COLOR_PAIR(3));
         attroff(COLOR_PAIR(2));
-        iter_row += len;
-        iter_col++;
+        iter_row += len;                          // Increment the pointer one character
+        iter_col++;                               // Increment col
       }
         usleep(20000);
         refresh();

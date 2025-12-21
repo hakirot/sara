@@ -12,7 +12,7 @@
 
     . Add options to change the colors (and a random option maybe?)
     . Add -s --small options to force small size
-    . Boot animations
+    . More boot animations
     . Add char input 'b' -> prompt for laptop brightness
                          -> and/or bluetooth
     . mega_glitch()

@@ -56,17 +56,12 @@ int main(int argc, char* argv[]) {
   double WAIT_BUFFER = 0.10000;
   double time_idle;
 
-  enum { DEFAULT, ANIMATED } mode = DEFAULT;
-
-//int DELAY                       = 2000000;
-
   int opt;
-
   while ((opt = getopt(argc, argv, "cM")) != -1){
     switch (opt) {
 			// removed!
       case 'c': WAIT_BUFFER = 0.00005; break; // constant glitch
-//    case 'M': mega_glitch();
+//    case 's': something();
     }
   }
 
@@ -74,21 +69,19 @@ int main(int argc, char* argv[]) {
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()
   use_default_colors();
-  init_pair(BLACK, COLOR_BLACK, -1); // Foreground text, no background
-  init_pair(RED, COLOR_RED, -1); // Foreground text, no background
-  init_pair(GREEN, COLOR_GREEN, -1); // Foreground text, no background
-  init_pair(YELLOW, COLOR_YELLOW, -1); // Foreground text, no background
+  init_pair(BLACK, COLOR_BLACK, -1); // Foreground black, no background
+  init_pair(RED, COLOR_RED, -1);
+  init_pair(GREEN, COLOR_GREEN, -1);
+  init_pair(YELLOW, COLOR_YELLOW, -1);
   init_pair(BLUE, COLOR_BLUE, -1);
   init_pair(MAGENTA, COLOR_MAGENTA, -1);
   init_pair(CYAN, COLOR_CYAN, -1);
   init_pair(WHITE, COLOR_WHITE, -1);
-  init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN); // Black Foreground, Green Background
+  init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN);
   init_pair(12, COLOR_BLACK, COLOR_BLACK);
-  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED); // Black Background, Red Foregound
-  init_pair(14, COLOR_BLUE, COLOR_BLACK); // Blue Background, Black Foregound
+  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
+  init_pair(14, COLOR_BLUE, COLOR_BLACK);
 
-//raw();                    // Pass F1, ^C to program w/o signals
-                            // Also disables line buffering like cbreak()
   cbreak();                 // Disable line buffering
   noecho();                 // Don't display keyboard presses in window
   nodelay(stdscr, TRUE);
@@ -246,6 +239,7 @@ void check_char(int row, int col) {
               int status;
               waitpid(pid, &status, 0);
             }
+
           } else if (selection == connect_choices[1]){
             pid_t pid = fork();
 
@@ -786,18 +780,8 @@ void glitch(int row, int col){
   quickprint(row, col, GREEN, RED, 0);
 }
 
-void mega_glitch(int row, int col){
-}
+void mega_glitch(int row, int col, int duration){
 
-void get_helped() {
-  printf("Usage: %s [OPTIONS]\n", "sara");
-  printf("  --help, -h    Get help\n");
-  printf("  -c            Constant effects\n");
-  printf("  -G            Constant glitch effect\n");
-  printf("  -M            Constant MEGA glitch effect\n");
-  printf("  -f []         set custom FOREGROUND color\n");
-  printf("  -b []         set custom BACKGROUND color\n");
-  exit(0);
 }
 
 void patch_backlight(int row, int col){
@@ -964,4 +948,15 @@ void prompt_newlook(int row, int col) {
     getmaxyx(stdscr, row, col);
     if (cache != row + col) break;
   }
+}
+
+void get_helped() {
+  printf("Usage: %s [OPTIONS]\n", "sara");
+  printf("  --help, -h    Get helped\n");
+  printf("  -c            Constant effects\n");
+  printf("  -G            Constant glitch effect\n");
+  printf("  -M            Constant MEGA glitch effect\n");
+  printf("  -f []         set custom FOREGROUND color\n");
+  printf("  -b []         set custom BACKGROUND color\n");
+  exit(0);
 }

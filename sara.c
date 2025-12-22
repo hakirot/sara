@@ -151,7 +151,7 @@ int is_char_in_search(wchar_t wc) {
 int get_confirmation(int row, int col) {
 
   attron(COLOR_PAIR(BLACK_GREEN));
-  mvprintw(row/2+8, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
+  mvprintw(row/2 + 8, col/2 - 8, "%s", "EXEC NEWLOOK? y/N");
   attroff(COLOR_PAIR(BLACK_GREEN));
   refresh();
 
@@ -855,7 +855,7 @@ void prompt_newlook(int row, int col) {
       for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
         if (wc == SEARCH_STR[i]) {
           if (iter_col < 20) {
-            attron(COLOR_PAIR(GREEN));
+            attron(COLOR_PAIR(RED));
           } else {
             attron(COLOR_PAIR(RED));
             wc = L'.';
@@ -876,7 +876,7 @@ void prompt_newlook(int row, int col) {
   refresh();
 
   attron(COLOR_PAIR(BLACK_RED));
-  mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 2, " EXEC NEWLOOK ? ");
+  mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 3, " RESKIN ? ");
   refresh();
   attroff(COLOR_PAIR(BLACK_RED));
 
@@ -910,9 +910,9 @@ void prompt_newlook(int row, int col) {
           for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
             if (wc == SEARCH_STR[i]) {
               if (iter_col < 20 && selection == 0) {
-                attron(COLOR_PAIR(GREEN));
+                attron(COLOR_PAIR(RED));
               } else if (iter_col > 19 && selection == 1) {
-                attron(COLOR_PAIR(GREEN));
+                attron(COLOR_PAIR(RED));
               } else {
                 attron(COLOR_PAIR(RED));
                 wc = L'.';
@@ -931,8 +931,7 @@ void prompt_newlook(int row, int col) {
         }
       }
       attron(COLOR_PAIR(BLACK_RED));
-      mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 2, " EXEC NEWLOOK ? ");
-      refresh();
+      mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 3, " RESKIN ? ");
       attroff(COLOR_PAIR(BLACK_RED));
       refresh();
 

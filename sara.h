@@ -5,12 +5,13 @@
 --  ███████╗███████║██████╔╝███████║  --
 --  ╚════██║██╔══██║██╔══██╗██╔══██║  --
 --  ███████║██║  ██║██║  ██║██║  ██║  --
---  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h --
-                       2025 PUNKMONK  -- */
+--  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
+                                           */
 
 /* FEATLIST
 
-    . Add options to change the colors (and a random option maybe?)
+    . Add command-line args for fg and bg
+
     . Add -s --small options to force small size
     . More boot animations
     . mega_glitch()
@@ -21,6 +22,7 @@
     . Use archsarazap
     . Create input for alternate acronyms from headers (low priority)
     . Replace char input 'c' (with what ..? .. there was something)
+    . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
     X Add menues for 'b' prompt (bluetooth and backlight)

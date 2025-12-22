@@ -103,14 +103,14 @@ int main(int argc, char* argv[]) {
   init_pair(MAGENTA, COLOR_MAGENTA, -1);
   init_pair(CYAN, COLOR_CYAN, -1);
   init_pair(WHITE, COLOR_WHITE, -1);
-  init_pair(WHITE_BLACK, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_RED, COLOR_BLACK, COLOR_GREEN);
+  init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
+  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
   init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_YELLOW, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_BLUE, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_MAGENTA, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_GREEN);
+  init_pair(BLACK_YELLOW, COLOR_BLACK, COLOR_YELLOW);
+  init_pair(BLACK_BLUE, COLOR_BLACK, COLOR_BLUE);
+  init_pair(BLACK_MAGENTA, COLOR_BLACK, COLOR_MAGENTA);
+  init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
+  init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
 
   cbreak();                 // Disable line buffering
   noecho();                 // Don't display keyboard presses in window
@@ -548,7 +548,8 @@ const char * select_option_window(int row, int col, char** choices, int len){
     for (int i = 0; i < len; i++){
       i == selection ? attron(COLOR_PAIR(FOREGROUND + 8)) : attron(COLOR_PAIR(FOREGROUND));
       mvprintw(row/2 + i - 1 - offset, (col-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
-      attroff(COLOR_PAIR(BLACK_RED)); // hardcoded stylistic choice
+      attroff(COLOR_PAIR(BLACK_RED)); // usused hardcoded stylistic choice?
+      attroff(COLOR_PAIR(FOREGROUND + 8));
       attroff(COLOR_PAIR(FOREGROUND));
     }
 
@@ -863,7 +864,7 @@ void prompt_newlook(int row, int col) {
       }
 
       mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
-      attroff(COLOR_PAIR(FOREGROUND));
+      attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
       attroff(COLOR_PAIR(BACKGROUND));
       iter_row += len;
       iter_col++;
@@ -920,7 +921,7 @@ void prompt_newlook(int row, int col) {
           }
 
           mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
-          attroff(COLOR_PAIR(FOREGROUND));
+          attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
           iter_row += len;
           iter_col++;

@@ -780,8 +780,6 @@ void glitch(int row, int col){
     getmaxyx(stdscr, row, col);
     if (cache != row + col) break;
 
-//  usleep(23000);
-//  usleep(10000);
     usleep(07000);
   }
 
@@ -797,8 +795,8 @@ void get_helped() {
   printf("  -c            Constant effects\n");
   printf("  -G            Constant glitch effect\n");
   printf("  -M            Constant MEGA glitch effect\n");
-  printf("  -f [INT]      set custom FOREGROUND color\n");
-  printf("  -b [INT]      set custom BACKGROUND color\n");
+  printf("  -f []         set custom FOREGROUND color\n");
+  printf("  -b []         set custom BACKGROUND color\n");
   exit(0);
 }
 
@@ -832,8 +830,8 @@ void patch_border(int row, int col){
 
 void prompt_newlook(int row, int col) {
 
-//wchar_t SEARCH_STR[] = L"╔╗╚╝═║█";
-  wchar_t SEARCH_STR[] = L"█";
+//wchar_t search_str[] = L"╔╗╚╝═║█";
+  wchar_t search_str[] = L"█";
   wchar_t exec_newlook_str[] = L"EXC NWLOK";
 
   int offset = 0;
@@ -852,8 +850,8 @@ void prompt_newlook(int row, int col) {
       cchar_t cchar;
       setcchar(&cchar, &wc, 0, 0, NULL);
 
-      for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
-        if (wc == SEARCH_STR[i]) {
+      for (size_t i = 0; i < wcslen(search_str); i++) {
+        if (wc == search_str[i]) {
           if (iter_col < 20) {
             attron(COLOR_PAIR(RED));
           } else {
@@ -907,8 +905,8 @@ void prompt_newlook(int row, int col) {
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
 
-          for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
-            if (wc == SEARCH_STR[i]) {
+          for (size_t i = 0; i < wcslen(search_str); i++) {
+            if (wc == search_str[i]) {
               if (iter_col < 20 && selection == 0) {
                 attron(COLOR_PAIR(RED));
               } else if (iter_col > 19 && selection == 1) {

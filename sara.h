@@ -10,7 +10,6 @@
 
 /* FEATLIST
 
-    . Add command-line args for fg and bg
 
     . Add -s --small options to force small size
     . More boot animations
@@ -25,6 +24,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X Add command-line args for fg and bg
     X Add menues for 'b' prompt (bluetooth and backlight)
     X Create a cooler newlook prompt
     X Add char input 'n' -> prompt for newlook

@@ -29,6 +29,8 @@ int GLYPH_HEIGHT = 7;
 int FOREGROUND = 3;
 int BACKGROUND = 2;
 
+wchar_t SEARCH_STR[] = L"`+so:-./";
+
 const int BLACK         = 1;
 const int RED           = 2;
 const int GREEN         = 3;
@@ -162,12 +164,11 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-int is_char_in_search(wchar_t wc) {
+int is_char_in_search(wchar_t wc, wchar_t * search_str) {
 
-    wchar_t SEARCH_STR[] = L"`+so:-./";
 //  Iterate through the wide-character array
-    for (size_t i = 0; i < wcslen(SEARCH_STR); i++) {
-        if (wc == SEARCH_STR[i]) {
+    for (size_t i = 0; i < wcslen(search_str); i++) {
+        if (wc == search_str[i]) {
             return 1; // Character found
         }
     }
@@ -437,7 +438,7 @@ void printstandard(int row, int col){
         // Also records length of character at *iter_row in len
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+        is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
 
         // Write wide char to `cchar` for mvaddwc()
         cchar_t cchar;
@@ -477,7 +478,7 @@ void quickprint(int row, int col, int fg, int bg, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
+        is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
         mvadd_wch(row/2 - 9 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(fg));
         attroff(COLOR_PAIR(bg));
@@ -625,7 +626,7 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -658,7 +659,7 @@ void neon(int row, int col) {
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -829,61 +830,24 @@ void patch_border(int row, int col){
 
 void prompt_newlook(int row, int col) {
 
-//wchar_t search_str[] = L"╔╗╚╝═║█";
-  wchar_t search_str[] = L"█";
-  wchar_t exec_newlook_str[] = L"EXC NWLOK";
+  wchar_t search_str_doubles_lines[] = L"╔╗╚╝═║";
+  wchar_t search_str_block[] = L"█";
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
 
-  for(int i = 0; i < 7; i++){
-
-    mbstate_t state;
-    memset(&state, 0, sizeof(mbstate_t));
-    const char *iter_row = no_yes_window[i];
-    int iter_col = 0; // Track the column position
-    while (*iter_row) {
-      wchar_t wc;
-      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
-
-      cchar_t cchar;
-      setcchar(&cchar, &wc, 0, 0, NULL);
-
-      for (size_t i = 0; i < wcslen(search_str); i++) {
-        if (wc == search_str[i]) {
-          if (iter_col < 20) {
-            attron(COLOR_PAIR(BACKGROUND));
-          } else {
-            attron(COLOR_PAIR(BACKGROUND));
-            wc = L'.';
-            setcchar(&cchar, &wc, 0, 0, NULL);
-          }
-        } else {
-          attron(COLOR_PAIR(BACKGROUND));
-        }
-      }
-
-      mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
-      attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
-      attroff(COLOR_PAIR(BACKGROUND));
-      iter_row += len;
-      iter_col++;
-    }
-  }
   refresh();
 
-  attron(COLOR_PAIR(BLACK_RED));
-  mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 3, " RESKIN ? ");
-  refresh();
-  attroff(COLOR_PAIR(BLACK_RED));
-
-  int selection = 0;
+  int selection = 1;
   int cache = row + col;
+  char input = 0;
+  int first_flag = 0;
   while(1){
 
-    int input = getch();
+    input = getch();
 
-    if (input == 'j' || input == 'k' || input == 'l' || input == 'h') {
+    if (input == 'j' || input == 'k' || input == 'l' || input == 'h' || first_flag == 0) {
+      first_flag = 1;
 
       if (selection == 0) {
         selection = 1;
@@ -892,44 +856,72 @@ void prompt_newlook(int row, int col) {
       }
 
       for(int i = 0; i < 7; i++){
-
         mbstate_t state;
         memset(&state, 0, sizeof(mbstate_t));
         const char *iter_row = no_yes_window[i];
         int iter_col = 0; // Track the column position
+
+        if (i == 0 || i == 6) {
+          attron(COLOR_PAIR(FOREGROUND));
+          mvprintw(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 - 0, no_yes_window[i]);
+          attroff(COLOR_PAIR(FOREGROUND));
+          refresh();
+          continue;
+        }
+
+        int k = -1;
         while (*iter_row) {
+
+          k++;
           wchar_t wc;
           size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
 
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
 
-          for (size_t i = 0; i < wcslen(search_str); i++) {
-            if (wc == search_str[i]) {
-              if (iter_col < 20 && selection == 0) {
-                attron(COLOR_PAIR(BACKGROUND));
-              } else if (iter_col > 19 && selection == 1) {
-                attron(COLOR_PAIR(BACKGROUND));
-              } else {
-                attron(COLOR_PAIR(BACKGROUND));
-                wc = L'.';
-                setcchar(&cchar, &wc, 0, 0, NULL);
-              }
-            } else {
+          for (int j = 0; j < wcslen(search_str_block); j++) {
+
+//          if(iter_col == 0 || iter_col > 40){
+//            attron(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
+//          }
+            int search_result = is_char_in_search(wc, search_str_block);
+            if ((iter_col == 0 || iter_col > 42) && selection == 1) {
+              attron(COLOR_PAIR(FOREGROUND));
+            } else if(search_result == 1 && iter_col > 19 && selection == 0){
+              attron(COLOR_PAIR(FOREGROUND));
+              wc = L'.';
+              setcchar(&cchar, &wc, 0, 0, NULL);
+            } else if (search_result == 1 && iter_col < 20 && selection == 0) {
               attron(COLOR_PAIR(BACKGROUND));
-            }
+            } else if (search_result == 0 && selection == 0){
+              attron(COLOR_PAIR(BACKGROUND));
+
+            } else if (search_result == 1 && iter_col < 20 && selection == 1){
+              attron(COLOR_PAIR(BACKGROUND));
+              wc = L'.';
+              setcchar(&cchar, &wc, 0, 0, NULL);
+            } else if (search_result == 1 && iter_col > 19 && selection == 1){
+              attron(COLOR_PAIR(FOREGROUND));
+            } else if (is_char_in_search(wc, search_str_doubles_lines) == 1 && iter_col < 22) {
+              attron(COLOR_PAIR(BACKGROUND));
+            } else if (iter_col > 20 && selection == 1){
+              attron(COLOR_PAIR(FOREGROUND));
+            } 
+//            
           }
 
           mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
+          attroff(COLOR_PAIR(BLUE));
           iter_row += len;
           iter_col++;
         }
       }
-      attron(COLOR_PAIR(BLACK_RED));
-      mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 3, " RESKIN ? ");
-      attroff(COLOR_PAIR(BLACK_RED));
+
+//    attron(COLOR_PAIR(FOREGROUND));
+//    mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 3, " RESKIN ? ");
+//    attroff(COLOR_PAIR(FOREGROUND));
       refresh();
 
     } else if (input == 'q' || input == 'n') {
@@ -1003,6 +995,7 @@ void get_helped() {
 }
 
 void error(char * err) {
+  endwin();
   printf("%s\n", err);
   exit(1);
 }

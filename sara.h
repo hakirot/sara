@@ -15,6 +15,9 @@
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
         > Wide (fullscreen) glitch
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+    . Load colors from config file
+    . input 'c' to show term colors
+
     . Add -s --small options to force small size
     . More boot animations
     . mega_glitch()
@@ -67,7 +70,7 @@ typedef enum {
 void get_helped();
 void check_char(int row, int col);
 int check_size(int row, int col, int cache);
-int is_char_in_search(wchar_t wc);
+int is_char_in_search(wchar_t wc, wchar_t * search_str);
 int get_confirmation(int row, int col);
 void print_start_animation(int row, int col);
 void printstandard(int row, int col);

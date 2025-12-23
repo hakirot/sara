@@ -11,13 +11,13 @@
 /* FEATLIST
 
 
-    . Add -s --small options to force small size
-    . More boot animations
-    . mega_glitch()
-    . More Interval animations
+    . More animations
         > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
         > Wide (fullscreen) glitch
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+    . Add -s --small options to force small size
+    . More boot animations
+    . mega_glitch()
     . Use archsarazap
     . Create input for alternate acronyms from headers (low priority)
     . Replace char input 'c' (with what ..? .. there was something)
@@ -72,10 +72,10 @@ int get_confirmation(int row, int col);
 void print_start_animation(int row, int col);
 void printstandard(int row, int col);
 void quickprint(int row, int col, int fg, int bg, int printColorbar);
-void apply_effect(int row, int col, int printColorbar);
 void neon(int row, int col);
 void glitch(int row, int col);
 void mega_glitch(int row, int col, int duration);
+void xray(int row, int col);
 const char * select_option_window(int row, int col, char** choices, int len);
 void patch_backlight(int row, int col);
 void patch_border(int row, int col);

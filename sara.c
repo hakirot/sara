@@ -26,25 +26,25 @@ clock_t WAIT_START;
 int GLYPH_LENGTH = 44;
 int GLYPH_HEIGHT = 7;
 
-int FOREGROUND = 2;
-int BACKGROUND = 1;
+int FOREGROUND = 3;
+int BACKGROUND = 2;
 
-const int BLACK         = 0;
-const int RED           = 1;
-const int GREEN         = 2;
-const int YELLOW        = 3;
-const int BLUE          = 4;
-const int MAGENTA       = 5;
-const int CYAN          = 6;
-const int WHITE         = 7;
-const int WHITE_BLACK   = 8;
-const int BLACK_RED     = 9;
-const int BLACK_GREEN   = 10;
-const int BLACK_YELLOW  = 11;
-const int BLACK_BLUE    = 12;
-const int BLACK_MAGENTA = 13;
-const int BLACK_CYAN    = 14;
-const int BLACK_WHITE   = 15;
+const int BLACK         = 1;
+const int RED           = 2;
+const int GREEN         = 3;
+const int YELLOW        = 4;
+const int BLUE          = 5;
+const int MAGENTA       = 6;
+const int CYAN          = 7;
+const int WHITE         = 8;
+const int WHITE_BLACK   = 9;
+const int BLACK_RED     = 10;
+const int BLACK_GREEN   = 11;
+const int BLACK_YELLOW  = 12;
+const int BLACK_BLUE    = 13;
+const int BLACK_MAGENTA = 14;
+const int BLACK_CYAN    = 15;
+const int BLACK_WHITE   = 16;
 
 const int EFFECT_MUTE   = 0;
 
@@ -142,7 +142,8 @@ int main(int argc, char* argv[]) {
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
     if(time_idle >= WAIT_BUFFER){
-      glitch(row, col);
+//    glitch(row, col);
+      xray(row, col);
       WAIT_START = clock();
     }
 
@@ -485,9 +486,9 @@ void quickprint(int row, int col, int fg, int bg, int printColorbar){
       }
     }
     // print name with background
-    attron(COLOR_PAIR(FOREGROUND + 8));
+    attron(COLOR_PAIR(fg + 8));
     mvprintw(row/2 + 4, (col-GLYPH_LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
-    attroff(COLOR_PAIR(FOREGROUND + 8));
+    attroff(COLOR_PAIR(fg + 8));
 
     // print colorbar
     if (printColorbar == 1){
@@ -507,7 +508,7 @@ const char * select_option_window(int row, int col, char** choices, int len){
   int selection = 0;
   int cache = row + col;
 
-  quickprint(row, col, WHITE, YELLOW, 0);
+  quickprint(row, col, WHITE, YELLOW, 0); // hardcoded style choice
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
@@ -824,7 +825,6 @@ void patch_border(int row, int col){
   attron(COLOR_PAIR(BACKGROUND));
   mvadd_wch(row/2 - offset, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
   attroff(COLOR_PAIR(BACKGROUND));
-
 }
 
 void prompt_newlook(int row, int col) {
@@ -967,24 +967,28 @@ void prompt_newlook(int row, int col) {
 
 int input_color(char * arg){
   if (strcmp(arg, "black") == 0) {
-      return 0;
-  } else if (strcmp(arg, "red") == 0) {
       return 1;
-  } else if (strcmp(arg, "green") == 0) {
+  } else if (strcmp(arg, "red") == 0) {
       return 2;
-  } else if (strcmp(arg, "yellow") == 0) {
+  } else if (strcmp(arg, "green") == 0) {
       return 3;
-  } else if (strcmp(arg, "blue") == 0) {
+  } else if (strcmp(arg, "yellow") == 0) {
       return 4;
-  } else if (strcmp(arg, "magenta") == 0) {
+  } else if (strcmp(arg, "blue") == 0) {
       return 5;
-  } else if (strcmp(arg, "cyan") == 0) {
+  } else if (strcmp(arg, "magenta") == 0) {
       return 6;
-  } else if (strcmp(arg, "white") == 0) {
+  } else if (strcmp(arg, "cyan") == 0) {
       return 7;
+  } else if (strcmp(arg, "white") == 0) {
+      return 8;
   } else {
       return -1;
   }
+}
+
+void xray(int row, int col){
+
 }
 
 void get_helped() {

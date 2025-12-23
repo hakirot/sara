@@ -855,6 +855,13 @@ void prompt_newlook(int row, int col) {
         selection = 0;
       }
 
+      for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+        selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BACKGROUND));
+        mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, arch[i]);
+        attroff(COLOR_PAIR(BACKGROUND));
+        attroff(COLOR_PAIR(FOREGROUND));
+      }
+
       for(int i = 0; i < 7; i++){
         mbstate_t state;
         memset(&state, 0, sizeof(mbstate_t));
@@ -863,7 +870,7 @@ void prompt_newlook(int row, int col) {
 
         if (i == 0 || i == 6) {
           attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 - 0, no_yes_window[i]);
+          mvprintw(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2, no_yes_window[i]);
           attroff(COLOR_PAIR(FOREGROUND));
           refresh();
           continue;

@@ -758,7 +758,6 @@ void glitch(int row, int col){
   quickprint(row, col, FOREGROUND, BACKGROUND, 1); // only printing for colorbar, should create
                            // separate print_colorbar
 
-//for( int i = 0 ; i < 23; i++ ) {
   for( int i = 0 ; i < 46; i++ ) {
     rng_row   = rand() % NORMAL_GLYPH_HEIGHT;    // RNG 0 and 6
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1

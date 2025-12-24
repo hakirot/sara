@@ -17,6 +17,7 @@
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
     . Load colors from config file
     . input 'c' to show term colors
+    . 'w' creates a menu
 
     . Add -s --small options to force small size
     . More boot animations
@@ -27,6 +28,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X More animations (xray)
     X Add command-line args for fg and bg
     X Add menues for 'b' prompt (bluetooth and backlight)
     X Create a cooler newlook prompt

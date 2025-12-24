@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
   double WAIT_BUFFER = 0.10000;
 
   int opt;
-  while ((opt = getopt(argc, argv, "cMfb")) != -1){
+  while ((opt = getopt(argc, argv, "cMfbh")) != -1){
     switch (opt) {
 			// removed!
       case 'c': WAIT_BUFFER = 0.00005; break; // constant glitch
@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
 
     if(time_idle >= WAIT_BUFFER){
 //    glitch(row, col);
-      xray(row, col);
+      glitch(row, col);
       WAIT_START = clock();
     }
 
@@ -192,7 +192,8 @@ void check_char(int row, int col) {
       execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
       exit(1);
     } else if(input == 'g'){
-      glitch(row, col);
+//    glitch(row, col);
+      xray(row, col);
     } else if(input == 't'){
       endwin();
       execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
@@ -509,7 +510,7 @@ const char * select_option_window(int row, int col, char** choices, int len){
   int selection = 0;
   int cache = row + col;
 
-  quickprint(row, col, WHITE, YELLOW, 0); // hardcoded style choice
+  quickprint(row, col, FOREGROUND, FOREGROUND, 0); // hardcoded style choice
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
@@ -565,7 +566,7 @@ void neon(int row, int col) {
 
   clock_t cycle_start = clock();
   double cycle_length = 0.3;
-  double elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+  double elapsed_time = 0;
 
   int first_frame = 0;
   int second_frame = 0;
@@ -830,13 +831,13 @@ void patch_border(int row, int col){
 
 void prompt_newlook(int row, int col) {
 
+  clear();
+
   wchar_t search_str_doubles_lines[] = L"╔╗╚╝═║";
   wchar_t search_str_block[] = L"█";
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
-
-  refresh();
 
   int selection = 1;
   int cache = row + col;
@@ -876,10 +877,7 @@ void prompt_newlook(int row, int col) {
           continue;
         }
 
-        int k = -1;
         while (*iter_row) {
-
-          k++;
           wchar_t wc;
           size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
 
@@ -909,7 +907,7 @@ void prompt_newlook(int row, int col) {
               setcchar(&cchar, &wc, 0, 0, NULL);
             } else if (search_result == 1 && iter_col > 19 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
-            } else if (is_char_in_search(wc, search_str_doubles_lines) == 1 && iter_col < 22) {
+            } else if (is_char_in_search(wc, search_str_doubles_lines) == 1 && iter_col < 21) {
               attron(COLOR_PAIR(BACKGROUND));
             } else if (iter_col > 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
@@ -988,6 +986,101 @@ int input_color(char * arg){
 
 void xray(int row, int col){
 
+  quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+
+  int offset = 0;
+  if (WIN_SIZE != BIG) offset = 1;
+
+  int cache = (row + col);
+
+  wchar_t search_str_xray[] = L"╔╗╚╝═║█SPECIALTONRG";
+
+  int toggle = 0;
+  int exit_flag = 0;
+
+  int i = 0;
+  int k = 0;
+  while(1){
+
+    attron(COLOR_PAIR(BACKGROUND));
+    mvprintw(row/2 - 2 + i, (col-GLYPH_LENGTH)/2, backdropfill[i]);
+    attroff(COLOR_PAIR(BACKGROUND));
+
+    int previous_row = 0;
+
+    const char *iter_row =  titlefill[0];
+    if (toggle == 0 && i == 0){}
+    else {
+
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      if (toggle == 0) { iter_row = titlefill[i - 1]; }
+      else { iter_row = titlefill[i + 1]; }
+      int iter_col = 0; // Track the column position
+      while (*iter_row) {
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+        cchar_t cchar;
+        setcchar(&cchar, &wc, 0, 0, NULL);
+        is_char_in_search(wc, search_str_xray) ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BACKGROUND)) ;
+
+        int prev = 0;
+        if (toggle == 1) { prev = 1; }
+        else { prev = -1; }
+
+        mvadd_wch(row/2 - 2 + i + prev, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+        attroff(COLOR_PAIR(RED));
+        attroff(COLOR_PAIR(BACKGROUND));
+        iter_row += len;
+        iter_col++;
+      }
+    }
+
+    refresh();
+    usleep(5000);
+
+    getmaxyx(stdscr, row, col);
+    if (cache != row + col) return;
+
+    check_char(row, col);
+
+//  DEBUG
+//  mvaddch(row/2,col/2, i + 48);
+
+    // maybe extract this block to a range oscillation handler function
+    // i = oscillator(i, min, max, toggle);
+    if(i == 0) toggle = 0;
+    if (i == 6) toggle = 1;
+    if(toggle == 0) i++;
+    if(toggle == 1) i--;
+//  if(i == 7) error("out of upper bounds");
+//  if(i == -1) error("out of lower bounds");
+    if(exit_flag) break;
+    if(i == 0) k++;
+    if (i== 0 && k == 3)exit_flag = 1;
+  }
+
+  if(WIN_SIZE == BIG){
+    clear();
+    refresh();
+    usleep(80000);
+    for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+      attron(COLOR_PAIR(BACKGROUND));
+      mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, arch[i]);
+      attroff(COLOR_PAIR(BACKGROUND));
+    }
+    refresh();
+    usleep(80000);
+    for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+      attron(COLOR_PAIR(BACKGROUND));
+      mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, archsarazap[i]);
+      attroff(COLOR_PAIR(BACKGROUND));
+    }
+    refresh();
+    usleep(80000);
+    quickprint(row,col, FOREGROUND, BACKGROUND, 0);
+  }
 }
 
 void get_helped() {
@@ -996,8 +1089,8 @@ void get_helped() {
   printf("  -c            Constant effects\n");
   printf("  -G            Constant glitch effect\n");
   printf("  -M            Constant MEGA glitch effect\n");
-  printf("  -f []         set custom FOREGROUND color\n");
-  printf("  -b []         set custom BACKGROUND color\n");
+  printf("  -f [color]         set custom FOREGROUND color\n");
+  printf("  -b [color]         set custom BACKGROUND color\n");
   exit(0);
 }
 

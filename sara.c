@@ -858,7 +858,7 @@ void prompt_newlook(int row, int col) {
       }
 
       for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
-        selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BACKGROUND));
+        selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BLACK));
         mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, arch[i]);
         attroff(COLOR_PAIR(BACKGROUND));
         attroff(COLOR_PAIR(FOREGROUND));
@@ -902,11 +902,12 @@ void prompt_newlook(int row, int col) {
             // 'NO' blocks when selected
             } else if (search_result == 1 && iter_col < 20 && selection == 0) {
               attron(COLOR_PAIR(FOREGROUND));
-            // all double line chars in rows 1 to 5 when NO is selected
+            // NO decorator blocks in rows 1 to 5 when selected
             } else if (search_result == 0 && selection == 0 && iter_col < 21){
               attron(COLOR_PAIR(FOREGROUND));
+            //
             } else if (search_result == 0 && selection == 0 && iter_col > 19){
-              attron(COLOR_PAIR(BACKGROUND));
+              attron(COLOR_PAIR(BLACK));
             // NO blocks when not selected
             } else if (search_result == 1 && iter_col < 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));

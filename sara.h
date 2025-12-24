@@ -15,6 +15,8 @@
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
     . mega_glitch()
+    . refactor util functions
+    . Make row/col global
     . Load colors from config file
     . input 'c' to show term colors
     . 'w' creates a menu

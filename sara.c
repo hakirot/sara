@@ -553,7 +553,6 @@ const char * select_option_window(int row, int col, char** choices, int len){
     for (int i = 0; i < len; i++){
       i == selection ? attron(COLOR_PAIR(FOREGROUND + 8)) : attron(COLOR_PAIR(FOREGROUND));
       mvprintw(row/2 + i - 1 - offset, (col-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
-      attroff(COLOR_PAIR(BLACK_RED)); // usused hardcoded stylistic choice?
       attroff(COLOR_PAIR(FOREGROUND + 8));
       attroff(COLOR_PAIR(FOREGROUND));
     }
@@ -891,10 +890,10 @@ void prompt_newlook(int row, int col) {
             int search_result = is_char_in_search(wc, search_str_block);
             // side borders when YES
             if ((iter_col == 0 || iter_col > 42) && selection == 1) {
-              attron(COLOR_PAIR(BACKGROUND));
+              attron(COLOR_PAIR(BLACK));
             // side borders when NO
             } else if ((iter_col == 0 || iter_col > 42) && selection == 0) {
-              attron(COLOR_PAIR(BACKGROUND));
+              attron(COLOR_PAIR(BLACK));
             // 'YES' dots when not selected
             } else if(search_result == 1 && iter_col > 19 && selection == 0){
               attron(COLOR_PAIR(FOREGROUND));
@@ -918,7 +917,7 @@ void prompt_newlook(int row, int col) {
               attron(COLOR_PAIR(FOREGROUND));
             // NO decorator blocks when not selected
             } else if (is_char_in_search(wc, search_str_doubles_lines) == 1 && iter_col < 21) {
-              attron(COLOR_PAIR(BACKGROUND));
+              attron(COLOR_PAIR(BLACK));
             // YES decorator blocks when selected
             } else if (iter_col > 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));

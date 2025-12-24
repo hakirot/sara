@@ -28,6 +28,7 @@ int GLYPH_HEIGHT = 7;
 
 int FOREGROUND = 3;
 int BACKGROUND = 2;
+int HOLOGRAPHIC = 0;
 
 wchar_t SEARCH_STR[] = L"`+so:-./";
 
@@ -85,7 +86,7 @@ int main(int argc, char* argv[]) {
   double WAIT_BUFFER = 0.10000;
 
   int opt;
-  while ((opt = getopt(argc, argv, "cMfbhr")) != -1){
+  while ((opt = getopt(argc, argv, "cMfbhrH")) != -1){
     switch (opt) {
       case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
@@ -96,6 +97,7 @@ int main(int argc, char* argv[]) {
           error("error");
         }
         break;
+      case 'H': HOLOGRAPHIC = 1;
     }
   }
 
@@ -144,7 +146,7 @@ int main(int argc, char* argv[]) {
 
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
 
-    usleep(10000); // chill
+    usleep(20000); // chill
     check_char(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
@@ -152,6 +154,11 @@ int main(int argc, char* argv[]) {
     if(time_idle >= WAIT_BUFFER){
       glitch(row, col);
       WAIT_START = clock();
+    }
+
+    if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
+      BACKGROUND = ((BACKGROUND + 1) % 6) + 2;
+      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     }
 
     // print only once after the HOLD_CHAR goes back to EOF

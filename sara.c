@@ -85,11 +85,17 @@ int main(int argc, char* argv[]) {
   double WAIT_BUFFER = 0.10000;
 
   int opt;
-  while ((opt = getopt(argc, argv, "cMfbh")) != -1){
+  while ((opt = getopt(argc, argv, "cMfbhr")) != -1){
     switch (opt) {
-			// removed!
-      case 'c': WAIT_BUFFER = 0.00005; break; // constant glitch
-//    case 's': something();
+      case 'c': WAIT_BUFFER = 0.00005; break;
+      case 'r':
+        srand((unsigned)time(0));
+        FOREGROUND = (rand() % 7) + 1;    // RNG 1 and 7
+        BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
+        if (FOREGROUND > 7 || FOREGROUND < 1 || BACKGROUND > 7 || BACKGROUND < 1){
+          error("error");
+        }
+        break;
     }
   }
 

@@ -10,13 +10,14 @@
 
 /* FEATLIST
 
+    . Random startup colors
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
     . Fuzzy find menu for newlook
     . Swap background and foreground colors ('i' for invert)
-    . Random startup colors
     . mega_glitch()
+    . pshd()
     . Break functions into new files
     . Make row/col global
     . Load colors/randomness from config file

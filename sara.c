@@ -888,29 +888,38 @@ void prompt_newlook(int row, int col) {
 
           for (int j = 0; j < wcslen(search_str_block); j++) {
 
-//          if(iter_col == 0 || iter_col > 40){
-//            attron(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
-//          }
             int search_result = is_char_in_search(wc, search_str_block);
+            // side borders when YES
             if ((iter_col == 0 || iter_col > 42) && selection == 1) {
-              attron(COLOR_PAIR(FOREGROUND));
+              attron(COLOR_PAIR(BACKGROUND));
+            // side borders when NO
+            } else if ((iter_col == 0 || iter_col > 42) && selection == 0) {
+              attron(COLOR_PAIR(BACKGROUND));
+            // 'YES' dots when not selected
             } else if(search_result == 1 && iter_col > 19 && selection == 0){
               attron(COLOR_PAIR(FOREGROUND));
               wc = L'.';
               setcchar(&cchar, &wc, 0, 0, NULL);
+            // 'NO' blocks when selected
             } else if (search_result == 1 && iter_col < 20 && selection == 0) {
+              attron(COLOR_PAIR(FOREGROUND));
+            // all double line chars in rows 1 to 5 when NO is selected
+            } else if (search_result == 0 && selection == 0 && iter_col < 21){
+              attron(COLOR_PAIR(FOREGROUND));
+            } else if (search_result == 0 && selection == 0 && iter_col > 19){
               attron(COLOR_PAIR(BACKGROUND));
-            } else if (search_result == 0 && selection == 0){
-              attron(COLOR_PAIR(BACKGROUND));
-
+            // NO blocks when not selected
             } else if (search_result == 1 && iter_col < 20 && selection == 1){
-              attron(COLOR_PAIR(BACKGROUND));
+              attron(COLOR_PAIR(FOREGROUND));
               wc = L'.';
               setcchar(&cchar, &wc, 0, 0, NULL);
+            // YES blocks when selected
             } else if (search_result == 1 && iter_col > 19 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
+            // NO decorator blocks when not selected
             } else if (is_char_in_search(wc, search_str_doubles_lines) == 1 && iter_col < 21) {
               attron(COLOR_PAIR(BACKGROUND));
+            // YES decorator blocks when selected
             } else if (iter_col > 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
             } 

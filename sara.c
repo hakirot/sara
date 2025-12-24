@@ -389,6 +389,10 @@ void check_char(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
+    } else if (input == 'm') {
+      endwin();
+      execlp("rmpc", "rmpc", NULL);
+      exit(1);
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;

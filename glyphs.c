@@ -75,7 +75,7 @@ const char * titlefill[7] = {
   "╚════██║  .██╔══██║so+██╔══██╗o+ ██╔══██║   ",
   "███████║██╗██║ss██║██╗██║os██║██╗██║  ██║██╗",
   "╚══════╝╚═╝╚═╝ss╚═╝╚═╝╚═╝:s╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "          SPECIAL APPLICATION RANGING AREA  ",
+  "        : SPECIAL APPLICATION RANGING AREA  ",
 };
 
 // length LENGTH

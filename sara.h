@@ -12,9 +12,9 @@
 
 
     . More animations
-        > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
-        > Wide (fullscreen) glitch
+        > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+    . mega_glitch()
     . Load colors from config file
     . input 'c' to show term colors
     . 'w' creates a menu

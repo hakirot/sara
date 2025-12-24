@@ -144,7 +144,6 @@ int main(int argc, char* argv[]) {
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
     if(time_idle >= WAIT_BUFFER){
-//    glitch(row, col);
       glitch(row, col);
       WAIT_START = clock();
     }
@@ -192,8 +191,7 @@ void check_char(int row, int col) {
       execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
       exit(1);
     } else if(input == 'g'){
-//    glitch(row, col);
-      xray(row, col);
+      glitch(row, col);
     } else if(input == 't'){
       endwin();
       execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
@@ -988,49 +986,68 @@ void xray(int row, int col){
 
   quickprint(row, col, FOREGROUND, BACKGROUND, 0);
 
-  int offset = 0;
-  if (WIN_SIZE != BIG) offset = 1;
-
   int cache = (row + col);
-
-  wchar_t search_str_xray[] = L"╔╗╚╝═║█SPECIALTONRG";
-
-  int toggle = 0;
-  int exit_flag = 0;
-
   int i = 0;
   int k = 0;
+  int offset = 0;
+  int toggle = 0;
+  int exit_flag = 0;
+  wchar_t search_str_xray[] = L"╔╗╚╝═║█SPECIALTONRG";
+  const char** glyph_pointer;
+  const char** backdrop_glyph_pointer;
+
+  if (WIN_SIZE == BIG){
+    glyph_pointer = titlefill;
+    backdrop_glyph_pointer = backdropfill;
+  } else {
+    glyph_pointer = title;
+    backdrop_glyph_pointer = backdrop;
+    offset = 1;
+  }
+
   while(1){
 
     attron(COLOR_PAIR(BACKGROUND));
-    mvprintw(row/2 - 2 + i, (col-GLYPH_LENGTH)/2, backdropfill[i]);
+    mvprintw(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2, backdrop_glyph_pointer[i]);
     attroff(COLOR_PAIR(BACKGROUND));
 
     int previous_row = 0;
 
-    const char *iter_row =  titlefill[0];
+    const char *iter_row =  glyph_pointer[0];
     if (toggle == 0 && i == 0){}
     else {
 
       mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
-      if (toggle == 0) { iter_row = titlefill[i - 1]; }
-      else { iter_row = titlefill[i + 1]; }
+      if (toggle == 0) { iter_row = glyph_pointer[i - 1]; }
+      else { iter_row = glyph_pointer[i + 1]; }
       int iter_col = 0; // Track the column position
+
       while (*iter_row) {
         wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
 
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
-        is_char_in_search(wc, search_str_xray) ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BACKGROUND)) ;
+
+        if (i == 5 && toggle == 1 && iter_col > 9 && iter_col < 42 && WIN_SIZE == BIG){
+          attron(COLOR_PAIR(FOREGROUND + 8));
+        } else if(is_char_in_search(wc, search_str_xray) && WIN_SIZE == BIG){
+          attron(COLOR_PAIR(FOREGROUND));
+        } else if (is_char_in_search(wc, search_str_xray)){
+          attron(COLOR_PAIR(WHITE));
+        } else {
+          attron(COLOR_PAIR(BACKGROUND)) ;
+        }
 
         int prev = 0;
         if (toggle == 1) { prev = 1; }
         else { prev = -1; }
 
-        mvadd_wch(row/2 - 2 + i + prev, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(RED));
+        mvadd_wch(row/2 - 2 + i + prev - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+        attron(COLOR_PAIR(WHITE));
+        attroff(COLOR_PAIR(FOREGROUND));
+        attroff(COLOR_PAIR(FOREGROUND + 8));
         attroff(COLOR_PAIR(BACKGROUND));
         iter_row += len;
         iter_col++;
@@ -1038,7 +1055,8 @@ void xray(int row, int col){
     }
 
     refresh();
-    usleep(5000);
+    usleep(15000);
+//  usleep(800000);
 
     getmaxyx(stdscr, row, col);
     if (cache != row + col) return;
@@ -1058,7 +1076,7 @@ void xray(int row, int col){
 //  if(i == -1) error("out of lower bounds");
     if(exit_flag) break;
     if(i == 0) k++;
-    if (i== 0 && k == 3)exit_flag = 1;
+    if (i== 0 && k == 2)exit_flag = 1;
   }
 
   if(WIN_SIZE == BIG){
@@ -1080,6 +1098,8 @@ void xray(int row, int col){
     refresh();
     usleep(80000);
     quickprint(row,col, FOREGROUND, BACKGROUND, 0);
+  } else {
+    neon(row, col);
   }
 }
 

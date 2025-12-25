@@ -146,18 +146,20 @@ int main(int argc, char* argv[]) {
 
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
 
-    usleep(20000); // chill
     check_char(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
-    if(time_idle >= WAIT_BUFFER){
-      glitch(row, col);
-      WAIT_START = clock();
-    }
+//  if(time_idle >= WAIT_BUFFER){
+//    glitch(row, col);
+//    WAIT_START = clock();
+//  }
 
     if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
-      BACKGROUND = ((BACKGROUND + 1) % 6) + 2;
+      int i = BACKGROUND;
+      i++;
+      if (BACKGROUND > 7) i = 2;
+      BACKGROUND = i;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     }
 
@@ -168,6 +170,7 @@ int main(int argc, char* argv[]) {
     } else if (HOLD_CHAR != '\0'){
       should_print = true;
     }
+    usleep(80000); // chill
   }
 
   refresh();

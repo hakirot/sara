@@ -11,7 +11,6 @@
 /* FEATLIST
 
     . More animations
-        > Holographic arch (background arch colors cycle 1-7)
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
     . Fuzzy find menu for newlook
@@ -33,6 +32,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X Holographic arch (background arch colors cycle 1-7)
     X Random startup colors
     X More animations (xray)
     X Add command-line args for fg and bg

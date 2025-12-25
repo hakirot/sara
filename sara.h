@@ -14,7 +14,6 @@
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
     . Fuzzy find menu for newlook
-    . Swap background and foreground colors ('i' for invert)
     . mega_glitch()
     . pshd()
     . Break functions into new files
@@ -32,6 +31,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X add char input 'i' -> invert)
     X Holographic arch (background arch colors cycle 1-7)
     X Random startup colors
     X More animations (xray)

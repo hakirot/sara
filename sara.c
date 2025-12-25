@@ -202,6 +202,11 @@ void check_char(int row, int col) {
       endwin();
       execv("/usr/bin/ranger", NULL);
       exit(1);
+    } else if(input == 'i'){
+      int temp = BACKGROUND;
+      BACKGROUND = FOREGROUND;
+      FOREGROUND = temp;
+      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'w'){
       endwin();
       execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);

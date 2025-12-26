@@ -207,7 +207,6 @@ void check_char(int row, int col) {
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
         endwin();
-        execv("/usr/bin/ranger", NULL);
         execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
         error("execlp");
       } else {
@@ -1171,12 +1170,6 @@ void get_helped() {
   exit(0);
 }
 
-void error(char * err) {
-  endwin();
-  printf("%s\n", err);
-  exit(1);
-}
-
 void init_window(){
   setlocale(LC_ALL, "");    // Allow special characters, initscr()
   initscr();                // Initialize screen
@@ -1208,3 +1201,8 @@ void init_window(){
   refresh();                // clear screen
 }
 
+void error(char * err) {
+  endwin();
+  printf("%s\n", err);
+  exit(1);
+}

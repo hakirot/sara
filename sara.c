@@ -19,6 +19,9 @@
 #include <wchar.h>
 #include <time.h>
 #include <wait.h>
+#include <signal.h>
+#include <sys/types.h>
+
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
@@ -101,42 +104,13 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  setlocale(LC_ALL, "");    // Allow special characters, initscr()
-  initscr();                // Initialize screen
-  start_color();            // Must be called right after initscr()
-  use_default_colors();
-  init_pair(BLACK, COLOR_BLACK, -1); // Foreground black, no background
-  init_pair(RED, COLOR_RED, -1);
-  init_pair(GREEN, COLOR_GREEN, -1);
-  init_pair(YELLOW, COLOR_YELLOW, -1);
-  init_pair(BLUE, COLOR_BLUE, -1);
-  init_pair(MAGENTA, COLOR_MAGENTA, -1);
-  init_pair(CYAN, COLOR_CYAN, -1);
-  init_pair(WHITE, COLOR_WHITE, -1);
-  init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
-  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
-  init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_YELLOW, COLOR_BLACK, COLOR_YELLOW);
-  init_pair(BLACK_BLUE, COLOR_BLACK, COLOR_BLUE);
-  init_pair(BLACK_MAGENTA, COLOR_BLACK, COLOR_MAGENTA);
-  init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
-  init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
-
-  cbreak();                 // Disable line buffering
-  noecho();                 // Don't display keyboard presses in window
-  nodelay(stdscr, TRUE);
-  keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
-  curs_set(FALSE);          // No cursor
-
-  int cache = 10000;
-  int row, col = 0;         // Num of current rows/cols in window
-
-  refresh();                // clear screen
-
   double time_idle;
   WAIT_START = clock();
   LAST_INPUT_TIME = clock();
   bool should_print = false;
+  int cache = 10000;
+  int row, col = 0;         // Num of current rows/cols in window
+  init_window();
 
   while(1){
 
@@ -199,18 +173,54 @@ void check_char(int row, int col) {
       endwin();
       exit(0);
     } else if(input == 'r'){
-      endwin();
-      execv("/usr/bin/ranger", NULL);
-      exit(1);
+
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        endwin();
+        execv("/usr/bin/ranger", NULL);
+        error("execv");
+      } else {
+        endwin();
+        int status;
+
+        // kill(_, 0) checks if ranger exited, as it will reload itself when resized
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+        init_window();
+        neon(row, col);
+      }
+
+
     } else if(input == 'i'){
       int temp = BACKGROUND;
       BACKGROUND = FOREGROUND;
       FOREGROUND = temp;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'w'){
-      endwin();
-      execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
-      exit(1);
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        endwin();
+        execv("/usr/bin/ranger", NULL);
+        execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
+        error("execlp");
+      } else {
+        endwin();
+        int status;
+
+        // kill(_, 0) checks if ranger exited, as it will reload itself when resized
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+        init_window();
+        neon(row, col);
+      }
     } else if(input == 'g'){
       glitch(row, col);
     } else if(input == 't'){
@@ -420,7 +430,7 @@ void check_char(int row, int col) {
     } else if (input == 'v') {
       endwin();
       execv("/usr/bin/nvim", NULL);
-    } else if (input == 'm') {
+    } else if (input == 'M') {
       endwin();
       execlp("rmpc", "rmpc", NULL);
       exit(1);
@@ -1165,5 +1175,36 @@ void error(char * err) {
   endwin();
   printf("%s\n", err);
   exit(1);
+}
+
+void init_window(){
+  setlocale(LC_ALL, "");    // Allow special characters, initscr()
+  initscr();                // Initialize screen
+  start_color();            // Must be called right after initscr()
+  use_default_colors();
+  init_pair(BLACK, COLOR_BLACK, -1); // Foreground black, no background
+  init_pair(RED, COLOR_RED, -1);
+  init_pair(GREEN, COLOR_GREEN, -1);
+  init_pair(YELLOW, COLOR_YELLOW, -1);
+  init_pair(BLUE, COLOR_BLUE, -1);
+  init_pair(MAGENTA, COLOR_MAGENTA, -1);
+  init_pair(CYAN, COLOR_CYAN, -1);
+  init_pair(WHITE, COLOR_WHITE, -1);
+  init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
+  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
+  init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN);
+  init_pair(BLACK_YELLOW, COLOR_BLACK, COLOR_YELLOW);
+  init_pair(BLACK_BLUE, COLOR_BLACK, COLOR_BLUE);
+  init_pair(BLACK_MAGENTA, COLOR_BLACK, COLOR_MAGENTA);
+  init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
+  init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
+
+  cbreak();                 // Disable line buffering
+  noecho();                 // Don't display keyboard presses in window
+  nodelay(stdscr, TRUE);
+  keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
+  curs_set(FALSE);          // No cursor
+  clear();
+  refresh();                // clear screen
 }
 

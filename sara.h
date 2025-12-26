@@ -17,10 +17,11 @@
     . Fuzzy find menu for newlook
     . mega_glitch()
     . pshd()
+    . Do a perms check on the backlight file to ensure writability
     . Break functions into new files
     . Make row/col global
     . Load colors/randomness from config file
-    . input 'c' to show term colors
+    . input 'c' to show term colors and enter COMMAND MODE
     . 'w' creates a menu
 
     . Add -s --small options to force small size
@@ -95,6 +96,7 @@ void prompt_newlook(int row, int col);
 int input_color(char * arg);
 void error(char * err);
 void pshd(int row, int col);
+void init_window();
 
 const int BIG_GLYPH_HEIGHT = 19;
 const int BIG_GLYPH_LENGTH = 44;

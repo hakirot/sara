@@ -10,20 +10,33 @@
 
 /* FEATLIST
 
+    . More animations
+        > Sparkle
+        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+    . Fix the WAIT_BUFFER time muckery
+    . Fuzzy find menu for newlook
+    . mega_glitch()
+    . pshd()
+    . Do a perms check on the backlight file to ensure writability
+    . Break functions into new files
+    . Make row/col global
+    . Load colors/randomness from config file
+    . input 'c' to show term colors and enter COMMAND MODE
+    . 'w' creates a menu
 
     . Add -s --small options to force small size
     . More boot animations
     . mega_glitch()
-    . More Interval animations
-        > Double SARA + clear() + Arch + SARA + SPECIAL APPLICATION RANGING AREA
-        > Wide (fullscreen) glitch
-        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
     . Use archsarazap
     . Create input for alternate acronyms from headers (low priority)
     . Replace char input 'c' (with what ..? .. there was something)
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X add char input 'i' -> invert)
+    X Holographic arch (background arch colors cycle 1-7)
+    X Random startup colors
+    X More animations (xray)
     X Add command-line args for fg and bg
     X Add menues for 'b' prompt (bluetooth and backlight)
     X Create a cooler newlook prompt
@@ -67,21 +80,23 @@ typedef enum {
 void get_helped();
 void check_char(int row, int col);
 int check_size(int row, int col, int cache);
-int is_char_in_search(wchar_t wc);
+int is_char_in_search(wchar_t wc, wchar_t * search_str);
 int get_confirmation(int row, int col);
 void print_start_animation(int row, int col);
 void printstandard(int row, int col);
 void quickprint(int row, int col, int fg, int bg, int printColorbar);
-void apply_effect(int row, int col, int printColorbar);
 void neon(int row, int col);
 void glitch(int row, int col);
 void mega_glitch(int row, int col, int duration);
+void xray(int row, int col);
 const char * select_option_window(int row, int col, char** choices, int len);
 void patch_backlight(int row, int col);
 void patch_border(int row, int col);
 void prompt_newlook(int row, int col);
 int input_color(char * arg);
 void error(char * err);
+void pshd(int row, int col);
+void init_window();
 
 const int BIG_GLYPH_HEIGHT = 19;
 const int BIG_GLYPH_LENGTH = 44;

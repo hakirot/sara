@@ -13,6 +13,7 @@
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+    . Fix the WAIT_BUFFER time muckery
     . Fuzzy find menu for newlook
     . mega_glitch()
     . pshd()
@@ -93,6 +94,7 @@ void patch_border(int row, int col);
 void prompt_newlook(int row, int col);
 int input_color(char * arg);
 void error(char * err);
+void pshd(int row, int col);
 
 const int BIG_GLYPH_HEIGHT = 19;
 const int BIG_GLYPH_LENGTH = 44;

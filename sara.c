@@ -219,17 +219,27 @@ void check_char(int row, int col) {
       exit(1);
 
     } else if(input == 'p'){
-      pid_t pid = fork();
 
-      if (pid < 0) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-      } else if (pid == 0) {
-        execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
-        perror("execl");
-      } else {
-        int status;
-        waitpid(pid, &status, 0);
+      char* choices[2]={'\0'};
+      choices[0]="PSHD";
+      choices[1]="POLYBAR";
+      const char* selection =  select_option_window(row, col, choices, 2);
+
+      if (selection == choices[0]){
+        pshd(row, col);
+      } else if (selection == choices[1]){
+
+        pid_t pid = fork();
+        if (pid < 0) {
+          perror("fork");
+          exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+          execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
+          perror("execl");
+        } else {
+          int status;
+          waitpid(pid, &status, 0);
+        }
       }
 
       neon(row, col);
@@ -1134,6 +1144,10 @@ void xray(int row, int col){
   } else {
     neon(row, col);
   }
+}
+
+void pshd(int row, int col){
+
 }
 
 void get_helped() {

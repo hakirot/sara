@@ -1165,8 +1165,9 @@ void get_helped() {
   printf("  -c            Constant effects\n");
   printf("  -G            Constant glitch effect\n");
   printf("  -M            Constant MEGA glitch effect\n");
-  printf("  -f [color]         set custom FOREGROUND color\n");
-  printf("  -b [color]         set custom BACKGROUND color\n");
+  printf("  -H            Holographic background\n");
+  printf("  -f [color]    set custom FOREGROUND color\n");
+  printf("  -b [color]    set custom BACKGROUND color\n");
   exit(0);
 }
 

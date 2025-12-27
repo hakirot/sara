@@ -6,8 +6,8 @@
 ███████║██╗██║  ██║██╗██║  ██║██╗██║  ██║██╗
 ╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝
 
-# Terminal Decorator & Custom Launcher
+# Terminal Decorator & Custom Program Launcher
 
-This extracurricular entity exists to express
-exhaustive terminal exceptionalism
-
+This extracurricular exercise to expressing
+exhaustive terminal exceptionalism. A program
+launcher

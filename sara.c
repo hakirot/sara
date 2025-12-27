@@ -200,6 +200,10 @@ void check_char(int row, int col) {
       BACKGROUND = FOREGROUND;
       FOREGROUND = temp;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+    } else if(input == 'I'){
+      BACKGROUND = rand() % 7 + 1;    // RNG 0 and 6
+      FOREGROUND = rand() % 7 + 1;    // RNG 0 and 6
+      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'w'){
       pid_t pid = fork();
       if (pid < 0) {

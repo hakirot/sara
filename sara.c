@@ -262,8 +262,8 @@ void check_char(int row, int col) {
         const char *current_cwd = getenv("PWD");
 //      printf("Current pwd is %s \n", current_cwd);
 
-        char error_str[256] = {'\0'};
-        sprintf(error_str, "%s%s" , "Are we in the new dir?: ", target_chdir);
+//      char error_str[256] = {'\0'};
+//      sprintf(error_str, "%s%s" , "Are we in the new dir?: ", target_chdir);
 
 //      error(error_str);
 
@@ -310,9 +310,34 @@ void check_char(int row, int col) {
     } else if(input == 'g'){
       glitch(row, col);
     } else if(input == 't'){
-      endwin();
-      execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
-      exit(1);
+
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        endwin();
+        char * notes_dir = "/home/row/dox/.notes/";
+        chdir("/home/hakirot/dox/.notes");
+        if (setenv("PWD", notes_dir, 1) != 0) {
+          error("setenv error");
+        }
+        execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
+        error("ERROR: execv nvim");
+      } else {
+
+        endwin();
+        int status;
+
+        // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        init_window();
+        neon(row, col);
+      }
 
     } else if(input == 'p'){
 
@@ -516,8 +541,27 @@ void check_char(int row, int col) {
 
     } else if (input == 'v') {
 
-      endwin();
-      execv("/usr/bin/nvim", NULL);
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        endwin();
+        execv("/usr/bin/nvim", NULL);
+        error("ERROR: execv nvim");
+      } else {
+        endwin();
+        int status;
+
+        // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        init_window();
+        neon(row, col);
+      }
 
     } else if (input == 'M') {
       endwin();

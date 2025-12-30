@@ -13,6 +13,7 @@
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+        > Scan (xray but single direction)
     . Fix the WAIT_BUFFER time muckery
     . Fuzzy find menu for newlook
     . mega_glitch()
@@ -33,6 +34,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X Follow ranger through the directories
     X add char input 'i' -> invert)
     X Holographic arch (background arch colors cycle 1-7)
     X Random startup colors

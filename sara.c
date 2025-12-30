@@ -21,6 +21,10 @@
 #include <wait.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <errno.h>
+
 
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
@@ -130,10 +134,8 @@ int main(int argc, char* argv[]) {
 //  }
 
     if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
-      int i = BACKGROUND;
-      i++;
-      if (BACKGROUND > 7) i = 2;
-      BACKGROUND = i;
+      BACKGROUND++;
+      if (BACKGROUND > 7) BACKGROUND = 2;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     }
 
@@ -144,7 +146,7 @@ int main(int argc, char* argv[]) {
     } else if (HOLD_CHAR != '\0'){
       should_print = true;
     }
-    usleep(80000); // chill
+    usleep(50000); // chill
   }
 
   refresh();
@@ -174,22 +176,97 @@ void check_char(int row, int col) {
       exit(0);
     } else if(input == 'r'){
 
+// ranger MAN
+//--choosedir=targetfile
+//    Allows you to pick a directory with ranger.  When you exit ranger, it will write the last visited directory into targetfile.
+
+      const char *env_cwd = getenv("HOME");
+      const char *sara_wd = "/.cache/sara";
+      char cache_dir[256] = {'\0'};
+      sprintf(cache_dir, "%s%s", env_cwd, sara_wd);
+
+      // Check if dir exists
+      DIR* dir = opendir(cache_dir);
+      if (dir) {
+        /* Directory exists */
+        closedir(dir);
+      } else if (ENOENT == errno) {
+        /* Directory does not exist. */
+        char dir_name[256] = {'\0'};
+        sprintf(dir_name, "%s%s", env_cwd, "/.cache/sara");
+        int status = mkdir(dir_name, 0755);
+
+        if (status != 0) {
+          char error_str[256] = {'\0'};
+          sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
+          error(error_str);
+        }
+      }
+
+      char cache_file[50] = {'\0'};
+
+//    FILE *fptr;
+      pid_t cur_pid = getpid();
+
+      // append the PID to the file
+      sprintf(cache_file, "%s%s%d", env_cwd, "/.cache/sara/sara", cur_pid);
+//    fptr = fopen(cache_file, "w");
+//    fclose(fptr);
+
+      char argument[100] = {'\0'};
+      sprintf(argument, "%s%s", "--choosedir=", cache_file);
+
+//    error(argument); // DEBUG
+
       pid_t pid = fork();
       if (pid < 0) {
         perror("fork");
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
         endwin();
-        execv("/usr/bin/ranger", NULL);
-        error("execv");
+
+        execlp("ranger", "ranger", "--choosedir", cache_file, NULL);
+        error("ERROR: execv ranger");
+
       } else {
         endwin();
         int status;
 
-        // kill(_, 0) checks if ranger exited, as it will reload itself when resized
+        // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
         while(kill(pid, 0) == 0){
           waitpid(pid, &status, 0);
         }
+
+        // cd into directory where ranger exited
+        FILE *fp;
+        fp = fopen(cache_file, "r");
+
+        char target_chdir[256] = {'\0'};
+        if(fgets(target_chdir, 256, fp) == NULL) {
+            char error_str[256] = {'\0'};
+            sprintf(error_str, "%s%s" , "Error reading target_chdir file ", target_chdir);
+            error(error_str);
+        }
+
+        fclose(fp);
+
+//      error(target_chdir); // DEBUG
+				remove(cache_file) ? error("No file to be deleted"): 0;
+
+        chdir(target_chdir);
+
+				if (setenv("PWD", target_chdir, 1) != 0) {  
+          error("setenv error");
+				}
+
+        const char *current_cwd = getenv("PWD");
+//      printf("Current pwd is %s \n", current_cwd);
+
+        char error_str[256] = {'\0'};
+        sprintf(error_str, "%s%s" , "Are we in the new dir?: ", target_chdir);
+
+//      error(error_str);
+
         init_window();
         neon(row, col);
       }
@@ -204,6 +281,12 @@ void check_char(int row, int col) {
       BACKGROUND = rand() % 7 + 1;    // RNG 0 and 6
       FOREGROUND = rand() % 7 + 1;    // RNG 0 and 6
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+    } else if(input == 'H'){
+      if (HOLOGRAPHIC == 1){
+        HOLOGRAPHIC = 0;
+      } else {
+        HOLOGRAPHIC = 1;
+      }
     } else if(input == 'w'){
       pid_t pid = fork();
       if (pid < 0) {
@@ -337,6 +420,7 @@ void check_char(int row, int col) {
               waitpid(pid, &status, 0);
             }
           } else if (selection == disconnect_choices[1]){
+
             pid_t pid = fork();
 
             if (pid < 0) {
@@ -431,8 +515,10 @@ void check_char(int row, int col) {
     neon(row, col);
 
     } else if (input == 'v') {
+
       endwin();
       execv("/usr/bin/nvim", NULL);
+
     } else if (input == 'M') {
       endwin();
       execlp("rmpc", "rmpc", NULL);

@@ -25,7 +25,6 @@
 #include <dirent.h>
 #include <errno.h>
 
-
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
@@ -267,7 +266,6 @@ void check_char(int row, int col) {
 
 //      error(error_str);
 
-        init_window();
         neon(row, col);
       }
 
@@ -304,7 +302,6 @@ void check_char(int row, int col) {
         while(kill(pid, 0) == 0){
           waitpid(pid, &status, 0);
         }
-        init_window();
         neon(row, col);
       }
     } else if(input == 'g'){
@@ -335,7 +332,6 @@ void check_char(int row, int col) {
           waitpid(pid, &status, 0);
         }
 
-        init_window();
         neon(row, col);
       }
 
@@ -559,7 +555,6 @@ void check_char(int row, int col) {
           waitpid(pid, &status, 0);
         }
 
-        init_window();
         neon(row, col);
       }
 

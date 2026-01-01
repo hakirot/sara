@@ -97,8 +97,8 @@ int main(int argc, char* argv[]) {
       case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
         srand((unsigned)time(0));
-        FOREGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
+        FOREGROUND = (rand() % 6) + 2;    // RNG 2 and 7
         if (FOREGROUND > 7 || FOREGROUND < 1 || BACKGROUND > 7 || BACKGROUND < 1){
           error("error");
         }
@@ -276,8 +276,8 @@ void check_char(int row, int col) {
       FOREGROUND = temp;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'I'){
-      BACKGROUND = rand() % 7 + 1;    // RNG 0 and 6
-      FOREGROUND = rand() % 7 + 1;    // RNG 0 and 6
+      BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
+      FOREGROUND = rand() % 6 + 2;    // RNG 2 and 7
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
@@ -1090,8 +1090,8 @@ void prompt_newlook(int row, int col) {
             // YES decorator blocks when selected
             } else if (iter_col > 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
-            } 
-//            
+            }
+//
           }
 
           mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);

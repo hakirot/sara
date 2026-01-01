@@ -10,6 +10,9 @@
 
 /* FEATLIST
 
+    . Shutdown command
+    . rtorrent command (launch with cd function refactor)
+    . Do a perms check on the backlight file to ensure writability
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
@@ -18,7 +21,6 @@
     . Fuzzy find menu for newlook
     . mega_glitch()
     . pshd()
-    . Do a perms check on the backlight file to ensure writability
     . Break functions into new files
     . Make row/col global
     . Load colors/randomness from config file

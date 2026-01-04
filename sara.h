@@ -10,13 +10,12 @@
 
 /* FEATLIST
 
-    . rtorrent command (launch with cd function refactor)
-    . Do a perms check on the backlight file to ensure writability
+    . Do a perms check on the backlight file, make writeable if needed
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
         > Scan (xray but single direction)
-    . Fix the WAIT_BUFFER time muckery
+    . Fix the inaccurate WAIT_BUFFER time muckery
     . Fuzzy find menu for newlook
         . Build directory list
     . mega_glitch()
@@ -36,6 +35,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X rtorrent command (launch with cd function refactor)
     X Shutdown command
     X Recheck size before neon() call
     X Follow ranger through the directories

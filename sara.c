@@ -175,9 +175,10 @@ void check_char(int row, int col) {
     } else if(input == 'r'){
 
       int cache = row + col;
-// ranger MAN
-//--choosedir=targetfile
-//    Allows you to pick a directory with ranger.  When you exit ranger, it will write the last visited directory into targetfile.
+
+      // ranger man
+      //--choosedir=targetfile
+      //    Allows you to pick a directory with ranger.  When you exit ranger, it will write the last visited directory into targetfile.
 
       const char *env_cwd = getenv("HOME");
       const char *sara_wd = "/.cache/sara";
@@ -204,18 +205,12 @@ void check_char(int row, int col) {
 
       char cache_file[50] = {'\0'};
 
-//    FILE *fptr;
       pid_t cur_pid = getpid();
 
-      // append the PID to the file
       sprintf(cache_file, "%s%s%d", env_cwd, "/.cache/sara/sara", cur_pid);
-//    fptr = fopen(cache_file, "w");
-//    fclose(fptr);
 
       char argument[100] = {'\0'};
       sprintf(argument, "%s%s", "--choosedir=", cache_file);
-
-//    error(argument); // DEBUG
 
       pid_t pid = fork();
       if (pid < 0) {
@@ -231,12 +226,10 @@ void check_char(int row, int col) {
         endwin();
         int status;
 
-        // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
         while(kill(pid, 0) == 0){
           waitpid(pid, &status, 0);
         }
 
-        // cd into directory where ranger exited
         FILE *fp;
         fp = fopen(cache_file, "r");
 
@@ -258,7 +251,7 @@ void check_char(int row, int col) {
 				}
       }
 
-      // need to refresh() for getmaxyx to work on a possibly resized screen
+      // getmaxyx needs refresh() to get a new screensize
       clear();
       refresh();
 
@@ -284,15 +277,12 @@ void check_char(int row, int col) {
           exit(EXIT_FAILURE);
         } else if (pid == 0) {
           endwin();
-
           execv("/usr/bin/rtorrent", NULL);
           error("ERROR: execv rtorrent");
-
         } else {
           endwin();
           int status;
 
-          // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
           while(kill(pid, 0) == 0){
             waitpid(pid, &status, 0);
           }

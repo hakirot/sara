@@ -170,6 +170,9 @@ void check_char(int row, int col) {
 
   if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
     if(input == 'q'){
+      clear();
+      refresh();
+      move(0, 0);
       endwin();
       exit(0);
     } else if(input == 'r'){
@@ -254,7 +257,6 @@ void check_char(int row, int col) {
       // getmaxyx needs refresh() to get a new screensize
       clear();
       refresh();
-
       getmaxyx(stdscr, row, col);
       if(cache == row + col){
         neon(row, col);
@@ -305,7 +307,7 @@ void check_char(int row, int col) {
         } else if (pid == 0) {
           endwin();
           execv("/home/hakirot/skps/cleanup.sh", NULL);
-          error("ERROR: execv nvim");
+          error("ERROR: execv cleanup");
         } else {
           endwin();
           int status;
@@ -357,6 +359,7 @@ void check_char(int row, int col) {
     } else if(input == 'g'){
       glitch(row, col);
     } else if(input == 't'){
+      int cache = row + col;
 
       pid_t pid = fork();
       if (pid < 0) {
@@ -382,7 +385,12 @@ void check_char(int row, int col) {
           waitpid(pid, &status, 0);
         }
 
-        neon(row, col);
+        clear();
+        refresh();
+        getmaxyx(stdscr, row, col);
+        if(cache == row + col){
+          neon(row, col);
+        }
       }
 
     } else if(input == 'p'){
@@ -595,6 +603,8 @@ void check_char(int row, int col) {
 
     } else if (input == 'v') {
 
+      int cache = row + col;
+
       pid_t pid = fork();
       if (pid < 0) {
         perror("fork");
@@ -612,7 +622,12 @@ void check_char(int row, int col) {
           waitpid(pid, &status, 0);
         }
 
-        neon(row, col);
+        clear();
+        refresh();
+        getmaxyx(stdscr, row, col);
+        if(cache == row + col){
+          neon(row, col);
+        }
       }
 
     } else if (input == 'M') {

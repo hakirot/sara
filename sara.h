@@ -19,6 +19,7 @@
         > Scan (xray but single direction)
     . Fix the WAIT_BUFFER time muckery
     . Fuzzy find menu for newlook
+        . Build directory list
     . mega_glitch()
     . pshd()
     . Break functions into new files
@@ -36,6 +37,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X Recheck size before neon() call
     X Follow ranger through the directories
     X add char input 'i' -> invert)
     X Holographic arch (background arch colors cycle 1-7)

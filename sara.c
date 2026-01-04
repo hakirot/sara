@@ -175,6 +175,7 @@ void check_char(int row, int col) {
       exit(0);
     } else if(input == 'r'){
 
+      int cache = row + col;
 // ranger MAN
 //--choosedir=targetfile
 //    Allows you to pick a directory with ranger.  When you exit ranger, it will write the last visited directory into targetfile.
@@ -265,10 +266,37 @@ void check_char(int row, int col) {
 //      sprintf(error_str, "%s%s" , "Are we in the new dir?: ", target_chdir);
 
 //      error(error_str);
-
-        neon(row, col);
       }
 
+    } else if(input == 'S'){
+
+      char* choices[1]={'\0'};
+      choices[0]="SHUTDOWN";
+      const char* selection =  select_option_window(row, col, choices, 1);
+
+      if (selection == choices[0]){
+
+        pid_t pid = fork();
+        if (pid < 0) {
+          perror("fork");
+          exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+          endwin();
+          execv("/home/hakirot/skps/cleanup.sh", NULL);
+          error("ERROR: execv nvim");
+        } else {
+          endwin();
+          int status;
+
+          // wait for cleanup
+          while(kill(pid, 0) == 0){
+            waitpid(pid, &status, 0);
+          }
+          execlp("shutdown", "shutdown", "now", NULL);
+        }
+      }
+
+      neon(row, col);
 
     } else if(input == 'i'){
       int temp = BACKGROUND;
@@ -729,7 +757,6 @@ const char * select_option_window(int row, int col, char** choices, int len){
     refresh();
     usleep(1000); // chill
   }
-
 }
 
 void neon(int row, int col) {

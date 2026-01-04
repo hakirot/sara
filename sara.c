@@ -512,7 +512,12 @@ void check_char(int row, int col) {
         neon(row, col);
 
       } if (selection == choices[1]){
-				FILE *fptr = fopen("/sys/class/backlight/intel_backlight/brightness", "r");
+
+        char * file_path = "/sys/class/backlight/intel_backlight/brightness";
+
+        ensure_path_perm(file_path, 'w');
+
+				FILE *fptr = fopen(file_path, "r");
         if(fptr){
 
           char buff[8];
@@ -565,11 +570,14 @@ void check_char(int row, int col) {
 
               refresh();
 
-              FILE *writeptr = fopen("/sys/class/backlight/intel_backlight/brightness", "w");
-              if(writeptr){
+              FILE *ptr = fopen(file_path, "w");
+
+              if(ptr){
                 // Write brightness to file
-                fprintf(writeptr, "%s", str);
-                fclose(writeptr);
+                fprintf(ptr, "%s", str);
+                fclose(ptr);
+              } else {
+                error("Not writable");
               }
 
             } else if (input == 'q' || input == '\n'){
@@ -1334,6 +1342,54 @@ void xray(int row, int col){
 
 void pshd(int row, int col){
 
+}
+
+void ensure_path_perm(char * file_path, char perm){
+
+  if(perm == 'w'){
+    // open file
+    FILE *writeptr = fopen(file_path, "w");
+
+    // is it writable?
+    if(writeptr){
+      fclose(writeptr);
+      return;
+    } else if (errno == 13){
+      // test if pw file exists
+      char * pw_path = "home/hakirot/.config/pw.gpg";
+      FILE * pw_file = fopen(pw_path, "r");
+      if (ENOENT == errno){
+        set_askpass();
+      } else {
+        fclose(pw_file);
+      }
+      // fork
+        // setenv SUDO_ASKPASS
+        // sudo chmod 666 command with --askpass
+      // /usr/bin/sudo
+
+    } else {
+      char error_str[32] = {'\0'};
+      sprintf(error_str, "A new errno: %d", errno);
+      error(error_str);
+    }
+  }
+}
+
+void set_askpass(){
+  clear();
+  //print prompt
+  //getch();
+  // char pw[256] = {'\0'}
+  // while(1)
+      // if blah blah blah input sanitation
+        // append char to string at i
+      // else if char == '\n'
+        // break
+      // if i == 256 break
+
+  // encrypt pw and write to file
+  // run a test askpass command
 }
 
 void get_helped() {

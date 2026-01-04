@@ -70,6 +70,11 @@
 #ifndef SARA_H
 #define SARA_H
 
+const int BIG_GLYPH_HEIGHT = 19;
+const int BIG_GLYPH_LENGTH = 44;
+const int NORMAL_GLYPH_HEIGHT = 7;
+const int NORMAL_GLYPH_LENGTH = 44;
+
 typedef enum {
   SMALL,
   NORMAL,
@@ -103,10 +108,7 @@ int input_color(char * arg);
 void error(char * err);
 void pshd(int row, int col);
 void init_window();
-
-const int BIG_GLYPH_HEIGHT = 19;
-const int BIG_GLYPH_LENGTH = 44;
-const int NORMAL_GLYPH_HEIGHT = 7;
-const int NORMAL_GLYPH_LENGTH = 44;
+void ensure_path_perm(char * file_path, char perm);
+void set_askpass();
 
 #endif

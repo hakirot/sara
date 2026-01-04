@@ -10,7 +10,6 @@
 
 /* FEATLIST
 
-    . Shutdown command
     . rtorrent command (launch with cd function refactor)
     . Do a perms check on the backlight file to ensure writability
     . More animations
@@ -37,6 +36,7 @@
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X Shutdown command
     X Recheck size before neon() call
     X Follow ranger through the directories
     X add char input 'i' -> invert)

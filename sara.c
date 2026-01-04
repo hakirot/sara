@@ -117,13 +117,12 @@ int main(int argc, char* argv[]) {
 
   while(1){
 
+    check_char(row, col); // check input for this cycle
+
 //  get current screen dimensions
     getmaxyx(stdscr, row, col);
     cache = check_size(row, col, cache);
-
     if (START_ANIMATION == EMPTY) print_start_animation(row, col);
-
-    check_char(row, col); // check input for this cycle
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
@@ -250,7 +249,6 @@ void check_char(int row, int col) {
 
         fclose(fp);
 
-//      error(target_chdir); // DEBUG
 				remove(cache_file) ? error("No file to be deleted"): 0;
 
         chdir(target_chdir);
@@ -258,15 +256,49 @@ void check_char(int row, int col) {
 				if (setenv("PWD", target_chdir, 1) != 0) {  
           error("setenv error");
 				}
-
-        const char *current_cwd = getenv("PWD");
-//      printf("Current pwd is %s \n", current_cwd);
-
-//      char error_str[256] = {'\0'};
-//      sprintf(error_str, "%s%s" , "Are we in the new dir?: ", target_chdir);
-
-//      error(error_str);
       }
+
+      // need to refresh() for getmaxyx to work on a possibly resized screen
+      clear();
+      refresh();
+
+      getmaxyx(stdscr, row, col);
+      if(cache == row + col){
+        neon(row, col);
+      }
+
+    } else if(input == 'R'){
+
+      const char *home_dir = getenv("HOME");
+      const char *dls = "/dls";
+      char dl_dir[256] = {'\0'};
+      sprintf(dl_dir, "%s%s", home_dir, dls);
+      chdir(dl_dir);
+      if (setenv("PWD", dl_dir, 1) != 0) {
+        error("setenv error");
+      } else {
+
+        pid_t pid = fork();
+        if (pid < 0) {
+          perror("fork");
+          exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+          endwin();
+
+          execv("/usr/bin/rtorrent", NULL);
+          error("ERROR: execv rtorrent");
+
+        } else {
+          endwin();
+          int status;
+
+          // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
+          while(kill(pid, 0) == 0){
+            waitpid(pid, &status, 0);
+          }
+        }
+      }
+      neon(row, col);
 
     } else if(input == 'S'){
 
@@ -349,7 +381,7 @@ void check_char(int row, int col) {
           error("setenv error");
         }
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
-        error("ERROR: execv nvim");
+        error("ERROR: execlp nvim");
       } else {
 
         endwin();
@@ -578,7 +610,6 @@ void check_char(int row, int col) {
         endwin();
         int status;
 
-        // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
         while(kill(pid, 0) == 0){
           waitpid(pid, &status, 0);
         }

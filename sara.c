@@ -1472,7 +1472,7 @@ void pshd(int row, int col){
       return;
     } else if (input == 'q'){
       fclose(file);
-      neon(row, col);
+      glitch(row, col);
       return;
     }
 

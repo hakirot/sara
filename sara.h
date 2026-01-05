@@ -8,8 +8,9 @@
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
                                            */
 
-/* FEATLIST
+/* FEATS
 
+    . sara prints after nvim exit, also not sure if I'm waiting on that thread
     . Do a perms check on the backlight file, make writeable if needed
     . More animations
         > Sparkle
@@ -24,8 +25,6 @@
     . Make row/col global
     . Load colors/randomness from config file
     . input 'c' to show term colors and enter COMMAND MODE
-    . 'w' creates a menu
-
     . Add -s --small options to force small size
     . More boot animations
     . mega_glitch()
@@ -108,7 +107,7 @@ int input_color(char * arg);
 void error(char * err);
 void pshd(int row, int col);
 void init_window();
-void ensure_path_perm(char * file_path, char perm);
-void set_askpass();
+void ensure_path_perm(char * file_path, char perm, int row, int col);
+int generate_pw_file(int row, int col);
 
 #endif

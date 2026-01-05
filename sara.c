@@ -168,7 +168,7 @@ void check_char(int row, int col) {
 
   char input = getch();
 
-  if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
+  if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
     if(input == 'q'){
       clear();
       refresh();
@@ -328,8 +328,8 @@ void check_char(int row, int col) {
       FOREGROUND = temp;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'I'){
-      BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
-      FOREGROUND = rand() % 6 + 2;    // RNG 2 and 7
+      BACKGROUND = rand() % 8 + 1;    // RNG 1 and 8
+      FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
@@ -357,7 +357,8 @@ void check_char(int row, int col) {
         neon(row, col);
       }
     } else if(input == 'g'){
-      glitch(row, col);
+//    glitch(row, col);
+      xray(row, col);
     } else if(input == 't'){
       int cache = row + col;
 
@@ -523,7 +524,7 @@ void check_char(int row, int col) {
 
         char * file_path = "/sys/class/backlight/intel_backlight/brightness";
 
-        ensure_path_perm(file_path, 'w');
+        ensure_path_perm(file_path, 'w', row, col);
 
 				FILE *fptr = fopen(file_path, "r");
         if(fptr){
@@ -540,9 +541,17 @@ void check_char(int row, int col) {
           int offset = 0;
           if(WIN_SIZE != BIG) offset = 1;
 
-          // print file contents
+          quickprint(row, col, FOREGROUND, FOREGROUND, 0);
+
+          attron(COLOR_PAIR(BACKGROUND));
+          for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+            mvprintw(row/2-2 + i - offset, (col-GLYPH_LENGTH)/2, "%s", option_window[i]);
+          }
+          attroff(COLOR_PAIR(BACKGROUND));
+
+          // print current brightness
           attron(COLOR_PAIR(FOREGROUND + 8));
-          mvaddstr(row/2 - offset, col/2 - 11, buff);
+          mvaddstr(row/2 - offset - 1, col/2 - 11, buff);
           attroff(COLOR_PAIR(FOREGROUND + 8));
 
           patch_backlight(row, col);
@@ -569,9 +578,9 @@ void check_char(int row, int col) {
               // Update UI
               sprintf(str, "%d", brightness);
 
-              mvaddstr(row/2 - offset, col/2 - 11, "     ");
+              mvaddstr(row/2 - offset - 1, col/2 - 11, "     ");
               attron(COLOR_PAIR(FOREGROUND + 8));
-              mvaddstr(row/2 - offset, col/2 - 11, str);
+              mvaddstr(row/2 - offset - 1, col/2 - 11, str);
               attroff(COLOR_PAIR(FOREGROUND + 8));
 
               patch_border(row, col);
@@ -1047,7 +1056,7 @@ void patch_backlight(int row, int col){
   attron(COLOR_PAIR(FOREGROUND));
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
-  mvaddstr(row/2 - offset, (col-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
+  mvaddstr(row/2 - offset - 1, (col-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
   attroff(COLOR_PAIR(FOREGROUND));
 
 }
@@ -1065,7 +1074,7 @@ void patch_border(int row, int col){
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
   attron(COLOR_PAIR(BACKGROUND));
-  mvadd_wch(row/2 - offset, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
+  mvadd_wch(row/2 - offset - 1, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
   attroff(COLOR_PAIR(BACKGROUND));
 }
 
@@ -1307,8 +1316,8 @@ void xray(int row, int col){
     }
 
     refresh();
-    usleep(15000);
-//  usleep(800000);
+//  usleep(15000);
+    usleep(100000);
 
     getmaxyx(stdscr, row, col);
     if (cache != row + col) return;
@@ -1359,7 +1368,7 @@ void pshd(int row, int col){
 
 }
 
-void ensure_path_perm(char * file_path, char perm){
+void ensure_path_perm(char * file_path, char perm, int row, int col){
 
   if(perm == 'w'){
     // open file
@@ -1371,17 +1380,38 @@ void ensure_path_perm(char * file_path, char perm){
       return;
     } else if (errno == 13){
       // test if pw file exists
-      char * pw_path = "home/hakirot/.config/pw.gpg";
+      char * pw_path = "/home/hakirot/.config/pw.gpg";
       FILE * pw_file = fopen(pw_path, "r");
       if (ENOENT == errno){
-        set_askpass();
+        int result = generate_pw_file(row, col);
       } else {
         fclose(pw_file);
       }
+
       // fork
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        endwin();
+
         // setenv SUDO_ASKPASS
-        // sudo chmod 666 command with --askpass
-      // /usr/bin/sudo
+				if (setenv("SUDO_ASKPASS", "/home/hakirot/skps/secret.sh", 1) != 0) {
+          error("setenv error");
+				}
+
+        execlp("sudo", "sudo", "--askpass", "chmod", "666", file_path, NULL);
+        error("ERROR: execv sudo");
+
+      } else {
+        endwin();
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+      }
 
     } else {
       char error_str[32] = {'\0'};
@@ -1391,20 +1421,49 @@ void ensure_path_perm(char * file_path, char perm){
   }
 }
 
-void set_askpass(){
+int generate_pw_file(int row, int col){
   clear();
-  //print prompt
-  //getch();
-  // char pw[256] = {'\0'}
-  // while(1)
-      // if blah blah blah input sanitation
-        // append char to string at i
-      // else if char == '\n'
-        // break
-      // if i == 256 break
 
-  // encrypt pw and write to file
-  // run a test askpass command
+  attron(COLOR_PAIR(WHITE_BLACK));
+  mvprintw(row/2 - 1, col/2 - 8, "%s", "Enter Password");
+  attroff(COLOR_PAIR(WHITE_BLACK));
+  refresh();
+
+  char pw[256] = {'\0'};
+  int i = 0;
+  char input;
+  while(1){
+    input = getch();
+      if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
+
+        mvaddch(row/2, col/2 - 8 + i, '*');
+        refresh();
+
+        pw[i] = input;
+        i++;
+
+      } else if (input == 7){ // this could be an ST implementation only..
+
+        pw[i] = '\0';
+        i--;
+        mvaddch(row/2, col/2 - 8 + i, ' ');
+
+      } else if (input == '\n'){
+        break;
+      }
+      if (i == 256) return 1;
+    usleep(50000); // chill
+  }
+  pw[i] = '\n';
+
+  char popen_command[256] = {'\0'};
+  sprintf(popen_command, "%s %s", "gpg --symmetric --output", "/home/hakirot/.config/pw.gpg");
+  FILE * gpg = popen(popen_command, "w");
+  if (!gpg) error("gpg");
+  fputs(pw, gpg);
+  int result = pclose(gpg);
+
+  return 0;
 }
 
 void get_helped() {

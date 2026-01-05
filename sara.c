@@ -1399,9 +1399,9 @@ void pshd(int row, int col){
           entry_as_int = i - 1;
         } else {
           prev_sel = entry_as_int - 1;
-          attron(COLOR_PAIR(FOREGROUND));
+          attron(COLOR_PAIR(WHITE));
           mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-          attroff(COLOR_PAIR(FOREGROUND));
+          attroff(COLOR_PAIR(WHITE));
         }
         sprintf(entry, "%d", entry_as_int);
       } else if (input == 'k'){
@@ -1410,9 +1410,9 @@ void pshd(int row, int col){
           entry_as_int = 0;
         } else {
           prev_sel = entry_as_int + 1;
-          attron(COLOR_PAIR(FOREGROUND));
+          attron(COLOR_PAIR(WHITE));
           mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-          attroff(COLOR_PAIR(FOREGROUND));
+          attroff(COLOR_PAIR(WHITE));
         }
         sprintf(entry, "%d", entry_as_int);
       } else {
@@ -1425,10 +1425,10 @@ void pshd(int row, int col){
       if(entry_as_int > -1){
 
         if(prev_sel > -1){
-          attron(COLOR_PAIR(FOREGROUND));
+          attron(COLOR_PAIR(WHITE));
           mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
           refresh();
-          attroff(COLOR_PAIR(FOREGROUND));
+          attroff(COLOR_PAIR(WHITE));
           prev_sel = -1;
         }
 

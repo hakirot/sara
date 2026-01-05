@@ -344,7 +344,7 @@ void check_char(int row, int col) {
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
         endwin();
-        execlp("ranger", "ranger", "/home/hakirot/pix/wall/", NULL);
+        execlp("ranger", "ranger", "/home/hakirot/pix/walls/", NULL);
         error("execlp");
       } else {
         endwin();

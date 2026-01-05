@@ -629,6 +629,34 @@ void check_char(int row, int col) {
         }
       }
 
+    } else if (input == 'y') {
+      int cache = row + col;
+
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        endwin();
+        execlp("yay", "yay", NULL);
+        error("ERROR: execlp yay");
+      } else {
+        endwin();
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        clear();
+        refresh();
+        getmaxyx(stdscr, row, col);
+        if(cache == row + col){
+          neon(row, col);
+        }
+      }
+
     } else if (input == 'M') {
 
       int cache = row + col;

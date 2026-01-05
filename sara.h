@@ -10,8 +10,7 @@
 
 /* FEATS
 
-    . sara prints after nvim exit, also not sure if I'm waiting on that thread
-    . Do a perms check on the backlight file, make writeable if needed
+    . pshd()
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
@@ -20,7 +19,6 @@
     . Fuzzy find menu for newlook
         . Build directory list
     . mega_glitch()
-    . pshd()
     . Break functions into new files
     . Make row/col global
     . Load colors/randomness from config file
@@ -30,10 +28,11 @@
     . mega_glitch()
     . Use archsarazap
     . Create input for alternate acronyms from headers (low priority)
-    . Replace char input 'c' (with what ..? .. there was something)
     . Eventually reengineer to allow for abstracted hookups, single config, etc
 
    BESTIARY
+    X sara prints after nvim exit, also not sure if I'm waiting on that thread
+    X Do a perms check on the backlight file, make writeable if needed
     X rtorrent command (launch with cd function refactor)
     X Shutdown command
     X Recheck size before neon() call

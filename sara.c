@@ -1386,62 +1386,92 @@ void pshd(int row, int col){
   char entry[16] = {'\0'};
   char input;
   int j = 0;
+  int entry_as_int = -1;
+  int prev_sel = -1;
+  char prev_line[256] = {'\0'};
+
   while(1){
     input = getch();
-    if (input != ERR && input != '\n' && input != EOF && input > 47 && input < 58){
-      entry[j] = input;
-      j++;
+    if (input > 47 && input < 58 || input == 'j' || input == 'k'){
+      if(input == 'j' || input == 'k'){
+        if(input == 'j'){
+          entry_as_int++;
+          if (entry_as_int == i){
+            entry_as_int = i - 1;
+          } else {
+            prev_sel = entry_as_int - 1;
+            attron(COLOR_PAIR(FOREGROUND));
+            mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+            attroff(COLOR_PAIR(FOREGROUND));
+          }
+          sprintf(entry, "%d", entry_as_int);
+        } else {
+          entry_as_int--;
+          if (entry_as_int == -1){
+            entry_as_int = 0;
+          } else {
+            prev_sel = entry_as_int + 1;
+            attron(COLOR_PAIR(FOREGROUND));
+            mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+            attroff(COLOR_PAIR(FOREGROUND));
+          }
+          sprintf(entry, "%d", entry_as_int);
+        }
+      } else {
+        entry[j] = input;
+        j++;
+      }
+      sscanf(entry, "%d", &entry_as_int);
+      rewind(file);
+      int k = 0;
+      if(entry_as_int > -1){
 
+        if(prev_sel > -1){
+          attron(COLOR_PAIR(FOREGROUND));
+          mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+          refresh();
+          attroff(COLOR_PAIR(FOREGROUND));
+          prev_sel = -1;
+        }
+
+        while(fgets(line, sizeof(line), file)){
+          if(k == entry_as_int){
+
+            prev_sel = entry_as_int;
+            strncpy(prev_line, line, 256);
+
+            attron(COLOR_PAIR(BLACK_WHITE));
+            mvprintw(k + 2, 2, "[%d] %s", k, line);
+            attroff(COLOR_PAIR(BLACK_RED));
+            refresh();
+          }
+          k++;
+        }
+      }
     } else if (input == 7){ // this could be an ST implementation only..
-
-      entry[j] = '\0';
-      j--;
-      if (j < 0) j = 0;
+      j = 0;
+      memset(entry, '\0', 16);
+      mvprintw(1, 1, "%s", option_window[0]);
+      attron(COLOR_PAIR(FOREGROUND));
+      mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+      refresh();
+      attroff(COLOR_PAIR(FOREGROUND));
+      prev_sel = -1;
+      refresh();
 
     } else if (input == '\n'){
-      // select input
+      fclose(file);
+      prev_line[strcspn(prev_line, "\n")] = 0;
+      chdir(prev_line);
+      if (setenv("PWD", prev_line, 1) != 0) {  
+        error("setenv error");
+      }
+      neon(row, col);
+      return;
     }
 
-    int entry_as_int = -1;
-    sscanf(entry, "%d", &entry_as_int);
-    rewind(file);
-    int k = 0;
-    int prev_sel = -1;
-    char prev_line[256] = {'\0'};
-
-    if(entry_as_int > -1){
-
-      if(prev_line[0] != '\0'){
-        attron(COLOR_PAIR(BLUE));
-        mvprintw(prev_sel + 2, 2, "[%d] %s", k, prev_line);
-        refresh();
-        error("prev_sel");
-        attroff(COLOR_PAIR(BLUE));
-      }
-
-      while(fgets(line, sizeof(line), file)){
-        if(k == entry_as_int){
-
-          prev_sel = entry_as_int;
-          strncpy(prev_line, line, 256);
-//        char error_str[64] = {'\0'};
-//        sprintf(error_str, "%d\n", prev_sel);
-//        error(error_str);
-//        error(prev_line);
-
-          attron(COLOR_PAIR(BLACK_RED));
-          mvprintw(k + 2, 2, "[%d] %s", k, line);
-          attroff(COLOR_PAIR(BLACK_RED));
-          refresh();
-        }
-        k++;
-      }
-    }
-    usleep(100000);
+    usleep(10000);
   }
-
-  fclose(file);
-//neon(row, col);
 }
 
 void ensure_path_perm(char * file_path, char perm, int row, int col){

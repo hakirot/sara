@@ -1357,17 +1357,14 @@ void xray(int row, int col){
 
 void pshd(int row, int col){
 
-  // pshd file could be longer than the window
   FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
 
   if (file == NULL){
     error("ERROR: error opening pshd");
   }
 
-//clear();
   char line[256] = {'\0'};
   int i = 0;
-//attron(COLOR_PAIR(WHITE_BLACK));
   while(fgets(line, sizeof(line), file)){
     if(i == 0){
       mvprintw(i + 1, 1, "%s", option_window[0]);
@@ -1399,9 +1396,6 @@ void pshd(int row, int col){
           entry_as_int = i - 1;
         } else {
           prev_sel = entry_as_int - 1;
-          attron(COLOR_PAIR(WHITE));
-          mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-          attroff(COLOR_PAIR(WHITE));
         }
         sprintf(entry, "%d", entry_as_int);
       } else if (input == 'k'){
@@ -1410,9 +1404,6 @@ void pshd(int row, int col){
           entry_as_int = 0;
         } else {
           prev_sel = entry_as_int + 1;
-          attron(COLOR_PAIR(WHITE));
-          mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-          attroff(COLOR_PAIR(WHITE));
         }
         sprintf(entry, "%d", entry_as_int);
       } else {
@@ -1420,6 +1411,17 @@ void pshd(int row, int col){
         j++;
       }
       sscanf(entry, "%d", &entry_as_int);
+      if(entry_as_int >= i){
+        attron(COLOR_PAIR(WHITE));
+        mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+        refresh();
+        attroff(COLOR_PAIR(WHITE));
+        j = 0;
+        memset(entry, '\0', 16);
+        memset(prev_line, '\0', 256);
+        entry_as_int = -1;
+        prev_sel = -1;
+      }
       rewind(file);
       int k = 0;
       if(entry_as_int > -1){
@@ -1450,10 +1452,12 @@ void pshd(int row, int col){
       j = 0;
       memset(entry, '\0', 16);
       mvprintw(1, 1, "%s", option_window[0]);
-      attron(COLOR_PAIR(FOREGROUND));
-      mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-      refresh();
-      attroff(COLOR_PAIR(FOREGROUND));
+      if(prev_sel > -1){
+        attron(COLOR_PAIR(FOREGROUND));
+        mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+        refresh();
+        attroff(COLOR_PAIR(FOREGROUND));
+      }
       prev_sel = -1;
       refresh();
 

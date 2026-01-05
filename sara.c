@@ -238,9 +238,9 @@ void check_char(int row, int col) {
 
         char target_chdir[256] = {'\0'};
         if(fgets(target_chdir, 256, fp) == NULL) {
-            char error_str[256] = {'\0'};
-            sprintf(error_str, "%s%s" , "Error reading target_chdir file ", target_chdir);
-            error(error_str);
+          char error_str[256] = {'\0'};
+          sprintf(error_str, "%s%s" , "Error reading target_chdir file ", target_chdir);
+          error(error_str);
         }
 
         fclose(fp);
@@ -395,27 +395,20 @@ void check_char(int row, int col) {
       }
 
     } else if(input == 'p'){
+      pshd(row, col);
 
-      char* choices[2]={'\0'};
-      choices[0]="PSHD";
-      choices[1]="POLYBAR";
-      const char* selection =  select_option_window(row, col, choices, 2);
+    } else if(input == 'P'){
 
-      if (selection == choices[0]){
-        pshd(row, col);
-      } else if (selection == choices[1]){
-
-        pid_t pid = fork();
-        if (pid < 0) {
-          perror("fork");
-          exit(EXIT_FAILURE);
-        } else if (pid == 0) {
-          execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
-          perror("execl");
-        } else {
-          int status;
-          waitpid(pid, &status, 0);
-        }
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+      } else if (pid == 0) {
+        execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
+        perror("execl");
+      } else {
+        int status;
+        waitpid(pid, &status, 0);
       }
 
       neon(row, col);
@@ -1004,8 +997,7 @@ void glitch(int row, int col){
   int cache = row + col;
 
   int rng_row, rng_shift, rng_backdrop = 0;
-  quickprint(row, col, FOREGROUND, BACKGROUND, 1); // only printing for colorbar, should create
-                           // separate print_colorbar
+  quickprint(row, col, FOREGROUND, BACKGROUND, 1);
 
   for( int i = 0 ; i < 46; i++ ) {
     rng_row   = rand() % NORMAL_GLYPH_HEIGHT;    // RNG 0 and 6
@@ -1171,7 +1163,6 @@ void prompt_newlook(int row, int col) {
             } else if (iter_col > 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
             }
-//
           }
 
           mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
@@ -1366,6 +1357,91 @@ void xray(int row, int col){
 
 void pshd(int row, int col){
 
+  // pshd file could be longer than the window
+  FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
+
+  if (file == NULL){
+    error("ERROR: error opening pshd");
+  }
+
+//clear();
+  char line[256] = {'\0'};
+  int i = 0;
+//attron(COLOR_PAIR(WHITE_BLACK));
+  while(fgets(line, sizeof(line), file)){
+    if(i == 0){
+      mvprintw(i + 1, 1, "%s", option_window[0]);
+      mvprintw(i + 2, 2, "[%d] %s", i, line);
+    } else if (i > 0){
+      mvprintw(i + 2, 2, "[%d] %s", i, line);
+    }
+
+    refresh();
+    i++;
+    usleep(20000);
+  }
+  mvprintw(i + 2, 1, "%s", option_window[6]);
+  refresh();
+
+  char entry[16] = {'\0'};
+  char input;
+  int j = 0;
+  while(1){
+    input = getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 47 && input < 58){
+      entry[j] = input;
+      j++;
+
+    } else if (input == 7){ // this could be an ST implementation only..
+
+      entry[j] = '\0';
+      j--;
+      if (j < 0) j = 0;
+
+    } else if (input == '\n'){
+      // select input
+    }
+
+    int entry_as_int = -1;
+    sscanf(entry, "%d", &entry_as_int);
+    rewind(file);
+    int k = 0;
+    int prev_sel = -1;
+    char prev_line[256] = {'\0'};
+
+    if(entry_as_int > -1){
+
+      if(prev_line[0] != '\0'){
+        attron(COLOR_PAIR(BLUE));
+        mvprintw(prev_sel + 2, 2, "[%d] %s", k, prev_line);
+        refresh();
+        error("prev_sel");
+        attroff(COLOR_PAIR(BLUE));
+      }
+
+      while(fgets(line, sizeof(line), file)){
+        if(k == entry_as_int){
+
+          prev_sel = entry_as_int;
+          strncpy(prev_line, line, 256);
+//        char error_str[64] = {'\0'};
+//        sprintf(error_str, "%d\n", prev_sel);
+//        error(error_str);
+//        error(prev_line);
+
+          attron(COLOR_PAIR(BLACK_RED));
+          mvprintw(k + 2, 2, "[%d] %s", k, line);
+          attroff(COLOR_PAIR(BLACK_RED));
+          refresh();
+        }
+        k++;
+      }
+    }
+    usleep(100000);
+  }
+
+  fclose(file);
+//neon(row, col);
 }
 
 void ensure_path_perm(char * file_path, char perm, int row, int col){

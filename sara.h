@@ -11,6 +11,7 @@
 /* FEATS
 
     . pshd()
+    . wait on mzk
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)

@@ -212,9 +212,6 @@ void check_char(int row, int col) {
 
       sprintf(cache_file, "%s%s%d", env_cwd, "/.cache/sara/sara", cur_pid);
 
-      char argument[100] = {'\0'};
-      sprintf(argument, "%s%s", "--choosedir=", cache_file);
-
       pid_t pid = fork();
       if (pid < 0) {
         perror("fork");
@@ -1382,6 +1379,7 @@ void xray(int row, int col){
 
 void pshd(int row, int col){
 
+  int cache = row + col;
   FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
 
   if (file == NULL){
@@ -1413,6 +1411,13 @@ void pshd(int row, int col){
   char prev_line[256] = {'\0'};
 
   while(1){
+
+    getmaxyx(stdscr, row, col);
+    if (cache != row + col){
+      cache = check_size(row, col, cache);
+      break;
+    }
+
     input = getch();
     if (input > 47 && input < 58 || input == 'j' || input == 'k'){
       if(input == 'j'){
@@ -1478,10 +1483,10 @@ void pshd(int row, int col){
       memset(entry, '\0', 16);
       mvprintw(1, 1, "%s", option_window[0]);
       if(prev_sel > -1){
-        attron(COLOR_PAIR(FOREGROUND));
+        attron(COLOR_PAIR(WHITE));
         mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
         refresh();
-        attroff(COLOR_PAIR(FOREGROUND));
+        attroff(COLOR_PAIR(WHITE));
       }
       prev_sel = -1;
       refresh();

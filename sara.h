@@ -10,8 +10,6 @@
 
 /* FEATS
 
-    . pshd()
-    . wait on mzk
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
@@ -29,9 +27,11 @@
     . mega_glitch()
     . Use archsarazap
     . Create input for alternate acronyms from headers (low priority)
-    . Eventually reengineer to allow for abstracted hookups, single config, etc
+    . Abstracted functions, config option selection, and variable compilation
 
    BESTIARY
+    X pshd()
+    X wait on mzk
     X sara prints after nvim exit, also not sure if I'm waiting on that thread
     X Do a perms check on the backlight file, make writeable if needed
     X rtorrent command (launch with cd function refactor)

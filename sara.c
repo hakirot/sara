@@ -369,8 +369,8 @@ void check_char(int row, int col) {
 
       } else if (pid == 0) {
         endwin();
-        char * notes_dir = "/home/row/dox/.notes/";
-        chdir("/home/hakirot/dox/.notes");
+        char * notes_dir = "/home/hakirot/dox/.notes/";
+        chdir("notes_dir");
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
@@ -633,9 +633,34 @@ void check_char(int row, int col) {
       }
 
     } else if (input == 'M') {
-      endwin();
-      execlp("rmpc", "rmpc", NULL);
-      exit(1);
+
+      int cache = row + col;
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        endwin();
+        execlp("rmpc", "rmpc", NULL);
+        error("ERROR: execlp rmpc");
+      } else {
+
+        endwin();
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        clear();
+        refresh();
+        getmaxyx(stdscr, row, col);
+        if(cache == row + col){
+          neon(row, col);
+        }
+      }
+
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;

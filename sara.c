@@ -1393,30 +1393,28 @@ void pshd(int row, int col){
   while(1){
     input = getch();
     if (input > 47 && input < 58 || input == 'j' || input == 'k'){
-      if(input == 'j' || input == 'k'){
-        if(input == 'j'){
-          entry_as_int++;
-          if (entry_as_int == i){
-            entry_as_int = i - 1;
-          } else {
-            prev_sel = entry_as_int - 1;
-            attron(COLOR_PAIR(FOREGROUND));
-            mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-            attroff(COLOR_PAIR(FOREGROUND));
-          }
-          sprintf(entry, "%d", entry_as_int);
+      if(input == 'j'){
+        entry_as_int++;
+        if (entry_as_int == i){
+          entry_as_int = i - 1;
         } else {
-          entry_as_int--;
-          if (entry_as_int == -1){
-            entry_as_int = 0;
-          } else {
-            prev_sel = entry_as_int + 1;
-            attron(COLOR_PAIR(FOREGROUND));
-            mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
-            attroff(COLOR_PAIR(FOREGROUND));
-          }
-          sprintf(entry, "%d", entry_as_int);
+          prev_sel = entry_as_int - 1;
+          attron(COLOR_PAIR(FOREGROUND));
+          mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+          attroff(COLOR_PAIR(FOREGROUND));
         }
+        sprintf(entry, "%d", entry_as_int);
+      } else if (input == 'k'){
+        entry_as_int--;
+        if (entry_as_int == -1){
+          entry_as_int = 0;
+        } else {
+          prev_sel = entry_as_int + 1;
+          attron(COLOR_PAIR(FOREGROUND));
+          mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+          attroff(COLOR_PAIR(FOREGROUND));
+        }
+        sprintf(entry, "%d", entry_as_int);
       } else {
         entry[j] = input;
         j++;
@@ -1466,6 +1464,10 @@ void pshd(int row, int col){
       if (setenv("PWD", prev_line, 1) != 0) {  
         error("setenv error");
       }
+      neon(row, col);
+      return;
+    } else if (input == 'q'){
+      fclose(file);
       neon(row, col);
       return;
     }

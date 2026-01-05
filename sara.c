@@ -1446,6 +1446,7 @@ int generate_pw_file(int row, int col){
 
         pw[i] = '\0';
         i--;
+        if (i < 0) i = 0;
         mvaddch(row/2, col/2 - 8 + i, ' ');
 
       } else if (input == '\n'){

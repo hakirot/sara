@@ -1435,16 +1435,16 @@ void pshd(int row, int col){
       line[37] = '\0';
     }
     if(i == 0){
-      mvprintw(i + 1, 1, "%s", option_window[0]);
-      mvprintw(i + 2, 2, "[%d] %s", i, line);
+      mvprintw(i + 1, 2, "%s", option_window[0]);
+      mvprintw(i + 2, 3, "[%d] %s", i, line);
     } else if (i > 0){
-      mvprintw(i + 2, 2, "[%d] %s", i, line);
+      mvprintw(i + 2, 3, "[%d] %s", i, line);
     }
     refresh();
     i++;
     usleep(20000);
   }
-  mvprintw(i + 2, 1, "%s", option_window[6]);
+  mvprintw(i + 2, 2, "%s", option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));
   refresh();
 
@@ -1488,7 +1488,7 @@ void pshd(int row, int col){
       sscanf(entry, "%d", &entry_as_int);
       if(entry_as_int >= i){
         attron(COLOR_PAIR(FOREGROUND));
-        mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+        mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
         refresh();
         attroff(COLOR_PAIR(FOREGROUND));
         j = 0;
@@ -1503,7 +1503,7 @@ void pshd(int row, int col){
 
         if(prev_sel > -1){
           attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+          mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
           refresh();
           attroff(COLOR_PAIR(FOREGROUND));
           prev_sel = -1;
@@ -1517,7 +1517,7 @@ void pshd(int row, int col){
             strncpy(prev_line, line, 256);
 
             attron(COLOR_PAIR(FOREGROUND + 8));
-            mvprintw(k + 2, 2, "[%d] %s", k, line);
+            mvprintw(k + 2, 3, "[%d] %s", k, line);
             attroff(COLOR_PAIR(FOREGROUND + 8));
             refresh();
           }
@@ -1527,10 +1527,10 @@ void pshd(int row, int col){
     } else if (input == 7){ // this could be an ST implementation only..
       j = 0;
       memset(entry, '\0', 16);
-      mvprintw(1, 1, "%s", option_window[0]);
+      mvprintw(1, 2, "%s", option_window[0]);
       if(prev_sel > -1){
         attron(COLOR_PAIR(FOREGROUND));
-        mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
+        mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
         refresh();
         attroff(COLOR_PAIR(FOREGROUND));
       }

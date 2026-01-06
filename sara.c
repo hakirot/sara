@@ -54,6 +54,14 @@ const int BLACK_BLUE    = 13;
 const int BLACK_MAGENTA = 14;
 const int BLACK_CYAN    = 15;
 const int BLACK_WHITE   = 16;
+const int BLACK_WHITED  = 17;
+const int RED_BLACK     = 18;
+const int GREEN_BLACK   = 19;
+const int YELLOW_BLACK  = 20;
+const int BLUE_BLACK    = 21;
+const int MAGENTA_BLACK = 22;
+const int CYAN_BLACK    = 23;
+const int WHITE_BLACKD  = 24;
 
 const int EFFECT_MUTE   = 0;
 
@@ -354,8 +362,8 @@ void check_char(int row, int col) {
         neon(row, col);
       }
     } else if(input == 'g'){
-//    glitch(row, col);
-      xray(row, col);
+      glitch(row, col);
+//    xray(row, col);
     } else if(input == 't'){
       int cache = row + col;
 
@@ -1416,19 +1424,28 @@ void pshd(int row, int col){
 
   char line[256] = {'\0'};
   int i = 0;
+  attron(COLOR_PAIR(FOREGROUND));
   while(fgets(line, sizeof(line), file)){
+    line[strcspn(line, "\n")] = 0;
+    int len = strlen(line);
+    if (i < 10) {
+      memset(line + len, ' ', 38 - len);
+    } else {
+      memset(line + len, ' ', 37 -  len);
+      line[37] = '\0';
+    }
     if(i == 0){
       mvprintw(i + 1, 1, "%s", option_window[0]);
       mvprintw(i + 2, 2, "[%d] %s", i, line);
     } else if (i > 0){
       mvprintw(i + 2, 2, "[%d] %s", i, line);
     }
-
     refresh();
     i++;
     usleep(20000);
   }
   mvprintw(i + 2, 1, "%s", option_window[6]);
+  attroff(COLOR_PAIR(FOREGROUND));
   refresh();
 
   char entry[16] = {'\0'};
@@ -1470,10 +1487,10 @@ void pshd(int row, int col){
       }
       sscanf(entry, "%d", &entry_as_int);
       if(entry_as_int >= i){
-        attron(COLOR_PAIR(WHITE));
+        attron(COLOR_PAIR(FOREGROUND));
         mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
         refresh();
-        attroff(COLOR_PAIR(WHITE));
+        attroff(COLOR_PAIR(FOREGROUND));
         j = 0;
         memset(entry, '\0', 16);
         memset(prev_line, '\0', 256);
@@ -1485,22 +1502,23 @@ void pshd(int row, int col){
       if(entry_as_int > -1){
 
         if(prev_sel > -1){
-          attron(COLOR_PAIR(WHITE));
+          attron(COLOR_PAIR(FOREGROUND));
           mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
           refresh();
-          attroff(COLOR_PAIR(WHITE));
+          attroff(COLOR_PAIR(FOREGROUND));
           prev_sel = -1;
         }
 
         while(fgets(line, sizeof(line), file)){
+          line[strcspn(line, "\n")] = 0;
           if(k == entry_as_int){
 
             prev_sel = entry_as_int;
             strncpy(prev_line, line, 256);
 
-            attron(COLOR_PAIR(BLACK_WHITE));
+            attron(COLOR_PAIR(FOREGROUND + 8));
             mvprintw(k + 2, 2, "[%d] %s", k, line);
-            attroff(COLOR_PAIR(BLACK_RED));
+            attroff(COLOR_PAIR(FOREGROUND + 8));
             refresh();
           }
           k++;
@@ -1511,10 +1529,10 @@ void pshd(int row, int col){
       memset(entry, '\0', 16);
       mvprintw(1, 1, "%s", option_window[0]);
       if(prev_sel > -1){
-        attron(COLOR_PAIR(WHITE));
+        attron(COLOR_PAIR(FOREGROUND));
         mvprintw(prev_sel + 2, 2, "[%d] %s", prev_sel, prev_line);
         refresh();
-        attroff(COLOR_PAIR(WHITE));
+        attroff(COLOR_PAIR(FOREGROUND));
       }
       prev_sel = -1;
       refresh();
@@ -1662,6 +1680,7 @@ void init_window(){
   init_pair(MAGENTA, COLOR_MAGENTA, -1);
   init_pair(CYAN, COLOR_CYAN, -1);
   init_pair(WHITE, COLOR_WHITE, -1);
+
   init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
   init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
   init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN);
@@ -1670,6 +1689,15 @@ void init_window(){
   init_pair(BLACK_MAGENTA, COLOR_BLACK, COLOR_MAGENTA);
   init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
   init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
+
+//init_pair(BLACK_WHITED, COLOR_WHITE, COLOR_BLACK);
+//init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
+//init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
+//init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
+//init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
+//init_pair(MAGENTA_BLACK, COLOR_MAGENTA, COLOR_BLACK);
+//init_pair(CYAN_BLACK, COLOR_CYAN, COLOR_BLACK);
+//init_pair(WHITE_BLACKD, COLOR_WHITE, COLOR_BLACK);
 
   cbreak();                 // Disable line buffering
   noecho();                 // Don't display keyboard presses in window

@@ -10,6 +10,7 @@
 
 /* FEATS
 
+    . Fuzzy newlook
     . More animations
         > Sparkle
         > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
@@ -109,5 +110,7 @@ void pshd(int row, int col);
 void init_window();
 void ensure_path_perm(char * file_path, char perm, int row, int col);
 int generate_pw_file(int row, int col);
+char * prompt_fuzzy(int row, int col, int cache);
+void fork_newlook(char * file);
 
 #endif

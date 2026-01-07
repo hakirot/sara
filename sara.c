@@ -333,7 +333,7 @@ void check_char(int row, int col) {
       FOREGROUND = temp;
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'I'){
-      BACKGROUND = rand() % 8 + 1;    // RNG 1 and 8
+      BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
       quickprint(row, col, FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
@@ -1142,11 +1142,13 @@ void prompt_newlook(int row, int col) {
   int cache = row + col;
   char input = 0;
   int first_flag = 0;
+  int exit_glitch_flag = 0;
+  char * wall;
   while(1){
 
     input = getch();
 
-    if (input == 'j' || input == 'k' || input == 'l' || input == 'h' || first_flag == 0) {
+    if (input == 'j' || input == 'l' || input == 'h' || first_flag == 0) {
       first_flag = 1;
 
       if (selection == 0) {
@@ -1232,41 +1234,45 @@ void prompt_newlook(int row, int col) {
         }
       }
 
-//    attron(COLOR_PAIR(FOREGROUND));
-//    mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2 + 3, " RESKIN ? ");
-//    attroff(COLOR_PAIR(FOREGROUND));
       refresh();
 
+    } else if (input == 'k') {
+      wall = prompt_fuzzy(row, col, cache);
+      getmaxyx(stdscr, row, col);
+      if (cache != row + col || wall == NULL) {
+        exit_glitch_flag = 1;
+        break;
+      } else {
+        fork_newlook(wall);
+      }
+
+      // break
     } else if (input == 'q' || input == 'n') {
-      glitch(row, col);
+      exit_glitch_flag = 1;
       break;
     } else if (input == '\n' || input == 'y') {
       if (selection == 1 || input == 'y'){
-        pid_t pid = fork();
-
-        if (pid < 0) {
-          perror("fork");
-          exit(EXIT_FAILURE);
-        } else if (pid == 0) {
-          execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
-          perror("execl");
-        } else {
-          clear();
-          refresh();
-          int status;
-          waitpid(pid, &status, 0);
-        }
-
-        neon(row, col);
-
+        fork_newlook(NULL);
+      } else if (selection == 0 || cache != row + col) {
+          exit_glitch_flag = 1;
       }
-      glitch(row, col);
+
       break;
     }
 
+
     usleep(10000);
     getmaxyx(stdscr, row, col);
-    if (cache != row + col) break;
+    if (cache != row + col) {
+      exit_glitch_flag = 1;
+      break;
+    }
+  }
+
+  if(exit_glitch_flag){
+    glitch(row, col);
+  } else {
+    neon(row, col);
   }
 }
 
@@ -1411,6 +1417,34 @@ void xray(int row, int col){
   } else {
     neon(row, col);
   }
+}
+
+char * prompt_fuzzy(int row, int col, int cache){
+  return NULL;
+}
+
+void fork_newlook(char * file){
+  pid_t pid = fork();
+
+  if (pid < 0) {
+    perror("fork");
+    exit(EXIT_FAILURE);
+  } else if (pid == 0) {
+    if(file == NULL){
+      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+    } else {
+      char * wall_dir = "/home/hakirot/pix/walls";
+      char file_path[256];
+      sprintf(file_path, "%s%s", wall_dir, file);
+      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", file_path, (char *)NULL);
+    }
+    perror("execl");
+  } else {
+    clear();
+    refresh();
+    int status;
+    waitpid(pid, &status, 0);
+  } // Not doing a proper wait
 }
 
 void pshd(int row, int col){

@@ -181,8 +181,8 @@ void check_char(int row, int col) {
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
     if(input == 'q'){
+
       if (FOLLOW){
-//      error("error");
         ensure_config_dir();
         char cache_file[256] = {'\0'};
         char * env_home = getenv("HOME");
@@ -191,7 +191,6 @@ void check_char(int row, int col) {
         FILE * fp = fopen(cache_file, "w");
         fprintf(fp, "%s", env_pwd);
         fclose(fp);
-        error(cache_file);
       }
 
       clear();

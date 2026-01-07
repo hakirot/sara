@@ -1422,10 +1422,12 @@ char * prompt_fuzzy(int row, int col, int cache){
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
 
+  attron(COLOR_PAIR(FOREGROUND));
   mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2, option_window[0]);
+  attroff(COLOR_PAIR(FOREGROUND));
 //mvprintw(row/2 + 5 - offset, (col-GLYPH_LENGTH)/2, option_window[6]);
 
-//init_newlook_candidates();
+//init_dir_list();
 
   int rng_row, rng_shift, rng_backdrop = 0;
   char input_char;
@@ -1433,15 +1435,24 @@ char * prompt_fuzzy(int row, int col, int cache){
   int i = 0;
   while(1){
 
-  input_char = getch();
+    input_char = getch();
     if (input_char == 27) break;
 
-    rng_row   = rand() % 5;    // RNG 0 and 5, fuzzy glyph
-    rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
+    rng_row   = rand() % 5;             // 0-5, fuzzy glyph
+    rng_shift = (rand() % 3) - 1;       // -1 and 1
 
+    attron(COLOR_PAIR(FOREGROUND));
     mvprintw(row/2 - 1 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
+    attroff(COLOR_PAIR(FOREGROUND));
+    attron(COLOR_PAIR(BLACK));
     mvaddwstr(row/2 - 1 + rng_row, (col/2) + 21, L"║");
     mvaddwstr(row/2 - 1 + rng_row, (col/2) - 22, L"║");
+    attroff(COLOR_PAIR(BLACK));
+
+    getmaxyx(stdscr, row, col);
+    if(cache != row + col){
+      break;
+    }
 
     refresh();
     usleep(GLITCH_FRAME_TIME);

@@ -183,7 +183,7 @@ void check_char(int row, int col) {
     if(input == 'q'){
 
       if (FOLLOW){
-        ensure_config_dir();
+        ensure_cache_dir();
         char cache_file[256] = {'\0'};
         char * env_home = getenv("HOME");
         char * env_pwd = getenv("PWD");
@@ -206,9 +206,8 @@ void check_char(int row, int col) {
       //--choosedir=targetfile
       //    Allows you to pick a directory with ranger.  When you exit ranger, it will write the last visited directory into targetfile.
 
-      ensure_config_dir();
-
-      char cache_file[50] = {'\0'};
+      ensure_cache_dir();
+      char cache_file[256] = {'\0'};
 
       pid_t cur_pid = getpid();
 
@@ -1681,7 +1680,7 @@ void ensure_path_perm(char * file_path, char perm, int row, int col){
   }
 }
 
-void ensure_config_dir(){
+void ensure_cache_dir(){
   const char *env_home = getenv("HOME");
   const char *sara_wd = "/.cache/sara";
   char cache_dir[256] = {'\0'};

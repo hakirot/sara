@@ -35,6 +35,7 @@ int GLYPH_HEIGHT = 7;
 int FOREGROUND = 3;
 int BACKGROUND = 2;
 int HOLOGRAPHIC = 0;
+int FOLLOW = 0;
 
 wchar_t SEARCH_STR[] = L"`+so:-./";
 
@@ -67,6 +68,7 @@ const int EFFECT_MUTE   = 0;
 
 start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
+int GLITCH_FRAME_TIME = 7000;
 
 int main(int argc, char* argv[]) {
 
@@ -100,7 +102,7 @@ int main(int argc, char* argv[]) {
   double WAIT_BUFFER = 0.10000;
 
   int opt;
-  while ((opt = getopt(argc, argv, "cMfbhrH")) != -1){
+  while ((opt = getopt(argc, argv, "cMFfbhrH")) != -1){
     switch (opt) {
       case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
@@ -111,7 +113,8 @@ int main(int argc, char* argv[]) {
           error("error");
         }
         break;
-      case 'H': HOLOGRAPHIC = 1;
+      case 'H': HOLOGRAPHIC = 1; break;
+      case 'F': FOLLOW = 1; break;
     }
   }
 
@@ -178,6 +181,19 @@ void check_char(int row, int col) {
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
     if(input == 'q'){
+      if (FOLLOW){
+//      error("error");
+        ensure_config_dir();
+        char cache_file[256] = {'\0'};
+        char * env_home = getenv("HOME");
+        char * env_pwd = getenv("PWD");
+        sprintf(cache_file, "%s%s", env_home, "/.cache/sara/saraexit");
+        FILE * fp = fopen(cache_file, "w");
+        fprintf(fp, "%s", env_pwd);
+        fclose(fp);
+        error(cache_file);
+      }
+
       clear();
       refresh();
       move(0, 0);
@@ -191,34 +207,14 @@ void check_char(int row, int col) {
       //--choosedir=targetfile
       //    Allows you to pick a directory with ranger.  When you exit ranger, it will write the last visited directory into targetfile.
 
-      const char *env_cwd = getenv("HOME");
-      const char *sara_wd = "/.cache/sara";
-      char cache_dir[256] = {'\0'};
-      sprintf(cache_dir, "%s%s", env_cwd, sara_wd);
-
-      // Check if dir exists
-      DIR* dir = opendir(cache_dir);
-      if (dir) {
-        /* Directory exists */
-        closedir(dir);
-      } else if (ENOENT == errno) {
-        /* Directory does not exist. */
-        char dir_name[256] = {'\0'};
-        sprintf(dir_name, "%s%s", env_cwd, "/.cache/sara");
-        int status = mkdir(dir_name, 0755);
-
-        if (status != 0) {
-          char error_str[256] = {'\0'};
-          sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
-          error(error_str);
-        }
-      }
+      ensure_config_dir();
 
       char cache_file[50] = {'\0'};
 
       pid_t cur_pid = getpid();
 
-      sprintf(cache_file, "%s%s%d", env_cwd, "/.cache/sara/sara", cur_pid);
+      char * env_home = getenv("HOME");
+      sprintf(cache_file, "%s%s%d", env_home, "/.cache/sara/sara", cur_pid);
 
       pid_t pid = fork();
       if (pid < 0) {
@@ -1091,7 +1087,7 @@ void glitch(int row, int col){
     getmaxyx(stdscr, row, col);
     if (cache != row + col) break;
 
-    usleep(07000);
+    usleep(GLITCH_FRAME_TIME);
   }
 
   quickprint(row, col, FOREGROUND, BACKGROUND, 0);
@@ -1420,6 +1416,24 @@ void xray(int row, int col){
 }
 
 char * prompt_fuzzy(int row, int col, int cache){
+//return NULL;
+
+  int rng_row, rng_shift, rng_backdrop = 0;
+  char input;
+
+  while(1){
+
+    input = getch();
+    if (input == 'q') break;
+
+    rng_row   = rand() % 6;    // RNG 0 and 5, fuzzy glyph
+    rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
+
+    mvprintw(row/2 - 1 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
+
+    usleep(GLITCH_FRAME_TIME);
+  }
+
   return NULL;
 }
 
@@ -1462,11 +1476,13 @@ void pshd(int row, int col){
   while(fgets(line, sizeof(line), file)){
     line[strcspn(line, "\n")] = 0;
     int len = strlen(line);
-    if (i < 10) {
-      memset(line + len, ' ', 38 - len);
-    } else {
-      memset(line + len, ' ', 37 -  len);
-      line[37] = '\0';
+    if(len < 42){
+      if (i < 10) {
+        memset(line + len, ' ', 38 - len);
+      } else {
+        memset(line + len, ' ', 37 -  len);
+        line[37] = '\0';
+      }
     }
     if(i == 0){
       mvprintw(i + 1, 2, "%s", option_window[0]);
@@ -1638,6 +1654,31 @@ void ensure_path_perm(char * file_path, char perm, int row, int col){
     } else {
       char error_str[32] = {'\0'};
       sprintf(error_str, "A new errno: %d", errno);
+      error(error_str);
+    }
+  }
+}
+
+void ensure_config_dir(){
+  const char *env_home = getenv("HOME");
+  const char *sara_wd = "/.cache/sara";
+  char cache_dir[256] = {'\0'};
+  sprintf(cache_dir, "%s%s", env_home, sara_wd);
+
+  // Check if dir exists
+  DIR* dir = opendir(cache_dir);
+  if (dir) {
+    /* Directory exists */
+    closedir(dir);
+  } else if (ENOENT == errno) {
+    /* Directory does not exist. */
+    char dir_name[256] = {'\0'};
+    sprintf(dir_name, "%s%s", env_home, "/.cache/sara");
+    int status = mkdir(dir_name, 0755);
+
+    if (status != 0) {
+      char error_str[256] = {'\0'};
+      sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
       error(error_str);
     }
   }

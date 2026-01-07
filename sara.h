@@ -109,6 +109,7 @@ void error(char * err);
 void pshd(int row, int col);
 void init_window();
 void ensure_path_perm(char * file_path, char perm, int row, int col);
+void ensure_config_dir();
 int generate_pw_file(int row, int col);
 char * prompt_fuzzy(int row, int col, int cache);
 void fork_newlook(char * file);

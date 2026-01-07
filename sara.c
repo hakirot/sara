@@ -739,7 +739,7 @@ void printstandard(int row, int col){
 
         is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
 
-        // Write wide char to `cchar` for mvaddwc()
+        // Write wide char to `cchar` for mvadd_wch()
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
         mvadd_wch(row/2 + 3 - i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
@@ -1255,7 +1255,6 @@ void prompt_newlook(int row, int col) {
       break;
     }
 
-
     usleep(10000);
     getmaxyx(stdscr, row, col);
     if (cache != row + col) {
@@ -1415,21 +1414,37 @@ void xray(int row, int col){
 }
 
 char * prompt_fuzzy(int row, int col, int cache){
-//return NULL;
+
+  struct candidate {
+    char name[256];
+    struct candidate * next;
+  };
+
+  int offset = 0;
+  if (WIN_SIZE != BIG) offset = 1;
+
+  mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2, option_window[0]);
+//mvprintw(row/2 + 5 - offset, (col-GLYPH_LENGTH)/2, option_window[6]);
+
+//init_newlook_candidates();
 
   int rng_row, rng_shift, rng_backdrop = 0;
-  char input;
-
+  char input_char;
+  char selection[256] = {'\0'};
+  int i = 0;
   while(1){
 
-    input = getch();
-    if (input == 'q') break;
+  input_char = getch();
+    if (input_char == 27) break;
 
-    rng_row   = rand() % 6;    // RNG 0 and 5, fuzzy glyph
+    rng_row   = rand() % 5;    // RNG 0 and 5, fuzzy glyph
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
 
     mvprintw(row/2 - 1 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
+    mvaddwstr(row/2 - 1 + rng_row, (col/2) + 21, L"║");
+    mvaddwstr(row/2 - 1 + rng_row, (col/2) - 22, L"║");
 
+    refresh();
     usleep(GLITCH_FRAME_TIME);
   }
 
@@ -1587,13 +1602,21 @@ void pshd(int row, int col){
       refresh();
 
     } else if (input == '\n'){
+
       fclose(file);
-      prev_line[strcspn(prev_line, "\n")] = 0;
-      chdir(prev_line);
-      if (setenv("PWD", prev_line, 1) != 0) {  
-        error("setenv error");
+
+      if(strlen(prev_line) > 0){
+
+        prev_line[strcspn(prev_line, "\n")] = 0;
+        chdir(prev_line);
+        if (setenv("PWD", prev_line, 1) != 0) {
+          error("setenv error");
+        }
+        neon(row, col);
+      } else {
+        glitch(row, col);
+
       }
-      neon(row, col);
       return;
     } else if (input == 'q'){
       fclose(file);

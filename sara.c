@@ -1414,20 +1414,16 @@ void xray(int row, int col){
 
 char * prompt_fuzzy(int row, int col, int cache){
 
-  struct candidate {
-    char name[256];
-    struct candidate * next;
-  };
-
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(FOREGROUND));
   mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2, option_window[0]);
-  attroff(COLOR_PAIR(FOREGROUND));
 //mvprintw(row/2 + 5 - offset, (col-GLYPH_LENGTH)/2, option_window[6]);
+  attroff(COLOR_PAIR(FOREGROUND));
 
-//init_dir_list();
+  char * wall_dir = "/home/hakirot/pix/walls";
+  struct file_node * list = init_dir_list(wall_dir);
 
   int rng_row, rng_shift, rng_backdrop = 0;
   char input_char;
@@ -1458,6 +1454,7 @@ char * prompt_fuzzy(int row, int col, int cache){
     usleep(GLITCH_FRAME_TIME);
   }
 
+  free_dir_list(list);
   return NULL;
 }
 
@@ -1713,6 +1710,24 @@ void ensure_cache_dir(){
       sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
       error(error_str);
     }
+  }
+}
+
+struct file_node * init_dir_list(char * dir){
+  return NULL;
+}
+
+void free_dir_list(struct file_node * list){
+
+  if (list == NULL){
+    return;
+  }
+
+  struct file_node * next;
+  while(list != NULL){
+    next = list->next;
+    free(list);
+    list = next;
   }
 }
 

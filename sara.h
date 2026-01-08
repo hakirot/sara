@@ -88,6 +88,11 @@ typedef enum {
   EMPTY
 } start_animation;
 
+struct file_node {
+  char name[256];
+  struct file_node * next;
+};
+
 void get_helped();
 void check_char(int row, int col);
 int check_size(int row, int col, int cache);
@@ -113,5 +118,7 @@ void ensure_cache_dir();
 int generate_pw_file(int row, int col);
 char * prompt_fuzzy(int row, int col, int cache);
 void fork_newlook(char * file);
+struct file_node * init_dir_list(char * dir);
+void free_dir_list(struct file_node * list);
 
 #endif

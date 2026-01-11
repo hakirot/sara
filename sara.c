@@ -244,7 +244,7 @@ void check_char(int row, int col) {
 
         fclose(fp);
 
-				remove(cache_file) ? error("No file to be deleted"): 0;
+        remove(cache_file) ? error("No file to be deleted"): 0;
 
         chdir(target_chdir);
 
@@ -318,8 +318,7 @@ void check_char(int row, int col) {
           execlp("shutdown", "shutdown", "now", NULL);
         }
       }
-
-      neon(row, col);
+      error("shutdown err");
 
     } else if(input == 'i'){
       int temp = BACKGROUND;
@@ -1697,10 +1696,8 @@ void ensure_cache_dir(){
   // Check if dir exists
   DIR* dir = opendir(cache_dir);
   if (dir) {
-    /* Directory exists */
     closedir(dir);
   } else if (ENOENT == errno) {
-    /* Directory does not exist. */
     char dir_name[256] = {'\0'};
     sprintf(dir_name, "%s%s", env_home, "/.cache/sara");
     int status = mkdir(dir_name, 0755);

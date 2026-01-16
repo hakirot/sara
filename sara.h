@@ -10,59 +10,61 @@
 
 /* FEATS
 
-    . Fuzzy newlook
-    . More animations
-        > Sparkle
-        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
-        > Scan (xray but single direction)
-    . Fix the inaccurate WAIT_BUFFER time muckery
-    . Fuzzy find menu for newlook
-        . Build directory list
-    . mega_glitch()
-    . Break functions into new files
-    . Make row/col global
-    . Load colors/randomness from config file
-    . input 'c' to show term colors and enter COMMAND MODE
-    . Add -s --small options to force small size
-    . More boot animations
-    . mega_glitch()
-    . Use archsarazap
-    . Create input for alternate acronyms from headers (low priority)
-    . Abstracted functions, config option selection, and variable compilation
+   . Can I host my own local DNS server?
+   . 'Q' -> terms sara and current tmux pane
+   . Fuzzy newlook
+   . More animations
+       > Sparkle
+       > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
+       > Scan (xray but single direction)
+   . Fix the inaccurate WAIT_BUFFER time muckery
+   . Fuzzy find menu for newlook
+       . Build directory list
+   . mega_glitch()
+   . Break functions into new files
+   . Make row/col global
+   . Load colors/randomness from config file
+   . input 'c' to show term colors and enter COMMAND MODE
+   . Add -s --small options to force small size
+   . More boot animations
+   . mega_glitch()
+   . Use archsarazap
+   . Create input for alternate acronyms from headers (low priority)
+   . Abstracted functions, config option selection, and variable compilation
 
-   BESTIARY
-    X pshd()
-    X wait on mzk
-    X sara prints after nvim exit, also not sure if I'm waiting on that thread
-    X Do a perms check on the backlight file, make writeable if needed
-    X rtorrent command (launch with cd function refactor)
-    X Shutdown command
-    X Recheck size before neon() call
-    X Follow ranger through the directories
-    X add char input 'i' -> invert)
-    X Holographic arch (background arch colors cycle 1-7)
-    X Random startup colors
-    X More animations (xray)
-    X Add command-line args for fg and bg
-    X Add menues for 'b' prompt (bluetooth and backlight)
-    X Create a cooler newlook prompt
-    X Add char input 'n' -> prompt for newlook
-    X FIX neon animation pause 
-    X Add char input 'p' -> fork polybar restart
-    X Add char input 'g' -> git status
-    X Add char input 't' -> nvim open tasks
-    X Display colors
-    X Add pattern of color characters
-    X Add char input 'p' -> run polybar as forked process
-    X Add char input 'g' -> git status
-    X Add char input 'w' -> exec ranger $HOME/pix/wall/
-    X Add char input 'r' -> exec ranger
-    X Colored
-    X Add Arch logo
-    X Glitch animation
-    X Display chars
-    X Dynamically resize with window
-    X Press q to exit
+  BESTIARY
+   X pshd()
+   X wait on mzk
+   X sara prints after nvim exit, also not sure if I'm waiting on that thread
+   X Do a perms check on the backlight file, make writeable if needed
+   X rtorrent command (launch with cd function refactor)
+   X Shutdown command
+   X Recheck size before neon() call
+   X Follow ranger through the directories
+   X add char input 'i' -> invert)
+   X Holographic arch (background arch colors cycle 1-7)
+   X Random startup colors
+   X More animations (xray)
+   X Add command-line args for fg and bg
+   X Add menues for 'b' prompt (bluetooth and backlight)
+   X Create a cooler newlook prompt
+   X Add char input 'n' -> prompt for newlook
+   X FIX neon animation pause 
+   X Add char input 'p' -> fork polybar restart
+   X Add char input 'g' -> git status
+   X Add char input 't' -> nvim open tasks
+   X Display colors
+   X Add pattern of color characters
+   X Add char input 'p' -> run polybar as forked process
+   X Add char input 'g' -> git status
+   X Add char input 'w' -> exec ranger $HOME/pix/wall/
+   X Add char input 'r' -> exec ranger
+   X Colored
+   X Add Arch logo
+   X Glitch animation
+   X Display chars
+   X Dynamically resize with window
+   X Press q to exit
 */
 
 #include <wchar.h>

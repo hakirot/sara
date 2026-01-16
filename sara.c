@@ -253,8 +253,7 @@ void check_char(int row, int col) {
 				}
       }
 
-      // getmaxyx needs refresh() to get a new screensize
-      clear();
+      clear();           // getmaxyx requires refresh() to get a new screensize
       refresh();
       getmaxyx(stdscr, row, col);
       if(cache == row + col){

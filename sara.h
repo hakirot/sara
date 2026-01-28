@@ -10,6 +10,7 @@
 
 /* FEATS
 
+   . 'X' -> kill tmux session, and terminal
    . Can I host my own local DNS server?
    . 'Q' -> terms sara and current tmux pane
    . Fuzzy newlook

@@ -10,6 +10,8 @@
 
 /* FEATS
 
+   . Refactor so animations may be chosen after each command
+   . does 'sara -c' still work?
    . 'X' -> kill tmux session, and terminal
    . Can I host my own local DNS server?
    . 'Q' -> terms sara and current tmux pane

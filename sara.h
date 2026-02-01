@@ -113,7 +113,7 @@ void print_start_animation(int row, int col);
 void printstandard(int row, int col);
 void quickprint(int row, int col, int fg, int bg, int printColorbar);
 void neon(int row, int col);
-void glitch(int row, int col);
+void glitch(int row, int col, int numFrames);
 void mega_glitch(int row, int col, int duration);
 void xray(int row, int col);
 const char * select_option_window(int row, int col, char** choices, int len);

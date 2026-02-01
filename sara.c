@@ -297,6 +297,7 @@ void check_char(int row, int col) {
         char * buffer = NULL;
         size_t bufsize = 0;
         getline(&buffer, &bufsize, stdin);
+        glitch(row, col, 10);
         return;
       }
 
@@ -327,7 +328,7 @@ void check_char(int row, int col) {
           error("shutdown err");
         }
       } else {
-        glitch(row, col);
+        glitch(row, col, 46);
       }
 
     } else if(input == 'i'){
@@ -365,7 +366,7 @@ void check_char(int row, int col) {
         neon(row, col);
       }
     } else if(input == 'g'){
-      glitch(row, col);
+      glitch(row, col, 46);
 //    xray(row, col);
     } else if(input == 't'){
       int cache = row + col;
@@ -1011,7 +1012,7 @@ void print_start_animation(int row, int col) {
     quickprint(row, col, FOREGROUND, BACKGROUND, 0);
   } else {
     printstandard(row, col);
-    glitch(row, col);
+    glitch(row, col, 46);
   }
 }
 
@@ -1053,14 +1054,14 @@ int check_size(int row, int col, int cache){
   return row + col;
 }
 
-void glitch(int row, int col){
+void glitch(int row, int col, int numFrames){
 
   int cache = row + col;
 
   int rng_row, rng_shift, rng_backdrop = 0;
   quickprint(row, col, FOREGROUND, BACKGROUND, 1);
 
-  for( int i = 0 ; i < 46; i++ ) {
+  for( int i = 0 ; i < numFrames; i++ ) {
     rng_row   = rand() % NORMAL_GLYPH_HEIGHT;    // RNG 0 and 6
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
     rng_backdrop = rand() % 3;          // RNG 0 and 2
@@ -1272,7 +1273,7 @@ void prompt_newlook(int row, int col) {
   }
 
   if(exit_glitch_flag){
-    glitch(row, col);
+    glitch(row, col, 46);
   } else {
     neon(row, col);
   }
@@ -1630,13 +1631,13 @@ void pshd(int row, int col){
         }
         neon(row, col);
       } else {
-        glitch(row, col);
+        glitch(row, col, 46);
 
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      glitch(row, col);
+      glitch(row, col, 46);
       return;
     }
 

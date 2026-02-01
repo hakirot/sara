@@ -101,6 +101,14 @@ struct file_node {
   struct file_node * next;
 };
 
+
+extern int GLYPH_LENGTH;
+extern int GLYPH_HEIGHT;
+extern int FOREGROUND;
+extern int BACKGROUND;
+extern int HOLOGRAPHIC;
+extern int FOLLOW;
+
 void get_helped();
 void check_char(int row, int col);
 int check_size(int row, int col, int cache);

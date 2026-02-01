@@ -369,6 +369,7 @@ void check_char(int row, int col) {
       glitch(row, col, 46);
 //    xray(row, col);
     } else if(input == 't'){
+
       int cache = row + col;
 
       pid_t pid = fork();
@@ -377,18 +378,17 @@ void check_char(int row, int col) {
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        endwin();
         char * notes_dir = "/home/hakirot/dox/.notes/";
         chdir("notes_dir");
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
         glitch(row, col, 20);
+        endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
       } else {
 
-        endwin();
         int status;
 
         // kill(_, 0) checks if ranger exited naturally, ranger will reload itself when resized
@@ -396,6 +396,7 @@ void check_char(int row, int col) {
           waitpid(pid, &status, 0);
         }
 
+        endwin();
         clear();
         refresh();
         getmaxyx(stdscr, row, col);
@@ -628,13 +629,13 @@ void check_char(int row, int col) {
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
       } else {
-        endwin();
         int status;
 
         while(kill(pid, 0) == 0){
           waitpid(pid, &status, 0);
         }
 
+        endwin();
         clear();
         refresh();
         getmaxyx(stdscr, row, col);
@@ -1525,7 +1526,7 @@ void pshd(int row, int col){
     }
     refresh();
     i++;
-    usleep(20000);
+    usleep(10000);
   }
   mvprintw(i + 2, 2, "%s", option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));

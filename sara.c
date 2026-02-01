@@ -324,7 +324,7 @@ void check_char(int row, int col) {
             waitpid(pid, &status, 0);
           }
 
-//        execlp("shutdown", "shutdown", "now", NULL);
+          execlp("shutdown", "shutdown", "now", NULL);
           error("shutdown err");
         }
       } else {
@@ -383,6 +383,7 @@ void check_char(int row, int col) {
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
+        glitch(row, col, 20);
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
       } else {
@@ -622,6 +623,7 @@ void check_char(int row, int col) {
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
+        glitch(row, col, 20);
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");

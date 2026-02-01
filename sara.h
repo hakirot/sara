@@ -10,9 +10,7 @@
 
 /* FEATS
 
-   . Add frame number input for glitch
-     . Modify frame glitch on each call
-     . Glitch some frames before starting nvim
+   . Make row/col global
    . Add key input to pshd for quick/fuzzy find
      . When 'char' -> filter lines
      . When 'int' -> start selecting from options
@@ -30,8 +28,7 @@
    . Fuzzy find menu for newlook
        . Build directory list
    . mega_glitch()
-   . Break functions into new files
-   . Make row/col global
+   . Break relevant functions into new files (utils)
    . Load colors/randomness from config file
    . input 'c' to show term colors and enter COMMAND MODE
    . Add -s --small options to force small size

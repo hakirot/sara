@@ -292,6 +292,14 @@ void check_char(int row, int col) {
 
     } else if(input == 'S'){
 
+      char error_check = getch();
+      if (error_check == 'A') {
+        char * buffer = NULL;
+        size_t bufsize = 0;
+        getline(&buffer, &bufsize, stdin);
+        return;
+      }
+
       char* choices[1]={'\0'};
       choices[0]="SHUTDOWN";
       const char* selection =  select_option_window(row, col, choices, 1);
@@ -315,14 +323,11 @@ void check_char(int row, int col) {
             waitpid(pid, &status, 0);
           }
 
-          char input = getch();
-          if(input == 'A'){
-            return;
-          } else {
-            execlp("shutdown", "shutdown", "now", NULL);
-            error("shutdown err");
-          }
+//        execlp("shutdown", "shutdown", "now", NULL);
+          error("shutdown err");
         }
+      } else {
+        glitch(row, col);
       }
 
     } else if(input == 'i'){

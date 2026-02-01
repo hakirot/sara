@@ -13,7 +13,9 @@
    . Add frame number input for glitch
      . Modify frame glitch on each call
      . Glitch some frames before starting nvim
-   . Add key input to pshd for quick find
+   . Add key input to pshd for quick/fuzzy find
+     . When 'char' -> filter lines
+     . When 'int' -> start selecting from options
    . Refactor so animations may be chosen after each command
    . does 'sara -c' still work?
    . 'X' -> kill tmux session, and terminal

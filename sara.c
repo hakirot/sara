@@ -314,10 +314,16 @@ void check_char(int row, int col) {
           while(kill(pid, 0) == 0){
             waitpid(pid, &status, 0);
           }
-          execlp("shutdown", "shutdown", "now", NULL);
+
+          char input = getch();
+          if(input == 'A'){
+            return;
+          } else {
+            execlp("shutdown", "shutdown", "now", NULL);
+            error("shutdown err");
+          }
         }
       }
-      error("shutdown err");
 
     } else if(input == 'i'){
       int temp = BACKGROUND;

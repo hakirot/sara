@@ -37,6 +37,10 @@ int BACKGROUND = 2;
 int HOLOGRAPHIC = 0;
 int FOLLOW = 0;
 
+int ROW = 0;
+int COL = 0;
+int CACHE = -1;
+
 wchar_t SEARCH_STR[] = L"`+so:-./";
 
 const int BLACK         = 1;
@@ -122,35 +126,33 @@ int main(int argc, char* argv[]) {
   WAIT_START = clock();
   LAST_INPUT_TIME = clock();
   bool should_print = false;
-  int cache = 10000;
-  int row, col = 0;         // Num of current rows/cols in window
   init_window();
 
   while(1){
 
-    check_char(row, col); // check input for this cycle
+    check_char(); // check input for this cycle
 
 //  get current screen dimensions
-    getmaxyx(stdscr, row, col);
-    cache = check_size(row, col, cache);
-    if (START_ANIMATION == EMPTY) print_start_animation(row, col);
+    getmaxyx(stdscr, ROW, COL);
+    CACHE = check_size();
+    if (START_ANIMATION == EMPTY) print_start_animation();
 
     time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
 //  if(time_idle >= WAIT_BUFFER){
-//    glitch(row, col);
+//    glitch(ROW, COL);
 //    WAIT_START = clock();
 //  }
 
     if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
-      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+      quickprint(FOREGROUND, BACKGROUND, 0);
     }
 
     // print only once after the HOLD_CHAR goes back to EOF
     if (HOLD_CHAR == '\0' && should_print == true){
-      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+      quickprint(FOREGROUND, BACKGROUND, 0);
       should_print = false;
     } else if (HOLD_CHAR != '\0'){
       should_print = true;
@@ -175,7 +177,7 @@ int is_char_in_search(wchar_t wc, wchar_t * search_str) {
     return 0; // not found
 }
 
-void check_char(int row, int col) {
+void check_char() {
 
   char input = getch();
 
@@ -200,7 +202,7 @@ void check_char(int row, int col) {
       exit(0);
     } else if(input == 'r'){
 
-      int cache = row + col;
+      CACHE = ROW + COL;
 
       // ranger man
       //--choosedir=targetfile
@@ -255,9 +257,9 @@ void check_char(int row, int col) {
 
       clear();           // getmaxyx requires refresh() to get a new screensize
       refresh();
-      getmaxyx(stdscr, row, col);
-      if(cache == row + col){
-        neon(row, col);
+      getmaxyx(stdscr, ROW, COL);
+      if(CACHE == ROW + COL){
+        neon();
       }
 
     } else if(input == 'R'){
@@ -288,7 +290,7 @@ void check_char(int row, int col) {
           }
         }
       }
-      neon(row, col);
+      neon();
 
     } else if(input == 'S'){
 
@@ -297,13 +299,13 @@ void check_char(int row, int col) {
         char * buffer = NULL;
         size_t bufsize = 0;
         getline(&buffer, &bufsize, stdin);
-        glitch(row, col, 10);
+        glitch(10);
         return;
       }
 
       char* choices[1]={'\0'};
       choices[0]="SHUTDOWN";
-      const char* selection =  select_option_window(row, col, choices, 1);
+      const char* selection =  select_option_window(choices, 1);
 
       if (selection == choices[0]){
 
@@ -328,18 +330,18 @@ void check_char(int row, int col) {
           error("shutdown err");
         }
       } else {
-        glitch(row, col, 46);
+        glitch(46);
       }
 
     } else if(input == 'i'){
       int temp = BACKGROUND;
       BACKGROUND = FOREGROUND;
       FOREGROUND = temp;
-      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+      quickprint(FOREGROUND, BACKGROUND, 0);
     } else if(input == 'I'){
       BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
-      quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+      quickprint(FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
         HOLOGRAPHIC = 0;
@@ -363,14 +365,14 @@ void check_char(int row, int col) {
         while(kill(pid, 0) == 0){
           waitpid(pid, &status, 0);
         }
-        neon(row, col);
+        neon();
       }
     } else if(input == 'g'){
-      glitch(row, col, 46);
-//    xray(row, col);
+      glitch(46);
+//    xray(ROW, COL);
     } else if(input == 't'){
 
-      int cache = row + col;
+      CACHE = ROW + COL;
 
       pid_t pid = fork();
       if (pid < 0) {
@@ -383,7 +385,7 @@ void check_char(int row, int col) {
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
-        glitch(row, col, 20);
+        glitch(20);
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
@@ -399,14 +401,14 @@ void check_char(int row, int col) {
         endwin();
         clear();
         refresh();
-        getmaxyx(stdscr, row, col);
-        if(cache == row + col){
-          neon(row, col);
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
         }
       }
 
     } else if(input == 'p'){
-      pshd(row, col);
+      pshd();
 
     } else if(input == 'P'){
 
@@ -422,11 +424,11 @@ void check_char(int row, int col) {
         waitpid(pid, &status, 0);
       }
 
-      neon(row, col);
+      neon();
 
     } else if(input == 'n'){
 
-      prompt_newlook(row, col);
+      prompt_newlook();
 
     } else if(input == 'b'){
 
@@ -435,20 +437,20 @@ void check_char(int row, int col) {
       char* choices[2]={'\0'};
       choices[0]="BLUETOOTH";
       choices[1]="BACKLIGHT";
-      const char * selection = select_option_window(row, col, choices, 2);
+      const char * selection = select_option_window(choices, 2);
 
       if (selection == choices[0]){ // When selected with `selection`
 
         char* bluetooth_choices[2]={'\0'};
         bluetooth_choices[0]="CONNECT";
         bluetooth_choices[1]="DISCONNECT";
-        selection = select_option_window(row, col, bluetooth_choices, 2);
+        selection = select_option_window(bluetooth_choices, 2);
 
         if (selection == bluetooth_choices[0]){
           char* connect_choices[2]={'\0'};
           connect_choices[0]="WH-1000XM5";
           connect_choices[1]="ACOUSTIC";
-          selection = select_option_window(row, col, connect_choices, 2);
+          selection = select_option_window(connect_choices, 2);
 
           if (selection == connect_choices[0]){
             pid_t pid = fork();
@@ -486,7 +488,7 @@ void check_char(int row, int col) {
           char* disconnect_choices[2]={'\0'};
           disconnect_choices[0]="WH-1000XM5";
           disconnect_choices[1]="ACOUSTIC";
-          selection = select_option_window(row, col, disconnect_choices, 2);
+          selection = select_option_window(disconnect_choices, 2);
 
           if (selection == disconnect_choices[0]){
             pid_t pid = fork();
@@ -522,13 +524,13 @@ void check_char(int row, int col) {
           }
         }
 
-        neon(row, col);
+        neon();
 
       } if (selection == choices[1]){
 
         char * file_path = "/sys/class/backlight/intel_backlight/brightness";
 
-        ensure_path_perm(file_path, 'w', row, col);
+        ensure_path_perm(file_path, 'w');
 
 				FILE *fptr = fopen(file_path, "r");
         if(fptr){
@@ -545,24 +547,24 @@ void check_char(int row, int col) {
           int offset = 0;
           if(WIN_SIZE != BIG) offset = 1;
 
-          quickprint(row, col, FOREGROUND, FOREGROUND, 0);
+          quickprint(FOREGROUND, FOREGROUND, 0);
 
           attron(COLOR_PAIR(BACKGROUND));
           for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-            mvprintw(row/2-2 + i - offset, (col-GLYPH_LENGTH)/2, "%s", option_window[i]);
+            mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
           }
           attroff(COLOR_PAIR(BACKGROUND));
 
           // print current brightness
           attron(COLOR_PAIR(FOREGROUND + 8));
-          mvaddstr(row/2 - offset - 1, col/2 - 11, buff);
+          mvaddstr(ROW/2 - offset - 1, COL/2 - 11, buff);
           attroff(COLOR_PAIR(FOREGROUND + 8));
 
-          patch_backlight(row, col);
-          patch_border(row, col);
+          patch_backlight();
+          patch_border();
           refresh();
 
-          int cache = row + col;
+          CACHE = ROW + COL;
 
           while(1){
 
@@ -582,12 +584,12 @@ void check_char(int row, int col) {
               // Update UI
               sprintf(str, "%d", brightness);
 
-              mvaddstr(row/2 - offset - 1, col/2 - 11, "     ");
+              mvaddstr(ROW/2 - offset - 1, COL/2 - 11, "     ");
               attron(COLOR_PAIR(FOREGROUND + 8));
-              mvaddstr(row/2 - offset - 1, col/2 - 11, str);
+              mvaddstr(ROW/2 - offset - 1, COL/2 - 11, str);
               attroff(COLOR_PAIR(FOREGROUND + 8));
 
-              patch_border(row, col);
+              patch_border();
 
               refresh();
 
@@ -605,18 +607,18 @@ void check_char(int row, int col) {
               break;
             }
 
-            getmaxyx(stdscr, row, col);
-            if (cache != row + col) break;
+            getmaxyx(stdscr, ROW, COL);
+            if (CACHE != ROW + COL) break;
             usleep(1000);
           }
         }
       }
 
-    neon(row, col);
+    neon();
 
     } else if (input == 'v') {
 
-      int cache = row + col;
+      CACHE = ROW + COL;
 
       pid_t pid = fork();
       if (pid < 0) {
@@ -624,7 +626,7 @@ void check_char(int row, int col) {
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        glitch(row, col, 20);
+        glitch(20);
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
@@ -638,14 +640,14 @@ void check_char(int row, int col) {
         endwin();
         clear();
         refresh();
-        getmaxyx(stdscr, row, col);
-        if(cache == row + col){
-          neon(row, col);
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
         }
       }
 
     } else if (input == 'y') {
-      int cache = row + col;
+      CACHE = ROW + COL;
 
       pid_t pid = fork();
       if (pid < 0) {
@@ -666,15 +668,15 @@ void check_char(int row, int col) {
 
         clear();
         refresh();
-        getmaxyx(stdscr, row, col);
-        if(cache == row + col){
-          neon(row, col);
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
         }
       }
 
     } else if (input == 'M') {
 
-      int cache = row + col;
+      CACHE = ROW + COL;
       pid_t pid = fork();
       if (pid < 0) {
         perror("fork");
@@ -695,16 +697,16 @@ void check_char(int row, int col) {
 
         clear();
         refresh();
-        getmaxyx(stdscr, row, col);
-        if(cache == row + col){
-          neon(row, col);
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
         }
       }
 
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;
-      mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+      mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
     }
   } 
@@ -715,13 +717,13 @@ void check_char(int row, int col) {
   }
 }
 
-void printstandard(int row, int col){
+void printstandard(){
 
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < GLYPH_HEIGHT; i++){
-      mvprintw(row/2 - 3 + i, (col-GLYPH_LENGTH)/2, "%s", title[i]);
-      check_char(row, col);
-      if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+      mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+      check_char();
+      if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(20000);
     }
@@ -730,8 +732,8 @@ void printstandard(int row, int col){
 
     attron(COLOR_PAIR(FOREGROUND));
     for(int i = 0; i < GLYPH_HEIGHT; i++){
-      mvprintw(row/2 - 9 + i, (col-GLYPH_LENGTH)/2, "%s", arch[i]);
-      if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+      mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2, "%s", arch[i]);
+      if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(10000);
     }
@@ -754,7 +756,7 @@ void printstandard(int row, int col){
         // Write wide char to `cchar` for mvadd_wch()
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(row/2 + 3 - i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+        mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
 
         attroff(COLOR_PAIR(FOREGROUND));
         attroff(COLOR_PAIR(BACKGROUND));
@@ -767,11 +769,11 @@ void printstandard(int row, int col){
   }
 }
 
-void quickprint(int row, int col, int fg, int bg, int printColorbar){
+void quickprint(int fg, int bg, int printColorbar){
   clear();
   if (WIN_SIZE == NORMAL){
     for(int i = 0; i < GLYPH_HEIGHT; i++){
-      mvprintw(row/2 - 3 + i, (col-GLYPH_LENGTH)/2, "%s", title[i]);
+      mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
     }
   }
   if (WIN_SIZE == BIG){
@@ -790,7 +792,7 @@ void quickprint(int row, int col, int fg, int bg, int printColorbar){
         setcchar(&cchar, &wc, 0, 0, NULL);
 
         is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
-        mvadd_wch(row/2 - 9 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+        mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(fg));
         attroff(COLOR_PAIR(bg));
         iter_row += len;
@@ -799,35 +801,35 @@ void quickprint(int row, int col, int fg, int bg, int printColorbar){
     }
     // print name with background
     attron(COLOR_PAIR(fg + 8));
-    mvprintw(row/2 + 4, (col-GLYPH_LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
+    mvprintw(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
     attroff(COLOR_PAIR(fg + 8));
 
     // print colorbar
     if (printColorbar == 1){
       for(int i = 1; i < 9; i++){
         attron(COLOR_PAIR(i));
-        mvaddwstr(row/2 + 5, (col-GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+        mvaddwstr(ROW/2 + 5, (COL-GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
         attroff(COLOR_PAIR(i));
       }
     }
   }
-  if(HOLD_CHAR) mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+  if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   refresh();
 }
 
-const char * select_option_window(int row, int col, char** choices, int len){
+const char * select_option_window(char** choices, int len){
 
   int selection = 0;
-  int cache = row + col;
+  CACHE = ROW + COL;
 
-  quickprint(row, col, FOREGROUND, FOREGROUND, 0); // hardcoded style choice
+  quickprint(FOREGROUND, FOREGROUND, 0); // hardcoded style choice
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(BACKGROUND));
   for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-    mvprintw(row/2-2 + i - offset, (col-GLYPH_LENGTH)/2, "%s", option_window[i]);
+    mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
   }
   attroff(COLOR_PAIR(BACKGROUND));
 
@@ -839,8 +841,8 @@ const char * select_option_window(int row, int col, char** choices, int len){
       offset = 0;
     }
 
-    getmaxyx(stdscr, row, col);
-    if (cache != row + col) break;
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) break;
 
     int input = getch();
 
@@ -860,7 +862,7 @@ const char * select_option_window(int row, int col, char** choices, int len){
 
     for (int i = 0; i < len; i++){
       i == selection ? attron(COLOR_PAIR(FOREGROUND + 8)) : attron(COLOR_PAIR(FOREGROUND));
-      mvprintw(row/2 + i - 1 - offset, (col-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
+      mvprintw(ROW/2 + i - 1 - offset, (COL-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
       attroff(COLOR_PAIR(FOREGROUND + 8));
       attroff(COLOR_PAIR(FOREGROUND));
     }
@@ -870,7 +872,7 @@ const char * select_option_window(int row, int col, char** choices, int len){
   }
 }
 
-void neon(int row, int col) {
+void neon() {
 
   clock_t cycle_start = clock();
   double cycle_length = 0.3;
@@ -891,12 +893,12 @@ void neon(int row, int col) {
     if(elapsed_time > 0.05 && first_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
-          mvprintw(row/2 - 3 + i, (col-GLYPH_LENGTH)/2, "%s", backdrop[i]);
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", backdrop[i]);
         }
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
           attron(COLOR_PAIR(BACKGROUND));
-          mvprintw(row/2 - 9 + i, (col-GLYPH_LENGTH)/2, "%s", arch[i]);
+          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2, "%s", arch[i]);
           attroff(COLOR_PAIR(BACKGROUND));
         }
       }
@@ -905,7 +907,7 @@ void neon(int row, int col) {
         if (WIN_SIZE == BIG) {
           for(int i = 1; i < 9; i++){
             attron(COLOR_PAIR(i));
-            mvaddwstr(row/2 + 4, (col-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+            mvaddwstr(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
             attroff(COLOR_PAIR(i));
           }
         }
@@ -918,7 +920,7 @@ void neon(int row, int col) {
     if(elapsed_time > 0.1 && second_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
-          mvprintw(row/2 - 3 + i, (col-GLYPH_LENGTH)/2, "%s", title[i]);
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
         }
       } else { // screen is BIG
 
@@ -936,7 +938,7 @@ void neon(int row, int col) {
             setcchar(&cchar, &wc, 0, 0, NULL);
 
             is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
-            mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
             iter_row += len;
@@ -951,7 +953,7 @@ void neon(int row, int col) {
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL){
         for(int i = 0; i < 6; i++){
-          mvprintw(row/2 - 3 + i, (col-GLYPH_LENGTH)/2, "%s", title[i]);
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
         }
       } else { // screen is big
 
@@ -969,7 +971,7 @@ void neon(int row, int col) {
             setcchar(&cchar, &wc, 0, 0, NULL);
 
             is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
-            mvadd_wch(row/2 - 2 + i, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
             iter_row += len;
@@ -981,18 +983,18 @@ void neon(int row, int col) {
       third_frame = 1;
     }
 
-    check_char(row, col);
-    if (HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+    check_char();
+    if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     refresh();
   }
 
-  quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+  quickprint(FOREGROUND, BACKGROUND, 0);
 
-//mvprintw(row/2 + 3, (col-GLYPH_LENGTH)/2, "%s", title[6]);
+//mvprintw(ROW/2 + 3, (COL-GLYPH_LENGTH)/2, "%s", title[6]);
   refresh();
 }
 
-void print_start_animation(int row, int col) {
+void print_start_animation() {
 
   srand((unsigned)time(0));
 
@@ -1010,19 +1012,19 @@ void print_start_animation(int row, int col) {
   START_ANIMATION = NEON; // override 'cus is's my favorite
 
   if (START_ANIMATION == NEON){
-    neon(row, col);
+    neon();
   } else if (START_ANIMATION == QUICK){
-    quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+    quickprint(FOREGROUND, BACKGROUND, 0);
   } else {
-    printstandard(row, col);
-    glitch(row, col, 46);
+    printstandard();
+    glitch(46);
   }
 }
 
 // Check screen size, return updated sum of dimensions
-int check_size(int row, int col, int cache){
+int check_size(){
 
-  if (cache != row + col){
+  if (CACHE != ROW + COL){
 
 //  optionally changing animations when resized
     START_ANIMATION = EMPTY;
@@ -1030,20 +1032,20 @@ int check_size(int row, int col, int cache){
     clear();
 
 //  small win size jail
-    while (col < NORMAL_GLYPH_LENGTH || row < NORMAL_GLYPH_HEIGHT){
+    while (COL < NORMAL_GLYPH_LENGTH || ROW < NORMAL_GLYPH_HEIGHT){
       WIN_SIZE = SMALL;
       clear();
-      mvprintw(row/2, (col-10)/2, "%s", "S.A.R.A.");
+      mvprintw(ROW/2, (COL-10)/2, "%s", "S.A.R.A.");
       refresh();
 
 //    sleep 2 milliseconds
       usleep(2000);
-      check_char(row, col);
+      check_char();
 
-      getmaxyx(stdscr,row,col); // Get total screen dimensions again
+      getmaxyx(stdscr,ROW,COL); // Get total screen dimensions again
     }
 
-    if (row > BIG_GLYPH_HEIGHT && col > BIG_GLYPH_LENGTH){
+    if (ROW > BIG_GLYPH_HEIGHT && COL > BIG_GLYPH_LENGTH){
       WIN_SIZE = BIG;
       GLYPH_LENGTH = BIG_GLYPH_LENGTH;
       GLYPH_HEIGHT = BIG_GLYPH_HEIGHT;
@@ -1054,15 +1056,15 @@ int check_size(int row, int col, int cache){
     }
   }
 
-  return row + col;
+  return ROW + COL;
 }
 
-void glitch(int row, int col, int numFrames){
+void glitch(int numFrames){
 
-  int cache = row + col;
+  CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
-  quickprint(row, col, FOREGROUND, BACKGROUND, 1);
+  quickprint(FOREGROUND, BACKGROUND, 1);
 
   for( int i = 0 ; i < numFrames; i++ ) {
     rng_row   = rand() % NORMAL_GLYPH_HEIGHT;    // RNG 0 and 6
@@ -1071,54 +1073,54 @@ void glitch(int row, int col, int numFrames){
 
     if (WIN_SIZE == NORMAL) {
       if (rng_backdrop == 0){
-        mvprintw(row/2 - 3 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
+        mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
-        mvprintw(row/2 - 3 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
+        mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
       } else {
-        mvprintw(row/2 - 3 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
+        mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
     }
 
     if (WIN_SIZE == BIG) {
       attron(COLOR_PAIR(FOREGROUND));
       if (rng_backdrop == 0){
-        mvprintw(row/2 - 2 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
+        mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
-        mvprintw(row/2 - 2 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
+        mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
       } else {
-        mvprintw(row/2 - 2 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
+        mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
       attroff(COLOR_PAIR(FOREGROUND));
     }
 
-    check_char(row, col);
-    if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(row/2, col/2, "%c", HOLD_CHAR);
+    check_char();
+    if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     refresh();
 
-    getmaxyx(stdscr, row, col);
-    if (cache != row + col) break;
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) break;
 
     usleep(GLITCH_FRAME_TIME);
   }
 
-  quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+  quickprint(FOREGROUND, BACKGROUND, 0);
 }
 
-void mega_glitch(int row, int col, int duration){
+void mega_glitch(int duration){
 
 }
 
-void patch_backlight(int row, int col){
+void patch_backlight(){
 
   attron(COLOR_PAIR(FOREGROUND));
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
-  mvaddstr(row/2 - offset - 1, (col-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
+  mvaddstr(ROW/2 - offset - 1, (COL-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
   attroff(COLOR_PAIR(FOREGROUND));
 
 }
 
-void patch_border(int row, int col){
+void patch_border(){
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
@@ -1131,11 +1133,11 @@ void patch_border(int row, int col){
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
   attron(COLOR_PAIR(BACKGROUND));
-  mvadd_wch(row/2 - offset - 1, (col/2 + GLYPH_LENGTH/2) - 1, &cchar);
+  mvadd_wch(ROW/2 - offset - 1, (COL/2 + GLYPH_LENGTH/2) - 1, &cchar);
   attroff(COLOR_PAIR(BACKGROUND));
 }
 
-void prompt_newlook(int row, int col) {
+void prompt_newlook() {
 
   clear();
 
@@ -1146,7 +1148,7 @@ void prompt_newlook(int row, int col) {
   if (WIN_SIZE != BIG) offset = 1;
 
   int selection = 1;
-  int cache = row + col;
+  CACHE = ROW + COL;
   char input = 0;
   int first_flag = 0;
   int exit_glitch_flag = 0;
@@ -1166,7 +1168,7 @@ void prompt_newlook(int row, int col) {
 
       for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
         selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BLACK));
-        mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, arch[i]);
+        mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, arch[i]);
         attroff(COLOR_PAIR(BACKGROUND));
         attroff(COLOR_PAIR(FOREGROUND));
       }
@@ -1179,7 +1181,7 @@ void prompt_newlook(int row, int col) {
 
         if (i == 0 || i == 6) {
           attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2, no_yes_window[i]);
+          mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, no_yes_window[i]);
           attroff(COLOR_PAIR(FOREGROUND));
           refresh();
           continue;
@@ -1232,7 +1234,7 @@ void prompt_newlook(int row, int col) {
             }
           }
 
-          mvadd_wch(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+          mvadd_wch(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
           attroff(COLOR_PAIR(BLUE));
@@ -1244,9 +1246,9 @@ void prompt_newlook(int row, int col) {
       refresh();
 
     } else if (input == 'k') {
-      wall = prompt_fuzzy(row, col, cache);
-      getmaxyx(stdscr, row, col);
-      if (cache != row + col || wall == NULL) {
+      wall = prompt_fuzzy();
+      getmaxyx(stdscr, ROW, COL);
+      if (CACHE != ROW + COL || wall == NULL) {
         exit_glitch_flag = 1;
         break;
       } else {
@@ -1260,7 +1262,7 @@ void prompt_newlook(int row, int col) {
     } else if (input == '\n' || input == 'y') {
       if (selection == 1 || input == 'y'){
         fork_newlook(NULL);
-      } else if (selection == 0 || cache != row + col) {
+      } else if (selection == 0 || CACHE != ROW + COL) {
           exit_glitch_flag = 1;
       }
 
@@ -1268,17 +1270,17 @@ void prompt_newlook(int row, int col) {
     }
 
     usleep(10000);
-    getmaxyx(stdscr, row, col);
-    if (cache != row + col) {
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) {
       exit_glitch_flag = 1;
       break;
     }
   }
 
   if(exit_glitch_flag){
-    glitch(row, col, 46);
+    glitch(46);
   } else {
-    neon(row, col);
+    neon();
   }
 }
 
@@ -1304,11 +1306,11 @@ int input_color(char * arg){
   }
 }
 
-void xray(int row, int col){
+void xray(){
 
-  quickprint(row, col, FOREGROUND, BACKGROUND, 0);
+  quickprint(FOREGROUND, BACKGROUND, 0);
 
-  int cache = (row + col);
+  CACHE = ROW + COL;
   int i = 0;
   int k = 0;
   int offset = 0;
@@ -1330,7 +1332,7 @@ void xray(int row, int col){
   while(1){
 
     attron(COLOR_PAIR(BACKGROUND));
-    mvprintw(row/2 - 2 + i - offset, (col-GLYPH_LENGTH)/2, backdrop_glyph_pointer[i]);
+    mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, backdrop_glyph_pointer[i]);
     attroff(COLOR_PAIR(BACKGROUND));
 
     int previous_row = 0;
@@ -1366,7 +1368,7 @@ void xray(int row, int col){
         if (toggle == 1) { prev = 1; }
         else { prev = -1; }
 
-        mvadd_wch(row/2 - 2 + i + prev - offset, (col-GLYPH_LENGTH)/2 + iter_col, &cchar);
+        mvadd_wch(ROW/2 - 2 + i + prev - offset, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
         attron(COLOR_PAIR(WHITE));
         attroff(COLOR_PAIR(FOREGROUND));
         attroff(COLOR_PAIR(FOREGROUND + 8));
@@ -1380,13 +1382,13 @@ void xray(int row, int col){
 //  usleep(15000);
     usleep(100000);
 
-    getmaxyx(stdscr, row, col);
-    if (cache != row + col) return;
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) return;
 
-    check_char(row, col);
+    check_char();
 
 //  DEBUG
-//  mvaddch(row/2,col/2, i + 48);
+//  mvaddch(ROW/2,COL/2, i + 48);
 
     // maybe extract this block to a range oscillation handler function
     // i = oscillator(i, min, max, toggle);
@@ -1407,32 +1409,32 @@ void xray(int row, int col){
     usleep(80000);
     for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
       attron(COLOR_PAIR(BACKGROUND));
-      mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, arch[i]);
+      mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, arch[i]);
       attroff(COLOR_PAIR(BACKGROUND));
     }
     refresh();
     usleep(80000);
     for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
       attron(COLOR_PAIR(BACKGROUND));
-      mvprintw(row/2 - 9 + i - offset, (col-GLYPH_LENGTH)/2 - 0, archsarazap[i]);
+      mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, archsarazap[i]);
       attroff(COLOR_PAIR(BACKGROUND));
     }
     refresh();
     usleep(80000);
-    quickprint(row,col, FOREGROUND, BACKGROUND, 0);
+    quickprint(FOREGROUND, BACKGROUND, 0);
   } else {
-    neon(row, col);
+    neon();
   }
 }
 
-char * prompt_fuzzy(int row, int col, int cache){
+char * prompt_fuzzy(){
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(FOREGROUND));
-  mvprintw(row/2 - 2 - offset, (col-GLYPH_LENGTH)/2, option_window[0]);
-//mvprintw(row/2 + 5 - offset, (col-GLYPH_LENGTH)/2, option_window[6]);
+  mvprintw(ROW/2 - 2 - offset, (COL-GLYPH_LENGTH)/2, option_window[0]);
+//mvprintw(ROW/2 + 5 - offset, (COL-GLYPH_LENGTH)/2, option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));
 
   char * wall_dir = "/home/hakirot/pix/walls";
@@ -1451,15 +1453,15 @@ char * prompt_fuzzy(int row, int col, int cache){
     rng_shift = (rand() % 3) - 1;       // -1 and 1
 
     attron(COLOR_PAIR(FOREGROUND));
-    mvprintw(row/2 - 1 + rng_row, (col - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
+    mvprintw(ROW/2 - 1 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
     attroff(COLOR_PAIR(FOREGROUND));
     attron(COLOR_PAIR(BLACK));
-    mvaddwstr(row/2 - 1 + rng_row, (col/2) + 21, L"║");
-    mvaddwstr(row/2 - 1 + rng_row, (col/2) - 22, L"║");
+    mvaddwstr(ROW/2 - 1 + rng_row, (COL/2) + 21, L"║");
+    mvaddwstr(ROW/2 - 1 + rng_row, (COL/2) - 22, L"║");
     attroff(COLOR_PAIR(BLACK));
 
-    getmaxyx(stdscr, row, col);
-    if(cache != row + col){
+    getmaxyx(stdscr, ROW, COL);
+    if(CACHE != ROW + COL){
       break;
     }
 
@@ -1495,9 +1497,9 @@ void fork_newlook(char * file){
   } // Not doing a proper wait
 }
 
-void pshd(int row, int col){
+void pshd(){
 
-  int cache = row + col;
+  CACHE = ROW + COL;
   FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
 
   if (file == NULL){
@@ -1541,9 +1543,9 @@ void pshd(int row, int col){
 
   while(1){
 
-    getmaxyx(stdscr, row, col);
-    if (cache != row + col){
-      cache = check_size(row, col, cache);
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL){
+      CACHE = check_size();
       break;
     }
 
@@ -1632,15 +1634,15 @@ void pshd(int row, int col){
         if (setenv("PWD", prev_line, 1) != 0) {
           error("setenv error");
         }
-        neon(row, col);
+        neon();
       } else {
-        glitch(row, col, 46);
+        glitch(46);
 
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      glitch(row, col, 46);
+      glitch(46);
       return;
     }
 
@@ -1648,7 +1650,7 @@ void pshd(int row, int col){
   }
 }
 
-void ensure_path_perm(char * file_path, char perm, int row, int col){
+void ensure_path_perm(char * file_path, char perm){
 
   if(perm == 'w'){
     // open file
@@ -1663,7 +1665,7 @@ void ensure_path_perm(char * file_path, char perm, int row, int col){
       char * pw_path = "/home/hakirot/.config/pw.gpg";
       FILE * pw_file = fopen(pw_path, "r");
       if (ENOENT == errno){
-        int result = generate_pw_file(row, col);
+        int result = generate_pw_file();
       } else {
         fclose(pw_file);
       }
@@ -1742,11 +1744,11 @@ void free_dir_list(struct file_node * list){
   }
 }
 
-int generate_pw_file(int row, int col){
+int generate_pw_file(){
   clear();
 
   attron(COLOR_PAIR(WHITE_BLACK));
-  mvprintw(row/2 - 1, col/2 - 8, "%s", "Enter Password");
+  mvprintw(ROW/2 - 1, COL/2 - 8, "%s", "Enter Password");
   attroff(COLOR_PAIR(WHITE_BLACK));
   refresh();
 
@@ -1757,7 +1759,7 @@ int generate_pw_file(int row, int col){
     input = getch();
       if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
 
-        mvaddch(row/2, col/2 - 8 + i, '*');
+        mvaddch(ROW/2, COL/2 - 8 + i, '*');
         refresh();
 
         pw[i] = input;
@@ -1768,7 +1770,7 @@ int generate_pw_file(int row, int col){
         pw[i] = '\0';
         i--;
         if (i < 0) i = 0;
-        mvaddch(row/2, col/2 - 8 + i, ' ');
+        mvaddch(ROW/2, COL/2 - 8 + i, ' ');
 
       } else if (input == '\n'){
         break;

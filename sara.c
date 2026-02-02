@@ -707,6 +707,12 @@ void check_char() {
         }
       }
 
+    } else if (input == 'X') {
+
+      endwin();
+      execlp("tmux", "tmux", "kill-session", NULL);
+      error("ERROR: execlp tmux kill-session");
+
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;

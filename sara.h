@@ -10,13 +10,11 @@
 
 /* FEATS
 
-   . Glitch whole glyph before nvim when bigmode
    . Add key input to pshd for quick/fuzzy find
      . When 'char' -> filter lines
      . When 'int' -> start selecting from options
    . Refactor so animations may be chosen after each command
    . does 'sara -c' still work?
-   . 'X' -> kill tmux session, and terminal
    . Can I host my own local DNS server?
    . 'Q' -> terms sara and current tmux pane
    . Fuzzy newlook
@@ -39,6 +37,8 @@
    . Abstracted functions, config option selection, and variable compilation
 
   BESTIARY
+   X 'X' -> kill tmux session
+   X Glitch whole glyph before nvim when bigmode
    X pshd()
    X wait on mzk
    X sara prints after nvim exit, also not sure if I'm waiting on that thread

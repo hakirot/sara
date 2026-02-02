@@ -1,5 +1,5 @@
-
 /*
+
 --  ███████╗ █████╗ ██████╗  █████╗   --
 --  ██╔════╝██╔══██╗██╔══██╗██╔══██╗  --
 --  ███████╗███████║██████╔╝███████║  --
@@ -182,8 +182,8 @@ void check_char() {
   char input = getch();
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
-    if(input == 'q'){
 
+    if(input == 'q'){
       if (FOLLOW){
         ensure_cache_dir();
         char cache_file[256] = {'\0'};
@@ -235,7 +235,12 @@ void check_char() {
         }
 
         FILE *fp;
+
         fp = fopen(cache_file, "r");
+        if(!fp){
+          refresh();
+          return;
+        }
 
         char target_chdir[256] = {'\0'};
         if(fgets(target_chdir, 256, fp) == NULL) {
@@ -299,7 +304,7 @@ void check_char() {
         char * buffer = NULL;
         size_t bufsize = 0;
         getline(&buffer, &bufsize, stdin);
-        glitch(10);
+        glitch(10, 0);
         return;
       }
 
@@ -330,7 +335,7 @@ void check_char() {
           error("shutdown err");
         }
       } else {
-        glitch(46);
+        glitch(46, 0);
       }
 
     } else if(input == 'i'){
@@ -368,7 +373,7 @@ void check_char() {
         neon();
       }
     } else if(input == 'g'){
-      glitch(46);
+      glitch(46, 0);
 //    xray(ROW, COL);
     } else if(input == 't'){
 
@@ -385,7 +390,7 @@ void check_char() {
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
-        glitch(20);
+        glitch(20, 1);
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
@@ -625,7 +630,7 @@ void check_char() {
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        glitch(20);
+        glitch(20, 1);
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
@@ -1016,7 +1021,7 @@ void print_start_animation() {
     quickprint(FOREGROUND, BACKGROUND, 0);
   } else {
     printstandard();
-    glitch(46);
+    glitch(46, 0);
   }
 }
 
@@ -1058,7 +1063,7 @@ int check_size(){
   return ROW + COL;
 }
 
-void glitch(int numFrames){
+void glitch(int numFrames, int full){
 
   CACHE = ROW + COL;
 
@@ -1081,6 +1086,18 @@ void glitch(int numFrames){
     }
 
     if (WIN_SIZE == BIG) {
+
+      if(full == 1){
+
+        attron(COLOR_PAIR(BACKGROUND));
+        int rng_rowx = rand() % BIG_GLYPH_HEIGHT;
+        int rng_shift = (rand() % 7) - 1;       // RNG -1 and 1
+        if(rng_rowx < 7 || rng_rowx > 13){
+          mvprintw(ROW/2 - 9 + rng_rowx, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", arch[rng_rowx]);
+        }
+        attroff(COLOR_PAIR(BACKGROUND));
+      }
+
       attron(COLOR_PAIR(FOREGROUND));
       if (rng_backdrop == 0){
         mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
@@ -1276,7 +1293,7 @@ void prompt_newlook() {
   }
 
   if(exit_glitch_flag){
-    glitch(46);
+    glitch(46, 0);
   } else {
     neon();
   }
@@ -1634,13 +1651,13 @@ void pshd(){
         }
         neon();
       } else {
-        glitch(46);
+        glitch(46, 0);
 
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      glitch(46);
+      glitch(46, 0);
       return;
     }
 

@@ -533,84 +533,83 @@ void check_char() {
         ensure_path_perm(file_path, 'w');
 
 				FILE *fptr = fopen(file_path, "r");
-        if(fptr){
+        if(!fptr) error("fopen(file_path)");
 
-          char buff[8];
-          memset(&buff, '\0', 8 * sizeof(char));
-          fgets(buff, 8, fptr);
-          fclose(fptr);
+        char buff[8];
+        memset(&buff, '\0', 8 * sizeof(char));
+        fgets(buff, 8, fptr);
+        fclose(fptr);
 
-          // Read buff to int
-          int brightness;
-          sscanf(buff, "%d", &brightness);
+        // Read buff to int
+        int brightness;
+        sscanf(buff, "%d", &brightness);
 
-          int offset = 0;
-          if(WIN_SIZE != BIG) offset = 1;
+        int offset = 0;
+        if(WIN_SIZE != BIG) offset = 1;
 
-          quickprint(FOREGROUND, FOREGROUND, 0);
+        quickprint(FOREGROUND, FOREGROUND, 0);
 
-          attron(COLOR_PAIR(BACKGROUND));
-          for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-            mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
-          }
-          attroff(COLOR_PAIR(BACKGROUND));
+        attron(COLOR_PAIR(BACKGROUND));
+        for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+          mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
+        }
+        attroff(COLOR_PAIR(BACKGROUND));
 
-          // print current brightness
-          attron(COLOR_PAIR(FOREGROUND + 8));
-          mvaddstr(ROW/2 - offset - 1, COL/2 - 11, buff);
-          attroff(COLOR_PAIR(FOREGROUND + 8));
+        // print current brightness
+        attron(COLOR_PAIR(FOREGROUND + 8));
+        mvaddstr(ROW/2 - offset - 1, COL/2 - 11, buff);
+        attroff(COLOR_PAIR(FOREGROUND + 8));
 
-          patch_backlight();
-          patch_border();
-          refresh();
+        patch_backlight();
+//        patch_border();
+        refresh();
 
-          CACHE = ROW + COL;
+        CACHE = ROW + COL;
 
-          while(1){
+        while(1){
 
-            int input = getch();
-            char str[16];
+          int input = getch();
+          char str[16];
 
-            if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
-              if (input == 'j'){
-                // Decrement the string and write it to file
-                brightness -= 20;
-                if (brightness < 0) brightness = 0;
-              } else if (input == 'k'){
-                brightness += 20;
-                if (brightness > 1500) brightness = 1500;
-              }
-
-              // Update UI
-              sprintf(str, "%d", brightness);
-
-              mvaddstr(ROW/2 - offset - 1, COL/2 - 11, "     ");
-              attron(COLOR_PAIR(FOREGROUND + 8));
-              mvaddstr(ROW/2 - offset - 1, COL/2 - 11, str);
-              attroff(COLOR_PAIR(FOREGROUND + 8));
-
-              patch_border();
-
-              refresh();
-
-              FILE *ptr = fopen(file_path, "w");
-
-              if(ptr){
-                // Write brightness to file
-                fprintf(ptr, "%s", str);
-                fclose(ptr);
-              } else {
-                error("Not writable");
-              }
-
-            } else if (input == 'q' || input == '\n'){
-              break;
+          if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
+            if (input == 'j'){
+              // Decrement the string and write it to file
+              brightness -= 20;
+              if (brightness < 0) brightness = 0;
+            } else if (input == 'k'){
+              brightness += 20;
+              if (brightness > 1500) brightness = 1500;
             }
 
-            getmaxyx(stdscr, ROW, COL);
-            if (CACHE != ROW + COL) break;
-            usleep(1000);
+            // Update UI
+            sprintf(str, "%d", brightness);
+
+            mvaddstr(ROW/2 - offset - 1, COL/2 - 11, "     ");
+            attron(COLOR_PAIR(FOREGROUND + 8));
+            mvaddstr(ROW/2 - offset - 1, COL/2 - 11, str);
+            attroff(COLOR_PAIR(FOREGROUND + 8));
+
+            patch_border();
+
+            refresh();
+
+            FILE *ptr = fopen(file_path, "w");
+
+            if(ptr){
+              // Write brightness to file
+              fprintf(ptr, "%s", str);
+              fclose(ptr);
+            } else {
+              error("Not writable");
+            }
+
+          } else if (input == 'q' || input == '\n'){
+            break;
           }
+
+          getmaxyx(stdscr, ROW, COL);
+          if (CACHE != ROW + COL) break;
+          usleep(1000);
         }
       }
 
@@ -1130,6 +1129,8 @@ void patch_border(){
   // Converts character from iter_row to wide char `wc`
   // Also records length of character at *iter_row in len
   size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
+  error("HERE???");
+
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
   attron(COLOR_PAIR(BACKGROUND));

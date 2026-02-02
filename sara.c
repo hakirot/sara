@@ -561,7 +561,7 @@ void check_char() {
         attroff(COLOR_PAIR(FOREGROUND + 8));
 
         patch_backlight();
-//        patch_border();
+        patch_border();
         refresh();
 
         CACHE = ROW + COL;
@@ -1116,7 +1116,6 @@ void patch_backlight(){
   if (WIN_SIZE != BIG) offset = 1;
   mvaddstr(ROW/2 - offset - 1, (COL-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
   attroff(COLOR_PAIR(FOREGROUND));
-
 }
 
 void patch_border(){
@@ -1126,10 +1125,10 @@ void patch_border(){
 
   wchar_t wc;
   mbstate_t state;  // Tracks state of mbrtowc function when converting between types of chars
+  memset(&state, 0, sizeof(mbstate_t));
   // Converts character from iter_row to wide char `wc`
   // Also records length of character at *iter_row in len
   size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
-  error("HERE???");
 
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);

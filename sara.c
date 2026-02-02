@@ -1124,10 +1124,8 @@ void patch_border(){
   if (WIN_SIZE != BIG) offset = 1;
 
   wchar_t wc;
-  mbstate_t state;  // Tracks state of mbrtowc function when converting between types of chars
+  mbstate_t state;
   memset(&state, 0, sizeof(mbstate_t));
-  // Converts character from iter_row to wide char `wc`
-  // Also records length of character at *iter_row in len
   size_t len = mbrtowc(&wc, "║", MB_CUR_MAX, &state);
 
   cchar_t cchar;

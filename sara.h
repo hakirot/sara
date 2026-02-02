@@ -10,7 +10,6 @@
 
 /* FEATS
 
-   . Make row/col global
    . Add key input to pshd for quick/fuzzy find
      . When 'char' -> filter lines
      . When 'int' -> start selecting from options

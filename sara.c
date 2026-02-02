@@ -707,6 +707,12 @@ void check_char() {
         }
       }
 
+    } else if (input == 'Q') {
+
+      endwin();
+      execlp("tmux", "tmux", "kill-pane", NULL);
+      error("ERROR: execlp tmux kill-pane");
+
     } else if (input == 'X') {
 
       endwin();

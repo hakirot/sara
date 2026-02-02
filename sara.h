@@ -16,7 +16,6 @@
    . Refactor so animations may be chosen after each command
    . does 'sara -c' still work?
    . Can I host my own local DNS server?
-   . 'Q' -> terms sara and current tmux pane
    . Fuzzy newlook
    . More animations
        > Sparkle
@@ -37,6 +36,7 @@
    . Abstracted functions, config option selection, and variable compilation
 
   BESTIARY
+   X 'Q' -> terms sara and current tmux pane
    X 'X' -> kill tmux session
    X Glitch whole glyph before nvim when bigmode
    X pshd()

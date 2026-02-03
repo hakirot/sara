@@ -1,4 +1,8 @@
 
+
+const char * glyph_border =
+        "════════════════════════════════════════════";
+
 const char * specialApplicationRangingArea = 
         "SPECIAL APPLICATION RANGING AREA";
 

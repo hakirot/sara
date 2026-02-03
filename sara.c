@@ -1684,6 +1684,8 @@ void pshd(){
       attroff(COLOR_PAIR(WHITE_BLACK));
       refresh();
       int l = 0;
+      char * padding = "                                            ";
+      char sel_line[256] = {'\0'};
       while(1){
         input = getch();
         if (input == 27){
@@ -1692,7 +1694,6 @@ void pshd(){
           mvprintw(1, 2, "%s", option_window[0]);
 
           // duplicated code
-          char * padding = "                                            ";
           attron(COLOR_PAIR(BACKGROUND));
           for(int n = 0; n < i; n++){
             mvprintw(2 + n, 2, "%s", padding);
@@ -1728,13 +1729,12 @@ void pshd(){
 
           break;
         } else if (input > 31 && input < 127) {
-          memset(prev_line, '\0', 256);
+          memset(sel_line, '\0', 256);
 
           buffer[l] = input;
           mvaddch(1, 9 + l, buffer[l]);
           l++;
 
-          char * padding = "                                            ";
           attron(COLOR_PAIR(BACKGROUND));
           for(int n = 0; n < i; n++){
             mvprintw(2 + n, 2, "%s", padding);
@@ -1743,62 +1743,65 @@ void pshd(){
           refresh();
 
           int m = 0;
+          int n = 0;
           rewind(file);
           while(fgets(line, sizeof(line), file)){
             line[strcspn(line, "\n")] = 0;
             if(strstr(line, buffer)){
 
               if (m == 0){
-                strncpy(prev_line, line, 256);
+                strncpy(sel_line, line, 256);
                 attron(COLOR_PAIR(BLACK_WHITE));
-                mvprintw(2 + m, 4, line);
+                mvprintw(2 + m, 3, "[%d] %s", n, line);
                 attroff(COLOR_PAIR(BLACK_WHITE));
               } else {
-                mvprintw(2 + m, 4, line);
+                mvprintw(2 + m, 3, "[%d] %s", n, line);
               }
               m++;
             }
+            n++;
           }
           refresh();
         } else if (input == 7){ // this could be an ST implementation only..
-          buffer[l] = 0;
           l--;
+          buffer[l] = 0;
           if (l < 0) l = 0;
           mvaddch(1, 9 + l, ' ');
 
           // copied from above
-          char * padding = "                                            ";
           attron(COLOR_PAIR(BACKGROUND));
           for(int n = 0; n < i; n++){
             mvprintw(2 + n, 2, "%s", padding);
           }
           attroff(COLOR_PAIR(BACKGROUND));
-          rewind(file);
 
+          rewind(file);
           int m = 0;
+          int n = 0;
           while(fgets(line, sizeof(line), file)){
             line[strcspn(line, "\n")] = 0;
             if(strstr(line, buffer)){
 
               if (m == 0){
-                strncpy(prev_line, line, 256);
+                strncpy(sel_line, line, 256);
                 attron(COLOR_PAIR(BLACK_WHITE));
-                mvprintw(2 + m, 4, line);
+                mvprintw(2 + m, 3, "[%d] %s", n, line);
                 attroff(COLOR_PAIR(BLACK_WHITE));
               } else {
-                mvprintw(2 + m, 4, line);
+                mvprintw(2 + m, 3, "[%d] %s", n, line);
               }
               m++;
             }
+            n++;
           }
 
           refresh();
         } else if (input == '\n'){
 
           fclose(file);
-          if(strlen(prev_line) > 0){
-            chdir(prev_line);
-            if (setenv("PWD", prev_line, 1) != 0) {
+          if(strlen(sel_line) > 0){
+            chdir(sel_line);
+            if (setenv("PWD", sel_line, 1) != 0) {
               error("setenv error");
             }
             neon();
@@ -2012,3 +2015,4 @@ void error(char * err) {
   printf("%s\n", err);
   exit(1);
 }
+

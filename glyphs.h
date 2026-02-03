@@ -14,5 +14,6 @@ extern const char * backdropfill[7];
 extern const char * option_window[7];
 extern const char * no_yes_window[7];
 extern const char * fuzzy[7];
+extern const char * glyph_border;
 
 #endif

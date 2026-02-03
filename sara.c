@@ -1685,10 +1685,48 @@ void pshd(){
       while(1){
         input = getch();
         if (input == 27){
+
+          rewind(file);
           mvprintw(1, 2, "%s", option_window[0]);
+
+          // duplicated code
+          char * padding = "                                            ";
+          attron(COLOR_PAIR(BACKGROUND));
+          for(int n = 0; n < i; n++){
+            mvprintw(2 + n, 2, "%s", padding);
+          }
+          attroff(COLOR_PAIR(BACKGROUND));
+
+          // duplicated code
+          i = 0;
+          attron(COLOR_PAIR(FOREGROUND));
+          while(fgets(line, sizeof(line), file)){
+            line[strcspn(line, "\n")] = 0;
+            int len = strlen(line);
+            if(len < 42){
+              if (i < 10) {
+                memset(line + len, ' ', 38 - len);
+              } else {
+                memset(line + len, ' ', 37 -  len);
+                line[37] = '\0';
+              }
+            }
+            if(i == 0){
+              mvprintw(i + 1, 2, "%s", option_window[0]);
+              mvprintw(i + 2, 3, "[%d] %s", i, line);
+            } else if (i > 0){
+              mvprintw(i + 2, 3, "[%d] %s", i, line);
+            }
+            refresh();
+            i++;
+            usleep(10000);
+          }
+          mvprintw(i + 2, 2, "%s", option_window[6]);
+          attroff(COLOR_PAIR(FOREGROUND));
           refresh();
+
           break;
-        } else if (input > 64 && input < 123) {
+        } else if (input > 31 && input < 127) {
           memset(prev_line, '\0', 256);
 
           buffer[l] = input;
@@ -1720,6 +1758,39 @@ void pshd(){
               m++;
             }
           }
+          refresh();
+        } else if (input == 7){ // this could be an ST implementation only..
+          buffer[l] = 0;
+          l--;
+          if (l < 0) l = 0;
+          mvaddch(1, 9 + l, ' ');
+
+          // copied from above
+          char * padding = "                                            ";
+          attron(COLOR_PAIR(BACKGROUND));
+          for(int n = 0; n < i; n++){
+            mvprintw(2 + n, 2, "%s", padding);
+          }
+          attroff(COLOR_PAIR(BACKGROUND));
+          rewind(file);
+
+          int m = 0;
+          while(fgets(line, sizeof(line), file)){
+            line[strcspn(line, "\n")] = 0;
+            if(strstr(line, buffer)){
+
+              if (m == 0){
+                strncpy(prev_line, line, 256);
+                attron(COLOR_PAIR(BLACK_WHITE));
+                mvprintw(2 + m, 4, line);
+                attroff(COLOR_PAIR(BLACK_WHITE));
+              } else {
+                mvprintw(2 + m, 4, line);
+              }
+              m++;
+            }
+          }
+
           refresh();
         } else if (input == '\n'){
 

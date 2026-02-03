@@ -10,9 +10,7 @@
 
 /* FEATS
 
-   . Add key input to pshd for quick/fuzzy find
-     . When 'char' -> filter lines
-     . When 'int' -> start selecting from options
+   . SARA CPU load goes berzerk during filter mode of pshd
    . Refactor so animations may be chosen after each command
    . does 'sara -c' still work?
    . Can I host my own local DNS server?
@@ -36,6 +34,9 @@
    . Abstracted functions, config option selection, and variable compilation
 
   BESTIARY
+   X Add key input to pshd for quick/fuzzy find
+     X When 'char' -> filter lines
+     X When 'int' -> start selecting from options
    X 'Q' -> terms sara and current tmux pane
    X 'X' -> kill tmux session
    X Glitch whole glyph before nvim when bigmode

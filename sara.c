@@ -59,14 +59,14 @@ const int BLACK_BLUE    = 13;
 const int BLACK_MAGENTA = 14;
 const int BLACK_CYAN    = 15;
 const int BLACK_WHITE   = 16;
-//const int BLACK_WHITED  = 17;
-//const int RED_BLACK     = 18;
-//const int GREEN_BLACK   = 19;
-//const int YELLOW_BLACK  = 20;
-//const int BLUE_BLACK    = 21;
-//const int MAGENTA_BLACK = 22;
-//const int CYAN_BLACK    = 23;
-//const int WHITE_BLACKD  = 24;
+const int BLACK_WHITED  = 17;
+const int RED_BLACK     = 18;
+const int GREEN_BLACK   = 19;
+const int YELLOW_BLACK  = 20;
+const int BLUE_BLACK    = 21;
+const int MAGENTA_BLACK = 22;
+const int CYAN_BLACK    = 23;
+const int WHITE_BLACKD  = 24;
 
 //const int EFFECT_MUTE   = 0;
 
@@ -1679,9 +1679,9 @@ void pshd(){
       attroff(COLOR_PAIR(FOREGROUND));
 
       char buffer[256] = {'\0'};
-      attron(COLOR_PAIR(WHITE_BLACK));
+      attron(COLOR_PAIR(FOREGROUND +  16));
       mvprintw(1, 2, "%s", " FIND:               ");
-      attroff(COLOR_PAIR(WHITE_BLACK));
+      attroff(COLOR_PAIR(FOREGROUND + 16));
       refresh();
       int l = 0;
       char * padding = "                                            ";
@@ -1732,7 +1732,10 @@ void pshd(){
           memset(sel_line, '\0', 256);
 
           buffer[l] = input;
+
+          attron(COLOR_PAIR(FOREGROUND + 8));
           mvaddch(1, 9 + l, buffer[l]);
+          attroff(COLOR_PAIR(FOREGROUND + 8));
           l++;
 
           attron(COLOR_PAIR(BACKGROUND));
@@ -1751,11 +1754,13 @@ void pshd(){
 
               if (m == 0){
                 strncpy(sel_line, line, 256);
-                attron(COLOR_PAIR(BLACK_WHITE));
+                attron(COLOR_PAIR(FOREGROUND + 8));
                 mvprintw(2 + m, 3, "[%d] %s", n, line);
-                attroff(COLOR_PAIR(BLACK_WHITE));
+                attroff(COLOR_PAIR(FOREGROUND + 8));
               } else {
+                attron(COLOR_PAIR(FOREGROUND));
                 mvprintw(2 + m, 3, "[%d] %s", n, line);
+                attroff(COLOR_PAIR(FOREGROUND));
               }
               m++;
             }
@@ -1766,7 +1771,9 @@ void pshd(){
           l--;
           buffer[l] = 0;
           if (l < 0) l = 0;
+          attron(COLOR_PAIR(WHITE_BLACK));
           mvaddch(1, 9 + l, ' ');
+          attroff(COLOR_PAIR(WHITE_BLACK));
 
           // copied from above
           attron(COLOR_PAIR(BACKGROUND));
@@ -1784,15 +1791,18 @@ void pshd(){
 
               if (m == 0){
                 strncpy(sel_line, line, 256);
-                attron(COLOR_PAIR(BLACK_WHITE));
+                attron(COLOR_PAIR(FOREGROUND + 8));
                 mvprintw(2 + m, 3, "[%d] %s", n, line);
-                attroff(COLOR_PAIR(BLACK_WHITE));
+                attroff(COLOR_PAIR(FOREGROUND + 8));
               } else {
+                attron(COLOR_PAIR(FOREGROUND));
                 mvprintw(2 + m, 3, "[%d] %s", n, line);
+                attroff(COLOR_PAIR(FOREGROUND));
               }
               m++;
             }
             n++;
+            usleep(10000);
           }
 
           refresh();
@@ -1811,9 +1821,10 @@ void pshd(){
           return;
         }
       }
+      usleep(50000);
     }
 
-    usleep(10000);
+    usleep(50000);
   }
 }
 
@@ -1992,14 +2003,14 @@ void init_window(){
   init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
   init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
 
-//init_pair(BLACK_WHITED, COLOR_WHITE, COLOR_BLACK);
-//init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
-//init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
-//init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
-//init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
-//init_pair(MAGENTA_BLACK, COLOR_MAGENTA, COLOR_BLACK);
-//init_pair(CYAN_BLACK, COLOR_CYAN, COLOR_BLACK);
-//init_pair(WHITE_BLACKD, COLOR_WHITE, COLOR_BLACK);
+  init_pair(BLACK_WHITED, COLOR_WHITE, COLOR_BLACK);
+  init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
+  init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
+  init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
+  init_pair(MAGENTA_BLACK, COLOR_MAGENTA, COLOR_BLACK);
+  init_pair(CYAN_BLACK, COLOR_CYAN, COLOR_BLACK);
+  init_pair(WHITE_BLACKD, COLOR_WHITE, COLOR_BLACK);
 
   cbreak();                 // Disable line buffering
   noecho();                 // Don't display keyboard presses in window

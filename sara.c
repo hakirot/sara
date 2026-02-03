@@ -1663,13 +1663,13 @@ void pshd(){
         }
         neon();
       } else {
-        glitch(46, 0);
+        glitch(16, 1);
 
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      glitch(46, 0);
+      glitch(16, 1);
       return;
     } else if (input == 'f') {
 
@@ -1679,7 +1679,9 @@ void pshd(){
       attroff(COLOR_PAIR(FOREGROUND));
 
       char buffer[256] = {'\0'};
+      attron(COLOR_PAIR(WHITE_BLACK));
       mvprintw(1, 2, "%s", " FIND:               ");
+      attroff(COLOR_PAIR(WHITE_BLACK));
       refresh();
       int l = 0;
       while(1){
@@ -1719,7 +1721,6 @@ void pshd(){
             }
             refresh();
             i++;
-            usleep(10000);
           }
           mvprintw(i + 2, 2, "%s", option_window[6]);
           attroff(COLOR_PAIR(FOREGROUND));

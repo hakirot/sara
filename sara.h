@@ -10,8 +10,6 @@
 
 /* FEATS
 
-   . SARA CPU load goes berzerk during filter mode of pshd
-   . Refactor so animations may be chosen after each command
    . does 'sara -c' still work?
    . Can I host my own local DNS server?
    . Fuzzy newlook
@@ -20,10 +18,9 @@
        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
        > Scan (xray but single direction)
    . Fix the inaccurate WAIT_BUFFER time muckery
-   . Fuzzy find menu for newlook
-       . Build directory list
+   . newlook ueberzug selector
    . mega_glitch()
-   . Break relevant functions into new files (utils)
+   . Break relevant functions into new files (utils, animations, pshd)
    . Load colors/randomness from config file
    . input 'c' to show term colors and enter COMMAND MODE
    . Add -s --small options to force small size

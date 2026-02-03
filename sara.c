@@ -1671,7 +1671,7 @@ void pshd(){
       fclose(file);
       glitch(16, 1);
       return;
-    } else if (input == 'f') {
+    } else if (input == 'f' || input == '/') {
 
       attron(COLOR_PAIR(FOREGROUND));
       mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
@@ -1820,10 +1820,9 @@ void pshd(){
           }
           return;
         }
+        usleep(50000);
       }
-      usleep(50000);
     }
-
     usleep(50000);
   }
 }

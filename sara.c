@@ -1671,6 +1671,71 @@ void pshd(){
       fclose(file);
       glitch(46, 0);
       return;
+    } else if (input == 'f') {
+
+      attron(COLOR_PAIR(FOREGROUND));
+      mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
+      refresh();
+      attroff(COLOR_PAIR(FOREGROUND));
+
+      char buffer[256] = {'\0'};
+      mvprintw(1, 2, "%s", " FIND:               ");
+      refresh();
+      int l = 0;
+      while(1){
+        input = getch();
+        if (input == 27){
+          mvprintw(1, 2, "%s", option_window[0]);
+          refresh();
+          break;
+        } else if (input > 64 && input < 123) {
+          memset(prev_line, '\0', 256);
+
+          buffer[l] = input;
+          mvaddch(1, 9 + l, buffer[l]);
+          l++;
+
+          char * padding = "                                            ";
+          attron(COLOR_PAIR(BACKGROUND));
+          for(int n = 0; n < i; n++){
+            mvprintw(2 + n, 2, "%s", padding);
+          }
+          attroff(COLOR_PAIR(BACKGROUND));
+          refresh();
+
+          int m = 0;
+          rewind(file);
+          while(fgets(line, sizeof(line), file)){
+            line[strcspn(line, "\n")] = 0;
+            if(strstr(line, buffer)){
+
+              if (m == 0){
+                strncpy(prev_line, line, 256);
+                attron(COLOR_PAIR(BLACK_WHITE));
+                mvprintw(2 + m, 4, line);
+                attroff(COLOR_PAIR(BLACK_WHITE));
+              } else {
+                mvprintw(2 + m, 4, line);
+              }
+              m++;
+            }
+          }
+          refresh();
+        } else if (input == '\n'){
+
+          fclose(file);
+          if(strlen(prev_line) > 0){
+            chdir(prev_line);
+            if (setenv("PWD", prev_line, 1) != 0) {
+              error("setenv error");
+            }
+            neon();
+          } else {
+            glitch(46, 0);
+          }
+          return;
+        }
+      }
     }
 
     usleep(10000);

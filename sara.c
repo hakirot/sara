@@ -76,6 +76,8 @@ int GLITCH_FRAME_TIME = 7000;
 
 int main(int argc, char* argv[]) {
 
+  srand((unsigned)time(0));
+
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
       get_helped();
@@ -118,7 +120,6 @@ int main(int argc, char* argv[]) {
     switch (opt) {
       case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
-        srand((unsigned)time(0));
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         FOREGROUND = (rand() % 6) + 2;    // RNG 2 and 7
         if (FOREGROUND > 7 || FOREGROUND < 1 || BACKGROUND > 7 || BACKGROUND < 1){
@@ -316,7 +317,7 @@ void check_char() {
         return;
       }
 
-      char* choices[1]={'\0'};
+      char * choices[1]={'\0'};
       choices[0]="SHUTDOWN";
       const char* selection =  select_option_window(choices, 1);
 
@@ -1028,8 +1029,6 @@ void neon() {
 }
 
 void print_start_animation() {
-
-  srand((unsigned)time(0));
 
 //if (START_ANIMATION == EMPTY){
 //  int start_roll = rand() % 3;
@@ -1995,6 +1994,7 @@ void get_helped() {
   printf("  -H            Holographic background\n");
   printf("  -f [color]    set custom FOREGROUND color\n");
   printf("  -b [color]    set custom BACKGROUND color\n");
+  printf("  -F [follow]   On exit, Writes PWD to file\n");
   exit(0);
 }
 

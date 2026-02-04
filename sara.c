@@ -87,7 +87,11 @@ int main(int argc, char* argv[]) {
     if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--foreground") == 0){
       if(i + 1 < argc){
         FOREGROUND = input_color(argv[i + 1]);
-        if (FOREGROUND == -1) error("bad arg\n");
+        if (FOREGROUND == -1){
+          char errstr[256] = {'\0'};
+          sprintf(errstr, "Bad arg: '%s'", argv[i + 1]);
+          error(errstr);
+        }
       } else {
         get_helped();
         error("bad arg\n");
@@ -95,7 +99,11 @@ int main(int argc, char* argv[]) {
     } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--background") == 0){
       if(i + 1 < argc){
         BACKGROUND = input_color(argv[i + 1]);
-        if (BACKGROUND == -1) error("bad arg");
+        if (BACKGROUND == -1){
+          char errstr[256] = {'\0'};
+          sprintf(errstr, "Bad arg: '%s'", argv[i + 1]);
+          error(errstr);
+        }
       } else {
         get_helped();
         error("bad arg\n");
@@ -736,6 +744,7 @@ void check_char() {
 void printstandard(){
 
   if (WIN_SIZE == NORMAL){
+    attron(COLOR_PAIR(FOREGROUND));
     for(int i = 0; i < GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
       check_char();
@@ -743,6 +752,7 @@ void printstandard(){
       refresh();
       usleep(20000);
     }
+    attroff(COLOR_PAIR(FOREGROUND));
 
   } else if (WIN_SIZE == BIG){
 
@@ -788,11 +798,12 @@ void printstandard(){
 void quickprint(int fg, int bg, int printColorbar){
   clear();
   if (WIN_SIZE == NORMAL){
+    attron(COLOR_PAIR(FOREGROUND));
     for(int i = 0; i < GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
     }
-  }
-  if (WIN_SIZE == BIG){
+    attroff(COLOR_PAIR(FOREGROUND));
+  } else if (WIN_SIZE == BIG){
     for(int i = 0; i < GLYPH_HEIGHT; i++){
 
       mbstate_t state;
@@ -908,9 +919,11 @@ void neon() {
 
     if(elapsed_time > 0.05 && first_frame == 0){
       if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
         for(int i = 0; i < 6; i++){
           mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", backdrop[i]);
         }
+        attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is BIG
         for(int i = 0; i < 19; i++){
           attron(COLOR_PAIR(BACKGROUND));
@@ -935,9 +948,11 @@ void neon() {
 
     if(elapsed_time > 0.1 && second_frame == 0){
       if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
         for(int i = 0; i < 6; i++){
           mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
         }
+        attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is BIG
 
         for(int i = 0; i < 6; i++){
@@ -968,9 +983,11 @@ void neon() {
 
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
         for(int i = 0; i < 6; i++){
           mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
         }
+        attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is big
 
         for(int i = 0; i < 6; i++){
@@ -1088,6 +1105,7 @@ void glitch(int numFrames, int full){
     rng_backdrop = rand() % 3;          // RNG 0 and 2
 
     if (WIN_SIZE == NORMAL) {
+      attron(COLOR_PAIR(FOREGROUND));
       if (rng_backdrop == 0){
         mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
       } else if (rng_backdrop == 1){
@@ -1095,6 +1113,7 @@ void glitch(int numFrames, int full){
       } else {
         mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
       }
+      attroff(COLOR_PAIR(FOREGROUND));
     }
 
     if (WIN_SIZE == BIG) {

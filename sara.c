@@ -585,13 +585,18 @@ void check_char() {
           int input = getch();
           char str[16];
 
-          if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
+          if (input != ERR && input != '\n' && input != EOF && input != 'q' && input != '\n') {
             if (input == 'j'){
-              // Decrement the string and write it to file
               brightness -= 20;
+              if (brightness < 0) brightness = 0;
+            } else if (input == 'J'){
+              brightness -= 100;
               if (brightness < 0) brightness = 0;
             } else if (input == 'k'){
               brightness += 20;
+              if (brightness > 1500) brightness = 1500;
+            } else if (input == 'K'){
+              brightness += 100;
               if (brightness > 1500) brightness = 1500;
             }
 

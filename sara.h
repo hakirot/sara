@@ -10,7 +10,7 @@
 
 /* FEATS
 
-   . does 'sara -c' still work?
+   . Does 'sara -c' still work?
    . Can I host my own local DNS server?
    . Fuzzy newlook
    . More animations

@@ -7,11 +7,11 @@ OBJ = sara.o glyphs.o animations.o globals.h
 
 all: sara clean
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
 sara: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 .PHONY: clean
 

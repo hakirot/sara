@@ -7,9 +7,10 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.c--
                                            */
-
 #include "sara.h"
 #include "glyphs.h"
+#include "animations.h"
+#include "globals.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -24,55 +25,6 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
-
-clock_t LAST_INPUT_TIME;
-screen_size WIN_SIZE;
-clock_t WAIT_START;
-
-int GLYPH_LENGTH = 44;
-int GLYPH_HEIGHT = 7;
-
-int FOREGROUND = 3;
-int BACKGROUND = 2;
-int HOLOGRAPHIC = 0;
-int FOLLOW = 0;
-
-int ROW = 0;
-int COL = 0;
-int CACHE = -1;
-
-wchar_t SEARCH_STR[] = L"`+so:-./";
-
-const int BLACK         = 1;
-const int RED           = 2;
-const int GREEN         = 3;
-const int YELLOW        = 4;
-const int BLUE          = 5;
-const int MAGENTA       = 6;
-const int CYAN          = 7;
-const int WHITE         = 8;
-const int WHITE_BLACK   = 9;
-const int BLACK_RED     = 10;
-const int BLACK_GREEN   = 11;
-const int BLACK_YELLOW  = 12;
-const int BLACK_BLUE    = 13;
-const int BLACK_MAGENTA = 14;
-const int BLACK_CYAN    = 15;
-const int BLACK_WHITE   = 16;
-const int BLACK_WHITED  = 17;
-const int RED_BLACK     = 18;
-const int GREEN_BLACK   = 19;
-const int YELLOW_BLACK  = 20;
-const int BLUE_BLACK    = 21;
-const int MAGENTA_BLACK = 22;
-const int CYAN_BLACK    = 23;
-const int WHITE_BLACKD  = 24;
-
-//const int EFFECT_MUTE   = 0;
-
-start_animation START_ANIMATION = EMPTY;
-char HOLD_CHAR;
-int GLITCH_FRAME_TIME = 7000;
 
 int main(int argc, char* argv[]) {
 
@@ -692,6 +644,45 @@ void check_char() {
         }
       }
 
+    } else if (input == 'm') {
+      CACHE = ROW + COL;
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        endwin();
+        execlp("make", "make", NULL);
+        error("ERROR: execlp make");
+      } else {
+
+        endwin();
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        if(status != 0){
+          clear();
+          printf("Press enter");
+          getchar();
+        }
+
+        clear();
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE != ROW + COL) return;
+        if (status == 0){
+          slide_in();
+          neon();
+        } else {
+          slide_in();
+          glitch(20, 0);
+        }
+
+        refresh();
+      }
     } else if (input == 'M') {
 
       CACHE = ROW + COL;

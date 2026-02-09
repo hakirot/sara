@@ -1,5 +1,4 @@
 /*
-
 --  ███████╗ █████╗ ██████╗  █████╗   --
 --  ██╔════╝██╔══██╗██╔══██╗██╔══██╗  --
 --  ███████╗███████║██████╔╝███████║  --
@@ -44,6 +43,7 @@ void print_start_animation();
 void printstandard();
 void quickprint(int fg, int bg, int printColorbar);
 void neon();
+void neon_reverse();
 void glitch(int numFrames, int bigmode);
 void mega_glitch(int duration);
 void xray();

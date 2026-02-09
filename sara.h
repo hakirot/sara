@@ -34,23 +34,10 @@
 #ifndef SARA_H
 #define SARA_H
 
-const int BIG_GLYPH_HEIGHT = 19;
-const int BIG_GLYPH_LENGTH = 44;
-const int NORMAL_GLYPH_HEIGHT = 7;
-const int NORMAL_GLYPH_LENGTH = 44;
-
 struct file_node {
   char name[256];
   struct file_node * next;
 };
-
-extern int FOREGROUND;
-extern int BACKGROUND;
-extern int HOLOGRAPHIC;
-extern int FOLLOW;
-extern int ROW;
-extern int COL;
-extern int CACHE;
 
 void get_helped();
 void check_char();

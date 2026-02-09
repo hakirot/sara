@@ -31,6 +31,10 @@ extern wchar_t SEARCH_STR[64];
 
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
+extern const int BIG_GLYPH_HEIGHT;
+extern const int BIG_GLYPH_LENGTH;
+extern const int NORMAL_GLYPH_HEIGHT;
+extern const int NORMAL_GLYPH_LENGTH;
 
 extern int FOREGROUND;
 extern int BACKGROUND;
@@ -40,7 +44,6 @@ extern int FOLLOW;
 extern int ROW;
 extern int COL;
 extern int CACHE;
-
 
 extern clock_t LAST_INPUT_TIME;
 extern screen_size WIN_SIZE;

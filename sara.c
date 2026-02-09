@@ -7,6 +7,7 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.c--
                                            */
+
 #include "sara.h"
 #include "glyphs.h"
 #include "animations.h"
@@ -25,35 +26,6 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
-
-typedef enum {
-  SMALL,
-  NORMAL,
-  BIG
-} screen_size;
-
-typedef enum {
-  QUICK,
-  STANDARD,
-  NEON,
-  EMPTY
-} start_animation;
-
-clock_t LAST_INPUT_TIME;
-screen_size WIN_SIZE;
-clock_t WAIT_START;
-
-int GLYPH_LENGTH;
-int GLYPH_HEIGHT;
-
-int FOREGROUND;
-int BACKGROUND;
-int HOLOGRAPHIC;
-int FOLLOW;
-
-int ROW;
-int COL;
-int CACHE;
 
 const int BLACK         = 1;
 const int RED           = 2;

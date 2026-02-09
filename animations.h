@@ -10,6 +10,6 @@
 #ifndef ANIMATIONS_H
 #define ANIMATIONS_H
 
-void slide_in();
+void shutter_slide();
 
 #endif

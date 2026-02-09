@@ -675,10 +675,10 @@ void check_char() {
         getmaxyx(stdscr, ROW, COL);
         if(CACHE != ROW + COL) return;
         if (status == 0){
-          slide_in();
+          shutter_slide();
           neon();
         } else {
-          slide_in();
+          shutter_slide();
           glitch(20, 0);
         }
 
@@ -2018,14 +2018,14 @@ void init_window(){
   init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
   init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
 
-  init_pair(BLACK_WHITED, COLOR_WHITE, COLOR_BLACK);
+  init_pair(WHITE_BLACKD, COLOR_WHITE, COLOR_BLACK);
   init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
   init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
   init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
   init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
   init_pair(MAGENTA_BLACK, COLOR_MAGENTA, COLOR_BLACK);
   init_pair(CYAN_BLACK, COLOR_CYAN, COLOR_BLACK);
-  init_pair(WHITE_BLACKD, COLOR_WHITE, COLOR_BLACK);
+  init_pair(BLACK_WHITED, COLOR_WHITE, COLOR_BLACK);
 
   cbreak();                 // Disable line buffering
   noecho();                 // Don't display keyboard presses in window

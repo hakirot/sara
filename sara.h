@@ -44,9 +44,6 @@ struct file_node {
   struct file_node * next;
 };
 
-
-extern int GLYPH_LENGTH;
-extern int GLYPH_HEIGHT;
 extern int FOREGROUND;
 extern int BACKGROUND;
 extern int HOLOGRAPHIC;

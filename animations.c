@@ -25,10 +25,8 @@ void shutter_slide(){
     clear();
     for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
       if (i % 2 == 0){
-//      mvprintw(ROW/2 - 2 + i, 0 + (frame_length*j), "%s", title[i]);
         mvprintw(ROW/2 - 2 + i, l_idx + (frame_travel_width * j), "%s", title[i]);
       } else {
-//      mvprintw(ROW/2 - 2 + i, COL - NORMAL_GLYPH_LENGTH - (frame_length*j), "%s", title[i]);
         mvprintw(ROW/2 - 2 + i, r_idx - (frame_travel_width * j), "%s", title[i]);
       }
     }
@@ -41,7 +39,6 @@ void shutter_slide(){
 
     refresh();
     usleep(10000);
-//  usleep(100000);
     j++;
   }
   attroff(COLOR_PAIR(FOREGROUND));

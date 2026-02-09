@@ -2,8 +2,8 @@
 
 CC=gcc
 CFLAGS=-I -Wall -g -lncursesw -DNCURSES_WIDECHAR=1 -Wimplicit-function-declaration
-DEPS = sara.h glyphs.h animations.h globals.h
-OBJ = sara.o glyphs.o animations.o globals.o
+DEPS = sara.h glyphs.h animations.h globals.h utils.h
+OBJ = sara.o glyphs.o animations.o globals.o utils.o
 
 sara: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)

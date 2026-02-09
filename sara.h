@@ -37,10 +37,8 @@ struct file_node {
   struct file_node * next;
 };
 
-void get_helped();
 void check_char();
 int check_size();
-int is_char_in_search(wchar_t wc, wchar_t * search_str);
 int get_confirmation();
 void print_start_animation();
 void printstandard();
@@ -54,11 +52,8 @@ void patch_backlight();
 void patch_border();
 void prompt_newlook();
 int input_color(char * arg);
-void error(char * err);
 void pshd();
-void init_window();
 void ensure_path_perm(char * file_path, char perm);
-void ensure_cache_dir();
 int generate_pw_file();
 char * prompt_fuzzy();
 void fork_newlook(char * file);

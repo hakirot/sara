@@ -6,9 +6,9 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
 
+   . ueberzugpp newlook
    . sara -c
    . DNS server
-   . ueberzugpp newlook
    . More animations
        > Sparkle
        > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)

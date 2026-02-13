@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include <wait.h>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]){
 
   srand((unsigned)time(0));
 
@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-void check_char() {
+void check_char(){
 
   char input = getch();
 
@@ -877,7 +877,7 @@ const char * select_option_window(char** choices, int len){
   }
 }
 
-void neon() {
+void neon(){
 
   clock_t cycle_start = clock();
   double cycle_length = 0.3;
@@ -1080,7 +1080,7 @@ void neon_reverse(){
   }
 }
 
-void print_start_animation() {
+void print_start_animation(){
 
 //if (START_ANIMATION == EMPTY){
 //  int start_roll = rand() % 3;
@@ -1234,7 +1234,7 @@ void patch_border(){
   attroff(COLOR_PAIR(BACKGROUND));
 }
 
-void prompt_newlook() {
+void prompt_newlook(){
 
   clear();
 

@@ -1573,8 +1573,7 @@ void fork_newlook(char * file){
   pid_t pid = fork();
 
   if (pid < 0) {
-    perror("fork");
-    exit(EXIT_FAILURE);
+    error("fork_newlook");
   } else if (pid == 0) {
     if(file == NULL){
       execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);

@@ -44,3 +44,7 @@ void shutter_slide(){
   attroff(COLOR_PAIR(FOREGROUND));
   return;
 };
+
+
+void pixel_fill(){
+}

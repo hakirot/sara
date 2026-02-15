@@ -16,6 +16,8 @@
          . Make install command installs config and sara
          . Define wall_dir
          . Define colors
+       - pixel-fill
+         . a new animation
 
    . abstract GLYPH dimensions
    . sara -c

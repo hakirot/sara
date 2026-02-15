@@ -11,5 +11,6 @@
 #define ANIMATIONS_H
 
 void shutter_slide();
+void pixel_fill();
 
 #endif

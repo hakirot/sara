@@ -47,4 +47,43 @@ void shutter_slide(){
 
 
 void pixel_fill(){
+
+  clock_t cycle_start = clock();
+  double cycle_length = 0.3;
+  double elapsed_time = 0;
+
+  // 0 == !'█'
+  // 1 == '█'
+  int arr[NORMAL_GLYPH_HEIGHT][NORMAL_GLYPH_LENGTH];
+
+  // populate array
+  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+    for(int j = 0; j < NORMAL_GLYPH_LENGTH; j++){
+      // wrong, must use wide char support functions
+//    if(title[i][j] == '█'){
+//      arr[i][j] = 1;
+//    } else {
+//      arr[i][j] = 0;
+      }
+  }
+
+  clear();
+  refresh();
+
+  int i, j = 0;
+  while(cycle_length > elapsed_time){
+
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) return;
+
+    // wrong, must use wide char support functions
+    for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+      for(int j = 0; j < NORMAL_GLYPH_LENGTH; j++){
+        // roll
+        // if roll populate screen with '█'
+      }
+    }
+
+    refresh();
+  }
 }

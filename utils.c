@@ -171,3 +171,7 @@ void get_helped() {
   printf("  -r            Generate a random color profile. Not compatible with -f or -b options\n");
   exit(0);
 }
+
+int roll(int range_low, int range_high){
+  return 0;
+}

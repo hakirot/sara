@@ -170,3 +170,7 @@ void get_helped() {
   printf("  -F [follow]   On exit, Writes PWD to file\n");
   exit(0);
 }
+
+int roll(int range_low, int range_high){
+  return 0;
+}

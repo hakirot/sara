@@ -313,8 +313,9 @@ void check_char(){
         neon();
       }
     } else if(input == 'g'){
-      glitch(46, 0);
-//    xray(ROW, COL);
+//    glitch(46, 0);
+//    xray();
+      pixel_fill();
     } else if(input == 't'){
 
       CACHE = ROW + COL;

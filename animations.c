@@ -85,5 +85,6 @@ void pixel_fill(){
     }
 
     refresh();
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }
 }

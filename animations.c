@@ -54,7 +54,6 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
 
   clear();
   refresh();
-
   double elapsed_time = 0;
 
   // 0 == !'█'

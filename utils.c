@@ -172,10 +172,10 @@ void get_helped() {
   exit(0);
 }
 
+<<<<<<< HEAD
 int roll(int num_sides){
   int random_roll = rand() % num_sides;
   if(random_roll == 0){
     return 1;
   }
-  return 0;
 }

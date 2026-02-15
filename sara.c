@@ -84,7 +84,6 @@ int main(int argc, char* argv[]){
 
     check_char(); // check input for this cycle
 
-//  get current screen dimensions
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
     if (START_ANIMATION == EMPTY) print_start_animation();

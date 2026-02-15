@@ -11,9 +11,9 @@ sara: $(OBJ)
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-all: sara clean
-
 .PHONY: clean
+
+all: sara clean
 
 clean:
 	rm -f *.o

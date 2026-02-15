@@ -6,8 +6,18 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
 
+   . Active branches
+     | main
+       - ueberzug-integration
+         . Replacement for fuzzy newlook option
+         . Measure screen and generate thumbnails based on config wall_dir
+       - sara-conf
+         . read_config() function opens config file
+         . Make install command installs config and sara
+         . Define wall_dir
+         . Define colors
+
    . abstract GLYPH dimensions
-   . ueberzugpp newlook
    . sara -c
    . DNS server
    . More animations

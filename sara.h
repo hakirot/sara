@@ -17,6 +17,7 @@
          . Define wall_dir
          . Define colors
 
+   . abstract GLYPH dimensions
    . sara -c
    . DNS server
    . More animations

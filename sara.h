@@ -6,6 +6,7 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
 
+   . abstract GLYPH dimensions
    . ueberzugpp newlook
    . sara -c
    . DNS server
@@ -56,6 +57,7 @@ void pshd();
 void ensure_path_perm(char * file_path, char perm);
 int generate_pw_file();
 char * prompt_fuzzy();
+char * theme_select();
 void fork_newlook(char * file);
 struct file_node * init_dir_list(char * dir);
 void free_dir_list(struct file_node * list);

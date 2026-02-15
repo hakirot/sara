@@ -1342,13 +1342,15 @@ void prompt_newlook(){
       refresh();
 
     } else if (input == 'k') {
-      wall = prompt_fuzzy();
+      wall = theme_select();
       getmaxyx(stdscr, ROW, COL);
       if (CACHE != ROW + COL || wall == NULL) {
         exit_glitch_flag = 1;
         break;
       } else {
         fork_newlook(wall);
+        clear();
+        refresh();
       }
 
       // break
@@ -1530,7 +1532,6 @@ char * prompt_fuzzy(){
 
   attron(COLOR_PAIR(FOREGROUND));
   mvprintw(ROW/2 - 2 - offset, (COL-GLYPH_LENGTH)/2, option_window[0]);
-//mvprintw(ROW/2 + 5 - offset, (COL-GLYPH_LENGTH)/2, option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));
 
   char * wall_dir = "/home/hakirot/pix/walls";
@@ -1569,6 +1570,14 @@ char * prompt_fuzzy(){
   return NULL;
 }
 
+char * theme_select(){
+
+// Payload
+// {"action":"add","identifier":"preview","max_height":40,"max_width":40,"path":"/home/hakirot/pix/sara/sara_deck","x":0,"y":0}
+
+  return NULL;
+}
+
 void fork_newlook(char * file){
   pid_t pid = fork();
 
@@ -1586,10 +1595,10 @@ void fork_newlook(char * file){
     }
     perror("execl");
   } else {
-    clear();
-    refresh();
     int status;
-    waitpid(pid, &status, 0);
+    while(kill(pid, 0) == 0){
+      waitpid(pid, &status, 0);
+    }
   } // Not doing a proper wait
 }
 

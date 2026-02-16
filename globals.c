@@ -15,6 +15,9 @@ wchar_t SEARCH_STR[] = L"`+so:-./";
 
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;
+
+// Pull this from config.h
+// how does sucklesss get away with this
 const int BIG_GLYPH_HEIGHT = 19;
 const int BIG_GLYPH_LENGTH = 44;
 const int NORMAL_GLYPH_HEIGHT = 7;

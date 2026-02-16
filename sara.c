@@ -1572,6 +1572,25 @@ char * prompt_fuzzy(){
 
 char * theme_select(){
 
+  // read wall_dirs from config and use select option window to select
+
+  FILE *proc;
+  proc = popen("ueberzug layer 2>/dev/null", "w");
+
+  if (!proc) error("ueberzug proc error");
+
+  fprintf(proc, "{\"action\":\"add\",\"identifier\":\"preview\",\"max_height\":40,\"max_width\":40,\"path\":\"/home/hakirot/pix/sara/sara_deck\",\"x\":0,\"y\":0}\n");
+  fflush(proc);
+  if (ferror(proc)) error("proc stream failure.");
+
+  while(1){
+    usleep(10000);
+    char input = getch();
+    if (input == 'q') break;
+  }
+
+  if (pclose(proc) != 0) error("Could not run more or other error.");
+
 // Payload
 // {"action":"add","identifier":"preview","max_height":40,"max_width":40,"path":"/home/hakirot/pix/sara/sara_deck","x":0,"y":0}
 

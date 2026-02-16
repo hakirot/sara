@@ -6,8 +6,20 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
 
+   . Active branches
+     | main
+       - ueberzug-integration
+         . Replacement for fuzzy newlook option
+         . Measure screen and generate thumbnails based on config wall_dir
+       - sara-conf
+         . read_config() function opens config file
+         . Make install command installs config and sara
+         . Define wall_dir
+         . Define colors
+       - pixel-fill
+         . a new animation
+
    . abstract GLYPH dimensions
-   . ueberzugpp newlook
    . sara -c
    . DNS server
    . More animations
@@ -57,9 +69,9 @@ void pshd();
 void ensure_path_perm(char * file_path, char perm);
 int generate_pw_file();
 char * prompt_fuzzy();
-char * theme_select();
 void fork_newlook(char * file);
 struct file_node * init_dir_list(char * dir);
 void free_dir_list(struct file_node * list);
+char * theme_select();
 
 #endif

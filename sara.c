@@ -1591,9 +1591,6 @@ char * theme_select(){
 
   if (pclose(proc) != 0) error("Could not run more or other error.");
 
-// Payload
-// {"action":"add","identifier":"preview","max_height":40,"max_width":40,"path":"/home/hakirot/pix/sara/sara_deck","x":0,"y":0}
-
   return NULL;
 }
 

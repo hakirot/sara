@@ -56,16 +56,33 @@ void pixel_fill(){
   // 1 == '█'
   int arr[NORMAL_GLYPH_HEIGHT][NORMAL_GLYPH_LENGTH];
 
-  // populate array
-  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-    for(int j = 0; j < NORMAL_GLYPH_LENGTH; j++){
-      // wrong, must use wide char support functions
-//    if(title[i][j] == '█'){
-//      arr[i][j] = 1;
-//    } else {
-//      arr[i][j] = 0;
-      }
-  }
+//for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+
+//  mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
+//  memset(&state, 0, sizeof(mbstate_t));
+//  const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
+//  int iter_col = 0;                           // Track the column position
+//  while (*iter_row) {                         // Iterate through chars in row
+//    wchar_t wc;                               // Create wide character var
+//    // Converts character from iter_row to wide char `wc`
+//    // Also records length of character at *iter_row in len
+//    size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+//    is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+
+//    // Write wide char to `cchar` for mvadd_wch()
+//    cchar_t cchar;
+//    setcchar(&cchar, &wc, 0, 0, NULL);
+//    mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+
+//    attroff(COLOR_PAIR(FOREGROUND));
+//    attroff(COLOR_PAIR(BACKGROUND));
+//    iter_row += len;                          // Increment the pointer one character
+//    iter_col++;                               // Increment col
+//  }
+//    usleep(20000);
+//    refresh();
+//}
 
   clear();
   refresh();
@@ -76,13 +93,33 @@ void pixel_fill(){
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
 
-    // wrong, must use wide char support functions
-    for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-      for(int j = 0; j < NORMAL_GLYPH_LENGTH; j++){
-        // roll
-        // if roll populate screen with '█'
-      }
-    }
+//  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+
+//    mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
+//    memset(&state, 0, sizeof(mbstate_t));
+//    const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
+//    int iter_col = 0;                           // Track the column position
+//    while (*iter_row) {                         // Iterate through chars in row
+//      wchar_t wc;                               // Create wide character var
+//      // Converts character from iter_row to wide char `wc`
+//      // Also records length of character at *iter_row in len
+//      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+//      is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+
+//      // Write wide char to `cchar` for mvadd_wch()
+//      cchar_t cchar;
+//      setcchar(&cchar, &wc, 0, 0, NULL);
+//      mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+
+//      attroff(COLOR_PAIR(FOREGROUND));
+//      attroff(COLOR_PAIR(BACKGROUND));
+//      iter_row += len;                          // Increment the pointer one character
+//      iter_col++;                               // Increment col
+//    }
+//      usleep(20000);
+//      refresh();
+//  }
 
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;

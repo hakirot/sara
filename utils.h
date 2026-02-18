@@ -17,6 +17,6 @@ void error(char * err);
 void get_helped();
 void ensure_cache_dir();
 void ensure_path_perm(char * file_path, char perm);
-int roll(int range_low, int range_high);
+int roll(int num_sides);
 
 #endif

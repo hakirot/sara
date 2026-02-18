@@ -171,6 +171,10 @@ void get_helped() {
   exit(0);
 }
 
-int roll(int range_low, int range_high){
+int roll(int num_sides){
+  int random_roll = rand() % num_sides;    // RNG 2 and 7
+  if(random_roll == 0){
+    return 1;
+  }
   return 0;
 }

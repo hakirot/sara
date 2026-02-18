@@ -8,8 +8,12 @@
                                                                                        */
 #include "globals.h"
 #include "glyphs.h"
+#include "utils.h"
+#include "sara.h"
 #include <ncurses.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
 void shutter_slide(){
   int num_frames = 8;
@@ -48,80 +52,81 @@ void shutter_slide(){
 
 void pixel_fill(){
 
-  clock_t cycle_start = clock();
-  double cycle_length = 0.3;
+  clear();
+  refresh();
+
+  double cycle_length = 0.1;
   double elapsed_time = 0;
 
   // 0 == !'█'
   // 1 == '█'
+  // 2 == '█' and successfully rolled to print to screen
   int arr[NORMAL_GLYPH_HEIGHT][NORMAL_GLYPH_LENGTH];
 
-//for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
 
-//  mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
-//  memset(&state, 0, sizeof(mbstate_t));
-//  const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
-//  int iter_col = 0;                           // Track the column position
-//  while (*iter_row) {                         // Iterate through chars in row
-//    wchar_t wc;                               // Create wide character var
-//    // Converts character from iter_row to wide char `wc`
-//    // Also records length of character at *iter_row in len
-//    size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+    mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = titlefill[i];        // Grabs a line from glyph
+    int iter_col = 0;                           // Track the column position
+    while (*iter_row) {                         // Iterate through chars in row
+      wchar_t wc;                               // Create wide character var
+      // Converts character from iter_row to wide char `wc`
+      // Also records length of character at *iter_row in len
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-//    is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+      is_char_in_search(wc, BLOCK) ? arr[i][iter_col] = 1 : (arr[i][iter_col] = 0);
 
-//    // Write wide char to `cchar` for mvadd_wch()
-//    cchar_t cchar;
-//    setcchar(&cchar, &wc, 0, 0, NULL);
-//    mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+      iter_row += len;                          // Increment the pointer one character
+      iter_col++;                               // Increment col
+    }
+      usleep(2000);
+  }
 
-//    attroff(COLOR_PAIR(FOREGROUND));
-//    attroff(COLOR_PAIR(BACKGROUND));
-//    iter_row += len;                          // Increment the pointer one character
-//    iter_col++;                               // Increment col
-//  }
-//    usleep(20000);
-//    refresh();
-//}
-
-  clear();
-  refresh();
-
-  int i, j = 0;
-  while(cycle_length > elapsed_time){
+  clock_t cycle_start = clock();
+  while(elapsed_time < cycle_length){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
 
-//  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+    for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
 
-//    mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
-//    memset(&state, 0, sizeof(mbstate_t));
-//    const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
-//    int iter_col = 0;                           // Track the column position
-//    while (*iter_row) {                         // Iterate through chars in row
-//      wchar_t wc;                               // Create wide character var
-//      // Converts character from iter_row to wide char `wc`
-//      // Also records length of character at *iter_row in len
-//      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = titlefill[i];
+      int j = 0;
+      while (*iter_row) {
 
-//      is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-//      // Write wide char to `cchar` for mvadd_wch()
-//      cchar_t cchar;
-//      setcchar(&cchar, &wc, 0, 0, NULL);
-//      mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+        if (arr[i][j] == 1 && roll(6) == 1){
+          arr[i][j] = 2;
+          cchar_t cchar;
+          setcchar(&cchar, &wc, 0, 0, NULL);
+          attron(COLOR_PAIR(FOREGROUND));
+          mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + j, &cchar);
+          attroff(COLOR_PAIR(FOREGROUND));
+        }
 
-//      attroff(COLOR_PAIR(FOREGROUND));
-//      attroff(COLOR_PAIR(BACKGROUND));
-//      iter_row += len;                          // Increment the pointer one character
-//      iter_col++;                               // Increment col
-//    }
-//      usleep(20000);
-//      refresh();
-//  }
+        iter_row += len;
+        j++;
+      }
+    }
 
+    usleep(100000);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }
+  error("hi");
+
+// debug
+//endwin();
+//for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+//  for(int j = 0; j < NORMAL_GLYPH_LENGTH; j++){
+//    printf("%i", arr[i][j]);
+//  }
+//}
+//error("done");
+  quickprint(FOREGROUND, BACKGROUND, 0);
 }

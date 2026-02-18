@@ -55,7 +55,8 @@ void pixel_fill(){
   clear();
   refresh();
 
-  double cycle_length = 0.010;
+  double cycle_length = 0.008;
+//double cycle_length = 0.500;
   double elapsed_time = 0;
 
   // 0 == !'█'
@@ -86,7 +87,6 @@ void pixel_fill(){
       iter_row += len;                          // Increment the pointer one character
       iter_col++;                               // Increment col
     }
-      usleep(2000);
   }
 
   clock_t cycle_start = clock();
@@ -107,11 +107,11 @@ void pixel_fill(){
         wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if (arr[i][j] == 1 && roll(6) == 1){
+        if (arr[i][j] == 1 && roll(15) == 1){
           arr[i][j] = 2;
           count++;
           if (count == total){
-            neon();
+            quickprint(FOREGROUND, BACKGROUND, 0);
             return;
           }
           cchar_t cchar;
@@ -126,7 +126,7 @@ void pixel_fill(){
       }
     }
 
-    usleep(20000);
+    usleep(4000);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }

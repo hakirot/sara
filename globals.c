@@ -12,7 +12,7 @@
 #include "globals.h"
 
 wchar_t SEARCH_STR[] = L"`+so:-./";
-wchar_t BLOCK[] = L"█";
+wchar_t SARA_BLOCK[] = L"█╔╗╚╝║═";
 
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;

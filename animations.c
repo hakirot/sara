@@ -55,13 +55,14 @@ void pixel_fill(){
   clear();
   refresh();
 
-  double cycle_length = 0.1;
+  double cycle_length = 0.010;
   double elapsed_time = 0;
 
   // 0 == !'█'
   // 1 == '█'
   // 2 == '█' and successfully rolled to print to screen
   int arr[NORMAL_GLYPH_HEIGHT][NORMAL_GLYPH_LENGTH];
+  int total = 0;
 
   for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
 
@@ -75,7 +76,12 @@ void pixel_fill(){
       // Also records length of character at *iter_row in len
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-      is_char_in_search(wc, BLOCK) ? arr[i][iter_col] = 1 : (arr[i][iter_col] = 0);
+      if(is_char_in_search(wc, SARA_BLOCK)){
+        arr[i][iter_col] = 1;
+        total++;
+      } else {
+        arr[i][iter_col] = 0;
+      }
 
       iter_row += len;                          // Increment the pointer one character
       iter_col++;                               // Increment col
@@ -84,6 +90,7 @@ void pixel_fill(){
   }
 
   clock_t cycle_start = clock();
+  int count = 0;
   while(elapsed_time < cycle_length){
 
     getmaxyx(stdscr, ROW, COL);
@@ -102,10 +109,15 @@ void pixel_fill(){
 
         if (arr[i][j] == 1 && roll(6) == 1){
           arr[i][j] = 2;
+          count++;
+          if (count == total){
+            neon();
+            return;
+          }
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
           attron(COLOR_PAIR(FOREGROUND));
-          mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + j, &cchar);
+          mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + j, &cchar);
           attroff(COLOR_PAIR(FOREGROUND));
         }
 
@@ -114,19 +126,10 @@ void pixel_fill(){
       }
     }
 
-    usleep(100000);
+    usleep(20000);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }
-  error("hi");
 
-// debug
-//endwin();
-//for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-//  for(int j = 0; j < NORMAL_GLYPH_LENGTH; j++){
-//    printf("%i", arr[i][j]);
-//  }
-//}
-//error("done");
   quickprint(FOREGROUND, BACKGROUND, 0);
 }

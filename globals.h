@@ -27,7 +27,7 @@ typedef enum {
 } start_animation;
 
 extern wchar_t SEARCH_STR[64];
-extern wchar_t BLOCK[16];
+extern wchar_t SARA_BLOCK[16];
 
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;

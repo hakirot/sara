@@ -50,15 +50,11 @@ void shutter_slide(){
 };
 
 
-// cycle_length, roll_chance, and usleep_time can all be parameters to change
-// behavior
-void pixel_fill(){
+void pixel_fill(double cycle_length, int num_sides, int usleep_time){
 
   clear();
   refresh();
 
-  double cycle_length = 0.008;
-//double cycle_length = 0.500;
   double elapsed_time = 0;
 
   // 0 == !'█'
@@ -109,7 +105,7 @@ void pixel_fill(){
         wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if (arr[i][j] == 1 && roll(15) == 1){
+        if (arr[i][j] == 1 && roll(num_sides) == 1){
           arr[i][j] = 2;
           count++;
           if (count == total){
@@ -128,10 +124,11 @@ void pixel_fill(){
       }
     }
 
-    usleep(4000);
+    usleep(usleep_time);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }
 
+  // TODO: remove globals as parameters
   quickprint(FOREGROUND, BACKGROUND, 0);
 }

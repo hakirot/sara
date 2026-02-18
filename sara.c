@@ -329,6 +329,7 @@ void check_char(){
     } else if(input == 'g'){
       glitch(STANDARD_GLITCH_TIME, 0);
 //    xray(ROW, COL);
+      pixel_fill(0.008, 15, 4000);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

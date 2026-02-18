@@ -11,6 +11,8 @@
 #define ANIMATIONS_H
 
 void shutter_slide();
-void pixel_fill();
+// cycle_length, roll_chance, and usleep_time can all be parameters to change
+// behavior
+void pixel_fill(double cycle_length, int num_sides, int usleep_time);
 
 #endif

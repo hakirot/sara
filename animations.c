@@ -132,3 +132,7 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
   // TODO: remove globals as parameters
   quickprint(FOREGROUND, BACKGROUND, 0);
 }
+
+void tv_static(double cycle_length){
+  return;
+}

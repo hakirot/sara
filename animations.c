@@ -50,6 +50,8 @@ void shutter_slide(){
 };
 
 
+// cycle_length, roll_chance, and usleep_time can all be parameters to change
+// behavior
 void pixel_fill(){
 
   clear();

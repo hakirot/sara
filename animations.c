@@ -134,5 +134,33 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
 }
 
 void tv_static(double cycle_length){
+  int arr[BIG_GLYPH_HEIGHT][BIG_GLYPH_LENGTH];
+  int total = 0;
+
+  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+
+    mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = titlefill[i];        // Grabs a line from glyph
+    int iter_col = 0;                           // Track the column position
+    while (*iter_row) {                         // Iterate through chars in row
+      wchar_t wc;                               // Create wide character var
+      // Converts character from iter_row to wide char `wc`
+      // Also records length of character at *iter_row in len
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+      if(is_char_in_search(wc, SARA_BLOCK)){
+        arr[i][iter_col] = 1;
+        total++;
+      } else if (is_char_in_search(wc, SEARCH_STR)){
+        arr[i][iter_col] = 0;
+      } else {
+
+      }
+
+      iter_row += len;                          // Increment the pointer one character
+      iter_col++;                               // Increment col
+    }
+  }
   return;
 }

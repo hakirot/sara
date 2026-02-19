@@ -194,12 +194,20 @@ void tv_static(double cycle_length){
       int roll_result;
       while (*iter_row) {
 
-        roll_result = roll(2);
-
         wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if(roll_result == 0) continue;
+        roll_result = roll(2);
+
+        if(roll_result == 0){
+          iter_row += len;
+          j++;
+          continue;
+        }
+
+//      char error_str[256] = {'\0'};
+//      sprintf(error_str, "roll_result: %d", roll_result);
+//      error(error_str);
 
         int idx = arr[i][j];
 
@@ -236,7 +244,7 @@ void tv_static(double cycle_length){
         j++;
       }
     }
-    usleep(10000);
+    usleep(1000);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }

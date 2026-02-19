@@ -11,8 +11,8 @@
 #include <time.h>
 #include "globals.h"
 
-wchar_t SEARCH_STR[] = L"`+so:-./";
-wchar_t SARA_BLOCK[] = L"█╔╗╚╝║═";
+wchar_t FG_STR[] = L"█╔╗╚╝║═";
+wchar_t BG_STR[] = L"`+so:-./";
 
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;

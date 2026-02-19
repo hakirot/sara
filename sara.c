@@ -315,9 +315,9 @@ void check_char(){
     } else if(input == 'g'){
 //    glitch(46, 0);
 //    xray();
-//    pixel_fill(0.008, 15, 4000);
+      pixel_fill(0.014, 35, 8000);
 //    tv_static(0.016);
-      tv_static(0.100);
+//    tv_static(0.100);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

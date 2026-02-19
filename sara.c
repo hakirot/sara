@@ -330,7 +330,6 @@ void check_char(){
 //    glitch(STANDARD_GLITCH_TIME, 0);
 //    xray();
 //    pixel_fill(0.014, 35, 8000);
-//    tv_static(0.016);
       tv_static(0.020);
     } else if(input == 't'){
 

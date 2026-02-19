@@ -1334,7 +1334,6 @@ void prompt_newlook(){
           mvadd_wch(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
-          attroff(COLOR_PAIR(BLUE));
           iter_row += len;
           iter_col++;
         }
@@ -1624,7 +1623,8 @@ void pshd(){
     }
     refresh();
     i++;
-    usleep(10000);
+//  usleep(5000);
+    usleep(1000);
   }
   mvprintw(i + 2, 2, "%s", option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));

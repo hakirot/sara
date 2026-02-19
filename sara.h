@@ -19,6 +19,7 @@
        - pixel-fill
          . a new animation
 
+   . allow custom glyphs
    . abstract GLYPH dimensions
    . sara -c
    . DNS server

@@ -75,7 +75,7 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
       // Also records length of character at *iter_row in len
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-      if(is_char_in_search(wc, SARA_BLOCK)){
+      if(is_char_in_search(wc, FG_STR)){
         arr[i][iter_col] = 1;
         total++;
       } else {
@@ -134,33 +134,113 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
 }
 
 void tv_static(double cycle_length){
+
+  clear();
+  refresh();
+
+  double elapsed_time = 0;
+
   int arr[BIG_GLYPH_HEIGHT][BIG_GLYPH_LENGTH];
-  int total = 0;
 
-  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+  for(int i = 0; i < BIG_GLYPH_HEIGHT; i++){
 
-    mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
+    mbstate_t state;
     memset(&state, 0, sizeof(mbstate_t));
-    const char *iter_row = titlefill[i];        // Grabs a line from glyph
-    int iter_col = 0;                           // Track the column position
-    while (*iter_row) {                         // Iterate through chars in row
-      wchar_t wc;                               // Create wide character var
-      // Converts character from iter_row to wide char `wc`
-      // Also records length of character at *iter_row in len
+    const char *iter_row = archsarafull[i];
+    int iter_col = 0;
+    while (*iter_row) {
+      wchar_t wc;
+
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-      if(is_char_in_search(wc, SARA_BLOCK)){
+      if(is_char_in_search(wc, FG_STR)){
+        arr[i][iter_col] = 2;
+      } else if (is_char_in_search(wc, BG_STR)){
         arr[i][iter_col] = 1;
-        total++;
-      } else if (is_char_in_search(wc, SEARCH_STR)){
-        arr[i][iter_col] = 0;
+      } else if (!is_char_in_search(wc, L" ")) {
+        arr[i][iter_col] = 3;
       } else {
-
+        arr[i][iter_col] = 0;
       }
 
       iter_row += len;                          // Increment the pointer one character
       iter_col++;                               // Increment col
     }
   }
-  return;
+
+//endwin();
+//for(int f = 0; f < BIG_GLYPH_HEIGHT; f++){
+//  for(int k = 0; k < BIG_GLYPH_LENGTH; k++){
+//    printf("%d", arr[f][k]);
+//  }
+//  printf("\n");
+//}
+//error("done");
+
+  clock_t cycle_start = clock();
+  cchar_t cchar;
+  int j = 0;
+  while(elapsed_time < cycle_length){
+
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) return;
+
+    for(int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = archsarafull[i];
+      j = 0;
+      int roll_result;
+      while (*iter_row) {
+
+        roll_result = roll(2);
+
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+        if(roll_result == 0) continue;
+
+        int idx = arr[i][j];
+
+        if (idx == 1 || idx == 2 || idx ==  3){
+          arr[i][j] = idx + 3;
+          mvaddch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, ' ');
+
+        } else if (idx == 4){
+
+          arr[i][j] = idx - 3;
+          attron(COLOR_PAIR(BACKGROUND));
+          setcchar(&cchar, &wc, 0, 0, NULL);
+          mvadd_wch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, &cchar);
+          attroff(COLOR_PAIR(BACKGROUND));
+
+        } else if (idx == 5){
+
+          arr[i][j] = idx - 3;
+          attron(COLOR_PAIR(FOREGROUND));
+          setcchar(&cchar, &wc, 0, 0, NULL);
+          mvadd_wch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, &cchar);
+          attroff(COLOR_PAIR(FOREGROUND));
+
+        } else if (idx == 6) {
+
+          arr[i][j] = idx - 3;
+          attron(COLOR_PAIR(FOREGROUND + 8));
+          setcchar(&cchar, &wc, 0, 0, NULL);
+          mvadd_wch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, &cchar);
+          attroff(COLOR_PAIR(FOREGROUND + 8));
+        }
+
+        iter_row += len;
+        j++;
+      }
+    }
+    usleep(10000);
+    refresh();
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+  }
+
+  // TODO: remove globals as parameters
+  quickprint(FOREGROUND, BACKGROUND, 0);
 }

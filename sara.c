@@ -317,7 +317,7 @@ void check_char(){
 //    xray();
 //    pixel_fill(0.008, 15, 4000);
 //    tv_static(0.016);
-      tv_static(0.066);
+      tv_static(0.100);
     } else if(input == 't'){
 
       CACHE = ROW + COL;
@@ -675,6 +675,8 @@ void check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
+        clear();
+        refresh();
         endwin();
         execlp("rmpc", "rmpc", NULL);
         error("ERROR: execlp rmpc");
@@ -691,7 +693,7 @@ void check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          neon();
+          tv_static(0.040);
         }
       }
 

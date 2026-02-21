@@ -50,7 +50,10 @@ extern clock_t WAIT_START;
 
 extern start_animation START_ANIMATION;
 extern char HOLD_CHAR;
+
 extern int GLITCH_FRAME_TIME;
+extern int STANDARD_GLITCH_TIME;
+extern int QUICK_GLITCH_TIME;
 
 extern const int BLACK;
 extern const int RED;

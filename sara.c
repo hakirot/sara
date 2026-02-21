@@ -274,7 +274,7 @@ void check_char(){
           error("shutdown err");
         }
       } else {
-        glitch(46, 0);
+        glitch(STANDARD_GLITCH_TIME, 0);
       }
 
     } else if(input == 'i'){
@@ -313,7 +313,7 @@ void check_char(){
         neon();
       }
     } else if(input == 'g'){
-      glitch(46, 0);
+      glitch(STANDARD_GLITCH_TIME, 0);
 //    xray(ROW, COL);
     } else if(input == 't'){
 
@@ -330,7 +330,7 @@ void check_char(){
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
-        glitch(20, 1);
+        glitch(QUICK_GLITCH_TIME, 1);
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
@@ -575,7 +575,7 @@ void check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        glitch(20, 1);
+        glitch(QUICK_GLITCH_TIME, 1);
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
@@ -658,7 +658,7 @@ void check_char(){
           neon();
         } else {
           shutter_slide();
-          glitch(20, 0);
+          glitch(QUICK_GLITCH_TIME, 0);
         }
 
         refresh();
@@ -1100,7 +1100,7 @@ void print_start_animation(){
     quickprint(FOREGROUND, BACKGROUND, 0);
   } else {
     printstandard();
-    glitch(46, 0);
+    glitch(STANDARD_GLITCH_TIME, 0);
   }
 }
 
@@ -1374,7 +1374,7 @@ void prompt_newlook(){
   }
 
   if(exit_glitch_flag){
-    glitch(46, 0);
+    glitch(STANDARD_GLITCH_TIME, 0);
   } else {
     neon();
   }
@@ -1731,13 +1731,13 @@ void pshd(){
         }
         neon();
       } else {
-        glitch(16, 1);
+        glitch(QUICK_GLITCH_TIME, 1);
 
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      glitch(16, 1);
+      glitch(QUICK_GLITCH_TIME, 1);
       return;
     } else if (input == 'f' || input == '/') {
 
@@ -1884,7 +1884,7 @@ void pshd(){
             }
             neon();
           } else {
-            glitch(46, 0);
+            glitch(STANDARD_GLITCH_TIME, 0);
           }
           return;
         }

@@ -18,8 +18,11 @@
          . Define colors
        - pixel-fill
          . a new animation
+       - allow-custom-glyphs
+         . use doopstr test function to create the third search_str
 
    . allow custom glyphs
+     . use doopstr test function to create the third search_str
    . abstract GLYPH dimensions
    . sara -c
    . DNS server

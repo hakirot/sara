@@ -21,6 +21,8 @@
        - allow-custom-glyphs
          . Use doopstr test function to create the third search_str for title
          . Abstract search_str vars to config
+         . All animations derivable from fg_chars, bg_chars, title
+           ? is this even possible
 
    . allow custom glyphs
      . use doopstr test function to create the third search_str

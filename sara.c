@@ -595,6 +595,40 @@ void check_char(){
         }
       }
 
+    } else if (input == 'V') {
+
+      CACHE = ROW + COL;
+
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        glitch(QUICK_GLITCH_TIME, 1);
+        endwin();
+        char path_to_xdo[256] = {'\0'};
+        char * env_home = getenv("HOME");
+        sprintf(path_to_xdo, "%s%s", env_home, "/skps/xdo.sh");
+        execlp(path_to_xdo, "xdo", "1", NULL);
+        execv(path_to_xdo, NULL);
+        error("ERROR: execv nvim");
+      } else {
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        endwin();
+        clear();
+        refresh();
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
+        }
+      }
+
     } else if (input == 'y') {
       CACHE = ROW + COL;
 

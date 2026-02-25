@@ -11,6 +11,7 @@
 #include "glyphs.h"
 #include "animations.h"
 #include "globals.h"
+#include "config.h"
 #include "utils.h"
 #include <stdlib.h>
 #include <string.h>
@@ -820,7 +821,7 @@ void printstandard(){
         // Also records length of character at *iter_row in len
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+        is_char_in_search(wc, BG_CHARS) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
 
         // Write wide char to `cchar` for mvadd_wch()
         cchar_t cchar;
@@ -861,7 +862,7 @@ void quickprint(int fg, int bg, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
+        is_char_in_search(wc, BG_CHARS) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
         mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(fg));
         attroff(COLOR_PAIR(bg));
@@ -871,7 +872,7 @@ void quickprint(int fg, int bg, int printColorbar){
     }
     // print name with background
     attron(COLOR_PAIR(fg + 8));
-    mvprintw(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 10, "%s", specialApplicationRangingArea);
+    mvprintw(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 10, "%s", TITLE);
     attroff(COLOR_PAIR(fg + 8));
 
     // print colorbar
@@ -1011,7 +1012,7 @@ void neon(){
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, BG_CHARS) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -1046,7 +1047,7 @@ void neon(){
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, BG_CHARS) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -1109,7 +1110,7 @@ void neon_reverse(){
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, BG_CHARS) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));

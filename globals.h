@@ -26,8 +26,6 @@ typedef enum {
   EMPTY
 } start_animation;
 
-extern wchar_t SEARCH_STR[64];
-
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
 extern const int BIG_GLYPH_HEIGHT;

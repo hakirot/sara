@@ -10,7 +10,6 @@
 #ifndef GLYPHS_H
 #define GLYPHS_H
 
-extern const char * specialApplicationRangingArea;
 extern const char * arch[19];
 extern const char * archsarafull[19];
 extern const char * archsarazap[19];

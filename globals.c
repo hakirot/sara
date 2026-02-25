@@ -11,8 +11,6 @@
 #include <time.h>
 #include "globals.h"
 
-wchar_t SEARCH_STR[] = L"`+so:-./";
-
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;
 const int BIG_GLYPH_HEIGHT = 19;

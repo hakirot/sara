@@ -17,9 +17,10 @@
          . Define wall_dir
          . Define colors
        - pixel-fill
-         . a new animation
+         . A new animation
        - allow-custom-glyphs
-         . use doopstr test function to create the third search_str
+         . Use doopstr test function to create the third search_str for title
+         . Abstract search_str vars to config
 
    . allow custom glyphs
      . use doopstr test function to create the third search_str

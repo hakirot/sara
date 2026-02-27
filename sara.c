@@ -660,6 +660,15 @@ void check_char(){
           neon();
         }
       }
+    } else if (input == 'F') {
+
+      neon_reverse();
+      endwin();
+      char path_to_xdo[256] = {'\0'};
+      char * env_home = getenv("HOME");
+      sprintf(path_to_xdo, "%s%s", env_home, "/skps/xdo.sh");
+      execlp(path_to_xdo, "xdo", "3", NULL);
+      error("ERROR: execlp xdo.sh");
 
     } else if (input == 'y') {
       CACHE = ROW + COL;

@@ -1,0 +1,87 @@
+[
+  {
+    "file": "sara.c",
+    "arguments": [
+      "gcc",
+      "-c",
+      "-o",
+      "sara.o",
+      "sara.c",
+      "-I",
+      "-Wall",
+      "-g",
+      "-DNCURSES_WIDECHAR=1",
+      "-Wimplicit-function-declaration"
+    ],
+    "directory": "/home/hakirot/git/sara",
+    "output": "sara.o"
+  },
+  {
+    "file": "glyphs.c",
+    "arguments": [
+      "gcc",
+      "-c",
+      "-o",
+      "glyphs.o",
+      "glyphs.c",
+      "-I",
+      "-Wall",
+      "-g",
+      "-DNCURSES_WIDECHAR=1",
+      "-Wimplicit-function-declaration"
+    ],
+    "directory": "/home/hakirot/git/sara",
+    "output": "glyphs.o"
+  },
+  {
+    "file": "animations.c",
+    "arguments": [
+      "gcc",
+      "-c",
+      "-o",
+      "animations.o",
+      "animations.c",
+      "-I",
+      "-Wall",
+      "-g",
+      "-DNCURSES_WIDECHAR=1",
+      "-Wimplicit-function-declaration"
+    ],
+    "directory": "/home/hakirot/git/sara",
+    "output": "animations.o"
+  },
+  {
+    "file": "globals.c",
+    "arguments": [
+      "gcc",
+      "-c",
+      "-o",
+      "globals.o",
+      "globals.c",
+      "-I",
+      "-Wall",
+      "-g",
+      "-DNCURSES_WIDECHAR=1",
+      "-Wimplicit-function-declaration"
+    ],
+    "directory": "/home/hakirot/git/sara",
+    "output": "globals.o"
+  },
+  {
+    "file": "utils.c",
+    "arguments": [
+      "gcc",
+      "-c",
+      "-o",
+      "utils.o",
+      "utils.c",
+      "-I",
+      "-Wall",
+      "-g",
+      "-DNCURSES_WIDECHAR=1",
+      "-Wimplicit-function-declaration"
+    ],
+    "directory": "/home/hakirot/git/sara",
+    "output": "utils.o"
+  }
+]

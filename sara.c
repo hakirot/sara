@@ -790,7 +790,7 @@ void check_char(){
       mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
     }
-  } 
+  }
 
   double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
   if(time_since_input >= 0.0005 && WIN_SIZE != SMALL){

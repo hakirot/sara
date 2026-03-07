@@ -395,10 +395,11 @@ void check_char(){
         selection = select_option_window(bluetooth_choices, 2);
 
         if (selection == bluetooth_choices[0]){
-          char* connect_choices[2]={'\0'};
+          char* connect_choices[3]={'\0'};
           connect_choices[0]="WH-1000XM5";
           connect_choices[1]="ACOUSTIC";
-          selection = select_option_window(connect_choices, 2);
+          connect_choices[2]="ONFORU";
+          selection = select_option_window(connect_choices, 3);
 
           if (selection == connect_choices[0]){
             pid_t pid = fork();
@@ -431,12 +432,28 @@ void check_char(){
               int status;
               waitpid(pid, &status, 0);
             }
+          } else if (selection == connect_choices[2]){
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "31:51:27:F9:1D:62", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
           }
         } else if (selection == bluetooth_choices[1]){
-          char* disconnect_choices[2]={'\0'};
+          char* disconnect_choices[3]={'\0'};
           disconnect_choices[0]="WH-1000XM5";
           disconnect_choices[1]="ACOUSTIC";
-          selection = select_option_window(disconnect_choices, 2);
+          disconnect_choices[2]="ONFORU";
+          selection = select_option_window(disconnect_choices, 3);
 
           if (selection == disconnect_choices[0]){
             pid_t pid = fork();
@@ -462,6 +479,22 @@ void check_char(){
               exit(EXIT_FAILURE);
             } else if (pid == 0) {
               execl("/usr/bin/bluetoothctl", "bluetoothctl", "disconnect", "FC:58:FA:9B:D7:3D", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
+          } else if (selection == disconnect_choices[2]){
+
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "disconnect", "31:51:27:F9:1D:62", (char *)NULL);
               perror("execl");
             } else {
               clear();
@@ -792,7 +825,9 @@ void check_char(){
     }
   }
 
-  double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+  double time_since_input = (double)(clock() - LAST_INPUT_TIME)
+                          / CLOCKS_PER_SEC;
+
   if(time_since_input >= 0.0005 && WIN_SIZE != SMALL){
     HOLD_CHAR = '\0';
   }

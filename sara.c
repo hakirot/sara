@@ -502,8 +502,6 @@ void check_char(){
           }
         }
 
-        neon();
-
       } if (selection == choices[1]){
 
         char * file_path = "/sys/class/backlight/intel_backlight/brightness";

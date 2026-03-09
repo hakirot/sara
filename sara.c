@@ -16,6 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <wait.h>
+#include <fcntl.h>
 
 int main(int argc, char* argv[]){
 
@@ -807,8 +808,18 @@ void check_char(){
     } else if (input == 'X') {
 
       endwin();
-      execlp("tmux", "tmux", "kill-session", NULL);
-      error("ERROR: execlp tmux kill-session");
+
+      int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+      dup2(fd, 1);
+      dup2(fd, 2);
+
+      close(fd);
+
+      char path_to_killsession[256] = {'\0'};
+      char * env_home = getenv("HOME");
+      sprintf(path_to_killsession, "%s%s", env_home, "/skps/kill-session.sh");
+      execlp("nohup", "nohup", "bash", "-c", path_to_killsession, NULL);
+      error("ERROR: execlp kill-session.sh");
 
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();

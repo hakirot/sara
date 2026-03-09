@@ -644,7 +644,7 @@ void check_char(){
         endwin();
         char path_to_xdo[256] = {'\0'};
         char * env_home = getenv("HOME");
-        sprintf(path_to_xdo, "%s%s", env_home, "/skps/xdo.sh");
+        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
         execlp(path_to_xdo, "xdo", "1", NULL);
         error("ERROR: execvlp xdo.sh");
       } else {
@@ -677,7 +677,7 @@ void check_char(){
         endwin();
         char path_to_xdo[256] = {'\0'};
         char * env_home = getenv("HOME");
-        sprintf(path_to_xdo, "%s%s", env_home, "/skps/xdo.sh");
+        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
         execlp(path_to_xdo, "xdo", "2", NULL);
         error("ERROR: execlp xdo.sh");
       } else {
@@ -701,7 +701,7 @@ void check_char(){
       endwin();
       char path_to_xdo[256] = {'\0'};
       char * env_home = getenv("HOME");
-      sprintf(path_to_xdo, "%s%s", env_home, "/skps/xdo.sh");
+      sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
       execlp(path_to_xdo, "xdo", "3", NULL);
       error("ERROR: execlp xdo.sh");
 
@@ -822,7 +822,7 @@ void check_char(){
 
       char path_to_killsession[256] = {'\0'};
       char * env_home = getenv("HOME");
-      sprintf(path_to_killsession, "%s%s", env_home, "/skps/kill-session.sh");
+      sprintf(path_to_killsession, "%s%s", env_home, "/git/sara/kill-session.sh");
       execlp("nohup", "nohup", "bash", "-c", path_to_killsession, NULL);
       error("ERROR: execlp kill-session.sh");
 

@@ -1693,45 +1693,29 @@ char * prompt_fuzzy(){
 }
 
 void fork_newlook(char * file){
-  pid_t pid = fork();
 
+  char path_to_respawn[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  sprintf(path_to_respawn, "%s%s", env_home, "/git/sara/bash/respawn.sh");
+
+  pid_t pid = fork();
   if (pid < 0) {
     error("fork_newlook");
   } else if (pid == 0) {
+
+    int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    dup2(fd, 1);
+    dup2(fd, 2);
+    close(fd);
+
     if(file == NULL){
-      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", "-r", (char *)NULL);
+      execlp("nohup", "nohup", "bash", "-c", path_to_respawn, NULL);
     } else {
       char * wall_dir = "/home/hakirot/pix/walls";
       char file_path[256];
       sprintf(file_path, "%s%s", wall_dir, file);
-      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", file_path, (char *)NULL);
+      execlp("nohup", "nohup", "bash", "-c", path_to_respawn, file, NULL);
     }
-    perror("execl");
-  } else {
-    clear();
-    refresh();
-    endwin();
-    int status;
-    while(kill(pid, 0) == 0){
-      waitpid(pid, &status, 0);
-    }
-  }
-
-  glitch(100, 1);
-  pid_t pid2 = fork();
-  if (pid2 < 0) {
-    error("fork_newlook");
-  } else if (pid2 == 0) {
-    int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    dup2(fd, 1);
-    dup2(fd, 2);
-
-    close(fd);
-
-    char path_to_respawn[256] = {'\0'};
-    char * env_home = getenv("HOME");
-    sprintf(path_to_respawn, "%s%s", env_home, "/git/sara/bash/respawn.sh");
-    execlp("nohup", "nohup", "bash", "-c", path_to_respawn, NULL);
     perror("execl respawn");
   }
 }

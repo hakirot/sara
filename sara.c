@@ -644,7 +644,7 @@ void check_char(){
         endwin();
         char path_to_xdo[256] = {'\0'};
         char * env_home = getenv("HOME");
-        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
+        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
         execlp(path_to_xdo, "xdo", "1", NULL);
         error("ERROR: execvlp xdo.sh");
       } else {
@@ -677,7 +677,7 @@ void check_char(){
         endwin();
         char path_to_xdo[256] = {'\0'};
         char * env_home = getenv("HOME");
-        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
+        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
         execlp(path_to_xdo, "xdo", "2", NULL);
         error("ERROR: execlp xdo.sh");
       } else {
@@ -822,7 +822,7 @@ void check_char(){
 
       char path_to_killsession[256] = {'\0'};
       char * env_home = getenv("HOME");
-      sprintf(path_to_killsession, "%s%s", env_home, "/git/sara/kill-session.sh");
+      sprintf(path_to_killsession, "%s%s", env_home, "/git/sara/bash/kill-session.sh");
       execlp("nohup", "nohup", "bash", "-c", path_to_killsession, NULL);
       error("ERROR: execlp kill-session.sh");
 
@@ -1699,7 +1699,7 @@ void fork_newlook(char * file){
     error("fork_newlook");
   } else if (pid == 0) {
     if(file == NULL){
-      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", "-r", (char *)NULL);
     } else {
       char * wall_dir = "/home/hakirot/pix/walls";
       char file_path[256];
@@ -1710,9 +1710,30 @@ void fork_newlook(char * file){
   } else {
     clear();
     refresh();
+    endwin();
     int status;
-    waitpid(pid, &status, 0);
-  } // Not doing a proper wait
+    while(kill(pid, 0) == 0){
+      waitpid(pid, &status, 0);
+    }
+  }
+
+  glitch(100, 1);
+  pid_t pid2 = fork();
+  if (pid2 < 0) {
+    error("fork_newlook");
+  } else if (pid2 == 0) {
+    int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    dup2(fd, 1);
+    dup2(fd, 2);
+
+    close(fd);
+
+    char path_to_respawn[256] = {'\0'};
+    char * env_home = getenv("HOME");
+    sprintf(path_to_respawn, "%s%s", env_home, "/git/sara/bash/respawn.sh");
+    execlp("nohup", "nohup", "bash", "-c", path_to_respawn, NULL);
+    perror("execl respawn");
+  }
 }
 
 void pshd(){

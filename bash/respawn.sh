@@ -7,6 +7,6 @@ xdotool key super+h
 xdotool key X
 sleep .25
 
-for i in {1..6}; do
+for i in {1..2}; do
   xdotool key alt+z
 done

@@ -1,5 +1,7 @@
 /*
 --  ███████╗ █████╗ ██████╗  █████╗   --
+--  ██╔════╝██╔══██╗██╔══██╗██╔══██╗  --
+--  ███████╗███████║██████╔╝███████║  --
 --  ╚════██║██╔══██║██╔══██╗██╔══██║  --
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.c--
@@ -63,9 +65,14 @@ int main(int argc, char* argv[]){
       case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
-        FOREGROUND = (rand() % 6) + 2;    // RNG 2 and 7
-        if (FOREGROUND > 7 || FOREGROUND < 1 || BACKGROUND > 7 || BACKGROUND < 1){
-          error("error");
+        FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
+        while(FOREGROUND == BACKGROUND){
+          FOREGROUND = rand() % 7 + 2;
+        }
+        if (FOREGROUND > 8 || FOREGROUND < 2 || BACKGROUND > 7 || BACKGROUND < 1){
+          error("rand error");
+        } else if (FOREGROUND == BACKGROUND) {
+          error("F == B");
         }
         break;
       case 'H': HOLOGRAPHIC = 1; break;
@@ -284,6 +291,9 @@ void check_char(){
     } else if(input == 'I'){
       BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
+      while(FOREGROUND == BACKGROUND){
+        FOREGROUND = rand() % 7 + 2;
+      }
       quickprint(FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){

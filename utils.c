@@ -168,5 +168,6 @@ void get_helped() {
   printf("  -f [color]    set custom FOREGROUND color\n");
   printf("  -b [color]    set custom BACKGROUND color\n");
   printf("  -F [follow]   On exit, Writes PWD to file\n");
+  printf("  -r            Generate a random color profile. Not compatible with -f or -b options\n");
   exit(0);
 }

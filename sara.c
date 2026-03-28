@@ -253,12 +253,12 @@ void check_char(){
         return;
       }
 
-      char * choices[1]={'\0'};
+      char * choices[2]={'\0'};
       choices[0]="SHUTDOWN";
-      const char* selection =  select_option_window(choices, 1);
+      choices[1]="REBOOT";
+      const char* selection =  select_option_window(choices, 2);
 
-      if (selection == choices[0]){
-
+      if (selection != NULL) {
         pid_t pid = fork();
         if (pid < 0) {
           perror("fork");
@@ -275,10 +275,15 @@ void check_char(){
           while(kill(pid, 0) == 0){
             waitpid(pid, &status, 0);
           }
-
-          execlp("shutdown", "shutdown", "now", NULL);
-          error("shutdown err");
         }
+      }
+
+      if (selection == choices[0]){
+        execlp("shutdown", "shutdown", "now", NULL);
+        error("shutdown err");
+      } else if (selection == choices[1]){
+        execlp("shutdown", "shutdown", "-r", "now", NULL);
+        error("reboot err");
       } else {
         glitch(STANDARD_GLITCH_TIME, 0);
       }

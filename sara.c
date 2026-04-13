@@ -329,8 +329,8 @@ void check_char(){
     } else if(input == 'g'){
 //    glitch(STANDARD_GLITCH_TIME, 0);
 //    xray();
-//    pixel_fill(0.014, 35, 8000);
-      tv_static(0.020);
+//    pixel_fill(0.012, 25, 4000);
+      tv_static(0.220);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

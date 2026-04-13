@@ -167,15 +167,6 @@ void tv_static(double cycle_length){
     }
   }
 
-//endwin();
-//for(int f = 0; f < BIG_GLYPH_HEIGHT; f++){
-//  for(int k = 0; k < BIG_GLYPH_LENGTH; k++){
-//    printf("%d", arr[f][k]);
-//  }
-//  printf("\n");
-//}
-//error("done");
-
   clock_t cycle_start = clock();
   cchar_t cchar;
   int j = 0;

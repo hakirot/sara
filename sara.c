@@ -330,7 +330,7 @@ void check_char(){
 //    glitch(STANDARD_GLITCH_TIME, 0);
 //    xray();
 //    pixel_fill(0.012, 25, 4000);
-      tv_static(0.220);
+      tv_static(0.080);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

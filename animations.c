@@ -104,7 +104,7 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
         wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if (arr[i][j] == 1 && roll(num_sides) == 1){
+        if (arr[i][j] == 1 && roll(num_sides) == 2){
           arr[i][j] = 2;
           count++;
           if (count == total){
@@ -198,7 +198,7 @@ void tv_static(double cycle_length){
 
         roll_result = roll(2);
 
-        if(roll_result == 0){
+        if(roll_result == 1){
           iter_row += len;
           j++;
           continue;

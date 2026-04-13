@@ -327,10 +327,10 @@ void check_char(){
         neon();
       }
     } else if(input == 'g'){
-//    glitch(STANDARD_GLITCH_TIME, 0);
+      glitch(STANDARD_GLITCH_TIME, 0);
 //    xray();
 //    pixel_fill(0.008, 15, 4000);
-      tv_static(0.016);
+//    tv_static(0.086);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

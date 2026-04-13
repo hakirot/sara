@@ -16,8 +16,6 @@
          . Make install command installs config and sara
          . Define wall_dir
          . Define colors
-       - pixel-fill
-         . a new animation
        - allow-custom-glyphs
          . use doopstr test function to create the third search_str
 

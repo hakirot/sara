@@ -16,6 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <wait.h>
+#include <fcntl.h>
 
 int main(int argc, char* argv[]){
 
@@ -64,9 +65,14 @@ int main(int argc, char* argv[]){
       case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
-        FOREGROUND = (rand() % 6) + 2;    // RNG 2 and 7
-        if (FOREGROUND > 7 || FOREGROUND < 1 || BACKGROUND > 7 || BACKGROUND < 1){
-          error("error");
+        FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
+        while(FOREGROUND == BACKGROUND){
+          FOREGROUND = rand() % 7 + 2;
+        }
+        if (FOREGROUND > 8 || FOREGROUND < 2 || BACKGROUND > 7 || BACKGROUND < 1){
+          error("rand error");
+        } else if (FOREGROUND == BACKGROUND) {
+          error("F == B");
         }
         break;
       case 'H': HOLOGRAPHIC = 1; break;
@@ -247,12 +253,12 @@ void check_char(){
         return;
       }
 
-      char * choices[1]={'\0'};
+      char * choices[2]={'\0'};
       choices[0]="SHUTDOWN";
-      const char* selection =  select_option_window(choices, 1);
+      choices[1]="REBOOT";
+      const char* selection =  select_option_window(choices, 2);
 
-      if (selection == choices[0]){
-
+      if (selection != NULL) {
         pid_t pid = fork();
         if (pid < 0) {
           perror("fork");
@@ -269,12 +275,17 @@ void check_char(){
           while(kill(pid, 0) == 0){
             waitpid(pid, &status, 0);
           }
-
-          execlp("shutdown", "shutdown", "now", NULL);
-          error("shutdown err");
         }
+      }
+
+      if (selection == choices[0]){
+        execlp("shutdown", "shutdown", "now", NULL);
+        error("shutdown err");
+      } else if (selection == choices[1]){
+        execlp("shutdown", "shutdown", "-r", "now", NULL);
+        error("reboot err");
       } else {
-        glitch(46, 0);
+        glitch(STANDARD_GLITCH_TIME, 0);
       }
 
     } else if(input == 'i'){
@@ -285,6 +296,9 @@ void check_char(){
     } else if(input == 'I'){
       BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
+      while(FOREGROUND == BACKGROUND){
+        FOREGROUND = rand() % 7 + 2;
+      }
       quickprint(FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
@@ -313,8 +327,10 @@ void check_char(){
         neon();
       }
     } else if(input == 'g'){
-      glitch(46, 0);
-//    xray(ROW, COL);
+      glitch(STANDARD_GLITCH_TIME, 0);
+//    xray();
+//    pixel_fill(0.008, 15, 4000);
+//    tv_static(0.086);
     } else if(input == 't'){
 
       CACHE = ROW + COL;
@@ -330,7 +346,7 @@ void check_char(){
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
-        glitch(20, 1);
+        glitch(QUICK_GLITCH_TIME, 1);
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
@@ -392,10 +408,11 @@ void check_char(){
         selection = select_option_window(bluetooth_choices, 2);
 
         if (selection == bluetooth_choices[0]){
-          char* connect_choices[2]={'\0'};
+          char* connect_choices[3]={'\0'};
           connect_choices[0]="WH-1000XM5";
           connect_choices[1]="ACOUSTIC";
-          selection = select_option_window(connect_choices, 2);
+          connect_choices[2]="ONFORU";
+          selection = select_option_window(connect_choices, 3);
 
           if (selection == connect_choices[0]){
             pid_t pid = fork();
@@ -428,12 +445,28 @@ void check_char(){
               int status;
               waitpid(pid, &status, 0);
             }
+          } else if (selection == connect_choices[2]){
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "connect", "31:51:27:F9:1D:62", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
           }
         } else if (selection == bluetooth_choices[1]){
-          char* disconnect_choices[2]={'\0'};
+          char* disconnect_choices[3]={'\0'};
           disconnect_choices[0]="WH-1000XM5";
           disconnect_choices[1]="ACOUSTIC";
-          selection = select_option_window(disconnect_choices, 2);
+          disconnect_choices[2]="ONFORU";
+          selection = select_option_window(disconnect_choices, 3);
 
           if (selection == disconnect_choices[0]){
             pid_t pid = fork();
@@ -466,10 +499,24 @@ void check_char(){
               int status;
               waitpid(pid, &status, 0);
             }
+          } else if (selection == disconnect_choices[2]){
+
+            pid_t pid = fork();
+
+            if (pid < 0) {
+              perror("fork");
+              exit(EXIT_FAILURE);
+            } else if (pid == 0) {
+              execl("/usr/bin/bluetoothctl", "bluetoothctl", "disconnect", "31:51:27:F9:1D:62", (char *)NULL);
+              perror("execl");
+            } else {
+              clear();
+              refresh();
+              int status;
+              waitpid(pid, &status, 0);
+            }
           }
         }
-
-        neon();
 
       } if (selection == choices[1]){
 
@@ -575,7 +622,7 @@ void check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        glitch(20, 1);
+        glitch(QUICK_GLITCH_TIME, 1);
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
@@ -594,6 +641,81 @@ void check_char(){
           neon();
         }
       }
+
+    } else if (input == 'V') {
+
+      CACHE = ROW + COL;
+
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        neon_reverse();
+        endwin();
+        char path_to_xdo[256] = {'\0'};
+        char * env_home = getenv("HOME");
+        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
+        execlp(path_to_xdo, "xdo", "1", NULL);
+        error("ERROR: execvlp xdo.sh");
+      } else {
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        endwin();
+        clear();
+        refresh();
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
+        }
+      }
+
+    } else if (input == 'O') {
+
+      CACHE = ROW + COL;
+
+      pid_t pid = fork();
+      if (pid < 0) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+
+      } else if (pid == 0) {
+        neon_reverse();
+        endwin();
+        char path_to_xdo[256] = {'\0'};
+        char * env_home = getenv("HOME");
+        sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
+        execlp(path_to_xdo, "xdo", "2", NULL);
+        error("ERROR: execlp xdo.sh");
+      } else {
+        int status;
+
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
+
+        endwin();
+        clear();
+        refresh();
+        getmaxyx(stdscr, ROW, COL);
+        if(CACHE == ROW + COL){
+          neon();
+        }
+      }
+    } else if (input == 'F') {
+
+      neon_reverse();
+      endwin();
+      char path_to_xdo[256] = {'\0'};
+      char * env_home = getenv("HOME");
+      sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
+      execlp(path_to_xdo, "xdo", "3", NULL);
+      error("ERROR: execlp xdo.sh");
 
     } else if (input == 'y') {
       CACHE = ROW + COL;
@@ -658,7 +780,7 @@ void check_char(){
           neon();
         } else {
           shutter_slide();
-          glitch(20, 0);
+          glitch(QUICK_GLITCH_TIME, 0);
         }
 
         refresh();
@@ -672,6 +794,8 @@ void check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
+        clear();
+        refresh();
         endwin();
         execlp("rmpc", "rmpc", NULL);
         error("ERROR: execlp rmpc");
@@ -688,7 +812,7 @@ void check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          neon();
+          tv_static(0.010);
         }
       }
 
@@ -701,8 +825,18 @@ void check_char(){
     } else if (input == 'X') {
 
       endwin();
-      execlp("tmux", "tmux", "kill-session", NULL);
-      error("ERROR: execlp tmux kill-session");
+
+      int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+      dup2(fd, 1);
+      dup2(fd, 2);
+
+      close(fd);
+
+      char path_to_killsession[256] = {'\0'};
+      char * env_home = getenv("HOME");
+      sprintf(path_to_killsession, "%s%s", env_home, "/git/sara/bash/kill-session.sh");
+      execlp("nohup", "nohup", "bash", "-c", path_to_killsession, NULL);
+      error("ERROR: execlp kill-session.sh");
 
     } else if (WIN_SIZE != SMALL) {
       LAST_INPUT_TIME = clock();
@@ -710,9 +844,11 @@ void check_char(){
       mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
     }
-  } 
+  }
 
-  double time_since_input = (double)(clock() - LAST_INPUT_TIME) / CLOCKS_PER_SEC;
+  double time_since_input = (double)(clock() - LAST_INPUT_TIME)
+                          / CLOCKS_PER_SEC;
+
   if(time_since_input >= 0.0005 && WIN_SIZE != SMALL){
     HOLD_CHAR = '\0';
   }
@@ -754,7 +890,12 @@ void printstandard(){
         // Also records length of character at *iter_row in len
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+        if(is_char_in_search(wc, BG_STR)){
+          attron(A_BOLD);
+          attron(COLOR_PAIR(BACKGROUND));
+        } else {
+          attron(COLOR_PAIR(FOREGROUND));
+        }
 
         // Write wide char to `cchar` for mvadd_wch()
         cchar_t cchar;
@@ -763,6 +904,7 @@ void printstandard(){
 
         attroff(COLOR_PAIR(FOREGROUND));
         attroff(COLOR_PAIR(BACKGROUND));
+        attroff(A_BOLD);
         iter_row += len;                          // Increment the pointer one character
         iter_col++;                               // Increment col
       }
@@ -795,10 +937,16 @@ void quickprint(int fg, int bg, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
+        if(is_char_in_search(wc, BG_STR)){
+          attron(A_BOLD);
+          attron(COLOR_PAIR(bg));
+        } else {
+          attron(COLOR_PAIR(fg));
+        }
         mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(fg));
         attroff(COLOR_PAIR(bg));
+        attroff(A_BOLD);
         iter_row += len;
         iter_col++;
       }
@@ -945,7 +1093,7 @@ void neon(){
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -980,7 +1128,7 @@ void neon(){
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -1043,7 +1191,7 @@ void neon_reverse(){
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
 
-            is_char_in_search(wc, SEARCH_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
             mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
             attroff(COLOR_PAIR(BACKGROUND));
             attroff(COLOR_PAIR(FOREGROUND));
@@ -1100,7 +1248,7 @@ void print_start_animation(){
     quickprint(FOREGROUND, BACKGROUND, 0);
   } else {
     printstandard();
-    glitch(46, 0);
+    glitch(STANDARD_GLITCH_TIME, 0);
   }
 }
 
@@ -1333,7 +1481,6 @@ void prompt_newlook(){
           mvadd_wch(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
-          attroff(COLOR_PAIR(BLUE));
           iter_row += len;
           iter_col++;
         }
@@ -1376,7 +1523,7 @@ void prompt_newlook(){
   }
 
   if(exit_glitch_flag){
-    glitch(46, 0);
+    glitch(STANDARD_GLITCH_TIME, 0);
   } else {
     neon();
   }
@@ -1579,19 +1726,28 @@ char * theme_select(){
 }
 
 void fork_newlook(char * file){
-  pid_t pid = fork();
 
+  char path_to_respawn[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  sprintf(path_to_respawn, "%s%s", env_home, "/git/sara/bash/respawn.sh");
+
+  pid_t pid = fork();
   if (pid < 0) {
-    perror("fork");
-    exit(EXIT_FAILURE);
+    error("fork_newlook");
   } else if (pid == 0) {
+
+    int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    dup2(fd, 1);
+    dup2(fd, 2);
+    close(fd);
+
     if(file == NULL){
-      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", (char *)NULL);
+      execlp("nohup", "nohup", "bash", "-c", path_to_respawn, NULL);
     } else {
       char * wall_dir = "/home/hakirot/pix/walls";
       char file_path[256];
       sprintf(file_path, "%s%s", wall_dir, file);
-      execl("/usr/bin/bash", "bash", "/home/hakirot/.local/bin/newlook", file_path, (char *)NULL);
+      execlp("nohup", "nohup", "bash", "-c", path_to_respawn, file, NULL);
     }
     perror("execl");
   } else {
@@ -1599,7 +1755,7 @@ void fork_newlook(char * file){
     while(kill(pid, 0) == 0){
       waitpid(pid, &status, 0);
     }
-  } // Not doing a proper wait
+  }
 }
 
 void pshd(){
@@ -1633,7 +1789,8 @@ void pshd(){
     }
     refresh();
     i++;
-    usleep(10000);
+//  usleep(5000);
+    usleep(1000);
   }
   mvprintw(i + 2, 2, "%s", option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));
@@ -1741,13 +1898,13 @@ void pshd(){
         }
         neon();
       } else {
-        glitch(16, 1);
+        glitch(QUICK_GLITCH_TIME, 1);
 
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      glitch(16, 1);
+      glitch(QUICK_GLITCH_TIME, 1);
       return;
     } else if (input == 'f' || input == '/') {
 
@@ -1894,7 +2051,7 @@ void pshd(){
             }
             neon();
           } else {
-            glitch(46, 0);
+            glitch(STANDARD_GLITCH_TIME, 0);
           }
           return;
         }

@@ -11,7 +11,8 @@
 #include <time.h>
 #include "globals.h"
 
-wchar_t SEARCH_STR[] = L"`+so:-./";
+wchar_t FG_STR[] = L"█╔╗╚╝║═";
+wchar_t BG_STR[] = L"`+so:-./";
 
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;
@@ -38,7 +39,13 @@ clock_t WAIT_START;
 
 start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
-int GLITCH_FRAME_TIME = 7000;
+
+//int GLITCH_FRAME_TIME = 7000;
+//int STANDARD_GLITCH_TIME = 46;
+//int QUICK_GLITCH_TIME = 20;
+int GLITCH_FRAME_TIME = 3500;
+int STANDARD_GLITCH_TIME = 92;
+int QUICK_GLITCH_TIME = 40;
 
 const int BLACK         = 1;
 const int RED           = 2;

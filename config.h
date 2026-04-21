@@ -20,10 +20,10 @@ int GLITCH_FRAME_TIME = 3500;
 int FOREGROUND = RED;
 int BACKGROUND = GREEN;
 
-int use_bold_for_bg = TRUE;
-int use_bold_for_fg = FALSE;
+bool use_bold_for_bg = true;
+bool use_bold_for_fg = false;
 
-int HOLOGRAPHIC = FALSE;
-int FOLLOW = TRUE;
+bool HOLOGRAPHIC = false;
+bool FOLLOW = true;
 
 #endif

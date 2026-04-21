@@ -12,9 +12,6 @@
 #include <time.h>
 #include <ncurses.h>
 
-#define FALSE 0
-#define TRUE 1
-
 #define BLACK           1
 #define RED             2
 #define GREEN           3
@@ -65,8 +62,8 @@ extern const int NORMAL_GLYPH_LENGTH;
 
 extern int FOREGROUND;
 extern int BACKGROUND;
-extern int HOLOGRAPHIC;
-extern int FOLLOW;
+extern bool HOLOGRAPHIC;
+extern bool FOLLOW;
 
 extern int ROW;
 extern int COL;

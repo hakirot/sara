@@ -2,7 +2,7 @@
   {
     "file": "sara.c",
     "arguments": [
-      "gcc",
+      "/usr/bin/gcc",
       "-c",
       "-o",
       "sara.o",
@@ -19,7 +19,7 @@
   {
     "file": "glyphs.c",
     "arguments": [
-      "gcc",
+      "/usr/bin/gcc",
       "-c",
       "-o",
       "glyphs.o",
@@ -36,7 +36,7 @@
   {
     "file": "animations.c",
     "arguments": [
-      "gcc",
+      "/usr/bin/gcc",
       "-c",
       "-o",
       "animations.o",
@@ -53,7 +53,7 @@
   {
     "file": "globals.c",
     "arguments": [
-      "gcc",
+      "/usr/bin/gcc",
       "-c",
       "-o",
       "globals.o",
@@ -70,7 +70,7 @@
   {
     "file": "utils.c",
     "arguments": [
-      "gcc",
+      "/usr/bin/gcc",
       "-c",
       "-o",
       "utils.o",

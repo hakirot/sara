@@ -812,7 +812,7 @@ void check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          tv_static(0.040);
+          tv_static(0.010);
         }
       }
 
@@ -890,7 +890,12 @@ void printstandard(){
         // Also records length of character at *iter_row in len
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+        if(is_char_in_search(wc, BG_STR)){
+          attron(A_BOLD);
+          attron(COLOR_PAIR(BACKGROUND));
+        } else {
+          attron(COLOR_PAIR(FOREGROUND));
+        }
 
         // Write wide char to `cchar` for mvadd_wch()
         cchar_t cchar;
@@ -899,6 +904,7 @@ void printstandard(){
 
         attroff(COLOR_PAIR(FOREGROUND));
         attroff(COLOR_PAIR(BACKGROUND));
+        attroff(A_BOLD);
         iter_row += len;                          // Increment the pointer one character
         iter_col++;                               // Increment col
       }
@@ -931,10 +937,16 @@ void quickprint(int fg, int bg, int printColorbar){
 
         setcchar(&cchar, &wc, 0, 0, NULL);
 
-        is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(bg)) : attron(COLOR_PAIR(fg));
+        if(is_char_in_search(wc, BG_STR)){
+          attron(A_BOLD);
+          attron(COLOR_PAIR(bg));
+        } else {
+          attron(COLOR_PAIR(fg));
+        }
         mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
         attroff(COLOR_PAIR(fg));
         attroff(COLOR_PAIR(bg));
+        attroff(A_BOLD);
         iter_row += len;
         iter_col++;
       }

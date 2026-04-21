@@ -2,3 +2,4 @@ sara
 test
 *.o
 10_000words.txt
+.cache

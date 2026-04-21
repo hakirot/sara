@@ -20,7 +20,7 @@
 
 int main(int argc, char* argv[]){
 
-  srand((unsigned)time(0));
+  load_config(&config);
 
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
@@ -58,6 +58,7 @@ int main(int argc, char* argv[]){
   }
 
   double WAIT_BUFFER = 0.10000;
+  srand((unsigned)time(0));
 
   int opt;
   while ((opt = getopt(argc, argv, "cMFfbhrH")) != -1){
@@ -1345,7 +1346,7 @@ void glitch(int numFrames, int full){
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) break;
 
-    usleep(GLITCH_FRAME_TIME);
+    usleep(config.GLITCH_FRAME_TIME);
   }
 
   quickprint(FOREGROUND, BACKGROUND, 0);
@@ -1710,7 +1711,7 @@ char * prompt_fuzzy(){
     }
 
     refresh();
-    usleep(GLITCH_FRAME_TIME);
+    usleep(config.GLITCH_FRAME_TIME);
   }
 
   free_dir_list(list);

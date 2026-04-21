@@ -26,6 +26,12 @@ typedef enum {
   EMPTY
 } start_animation;
 
+typedef struct {
+  int GLITCH_FRAME_TIME;
+} Config;
+
+extern Config config;
+
 extern wchar_t BG_STR[64];
 extern wchar_t FG_STR[16];
 
@@ -52,7 +58,6 @@ extern clock_t WAIT_START;
 extern start_animation START_ANIMATION;
 extern char HOLD_CHAR;
 
-extern int GLITCH_FRAME_TIME;
 extern int STANDARD_GLITCH_TIME;
 extern int QUICK_GLITCH_TIME;
 

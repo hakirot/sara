@@ -20,6 +20,11 @@
 #include <dirent.h>
 #include <wait.h>
 
+
+void load_config(Config * config) {
+  config->GLITCH_FRAME_TIME = 3500;
+}
+
 void error(char * err) {
   endwin();
   printf("%s\n", err);

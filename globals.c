@@ -17,6 +17,8 @@ wchar_t BG_STR[] = L"`+so:-./";
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;
 
+Config config;
+
 // Pull this from config.h
 // how does sucklesss get away with this
 const int BIG_GLYPH_HEIGHT = 19;
@@ -43,7 +45,6 @@ char HOLD_CHAR;
 //int GLITCH_FRAME_TIME = 7000;
 //int STANDARD_GLITCH_TIME = 46;
 //int QUICK_GLITCH_TIME = 20;
-int GLITCH_FRAME_TIME = 3500;
 int STANDARD_GLITCH_TIME = 92;
 int QUICK_GLITCH_TIME = 40;
 

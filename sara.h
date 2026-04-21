@@ -41,8 +41,6 @@
    . Abstracted functions, config option selection, and variable compilation
 */
 
-#include <wchar.h>
-
 #ifndef SARA_H
 #define SARA_H
 

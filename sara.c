@@ -13,7 +13,6 @@
 #include "globals.h"
 #include "config.h"
 #include "utils.h"
-#include "config.h"
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -920,7 +919,7 @@ void printstandard(){
   }
 }
 
-void quickprint(int fg, int bg, int printColorbar){
+void quickprint(int fg_color, int bg_color, int printColorbar){
   clear();
   if (WIN_SIZE == NORMAL){
     attron(COLOR_PAIR(FOREGROUND));
@@ -945,22 +944,22 @@ void quickprint(int fg, int bg, int printColorbar){
 
         if(is_char_in_search(wc, BG_STR)){
           attron(A_BOLD);
-          attron(COLOR_PAIR(bg));
+          attron(COLOR_PAIR(bg_color));
         } else {
-          attron(COLOR_PAIR(fg));
+          attron(COLOR_PAIR(fg_color));
         }
         mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
-        attroff(COLOR_PAIR(fg));
-        attroff(COLOR_PAIR(bg));
+        attroff(COLOR_PAIR(fg_color));
+        attroff(COLOR_PAIR(bg_color));
         attroff(A_BOLD);
         iter_row += len;
         iter_col++;
       }
     }
     // print name with background
-    attron(COLOR_PAIR(fg + 8));
-    mvprintw(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 10, "%s", TITLE);
-    attroff(COLOR_PAIR(fg + 8));
+    attron(COLOR_PAIR(fg_color + 8));
+    mvprintw(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 10, "%s", hd);
+    attroff(COLOR_PAIR(fg_color + 8));
 
     // print colorbar
     if (printColorbar == 1){

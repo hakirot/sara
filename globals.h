@@ -64,6 +64,8 @@ extern int FOREGROUND;
 extern int BACKGROUND;
 extern bool HOLOGRAPHIC;
 extern bool FOLLOW;
+extern bool use_bold_color_for_bg;
+extern bool use_bold_color_for_fg;
 
 extern int ROW;
 extern int COL;

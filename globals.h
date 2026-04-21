@@ -12,6 +12,9 @@
 #include <time.h>
 #include <ncurses.h>
 
+#define FALSE 0
+#define TRUE 1
+
 #define BLACK           1
 #define RED             2
 #define GREEN           3

@@ -20,4 +20,7 @@ int GLITCH_FRAME_TIME = 3500;
 int FOREGROUND = RED;
 int BACKGROUND = GREEN;
 
+int use_bold_for_bg = TRUE;
+int use_bold_for_fg = FALSE;
+
 #endif

@@ -23,4 +23,7 @@ int BACKGROUND = GREEN;
 int use_bold_for_bg = TRUE;
 int use_bold_for_fg = FALSE;
 
+int HOLOGRAPHIC = FALSE;
+int FOLLOW = TRUE;
+
 #endif

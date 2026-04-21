@@ -20,9 +20,6 @@ const int BIG_GLYPH_LENGTH = 44;
 const int NORMAL_GLYPH_HEIGHT = 7;
 const int NORMAL_GLYPH_LENGTH = 44;
 
-int HOLOGRAPHIC = 0;
-int FOLLOW = 0;;
-
 int ROW;
 int COL;
 int CACHE;

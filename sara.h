@@ -11,17 +11,9 @@
        - ueberzug-integration
          . Replacement for fuzzy newlook option
          . Measure screen and generate thumbnails based on config wall_dir
-       - sara-conf
-         . read_config() function opens config file
-         . Make install command installs config and sara
-         . Define wall_dir
-         . Define colors
        - allow-custom-glyphs
          . use doopstr test function to create the third search_str
 
-   . allow custom glyphs
-     . use doopstr test function to create the third search_str
-   . abstract GLYPH dimensions
    . sara -c
    . DNS server
    . More animations
@@ -31,14 +23,12 @@
    . Fix WAIT_BUFFER inconsistency
    . mega_glitch()
    . Break relevant functions into new files (utils, animations, pshd)
-   . Load colors/randomness from config file
    . input 'c' to show term colors and enter COMMAND MODE
    . Add -s --small options to force small size
    . More boot animations
    . mega_glitch()
    . Use archsarazap
    . Create input for alternate acronyms from headers (low priority)
-   . Abstracted functions, config option selection, and variable compilation
 */
 
 #ifndef SARA_H

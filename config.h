@@ -26,4 +26,6 @@ bool use_bold_for_fg = false;
 bool HOLOGRAPHIC = false;
 bool FOLLOW = true;
 
+float HOLD_CHAR_TIME = 0.00001;
+
 #endif

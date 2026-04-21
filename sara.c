@@ -80,21 +80,21 @@ int main(int argc, char* argv[]){
     }
   }
 
-  double time_idle;
-  WAIT_START = clock();
+//double time_idle;
+//WAIT_START = clock();
   LAST_INPUT_TIME = clock();
   bool should_print = false;
   init_window();
 
   while(1){
 
-    check_char(); // check input for this cycle
+    int check_char_result = check_char(); // check input for this cycle
 
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
     if (START_ANIMATION == EMPTY) print_start_animation();
 
-    time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
+//  time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
 //  if(time_idle >= WAIT_BUFFER){
 //    glitch(ROW, COL);
@@ -107,11 +107,14 @@ int main(int argc, char* argv[]){
       quickprint(FOREGROUND, BACKGROUND, 0);
     }
 
-    // print only once after the HOLD_CHAR goes back to EOF
-    if (HOLD_CHAR == '\0' && should_print == true){
+    mvprintw(1, 1, "%c", HOLD_CHAR);
+    refresh();
+
+    // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
+    if (check_char_result == 0 && should_print == true){
       quickprint(FOREGROUND, BACKGROUND, 0);
       should_print = false;
-    } else if (HOLD_CHAR != '\0'){
+    } else if (check_char_result == 1){
       should_print = true;
     }
     usleep(50000); // chill
@@ -123,11 +126,14 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-void check_char(){
+int check_char(){
 
   char input = getch();
+  int valid_input = 0;
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
+
+    valid_input = 1;
 
     if(input == 'q'){
       if (FOLLOW){
@@ -184,7 +190,7 @@ void check_char(){
         fp = fopen(cache_file, "r");
         if(!fp){
           refresh();
-          return;
+          return 1;
         }
 
         char target_chdir[256] = {'\0'};
@@ -250,7 +256,7 @@ void check_char(){
         size_t bufsize = 0;
         getline(&buffer, &bufsize, stdin);
         glitch(10, 0);
-        return;
+        return 1;
       }
 
       char * choices[2]={'\0'};
@@ -774,7 +780,7 @@ void check_char(){
 
         clear();
         getmaxyx(stdscr, ROW, COL);
-        if(CACHE != ROW + COL) return;
+        if(CACHE != ROW + COL) return 1;
         if (status == 0){
           shutter_slide();
           neon();
@@ -847,11 +853,13 @@ void check_char(){
   }
 
   double time_since_input = (double)(clock() - LAST_INPUT_TIME)
-                          / CLOCKS_PER_SEC;
+                            / CLOCKS_PER_SEC;
 
-  if(time_since_input >= 0.0005 && WIN_SIZE != SMALL){
+  if(time_since_input > HOLD_CHAR_TIME && WIN_SIZE != SMALL){
     HOLD_CHAR = '\0';
   }
+
+  return valid_input;
 }
 
 void printstandard(){

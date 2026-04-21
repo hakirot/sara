@@ -49,7 +49,7 @@ struct file_node {
   struct file_node * next;
 };
 
-void check_char();
+int check_char();
 int check_size();
 int get_confirmation();
 void print_start_animation();

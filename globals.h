@@ -75,6 +75,7 @@ extern clock_t WAIT_START;
 
 extern start_animation START_ANIMATION;
 extern char HOLD_CHAR;
+extern float HOLD_CHAR_TIME;
 
 extern int STANDARD_GLITCH_TIME;
 extern int QUICK_GLITCH_TIME;

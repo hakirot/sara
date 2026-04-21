@@ -6,12 +6,36 @@
 --  ╚██████╔╝███████╗╚██████╔╝██████╔╝██║  ██║███████╗███████║  --
 --   ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝.h--
                                                                      */
-#include <time.h>
-#include <wchar.h>
-#include <ncurses.h>
-
 #ifndef GLOBALS_H
 #define GLOBALS_H
+
+#include <time.h>
+#include <ncurses.h>
+
+#define BLACK           1
+#define RED             2
+#define GREEN           3
+#define YELLOW          4
+#define BLUE            5
+#define MAGENTA         6
+#define CYAN            7
+#define WHITE           8
+#define WHITE_BLACK     9
+#define BLACK_RED       10
+#define BLACK_GREEN     11
+#define BLACK_YELLOW    12
+#define BLACK_BLUE      13
+#define BLACK_MAGENTA   14
+#define BLACK_CYAN      15
+#define BLACK_WHITE     16
+#define WHITE_BLACKD    17
+#define RED_BLACK       18
+#define GREEN_BLACK     19
+#define YELLOW_BLACK    20
+#define BLUE_BLACK      21
+#define MAGENTA_BLACK   22
+#define CYAN_BLACK      23
+#define BLACK_WHITED    24
 
 typedef enum {
   SMALL,
@@ -25,12 +49,6 @@ typedef enum {
   NEON,
   EMPTY
 } start_animation;
-
-typedef struct {
-  int GLITCH_FRAME_TIME;
-} Config;
-
-extern Config config;
 
 extern wchar_t BG_STR[64];
 extern wchar_t FG_STR[16];
@@ -60,30 +78,5 @@ extern char HOLD_CHAR;
 
 extern int STANDARD_GLITCH_TIME;
 extern int QUICK_GLITCH_TIME;
-
-extern const int BLACK;
-extern const int RED;
-extern const int GREEN;
-extern const int YELLOW;
-extern const int BLUE;
-extern const int MAGENTA;
-extern const int CYAN;
-extern const int WHITE;
-extern const int WHITE_BLACK;
-extern const int BLACK_RED;
-extern const int BLACK_GREEN;
-extern const int BLACK_YELLOW;
-extern const int BLACK_BLUE;
-extern const int BLACK_MAGENTA;
-extern const int BLACK_CYAN;
-extern const int BLACK_WHITE;
-extern const int BLACK_WHITED;
-extern const int RED_BLACK;
-extern const int GREEN_BLACK;
-extern const int YELLOW_BLACK;
-extern const int BLUE_BLACK;
-extern const int MAGENTA_BLACK;
-extern const int CYAN_BLACK;
-extern const int WHITE_BLACKD;
 
 #endif

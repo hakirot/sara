@@ -6,11 +6,11 @@
 --  ╚██████╔╝   ██║   ██║███████╗███████║  --
 --   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝.h--
                                                */
-#include <wchar.h>
-#include "globals.h"
 
 #ifndef UTILS_H
 #define UTILS_H
+
+#include <wchar.h>
 
 int is_char_in_search(wchar_t wc, wchar_t * search_str);
 void print_clear_terminal();

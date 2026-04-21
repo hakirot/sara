@@ -107,11 +107,8 @@ int main(int argc, char* argv[]){
       quickprint(FOREGROUND, BACKGROUND, 0);
     }
 
-    mvprintw(1, 1, "%c", HOLD_CHAR);
-    refresh();
-
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
-    if (check_char_result == 0 && should_print == true){
+    if (check_char_result == 0 && should_print == true && HOLD_CHAR == '\0'){
       quickprint(FOREGROUND, BACKGROUND, 0);
       should_print = false;
     } else if (check_char_result == 1){
@@ -973,8 +970,6 @@ void quickprint(int fg, int bg, int printColorbar){
       }
     }
   }
-  if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
-  refresh();
 }
 
 const char * select_option_window(char** choices, int len){

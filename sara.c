@@ -6,6 +6,7 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.c--
                                            */
+#define NCURSES_WIDECHAR 1
 
 #include "sara.h"
 #include "glyphs.h"

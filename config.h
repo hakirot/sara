@@ -1,20 +1,17 @@
-/*
---   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   --
---  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   --
+#ifndef CONFIG_H
+#define CONFIG_H
+#include "globals.h"
+/*   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   -- */
+/*  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   --
 --  ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗  --
 --  ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║  --
 --  ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝  --
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                              */
 
-#include "globals.h"
-#include <wchar.h>
 
-#ifndef CONFIG_H
-#define CONFIG_H
 
 /* COLORS */
-
 int FOREGROUND = RED;
 int BACKGROUND = GREEN;
 
@@ -28,12 +25,13 @@ int GLITCH_FRAME_TIME = 3500;
 float HOLD_CHAR_TIME = 0.00001;
 
 
+
 /* CUSTOM GLYPHS */ 
 
         /* RESTRICTIONS 
 
            Glyphs must contain distinct characters
-           from each other glyph
+           from other glyphs
 
            Glyphs must be rectangular             */
 
@@ -86,7 +84,7 @@ const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 int bg_offset_x = 0;
 int bg_offset_y = 0;
 int fg_offset_x = 0;
-int fg_offset_y = 0;
+int fg_offset_y = 2;
 int hd_offset_x = 2;
 int hd_offset_y = -4;
 

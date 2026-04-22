@@ -11,6 +11,7 @@
 
 #include <time.h>
 #include <ncurses.h>
+#include "wchar.h"
 
 #define BLACK           1
 #define RED             2

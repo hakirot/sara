@@ -9,7 +9,8 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                              */
 
-/* Toggle if you chdir */
+
+/* Toggle if you use chdir */
 bool FOLLOW = true;
 
 /* COLORS */
@@ -18,12 +19,13 @@ int BACKGROUND = GREEN;
 
 bool use_bold_color_for_bg = true;
 bool use_bold_color_for_fg = false;
-
-bool HOLOGRAPHIC = false;
+bool use_fg_color_for_hd_as_bg = true;  // ensure both are not true
+bool use_bg_color_for_hd_as_bg = false; // ensure both are not true
 
 int GLITCH_FRAME_TIME = 3500;
 float HOLD_CHAR_TIME = 0.00001;
 
+bool HOLOGRAPHIC = false;
 
 
 /* CUSTOM GLYPHS */ 
@@ -73,8 +75,7 @@ const char * bg[] = {
 /* Header */              // May be empty if desired
 const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 
-
-/* OFFSETS */
+/* POSITION */
 
 /* Reposition glyphs here
    - By default, all glyphs are printed in center of screen

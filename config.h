@@ -9,7 +9,8 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                              */
 
-
+/* Toggle if you chdir */
+bool FOLLOW = true;
 
 /* COLORS */
 int FOREGROUND = RED;
@@ -19,7 +20,6 @@ bool use_bold_color_for_bg = true;
 bool use_bold_color_for_fg = false;
 
 bool HOLOGRAPHIC = false;
-bool FOLLOW = true;
 
 int GLITCH_FRAME_TIME = 3500;
 float HOLD_CHAR_TIME = 0.00001;

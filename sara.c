@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
     }
   }
 
-  // Override fg and bg colors
+  // Override arg fg and bg colors
   for (int i = 0; i < argc; i++) {
     if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--foreground") == 0){
       if(i + 1 < argc){

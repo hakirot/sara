@@ -13,12 +13,17 @@
 /* Toggle if you use chdir */
 bool FOLLOW = true;
 
+/* Toggle if you want to remove bg glyph when not fitting */
+int dynamic_resize = true;
+
 /* COLORS */
 int FOREGROUND = RED;
 int BACKGROUND = GREEN;
 
 bool use_bold_color_for_bg = true;
 bool use_bold_color_for_fg = false;
+
+// why do I not need to define these in the header file
 bool use_fg_color_for_hd_as_bg = true;  // ensure both are not true
 bool use_bg_color_for_hd_as_bg = false; // ensure both are not true
 

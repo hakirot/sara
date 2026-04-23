@@ -616,7 +616,7 @@ int check_char(){
 
     neon();
 
-    } else if (input == 'v') {
+    } else if(input == 'v'){
 
       CACHE = ROW + COL;
 
@@ -646,7 +646,7 @@ int check_char(){
         }
       }
 
-    } else if (input == 'V') {
+    } else if(input == 'V'){
 
       CACHE = ROW + COL;
 
@@ -679,7 +679,7 @@ int check_char(){
         }
       }
 
-    } else if (input == 'O') {
+    } else if(input == 'O'){
 
       CACHE = ROW + COL;
 
@@ -711,7 +711,7 @@ int check_char(){
           neon();
         }
       }
-    } else if (input == 'F') {
+    } else if(input == 'F'){
 
       neon_reverse();
       endwin();
@@ -721,7 +721,7 @@ int check_char(){
       execlp(path_to_xdo, "xdo", "3", NULL);
       error("ERROR: execlp xdo.sh");
 
-    } else if (input == 'y') {
+    } else if(input == 'y'){
       CACHE = ROW + COL;
 
       pid_t pid = fork();
@@ -749,7 +749,7 @@ int check_char(){
         }
       }
 
-    } else if (input == 'm') {
+    } else if(input == 'm'){
       CACHE = ROW + COL;
       pid_t pid = fork();
       if (pid < 0) {
@@ -789,7 +789,7 @@ int check_char(){
 
         refresh();
       }
-    } else if (input == 'M') {
+    } else if(input == 'M'){
 
       CACHE = ROW + COL;
       pid_t pid = fork();
@@ -820,13 +820,13 @@ int check_char(){
         }
       }
 
-    } else if (input == 'Q') {
+    } else if(input == 'Q'){
 
       endwin();
       execlp("tmux", "tmux", "kill-pane", NULL);
       error("ERROR: execlp tmux kill-pane");
 
-    } else if (input == 'X') {
+    } else if(input == 'X'){
 
       endwin();
 
@@ -842,7 +842,7 @@ int check_char(){
       execlp("nohup", "nohup", "bash", "-c", path_to_killsession, NULL);
       error("ERROR: execlp kill-session.sh");
 
-    } else if (WIN_SIZE != SMALL) {
+    } else if(WIN_SIZE != SMALL){
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;
       mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);

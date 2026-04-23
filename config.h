@@ -37,10 +37,10 @@ int HOLOGRAPHIC = false;
            Glyphs must contain distinct characters
            from other glyphs
 
-           Glyphs must be rectangular             */
+           Ensure strings in character array are equal length */
 
 
-/* Background glyph */
+/* background glyph */
 const char * bg[] = {
   "                     -`                     ",
   "                    .o+`                    ",
@@ -64,7 +64,7 @@ const char * bg[] = {
 };
 
 
-/* Foreground glyph */
+/* foreground glyph */
 const char * fg[] = {
   "███████╗    █████╗    ██████╗     █████╗    ",
   "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   ",
@@ -75,8 +75,7 @@ const char * fg[] = {
 };
 
 
-/* intermediate glyph */
-/* OPTIONAL: used for animations */
+/* optional intermediate glyph */
 const char * im[7] = {
   "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
   "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
@@ -84,19 +83,22 @@ const char * im[7] = {
   "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
   "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
   "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-  "          SPECIAL APPLICATION RANGING AREA  ",
 };
+/* Set empty if desired */
+//const char * im[] = '\0';
 
 
-/* Header */              // May be empty if desired
+/* optional header */
 const char hd[] = "SPECIAL APPLICATION RANGING AREA";
+/* Set empty if desired */
+// const char hd[] = '\0';
+
 
 /* POSITION */
-
 /* Reposition glyphs here
    - By default, all glyphs are printed in center of screen
-   - Positive x values will reposition glyphs DOWN
-   - Negative x values will reposition glyphs UP
+   - Positive x values will position glyphs DOWNWARD
+   - Negative x values will position glyphs UPWARD
 */
 int bg_offset_x = 0;
 int bg_offset_y = 0;

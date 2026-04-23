@@ -963,8 +963,10 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
         iter_col++;
       }
     }
-    attron(COLOR_PAIR(fg_color + 8));
-    mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
+    if(strlen(hd) > 0){
+      attron(COLOR_PAIR(fg_color + 8));
+      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
+    }
 
     attroff(COLOR_PAIR(fg_color + 8));
     attroff(COLOR_PAIR(FOREGROUND));

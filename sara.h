@@ -17,6 +17,7 @@
          . All animations derivable from fg_chars, bg_chars, title
          . change BIG_GLYPH* to FULL_GLYPH*
          . abstract GLYPH_HEIGHT variables to measure glyph sizes on startup
+         . create options and toggles for header colors
 
    . sara -c
    . DNS server

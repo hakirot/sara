@@ -15,7 +15,8 @@
          . Use doopstr test function to create the third search_str for title
          . Abstract search_str vars to config
          . All animations derivable from fg_chars, bg_chars, title
-           ? is this even possible
+         . change BIG_GLYPH* to FULL_GLYPH*
+         . abstract GLYPH_HEIGHT variables to measure glyph sizes on startup
 
    . sara -c
    . DNS server
@@ -48,6 +49,7 @@ int get_confirmation();
 void print_start_animation();
 void printstandard();
 void quickprint(int fg, int bg, int printColorbar);
+void quickprintx(int fg, int bg, int printColorbar);
 void neon();
 void neon_reverse();
 void glitch(int numFrames, int bigmode);

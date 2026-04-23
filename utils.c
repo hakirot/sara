@@ -7,6 +7,7 @@
 --   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝.h--
                                                */
 #include "globals.h"
+#include "config.h"
 #include "sara.h"
 #include <wchar.h>
 #include <stdio.h>
@@ -175,4 +176,11 @@ void get_helped() {
 int roll(int num_sides){
   int random_roll = (rand() % num_sides) + 1;
   return random_roll;
+}
+
+void populate_heights(){
+  BG_GLYPH_HEIGHT = sizeof(bg)/sizeof(bg[0]);
+  FG_GLYPH_HEIGHT = sizeof(fg)/sizeof(fg[0]);
+  BG_GLYPH_LENGTH = mbstowcs(NULL, bg[0], 0);
+  FG_GLYPH_LENGTH = mbstowcs(NULL, fg[0], 0);
 }

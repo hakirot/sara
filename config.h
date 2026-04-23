@@ -11,23 +11,21 @@
 
 
 /* Toggle if you chdir */
-int FOLLOW = true;
+static int FOLLOW = true;
 
 /* COLORS */
-int FOREGROUND = RED;
-int BACKGROUND = GREEN;
+static const int fg_c = RED;
+static const int bg_c = GREEN;
 
-int use_bold_color_for_bg = true;
-int use_bold_color_for_fg = false;
+static const int use_bold_color_for_bg = true;
+static const int use_bold_color_for_fg = false;
 
 // why do I not need to define these in the header file
-int use_fg_color_for_hd_as_bg = true;  // ensure both are not true
-int use_bg_color_for_hd_as_bg = false; // ensure both are not true
+static const int use_fg_color_for_hd_as_bg = true;  // ensure both are not true
+static const int use_bg_color_for_hd_as_bg = false; // ensure both are not true
 
-int GLITCH_FRAME_TIME = 3500;
-float HOLD_CHAR_TIME = 0.00001;
-
-int HOLOGRAPHIC = false;
+static const int GLITCH_FRAME_TIME = 3500;
+static const float HOLD_CHAR_TIME = 0.00001;
 
 
 /* CUSTOM GLYPHS */ 
@@ -41,7 +39,7 @@ int HOLOGRAPHIC = false;
 
 
 /* background glyph */
-const char * bg[] = {
+static const char * bg[] = {
   "                     -`                     ",
   "                    .o+`                    ",
   "                   `ooo/                    ",
@@ -65,7 +63,7 @@ const char * bg[] = {
 
 
 /* foreground glyph */
-const char * fg[] = {
+static const char * fg[] = {
   "███████╗    █████╗    ██████╗     █████╗    ",
   "██╔════╝   ██╔══██╗   ██╔══██╗   ██╔══██╗   ",
   "███████╗   ███████║   ██████╔╝   ███████║   ",
@@ -76,7 +74,7 @@ const char * fg[] = {
 
 
 /* optional intermediate glyph */
-const char * im[7] = {
+static const char * im[7] = {
   "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
   "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
   "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   ",
@@ -89,7 +87,7 @@ const char * im[7] = {
 
 
 /* optional header */
-const char hd[] = "SPECIAL APPLICATION RANGING AREA";
+static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 /* Set empty if desired */
 // const char hd[] = '\0';
 
@@ -100,23 +98,29 @@ const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-int bg_offset_x = 0;
-int bg_offset_y = 0;
-int fg_offset_x = 0;
-int fg_offset_y = 2;
-int hd_offset_x = 2;
-int hd_offset_y = -4;
+static const int bg_offset_x = 0;
+static const int bg_offset_y = 0;
+static const int fg_offset_x = 0;
+static const int fg_offset_y = 2;
+static const int hd_offset_x = 2;
+static const int hd_offset_y = -4;
 
-/* Toggle if you want to remove bg glyph when not fitting */
-int dynamic_resize = true;
-int resize_width = 44;
-int resize_height = 19;
+/* Toggle if you want to only print fg[] glyph at a certain size */
+static const int dynamic_resize = true; // ensure this value is greater than tiny mode
+static const int resize_width = 44;
+static const int resize_height = 19;
+
+/* Tiny mode options */
+static const char tn[] = "S.A.R.A";
+static const int tiny_mode = true;
+static const int tiny_mode_y = 7;
+static const int tiny_mode_x = 44;
 
 
 /* automate this and perform checks [make a perform check cmd-line option]
      - ensure no duplicate chars */
 
-wchar_t FG_STR[] = L"█╔╗╚╝║═";
-wchar_t BG_STR[] = L"`+so:-./";
+static const wchar_t FG_STR[] = L"█╔╗╚╝║═";
+static const wchar_t BG_STR[] = L"`+so:-./";
 
 #endif

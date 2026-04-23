@@ -22,6 +22,12 @@
 
 int main(int argc, char* argv[]){
 
+  populate_heights();
+
+  char str[20];
+  sprintf(str, "%d", FG_GLYPH_LENGTH);
+  error(str);
+
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
       get_helped();
@@ -922,6 +928,20 @@ void printstandard(){
 
 void quickprint(int fg_color, int bg_color, int printColorbar){
   clear();
+  if(dynamic_resize && WIN_SIZE == NORMAL){
+    attron(COLOR_PAIR(FOREGROUND));
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+      mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", fg[i]);
+    }
+    attroff(COLOR_PAIR(FOREGROUND));
+  } else if (WIN_SIZE == BIG){
+    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    }
+  }
+}
+
+void quickprintx(int fg_color, int bg_color, int printColorbar){
+  clear();
   if (WIN_SIZE == NORMAL){
     attron(COLOR_PAIR(FOREGROUND));
     for(int i = 0; i < GLYPH_HEIGHT; i++){
@@ -1270,7 +1290,7 @@ int check_size(){
     while (COL < NORMAL_GLYPH_LENGTH || ROW < NORMAL_GLYPH_HEIGHT){
       WIN_SIZE = SMALL;
       clear();
-      mvprintw(ROW/2, (COL-10)/2, "%s", "S.A.R.A.");
+      mvprintw(ROW/2, (COL-10)/2, "%s", tn);
       refresh();
 
 //    sleep 2 milliseconds

@@ -51,8 +51,8 @@ typedef enum {
   EMPTY
 } start_animation;
 
-extern wchar_t BG_STR[64];
-extern wchar_t FG_STR[16];
+static const wchar_t BG_STR[64];
+static const wchar_t FG_STR[16];
 
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
@@ -61,12 +61,14 @@ extern const int BIG_GLYPH_LENGTH;
 extern const int NORMAL_GLYPH_HEIGHT;
 extern const int NORMAL_GLYPH_LENGTH;
 
+extern int BG_GLYPH_HEIGHT;
+extern int BG_GLYPH_LENGTH;
+extern int FG_GLYPH_HEIGHT;
+extern int FG_GLYPH_LENGTH;
+
 extern int FOREGROUND;
 extern int BACKGROUND;
 extern int HOLOGRAPHIC;
-extern int FOLLOW;
-extern int use_bold_color_for_bg;
-extern int use_bold_color_for_fg;
 
 extern int ROW;
 extern int COL;
@@ -78,7 +80,6 @@ extern clock_t WAIT_START;
 
 extern start_animation START_ANIMATION;
 extern char HOLD_CHAR;
-extern float HOLD_CHAR_TIME;
 
 extern int STANDARD_GLITCH_TIME;
 extern int QUICK_GLITCH_TIME;

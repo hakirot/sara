@@ -28,8 +28,15 @@ clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
 clock_t WAIT_START;
 
+int BG_GLYPH_HEIGHT;
+int FG_GLYPH_HEIGHT;
+int BG_GLYPH_LENGTH;
+int FG_GLYPH_LENGTH;
+
 start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
+
+int HOLOGRAPHIC = 0;
 
 //int GLITCH_FRAME_TIME = 7000;
 //int STANDARD_GLITCH_TIME = 46;

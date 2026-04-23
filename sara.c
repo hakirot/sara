@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
 //double time_idle;
 //WAIT_START = clock();
   LAST_INPUT_TIME = clock();
-  bool should_print = false;
+  int should_print = false;
   init_window();
 
   while(1){
@@ -1037,7 +1037,7 @@ void neon(){
   int first_frame = 0;
   int second_frame = 0;
   int third_frame = 0;
-  bool colorbar_printed = 0;
+  int colorbar_printed = 0;
 
   clear();
   refresh();

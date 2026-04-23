@@ -22,12 +22,6 @@
 
 int main(int argc, char* argv[]){
 
-  populate_dimensions();
-
-  char str[20];
-  sprintf(str, "%d", FG_GLYPH_LENGTH);
-  error(str);
-
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
       get_helped();
@@ -92,6 +86,7 @@ int main(int argc, char* argv[]){
   LAST_INPUT_TIME = clock();
   int should_print = false;
   init_window();
+  populate_dimensions();
 
   while(1){
 

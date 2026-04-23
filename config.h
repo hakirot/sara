@@ -115,7 +115,7 @@ int resize_height = 19;
 
 /* automate this and perform checks [make a perform check cmd-line option]
      - ensure no duplicate chars */
-    
+
 wchar_t FG_STR[] = L"█╔╗╚╝║═";
 wchar_t BG_STR[] = L"`+so:-./";
 

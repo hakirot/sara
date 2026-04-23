@@ -12,7 +12,7 @@
 
 #include <wchar.h>
 
-int is_char_in_search(wchar_t wc, wchar_t * search_str);
+int is_char_in_search(wchar_t wc, const wchar_t * search_str);
 void print_clear_terminal();
 void init_window();
 void error(char * err);

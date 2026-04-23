@@ -53,7 +53,7 @@ static const char * bg[] = {
   "           ./ooosssso++osssssso+`           ",
   "          .oossssso-````/ossssss+`          ",
   "         -osssssso.      :ssssssso.         ",
-  "        :osssssss/        osssso+++.        ",
+  "        : sssssss/        osssso+++.        ",
   "       /ossssssss/        +ssssooo/-        ",
   "     `/ossssso+/:-        -:/+osssso+-      ",
   "    `+sso+:-`                 `.-/+oso:     ",
@@ -101,9 +101,9 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 static const int bg_offset_x = 0;
 static const int bg_offset_y = 0;
 static const int fg_offset_x = 0;
-static const int fg_offset_y = 2;
-static const int hd_offset_x = 2;
-static const int hd_offset_y = -4;
+static const int fg_offset_y = 1;
+static const int hd_offset_x = -9;
+static const int hd_offset_y = 1;
 
 /* Toggle if you want to only print fg[] glyph at a certain size */
 static const int dynamic_resize = true; // ensure this value is greater than tiny mode

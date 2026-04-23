@@ -20,6 +20,6 @@ void get_helped();
 void ensure_cache_dir();
 void ensure_path_perm(char * file_path, char perm);
 int roll(int num_sides);
-void populate_dimensions();
+void set_glyph_dimensions();
 
 #endif

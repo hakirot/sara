@@ -178,7 +178,7 @@ int roll(int num_sides){
   return random_roll;
 }
 
-void populate_dimensions(){
+void set_glyph_dimensions(){
   BG_GLYPH_HEIGHT = sizeof(bg)/sizeof(bg[0]);
   FG_GLYPH_HEIGHT = sizeof(fg)/sizeof(fg[0]);
   BG_GLYPH_LENGTH = mbstowcs(NULL, bg[0], 0);

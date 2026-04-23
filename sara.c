@@ -22,7 +22,7 @@
 
 int main(int argc, char* argv[]){
 
-  populate_heights();
+  populate_dimensions();
 
   char str[20];
   sprintf(str, "%d", FG_GLYPH_LENGTH);

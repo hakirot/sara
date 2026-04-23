@@ -13,6 +13,9 @@
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;
 
+int FOREGROUND = WHITE;
+int BACKGROUND = BLACK;
+
 // Pull this from config.h
 // how does sucklesss get away with this
 const int BIG_GLYPH_HEIGHT = 19;

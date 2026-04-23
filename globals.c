@@ -7,14 +7,15 @@
 --   ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝.c--
                                                                      */
 
-#include <time.h>
 #include "globals.h"
+#include "config.h"
+#include <time.h>
 
 int GLYPH_LENGTH;
 int GLYPH_HEIGHT;
 
-int FOREGROUND = WHITE;
-int BACKGROUND = BLACK;
+int FOREGROUND = fg_c;
+int BACKGROUND = bg_c;
 
 // Pull this from config.h
 // how does sucklesss get away with this

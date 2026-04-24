@@ -34,7 +34,9 @@ static const float HOLD_CHAR_TIME = 0.00001;
            Glyphs must contain distinct characters
            from other glyphs
 
-           Ensure strings in character array are equal length */
+           Ensure strings in character array are equal length 
+
+           im[] must have identical dimensions to fg[] if defined            */
 
 
 /* background glyph */

@@ -37,6 +37,8 @@ int FG_GLYPH_HEIGHT;
 int BG_GLYPH_LENGTH;
 int FG_GLYPH_LENGTH;
 
+int IM_SET = 0;
+
 start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
 

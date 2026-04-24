@@ -66,6 +66,8 @@ extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;
 extern int FG_GLYPH_LENGTH;
 
+extern int IM_SET;
+
 extern int FOREGROUND;
 extern int BACKGROUND;
 extern int HOLOGRAPHIC;

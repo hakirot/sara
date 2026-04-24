@@ -34,21 +34,14 @@ void glitch(int numFrames, int full){
       rng_backdrop--;
     }
 
-    // debug
-//  char er[32];
-//  sprintf(er, "%d", IM_SET);
-//  error(er);
-
     if (WIN_SIZE == NORMAL) {
-//    attron(COLOR_PAIR(FOREGROUND));
-//    if (rng_backdrop == 0){
-//      mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
-//    } else if (rng_backdrop == 1){
-//      mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
-//    } else {
-//      mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
-//    }
-//    attroff(COLOR_PAIR(FOREGROUND));
+      attron(COLOR_PAIR(FOREGROUND));
+      if (rng_backdrop == 0){
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", fg[rng_row]);
+      } else if (IM_SET){
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", im[rng_row]);
+      }
+      attroff(COLOR_PAIR(FOREGROUND));
     }
 
     if (WIN_SIZE == BIG) {
@@ -85,8 +78,8 @@ void glitch(int numFrames, int full){
       attroff(COLOR_PAIR(FOREGROUND));
     }
 
-//  check_char();
-//  if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+    check_char();
+    if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     refresh();
 
     getmaxyx(stdscr, ROW, COL);
@@ -96,68 +89,6 @@ void glitch(int numFrames, int full){
   }
 
 //quickprint(FOREGROUND, BACKGROUND, 0);
-}
-
-// kill me
-void _glitch(int numFrames, int full){
-
-  CACHE = ROW + COL;
-
-  int rng_row, rng_shift, rng_backdrop = 0;
-  quickprint(FOREGROUND, BACKGROUND, 1);
-
-  for( int i = 0 ; i < numFrames; i++ ) {
-    rng_row   = rand() % NORMAL_GLYPH_HEIGHT;    // RNG 0 and 6
-    rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
-    rng_backdrop = rand() % 3;          // RNG 0 and 2
-
-    if (WIN_SIZE == NORMAL) {
-      attron(COLOR_PAIR(FOREGROUND));
-      if (rng_backdrop == 0){
-        mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
-      } else if (rng_backdrop == 1){
-        mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
-      } else {
-        mvprintw(ROW/2 - 3 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
-      }
-      attroff(COLOR_PAIR(FOREGROUND));
-    }
-
-    if (WIN_SIZE == BIG) {
-
-      if(full == 1){
-
-        attron(COLOR_PAIR(BACKGROUND));
-        int rng_rowx = rand() % BIG_GLYPH_HEIGHT;
-        int rng_shift = (rand() % 7) - 1;       // RNG -1 and 1
-        if(rng_rowx < 7 || rng_rowx > 13){
-          mvprintw(ROW/2 - 9 + rng_rowx, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", arch[rng_rowx]);
-        }
-        attroff(COLOR_PAIR(BACKGROUND));
-      }
-
-      attron(COLOR_PAIR(FOREGROUND));
-      if (rng_backdrop == 0){
-        mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", title[rng_row]);
-      } else if (rng_backdrop == 1){
-        mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", backdrop[rng_row]);
-      } else {
-        mvprintw(ROW/2 - 2 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift, "%s", foreground[rng_row]);
-      }
-      attroff(COLOR_PAIR(FOREGROUND));
-    }
-
-    check_char();
-    if (rng_row == 3 && HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
-    refresh();
-
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL) break;
-
-    usleep(GLITCH_FRAME_TIME);
-  }
-
-  quickprint(FOREGROUND, BACKGROUND, 0);
 }
 
 void shutter_slide(){

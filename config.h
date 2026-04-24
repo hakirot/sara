@@ -20,9 +20,8 @@ static const int bg_c = GREEN;
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
 
-// why do I not need to define these in the header file
-static const int use_fg_color_for_hd_as_bg = true;  // ensure both are not true
-static const int use_bg_color_for_hd_as_bg = false; // ensure both are not true
+static const int use_fg_c_for_hd_as_bg = true;  // ensure both are not true
+static const int use_bg_c_for_hd_as_bg = false; // ensure both are not true
 
 static const int GLITCH_FRAME_TIME = 3500;
 static const float HOLD_CHAR_TIME = 0.00001;

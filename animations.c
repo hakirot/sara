@@ -91,6 +91,338 @@ void glitch(int numFrames, int full){
 //quickprint(FOREGROUND, BACKGROUND, 0);
 }
 
+void neon(){
+
+  clock_t cycle_start = clock();
+  double cycle_length = 0.3;
+  double elapsed_time = 0;
+
+  int first_frame = 0;
+  int second_frame = 0;
+  int third_frame = 0;
+  int colorbar_printed = 0;
+
+  clear();
+  refresh();
+
+  while(cycle_length > elapsed_time){
+
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+    if(elapsed_time > 0.05 && first_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", backdrop[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is BIG
+        for(int i = 0; i < 19; i++){
+          attron(COLOR_PAIR(BACKGROUND));
+          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2, "%s", arch[i]);
+          attroff(COLOR_PAIR(BACKGROUND));
+        }
+      }
+
+      if (colorbar_printed == false ){
+        if (WIN_SIZE == BIG) {
+          for(int i = 1; i < 9; i++){
+            attron(COLOR_PAIR(i));
+            mvaddwstr(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+            attroff(COLOR_PAIR(i));
+          }
+        }
+        colorbar_printed == true;
+      }
+
+      first_frame = 1;
+    }
+
+    if(elapsed_time > 0.1 && second_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is BIG
+
+        for(int i = 0; i < 6; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = backdropfill[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(BACKGROUND));
+            attroff(COLOR_PAIR(FOREGROUND));
+            iter_row += len;
+            iter_col++;
+          }
+        }
+
+      }
+      second_frame = 1;
+    }
+
+    if(elapsed_time > 0.2 && third_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is big
+
+        for(int i = 0; i < 6; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = titlefill[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(BACKGROUND));
+            attroff(COLOR_PAIR(FOREGROUND));
+            iter_row += len;
+            iter_col++;
+          }
+        }
+
+      }
+      third_frame = 1;
+    }
+
+    check_char();
+    if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+    refresh();
+  }
+
+  quickprint(FOREGROUND, BACKGROUND, 0);
+
+//mvprintw(ROW/2 + 3, (COL-GLYPH_LENGTH)/2, "%s", title[6]);
+  refresh();
+}
+
+void _neon(){
+
+  clock_t cycle_start = clock();
+  double cycle_length = 0.3;
+  double elapsed_time = 0;
+
+  int first_frame = 0;
+  int second_frame = 0;
+  int third_frame = 0;
+  int colorbar_printed = 0;
+
+  clear();
+  refresh();
+
+  while(cycle_length > elapsed_time){
+
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+    if(elapsed_time > 0.05 && first_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", backdrop[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is BIG
+        for(int i = 0; i < 19; i++){
+          attron(COLOR_PAIR(BACKGROUND));
+          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2, "%s", arch[i]);
+          attroff(COLOR_PAIR(BACKGROUND));
+        }
+      }
+
+      if (colorbar_printed == false ){
+        if (WIN_SIZE == BIG) {
+          for(int i = 1; i < 9; i++){
+            attron(COLOR_PAIR(i));
+            mvaddwstr(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+            attroff(COLOR_PAIR(i));
+          }
+        }
+        colorbar_printed == true;
+      }
+
+      first_frame = 1;
+    }
+
+    if(elapsed_time > 0.1 && second_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is BIG
+
+        for(int i = 0; i < 6; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = backdropfill[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(BACKGROUND));
+            attroff(COLOR_PAIR(FOREGROUND));
+            iter_row += len;
+            iter_col++;
+          }
+        }
+
+      }
+      second_frame = 1;
+    }
+
+    if(elapsed_time > 0.2 && third_frame == 0){
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is big
+
+        for(int i = 0; i < 6; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = titlefill[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(BACKGROUND));
+            attroff(COLOR_PAIR(FOREGROUND));
+            iter_row += len;
+            iter_col++;
+          }
+        }
+
+      }
+      third_frame = 1;
+    }
+
+    check_char();
+    if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+    refresh();
+  }
+
+  quickprint(FOREGROUND, BACKGROUND, 0);
+
+//mvprintw(ROW/2 + 3, (COL-GLYPH_LENGTH)/2, "%s", title[6]);
+  refresh();
+}
+
+void neon_reverse(){
+
+  clock_t cycle_start = clock();
+  double cycle_length = 0.2;
+  double elapsed_time = 0;
+
+  int first_frame = 0;
+  int second_frame = 0;
+
+  clear();
+  refresh();
+
+  while(cycle_length > elapsed_time){
+
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+    if(elapsed_time > 0.00 && first_frame == 0){
+      clear();
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", backdrop[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is BIG
+
+        for(int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = archsarazap[i];
+          int iter_col = 0; // Track the column position
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+
+            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
+            mvadd_wch(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+            attroff(COLOR_PAIR(BACKGROUND));
+            attroff(COLOR_PAIR(FOREGROUND));
+            iter_row += len;
+            iter_col++;
+          }
+        }
+      }
+      first_frame = 1;
+    }
+
+    if(elapsed_time > 0.1 && second_frame == 0){
+      clear();
+      if (WIN_SIZE == NORMAL){
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < 6; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      } else { // screen is big
+        for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+          attron(COLOR_PAIR(BACKGROUND));
+          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 - 0, arch[i]);
+          attroff(COLOR_PAIR(BACKGROUND));
+        }
+      }
+      second_frame = 1;
+    }
+
+    check_char();
+    if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+    refresh();
+  }
+}
+
+
 void shutter_slide(){
   int num_frames = 8;
   int margin_width = (COL - NORMAL_GLYPH_LENGTH) / 2;

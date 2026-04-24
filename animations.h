@@ -11,6 +11,8 @@
 #define ANIMATIONS_H
 
 void glitch(int numFrames, int bigmode);
+void neon();
+void neon_reverse();
 void shutter_slide();
 // cycle_length, roll_chance, and usleep_time can all be parameters to change
 // behavior

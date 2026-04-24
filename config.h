@@ -72,7 +72,10 @@ static const char * fg[] = {
 };
 
 
-/* optional intermediate glyph */
+/* optional intermediate glyph - an effect layer for the following animations:
+   - glitch
+   - neon
+*/
 static const char * im[7] = {
   "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
   "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",

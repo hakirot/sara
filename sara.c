@@ -963,10 +963,22 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
         iter_col++;
       }
     }
+
+    // header
     if(strlen(hd) > 0){
+      if(use_bold_color_for_fg) attron(A_BOLD);
       attron(COLOR_PAIR(fg_color + 8));
       mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
     }
+
+    // colorbar
+//  if (printColorbar){
+//    for(int i = 1; i < 9; i++){
+//      attron(COLOR_PAIR(i));
+//      mvaddwstr(ROW/2 + 5, (COL-GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+//      attroff(COLOR_PAIR(i));
+//    }
+//  }
 
     attroff(COLOR_PAIR(fg_color + 8));
     attroff(COLOR_PAIR(FOREGROUND));

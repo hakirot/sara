@@ -132,7 +132,7 @@ void neon(){
         for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
           mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
         }
-        attroff(COLOR_PAIR(A_BOLD));
+        attroff(A_BOLD);
         attroff(COLOR_PAIR(BACKGROUND));
       }
 

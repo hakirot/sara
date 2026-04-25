@@ -1,13 +1,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include "globals.h"
-/*   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   -- */
-/*  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   --
+/*   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   --
+--  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   --
 --  ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗  --
 --  ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║  --
 --  ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝  --
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
-                                                             */
+                                                                         */
 
 
 /* Toggle if you chdir */
@@ -29,14 +29,14 @@ static const float HOLD_CHAR_TIME = 0.00001;
 
 /* CUSTOM GLYPHS */ 
 
-        /* RESTRICTIONS 
+    /* RESTRICTIONS
 
-           Glyphs must contain distinct characters
-           from other glyphs
+       Glyphs must contain distinct characters
+       from other glyphs
 
-           Ensure strings in character array are equal length 
+       Ensure strings in character array are equal length 
 
-           im[] must have identical dimensions to fg[] if defined            */
+       im[] must have identical dimensions to fg[] if defined            */
 
 
 /* background glyph */

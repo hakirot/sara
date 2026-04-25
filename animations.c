@@ -281,7 +281,6 @@ void neon_reverse(){
   int first_frame = 0;
   int second_frame = 0;
 
-  clear();
   refresh();
 
   while(cycle_length > elapsed_time){
@@ -289,7 +288,6 @@ void neon_reverse(){
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.00 && first_frame == 0){
-      clear();
       if (WIN_SIZE == NORMAL){
         attron(COLOR_PAIR(FOREGROUND));
         if(use_bold_color_for_fg) attron(A_BOLD);
@@ -298,8 +296,26 @@ void neon_reverse(){
             mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", im[i]);
           }
         } else {
+          // TODO repeated code
           for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-            mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%c", ' ');
+            mbstate_t state;
+            memset(&state, 0, sizeof(mbstate_t));
+            int iter_col = 0; // Track the column position
+            const char *iter_row = fg[i];
+            while (*iter_row) {
+              wchar_t wc;
+              size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+              if (*iter_row == ' '){
+                iter_row += len;
+                iter_col++;
+                continue;
+              }
+
+              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, '-');
+              iter_row += len;
+              iter_col++;
+            }
           }
         }
         attroff(COLOR_PAIR(FOREGROUND));
@@ -307,13 +323,13 @@ void neon_reverse(){
 
       } else { // screen is BIG
 
-        // TODO: This code is repeated?
-        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          int iter_col = 0; // Track the column position
+        if(IM_SET){
+          // TODO all repeat code
+          for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+            mbstate_t state;
+            memset(&state, 0, sizeof(mbstate_t));
+            int iter_col = 0; // Track the column position
 
-          if(IM_SET){
             const char *iter_row = im[i];
             while (*iter_row) {
               wchar_t wc;
@@ -331,7 +347,13 @@ void neon_reverse(){
               iter_row += len;
               iter_col++;
             }
-          } else {
+          }
+        } else {
+          // TODO all repeat code
+          for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+            mbstate_t state;
+            memset(&state, 0, sizeof(mbstate_t));
+            int iter_col = 0; // Track the column position
             const char *iter_row = fg[i];
             while (*iter_row) {
               wchar_t wc;
@@ -343,14 +365,10 @@ void neon_reverse(){
                 continue;
               }
 
-              wc = ' ';
-              cchar_t cchar;
-              setcchar(&cchar, &wc, 0, 0, NULL);
-              mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, &cchar);
+              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, '-');
               iter_row += len;
               iter_col++;
             }
-
           }
         }
       }
@@ -361,14 +379,16 @@ void neon_reverse(){
       clear();
       if (WIN_SIZE == NORMAL){
         attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < 6; i++){
-          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", bg[i]); // todo, make these minuses or something
         }
         attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is big
         for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+          if(use_bold_color_for_bg) attron(A_BOLD);
           attron(COLOR_PAIR(BACKGROUND));
-          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 - 0, arch[i]);
+          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2 - 0, "%s", bg[i]);
+          attroff(A_BOLD);
           attroff(COLOR_PAIR(BACKGROUND));
         }
       }
@@ -380,7 +400,6 @@ void neon_reverse(){
     refresh();
   }
 }
-
 
 void shutter_slide(){
   int num_frames = 8;

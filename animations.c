@@ -33,11 +33,17 @@ void glitch(int numFrames, int full){
 
     if (WIN_SIZE == NORMAL) {
       attron(COLOR_PAIR(FOREGROUND));
+      if(use_bold_color_for_fg) attron(A_BOLD);
       if (rng_backdrop == 0){
-        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", fg[rng_row]);
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
+                (COL - FG_GLYPH_LENGTH)/2 - rng_shift,
+                 "%s", fg[rng_row]);
       } else if (IM_SET){
-        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", im[rng_row]);
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
+                (COL - FG_GLYPH_LENGTH)/2 - rng_shift,
+                 "%s", im[rng_row]);
       }
+      attroff(A_BOLD);
       attroff(COLOR_PAIR(FOREGROUND));
     }
 
@@ -45,18 +51,20 @@ void glitch(int numFrames, int full){
 
       if(full == 1){
 
-        use_bold_color_for_bg ? attron(A_BOLD): 0;
+        if(use_bold_color_for_bg) attron(A_BOLD);
         attron(COLOR_PAIR(BACKGROUND));
         int rng_rowx = rand() % BG_GLYPH_HEIGHT;
         int rng_shift = (rand() % 2) - 1;       // RNG -1 and 1
-//      if(rng_rowx < 7 || rng_rowx > 13){
-          mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + rng_rowx,
-                  (COL - BG_GLYPH_LENGTH)/2 + bg_offset_x - rng_shift,
-                   "%s", bg[rng_rowx]);
-//      }
+
+        mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + rng_rowx,
+                (COL - BG_GLYPH_LENGTH)/2 + bg_offset_x - rng_shift,
+                 "%s", bg[rng_rowx]);
+
         attroff(COLOR_PAIR(BACKGROUND));
+        attroff(A_BOLD);
       }
 
+      if(use_bold_color_for_fg) attron(A_BOLD);
       attron(COLOR_PAIR(FOREGROUND));
       if (rng_backdrop == 0){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
@@ -73,6 +81,7 @@ void glitch(int numFrames, int full){
                  "%s", im[rng_row]);
       }
       attroff(COLOR_PAIR(FOREGROUND));
+      attroff(A_BOLD);
     }
 
     check_char();
@@ -181,19 +190,12 @@ void neon(){
     }
 
     if(elapsed_time > 0.2 && third_frame == 0){
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == NORMAL && hd[0] != 0){
+        if(use_bold_color_for_fg) attron(A_BOLD); // unsure
         attron(COLOR_PAIR(FOREGROUND));
-//      for(int i = 0; i < 6; i++){
-//        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
-//      }
-
-        if(hd[0] != 0){
-//        if(use_bold_color_for_fg) attron(A_BOLD); // unsure
-          attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
-        }
-
+        mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
         attroff(COLOR_PAIR(FOREGROUND));
+        attroff(A_BOLD);
       } else { // screen is big
 
         for(int i = 0; i < FG_GLYPH_HEIGHT; i++){

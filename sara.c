@@ -938,10 +938,11 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
 
   } else if (WIN_SIZE == BIG){
 
+    // TODO this should just be a generic print_bg_glyph func
     attron(COLOR_PAIR(bg_color));
     if(use_bold_color_for_bg) attron(A_BOLD);
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-      mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]); // add bg_offsets
+      mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(bg_color));

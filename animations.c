@@ -107,14 +107,9 @@ void neon(){
   int first_frame = 0;
   int second_frame = 0;
   int third_frame = 0;
-  int colorbar_printed = false;
 
   clear();
   refresh();
-
-//char err[32];
-//sprintf(err, "%d", IM_SET);
-//error(err);
 
   while(cycle_length > elapsed_time){
 
@@ -129,17 +124,16 @@ void neon(){
         print_bg();
       }
 
-      if (colorbar_printed == false ){
-        if (WIN_SIZE == BIG) {
-          for(int i = 1; i < 9; i++){
-            attron(COLOR_PAIR(i));
-            mvaddwstr(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
-            attroff(COLOR_PAIR(i));
-          }
+      // TODO: create colorbar options
+      if (WIN_SIZE == BIG) {
+        for(int i = 1; i < 9; i++){
+          attron(COLOR_PAIR(i));
+          mvaddwstr(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+          attroff(COLOR_PAIR(i));
         }
-        colorbar_printed = true;
       }
 
+      refresh();
       first_frame = 1;
     }
 
@@ -160,6 +154,7 @@ void neon(){
           print_overlay(fg, '-');
         }
       }
+      refresh();
       second_frame = 1;
     }
 
@@ -169,18 +164,15 @@ void neon(){
       } else {
         print_overlay(fg, 0);
       }
+      refresh();
       third_frame = 1;
     }
 
     check_char();
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
-    refresh();
   }
 
   quickprint(FOREGROUND, BACKGROUND, 0);
-
-//mvprintw(ROW/2 + 3, (COL-GLYPH_LENGTH)/2, "%s", title[6]);
-  refresh();
 }
 
 void neon_reverse(){
@@ -504,11 +496,11 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
     print_overlay(fg, 0);
     print_header();
 
-    // colorbar todo: abstract this to separate function and add config.h options to it
+    // colorbar TODO: abstract this to separate function and add config.h options to it
     if (printColorbar){
       for(int i = 1; i < 9; i++){
         attron(COLOR_PAIR(i));
-        mvaddwstr(ROW/2 + 5, (COL-GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+        mvaddwstr(ROW/2 + 5, (COL-FG_GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
         attroff(COLOR_PAIR(i));
       }
     }
@@ -595,6 +587,7 @@ void print_header(){
       mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
     }
 
+//  refresh();
     attroff(A_BOLD);
     attroff(COLOR_PAIR(FOREGROUND));
     attroff(COLOR_PAIR(FOREGROUND + 16));

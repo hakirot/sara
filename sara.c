@@ -926,9 +926,15 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
   if(dynamic_resize && WIN_SIZE == NORMAL){
     attron(COLOR_PAIR(FOREGROUND));
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-      mvprintw(ROW/2 - 3 + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
+      mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
     }
     attroff(COLOR_PAIR(FOREGROUND));
+    if(hd[0] != 0){
+      if(use_bold_color_for_fg) attron(A_BOLD);
+      attron(COLOR_PAIR(fg_color));
+      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
+    }
+
   } else if (WIN_SIZE == BIG){
 
     attron(COLOR_PAIR(BACKGROUND));
@@ -965,11 +971,11 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
     }
 
     // header
-    if(strlen(hd) > 0){
+    if(hd[0] != 0){
       if(use_bold_color_for_fg) attron(A_BOLD);
       attron(COLOR_PAIR(fg_color + 8));
       mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
-    }
+    } 
 
     // colorbar todo: abstract this to separate function and add config.h options to it
     if (printColorbar){
@@ -981,6 +987,7 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
     }
 
     attroff(COLOR_PAIR(fg_color + 8));
+    attroff(COLOR_PAIR(fg_color));
     attroff(COLOR_PAIR(FOREGROUND));
     attroff(A_BOLD);
   }

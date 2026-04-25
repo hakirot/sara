@@ -37,9 +37,9 @@ void glitch(int numFrames, int full){
     if (WIN_SIZE == NORMAL) {
       attron(COLOR_PAIR(FOREGROUND));
       if (rng_backdrop == 0){
-        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", fg[rng_row]);
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", fg[rng_row]);
       } else if (IM_SET){
-        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", im[rng_row]);
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y, (COL - FG_GLYPH_LENGTH)/2 - rng_shift, "%s", im[rng_row]);
       }
       attroff(COLOR_PAIR(FOREGROUND));
     }
@@ -88,19 +88,19 @@ void glitch(int numFrames, int full){
     usleep(GLITCH_FRAME_TIME);
   }
 
-//quickprint(FOREGROUND, BACKGROUND, 0);
+  quickprint(FOREGROUND, BACKGROUND, 0);
 }
 
 void neon(){
 
-  clock_t cycle_start = clock();
   double cycle_length = 0.3;
   double elapsed_time = 0;
+  clock_t cycle_start = clock();
 
   int first_frame = 0;
   int second_frame = 0;
   int third_frame = 0;
-  int colorbar_printed = 0;
+  int colorbar_printed = false;
 
   clear();
   refresh();
@@ -110,16 +110,18 @@ void neon(){
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.05 && first_frame == 0){
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == NORMAL && IM_SET){
         attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < 6; i++){
-          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", backdrop[i]);
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+          mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", im[i]);
         }
         attroff(COLOR_PAIR(FOREGROUND));
+      } else if (WIN_SIZE == NORMAL && !IM_SET){
+
       } else { // screen is BIG
-        for(int i = 0; i < 19; i++){
+        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
           attron(COLOR_PAIR(BACKGROUND));
-          mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2, "%s", arch[i]);
+          mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
           attroff(COLOR_PAIR(BACKGROUND));
         }
       }
@@ -132,7 +134,7 @@ void neon(){
             attroff(COLOR_PAIR(i));
           }
         }
-        colorbar_printed == true;
+        colorbar_printed = true;
       }
 
       first_frame = 1;
@@ -141,8 +143,8 @@ void neon(){
     if(elapsed_time > 0.1 && second_frame == 0){
       if (WIN_SIZE == NORMAL){
         attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < 6; i++){
-          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+          mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
         }
         attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is BIG
@@ -176,29 +178,38 @@ void neon(){
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL){
         attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < 6; i++){
-          mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+//      for(int i = 0; i < 6; i++){
+//        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
+//      }
+
+        if(hd[0] != 0){
+//        if(use_bold_color_for_fg) attron(A_BOLD); // unsure
+          attron(COLOR_PAIR(FOREGROUND));
+          mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
         }
+
         attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is big
 
-        for(int i = 0; i < 6; i++){
-
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
           mbstate_t state;
           memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = titlefill[i];
+          const char *iter_row = fg[i];
           int iter_col = 0; // Track the column position
+
           while (*iter_row) {
             wchar_t wc;
             size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
 
+            if (*iter_row == ' '){
+              iter_row += len;
+              iter_col++;
+              continue;
+            }
+
             cchar_t cchar;
             setcchar(&cchar, &wc, 0, 0, NULL);
-
-            is_char_in_search(wc, BG_STR) ? attron(COLOR_PAIR(BACKGROUND)) : attron(COLOR_PAIR(FOREGROUND)) ;
-            mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
-            attroff(COLOR_PAIR(BACKGROUND));
-            attroff(COLOR_PAIR(FOREGROUND));
+            mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, &cchar);
             iter_row += len;
             iter_col++;
           }

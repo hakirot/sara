@@ -93,7 +93,7 @@ static const char * im[] = {
 /* optional header */
 static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 /* Set empty if desired */
-// const char hd[] = '\0';
+//static const char hd[] = {'\0'};
 
 
 /* POSITION */
@@ -102,12 +102,18 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_x = 0;
 static const int bg_offset_y = 0;
-static const int fg_offset_x = 0;
+static const int bg_offset_x = 0;
 static const int fg_offset_y = 1;
-static const int hd_offset_x = -9;
+static const int fg_offset_x = 0;
+
+/* header position when fullsize mode */
 static const int hd_offset_y = 1;
+static const int hd_offset_x = -9;
+
+/* header position when small window mode */
+static const int hd_offset_y_min = 1;
+static const int hd_offset_x_min = -8;
 
 /* Toggle if you want to only print fg[] glyph at a certain size */
 static const int dynamic_resize = true; // ensure this value is greater than tiny mode

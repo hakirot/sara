@@ -198,6 +198,8 @@ void neon(){
         attroff(A_BOLD);
       } else { // screen is big
 
+        attron(COLOR_PAIR(FOREGROUND));
+        if(use_bold_color_for_fg) attron(A_BOLD);
         for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
           mbstate_t state;
           memset(&state, 0, sizeof(mbstate_t));
@@ -221,6 +223,8 @@ void neon(){
             iter_col++;
           }
         }
+        attroff(COLOR_PAIR(FOREGROUND));
+        attroff(A_BOLD);
 
       }
       third_frame = 1;

@@ -167,35 +167,7 @@ void neon(){
       } else { // screen is BIG
 
         if (IM_SET){
-          // TODO: This code is repeated
-          if(use_bold_color_for_fg) attron(A_BOLD);
-          attron(COLOR_PAIR(FOREGROUND));
-          for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-            mbstate_t state;
-            memset(&state, 0, sizeof(mbstate_t));
-            const char *iter_row = im[i];
-            int iter_col = 0; // Track the column position
-
-            while (*iter_row) {
-              wchar_t wc;
-              size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
-
-              if (*iter_row == ' '){
-                iter_row += len;
-                iter_col++;
-                continue;
-              }
-
-              cchar_t cchar;
-              setcchar(&cchar, &wc, 0, 0, NULL);
-              mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, &cchar);
-              iter_row += len;
-              iter_col++;
-            }
-          }
-          attroff(COLOR_PAIR(FOREGROUND));
-          attroff(A_BOLD);
-
+          print_overlay(im);
         } else {
           // TODO: This code is repeated
           for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -736,7 +708,7 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
   }
 }
 
-void print_bg () {
+void print_bg() {
   clear();
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);
@@ -745,4 +717,35 @@ void print_bg () {
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(BACKGROUND));
+}
+
+void print_overlay(const char * glyph[]){
+  // TODO: This code is repeated
+  if(use_bold_color_for_fg) attron(A_BOLD);
+  attron(COLOR_PAIR(FOREGROUND));
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = glyph[i];
+    int iter_col = 0; // Track the column position
+
+    while (*iter_row) {
+      wchar_t wc;
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state); // Convert to wide char
+
+      if (*iter_row == ' '){
+        iter_row += len;
+        iter_col++;
+        continue;
+      }
+
+      cchar_t cchar;
+      setcchar(&cchar, &wc, 0, 0, NULL);
+      mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, &cchar);
+      iter_row += len;
+      iter_col++;
+    }
+  }
+  attroff(COLOR_PAIR(FOREGROUND));
+  attroff(A_BOLD);
 }

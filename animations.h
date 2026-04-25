@@ -12,6 +12,7 @@
 
 void quickprint(int fg, int bg, int printColorbar);
 void print_bg();
+void print_overlay(const char * glyph[]);
 void glitch(int numFrames, int bigmode);
 void neon();
 void neon_reverse();

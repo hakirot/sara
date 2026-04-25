@@ -933,6 +933,7 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
       if(use_bold_color_for_fg) attron(A_BOLD);
       attron(COLOR_PAIR(fg_color));
       mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
+      attroff(A_BOLD);
     }
 
   } else if (WIN_SIZE == BIG){
@@ -942,10 +943,11 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]); // add bg_offsets
     }
+    attroff(A_BOLD);
     attroff(COLOR_PAIR(BACKGROUND));
 
     attron(COLOR_PAIR(FOREGROUND));
-    use_bold_color_for_fg ? attron(A_BOLD) : attroff(A_BOLD);
+    if(use_bold_color_for_fg) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
@@ -969,12 +971,14 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
         iter_col++;
       }
     }
+    attroff(A_BOLD);
 
     // header
     if(hd[0] != 0){
       if(use_bold_color_for_fg) attron(A_BOLD);
       attron(COLOR_PAIR(fg_color + 8));
       mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
+      attroff(A_BOLD);
     } 
 
     // colorbar todo: abstract this to separate function and add config.h options to it

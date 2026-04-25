@@ -109,18 +109,22 @@ void neon(){
     if(elapsed_time > 0.05 && first_frame == 0){
       if (WIN_SIZE == NORMAL && IM_SET){
         attron(COLOR_PAIR(FOREGROUND));
+        if(use_bold_color_for_fg) attron(A_BOLD);
         for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
           mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", im[i]);
         }
         attroff(COLOR_PAIR(FOREGROUND));
+        attroff(COLOR_PAIR(A_BOLD));
       } else if (WIN_SIZE == NORMAL && !IM_SET){
 
       } else { // screen is BIG
+        if(use_bold_color_for_bg) attron(A_BOLD);
+        attron(COLOR_PAIR(BACKGROUND));
         for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-          attron(COLOR_PAIR(BACKGROUND));
           mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
-          attroff(COLOR_PAIR(BACKGROUND));
         }
+        attroff(COLOR_PAIR(A_BOLD));
+        attroff(COLOR_PAIR(BACKGROUND));
       }
 
       if (colorbar_printed == false ){
@@ -140,9 +144,11 @@ void neon(){
     if(elapsed_time > 0.1 && second_frame == 0){
       if (WIN_SIZE == NORMAL){
         attron(COLOR_PAIR(FOREGROUND));
+        if(use_bold_color_for_fg) attron(A_BOLD);
         for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
           mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
         }
+        attroff(A_BOLD);
         attroff(COLOR_PAIR(FOREGROUND));
       } else { // screen is BIG
 

@@ -116,7 +116,7 @@ static const int hd_offset_y_min = 1;
 static const int hd_offset_x_min = -8;
 
 /* Toggle if you want to only print fg[] glyph at a certain size */
-static const int dynamic_resize = true; // ensure this value is greater than tiny mode
+static const int dynamic_resize = true; // TODO ensure this value is greater than tiny mode
 static const int resize_width = 44;
 static const int resize_height = 19;
 

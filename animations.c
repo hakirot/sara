@@ -165,12 +165,8 @@ void neon(){
 
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL && hd[0] != 0){
-        if(use_bold_color_for_fg) attron(A_BOLD); // unsure
-        attron(COLOR_PAIR(FOREGROUND));
-        mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
-        attroff(COLOR_PAIR(FOREGROUND));
-        attroff(A_BOLD);
-      } else { // screen is big
+        print_header();
+      } else {
         print_overlay(fg, 0);
       }
       third_frame = 1;
@@ -501,38 +497,12 @@ void tv_static(double cycle_length){
 void quickprint(int fg_color, int bg_color, int printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){
-    attron(COLOR_PAIR(fg_color));
-    if(use_bold_color_for_fg) attron(A_BOLD);
-    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-      mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", fg[i]);
-    }
-    if(hd[0] != 0){
-      attron(COLOR_PAIR(fg_color));
-      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
-    }
-    attroff(A_BOLD);
-    attroff(COLOR_PAIR(FOREGROUND));
-
+    print_fg(fg);
+    print_header();
   } else if (WIN_SIZE == BIG){
-
     print_bg();
     print_overlay(fg, 0);
-
-    // header
-    if(hd[0] != 0){
-      if(use_bold_color_for_fg){
-        attron(COLOR_PAIR(fg_color + 16));
-        attron(A_BOLD);
-        attron(A_STANDOUT);
-      } else {
-        attron(COLOR_PAIR(fg_color + 8));
-      }
-      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
-      attroff(A_BOLD);
-      attroff(COLOR_PAIR(fg_color));
-      attroff(COLOR_PAIR(fg_color + 16));
-      attroff(A_STANDOUT);
-    }
+    print_header();
 
     // colorbar todo: abstract this to separate function and add config.h options to it
     if (printColorbar){
@@ -602,8 +572,32 @@ void print_fg(const char * glyph[]){
   attron(COLOR_PAIR(FOREGROUND));
   if(use_bold_color_for_fg) attron(A_BOLD);
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", im[i]);
+    mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", glyph[i]);
   }
   attroff(COLOR_PAIR(FOREGROUND));
   attroff(COLOR_PAIR(A_BOLD));
+}
+
+void print_header(){
+
+  if(hd[0] != 0){
+    if(use_bold_color_for_fg){
+      attron(COLOR_PAIR(FOREGROUND + 16));
+      attron(A_BOLD);
+      attron(A_STANDOUT);
+    } else {
+      attron(COLOR_PAIR(FOREGROUND + 8));
+    }
+
+    if(WIN_SIZE == BIG){
+      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
+    } else {
+      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
+    }
+
+    attroff(A_BOLD);
+    attroff(COLOR_PAIR(FOREGROUND));
+    attroff(COLOR_PAIR(FOREGROUND + 16));
+    attroff(A_STANDOUT);
+  }
 }

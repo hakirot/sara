@@ -24,15 +24,12 @@ void glitch(int numFrames, int full){
   CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
+  int rng_backdrop_rng = 2; if(IM_SET) rng_backdrop_rng++;
 
   for( int i = 0 ; i < numFrames; i++ ) {
     rng_row   = rand() % FG_GLYPH_HEIGHT;
     rng_shift = (rand() % 3) - 1;       // RNG -1 and 1
-    rng_backdrop = rand() % 3;          // RNG 0 and 2
-
-    if(!IM_SET && rng_backdrop == 2){
-      rng_backdrop--;
-    }
+    rng_backdrop = rand() % rng_backdrop_rng;          // RNG 0 and 2
 
     if (WIN_SIZE == NORMAL) {
       attron(COLOR_PAIR(FOREGROUND));

@@ -330,15 +330,7 @@ void neon_reverse(){
       } else { // screen is BIG
 
         if(IM_SET){
-          // TODO this should just be a generic print_bg_glyph func
-          clear();
-          attron(COLOR_PAIR(BACKGROUND));
-          if(use_bold_color_for_bg) attron(A_BOLD);
-          for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-            mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
-          }
-          attroff(A_BOLD);
-          attroff(COLOR_PAIR(BACKGROUND));
+          print_bg();
 
           // TODO all repeat code
           if(use_bold_color_for_fg) attron(A_BOLD);
@@ -621,10 +613,6 @@ void tv_static(double cycle_length){
           continue;
         }
 
-//      char error_str[256] = {'\0'};
-//      sprintf(error_str, "roll_result: %d", roll_result);
-//      error(error_str);
-
         int idx = arr[i][j];
 
         if (idx == 1 || idx == 2 || idx ==  3){
@@ -686,14 +674,7 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
 
   } else if (WIN_SIZE == BIG){
 
-    // TODO this should just be a generic print_bg_glyph func
-    attron(COLOR_PAIR(bg_color));
-    if(use_bold_color_for_bg) attron(A_BOLD);
-    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-      mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
-    }
-    attroff(A_BOLD);
-    attroff(COLOR_PAIR(bg_color));
+    print_bg();
 
     attron(COLOR_PAIR(fg_color));
     if(use_bold_color_for_fg) attron(A_BOLD);
@@ -753,4 +734,15 @@ void quickprint(int fg_color, int bg_color, int printColorbar){
     attroff(A_BOLD);
     attroff(A_STANDOUT);
   }
+}
+
+void print_bg () {
+  clear();
+  attron(COLOR_PAIR(BACKGROUND));
+  if(use_bold_color_for_bg) attron(A_BOLD);
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
+  }
+  attroff(A_BOLD);
+  attroff(COLOR_PAIR(BACKGROUND));
 }

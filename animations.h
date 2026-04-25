@@ -11,6 +11,7 @@
 #define ANIMATIONS_H
 
 void quickprint(int fg, int bg, int printColorbar);
+void print_bg();
 void glitch(int numFrames, int bigmode);
 void neon();
 void neon_reverse();

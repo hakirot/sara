@@ -495,13 +495,13 @@ void print_overlay(const char * glyph[], char fill){
       }
 
       if(fill){
-        mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, fill);
+        mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, fill);
         iter_row += len;
         iter_col++;
       } else {
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col, &cchar);
+        mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, &cchar);
         iter_row += len;
         iter_col++;
       }
@@ -516,7 +516,7 @@ void print_fg(const char * glyph[]){
   attron(COLOR_PAIR(FOREGROUND));
   if(use_bold_color_for_fg) attron(A_BOLD);
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2, "%s", glyph[i]);
+    mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", glyph[i]);
   }
   refresh();
   attroff(COLOR_PAIR(FOREGROUND));

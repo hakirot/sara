@@ -527,11 +527,21 @@ void print_header(){
 
   if(hd[0] != 0){
     if(use_bold_color_for_fg){
-      attron(COLOR_PAIR(FOREGROUND + 16));
       attron(A_BOLD);
-      attron(A_STANDOUT);
     } else {
-      attron(COLOR_PAIR(FOREGROUND + 8));
+      attron(COLOR_PAIR(FOREGROUND));
+    }
+
+    if(WIN_SIZE == BIG    && highlight_hd_in_full_mode  ||
+       WIN_SIZE == NORMAL && highlight_hd_in_small_mode) {
+      if(use_bold_color_for_fg){
+        attron(A_STANDOUT);
+        attron(COLOR_PAIR(FOREGROUND + 16));
+      } else {
+        attron(COLOR_PAIR(FOREGROUND + 8));
+      }
+    } else {
+      attron(COLOR_PAIR(FOREGROUND));
     }
 
     if(WIN_SIZE == BIG){

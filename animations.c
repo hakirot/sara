@@ -214,21 +214,21 @@ void neon_reverse(){
 
 void shutter_slide(){
   int num_frames = 8;
-  int margin_width = (COL - NORMAL_GLYPH_LENGTH) / 2;
+  int margin_width = (COL - FG_GLYPH_LENGTH) / 2;
   int left_stop = margin_width;
-  int right_stop = COL - margin_width - NORMAL_GLYPH_LENGTH;
+  int right_stop = COL - margin_width - FG_GLYPH_LENGTH;
   int l_idx = 0;
-  int r_idx = COL - NORMAL_GLYPH_LENGTH;
+  int r_idx = COL - FG_GLYPH_LENGTH;
   int frame_travel_width = margin_width / 10;
   int j = 0;
   attron(COLOR_PAIR(FOREGROUND));
   while(j < num_frames){
     clear();
-    for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       if (i % 2 == 0){
-        mvprintw(ROW/2 - 2 + i, l_idx + (frame_travel_width * j), "%s", title[i]);
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, l_idx + (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);
       } else {
-        mvprintw(ROW/2 - 2 + i, r_idx - (frame_travel_width * j), "%s", title[i]);
+        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, r_idx - (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);
       }
     }
     l_idx++;

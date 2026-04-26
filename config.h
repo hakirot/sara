@@ -115,6 +115,10 @@ static const int hd_offset_x = -9;
 static const int hd_offset_y_min = 1;
 static const int hd_offset_x_min = -8;
 
+/* header highlight options*/
+static const int highlight_hd_in_full_mode  = 1;
+static const int highlight_hd_in_small_mode = 0;
+
 /* Toggle if you want to only print fg[] glyph at a certain size */
 static const int dynamic_resize = true; // TODO ensure this value is greater than tiny mode
 static const int resize_width = 44;

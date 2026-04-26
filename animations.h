@@ -11,6 +11,7 @@
 #define ANIMATIONS_H
 
 void quickprint(int fg, int bg, int printColorbar);
+void printstandard();
 void print_bg();
 void print_fg(const char * glyph[]);
 void print_header();
@@ -23,5 +24,7 @@ void shutter_slide();
 // behavior TODO: move this description to config
 void pixel_fill(double cycle_length, int num_sides, int usleep_time);
 void tv_static(double cycle_length);
+void xray();
+void mega_glitch(int duration);
 
 #endif

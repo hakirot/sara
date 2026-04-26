@@ -20,9 +20,6 @@ static const int bg_c = GREEN;
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
 
-static const int use_fg_c_for_hd_as_bg = true;  // ensure both are not true
-static const int use_bg_c_for_hd_as_bg = false; // ensure both are not true
-
 static const int GLITCH_FRAME_TIME = 3500;
 static const float HOLD_CHAR_TIME = 0.00001;
 
@@ -118,6 +115,11 @@ static const int hd_offset_x_min = -8;
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = 1;
 static const int highlight_hd_in_small_mode = 0;
+
+// TODO make this work (conflicts with highlight options) (maybe just set a color) (or make this a toggle)
+static const int use_fg_c_for_hd_as_bg = false;  // ensure both are not true
+static const int use_bg_c_for_hd_as_bg = true;   // ensure both are not true
+
 
 /* Toggle if you want to only print fg[] glyph at a certain size */
 static const int dynamic_resize = true; // TODO ensure this value is greater than tiny mode

@@ -258,10 +258,11 @@ int check_char(){
         return 1;
       }
 
-      char * choices[2]={'\0'};
-      choices[0]="SHUTDOWN";
-      choices[1]="REBOOT";
-      const char* selection =  select_option_window(choices, 2);
+      char * choices[]= {
+        "SHUTDOWN",
+        "REBOOT",
+      };
+      const char * selection =  select_option_window(choices, 2);
 
       if (selection != NULL) {
         pid_t pid = fork();
@@ -400,23 +401,26 @@ int check_char(){
 
       // Display menu
 
-      char* choices[2]={'\0'};
-      choices[0]="BLUETOOTH";
-      choices[1]="BACKLIGHT";
+      char * choices[] = {
+        "BLUETOOTH",
+        "BACKLIGHT",
+      };
       const char * selection = select_option_window(choices, 2);
 
       if (selection == choices[0]){ // When selected with `selection`
 
-        char* bluetooth_choices[2]={'\0'};
-        bluetooth_choices[0]="CONNECT";
-        bluetooth_choices[1]="DISCONNECT";
+        char* bluetooth_choices[] = {
+          "CONNECT",
+          "DISCONNECT",
+        };
         selection = select_option_window(bluetooth_choices, 2);
 
         if (selection == bluetooth_choices[0]){
-          char* connect_choices[3]={'\0'};
-          connect_choices[0]="WH-1000XM5";
-          connect_choices[1]="ACOUSTIC";
-          connect_choices[2]="ONFORU";
+          char* connect_choices[] = {
+            "WH-1000XM5",
+            "ACOUSTIC",
+            "ONFORU",
+          };
           selection = select_option_window(connect_choices, 3);
 
           if (selection == connect_choices[0]){
@@ -467,10 +471,11 @@ int check_char(){
             }
           }
         } else if (selection == bluetooth_choices[1]){
-          char* disconnect_choices[3]={'\0'};
-          disconnect_choices[0]="WH-1000XM5";
-          disconnect_choices[1]="ACOUSTIC";
-          disconnect_choices[2]="ONFORU";
+          char * disconnect_choices[] = {
+            "WH-1000XM5",
+            "ACOUSTIC",
+            "ONFORU",
+          };
           selection = select_option_window(disconnect_choices, 3);
 
           if (selection == disconnect_choices[0]){
@@ -861,7 +866,9 @@ int check_char(){
   return valid_input;
 }
 
-const char * select_option_window(char** choices, int len){
+// TODO: remove the second argument and infer length
+// int len = sizeof(choices)/sizeof(choices[0]); // test this for ** pointer
+const char * select_option_window(char* choices[], int len){
 
   int selection = 0;
   CACHE = ROW + COL;
@@ -1038,7 +1045,7 @@ void prompt_newlook(){
 
       for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
         selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BLACK));
-        mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, arch[i]);
+        mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, "%s", arch[i]);
         attroff(COLOR_PAIR(BACKGROUND));
         attroff(COLOR_PAIR(FOREGROUND));
       }
@@ -1051,7 +1058,7 @@ void prompt_newlook(){
 
         if (i == 0 || i == 6) {
           attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, no_yes_window[i]);
+          mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", no_yes_window[i]);
           attroff(COLOR_PAIR(FOREGROUND));
           refresh();
           continue;
@@ -1183,7 +1190,7 @@ char * prompt_fuzzy(){
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(FOREGROUND));
-  mvprintw(ROW/2 - 2 - offset, (COL-GLYPH_LENGTH)/2, option_window[0]);
+  mvprintw(ROW/2 - 2 - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[0]);
   attroff(COLOR_PAIR(FOREGROUND));
 
   char * wall_dir = "/home/hakirot/pix/walls";

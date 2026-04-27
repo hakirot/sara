@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include "globals.h"
+
 /*   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   --
 --  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   --
 --  ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗  --
@@ -29,11 +30,12 @@ static const float HOLD_CHAR_TIME = 0.00001;
     /* RESTRICTIONS
 
        Glyphs must contain distinct characters
-       from other glyphs
+       from other glyphs                        TODO is this even true anymore
+                                                     (I want it to not be true)
 
        Ensure strings in character array are equal length 
 
-       im[] must have identical dimensions to fg[] if defined            */
+       im[], if defined, must have identical dimensions to fg[]                       */
 
 
 /* background glyph */

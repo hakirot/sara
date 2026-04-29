@@ -593,7 +593,7 @@ void xray(){
   while(1){
 
     attron(COLOR_PAIR(BACKGROUND));
-    mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, backdrop_glyph_pointer[i]);
+    mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", backdrop_glyph_pointer[i]);
     attroff(COLOR_PAIR(BACKGROUND));
 
     int previous_row = 0;
@@ -670,14 +670,14 @@ void xray(){
     usleep(80000);
     for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
       attron(COLOR_PAIR(BACKGROUND));
-      mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, arch[i]);
+      mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, "%s", arch[i]);
       attroff(COLOR_PAIR(BACKGROUND));
     }
     refresh();
     usleep(80000);
     for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
       attron(COLOR_PAIR(BACKGROUND));
-      mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, archsarazap[i]);
+      mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, "%s", archsarazap[i]);
       attroff(COLOR_PAIR(BACKGROUND));
     }
     refresh();

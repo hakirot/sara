@@ -314,8 +314,10 @@ void pixel_fill(int usleep_time){
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
           attron(COLOR_PAIR(FOREGROUND));
+          if(use_bold_color_for_fg) attron(A_BOLD);
           mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
           attroff(COLOR_PAIR(FOREGROUND));
+          attroff(A_BOLD);
           if (round_fill_count == round_fill_max){
             round_fill_count = 0;
 //          break_flag = 1; // break flag code will print line-by-line with pixel_fill(2000);
@@ -549,6 +551,7 @@ void print_header(){
         attron(COLOR_PAIR(FOREGROUND + 8));
       }
     } else {
+      if(use_bold_color_for_fg) attron(A_BOLD);
       attron(COLOR_PAIR(FOREGROUND));
     }
 

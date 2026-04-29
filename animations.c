@@ -98,6 +98,10 @@ void glitch(int numFrames, int full){
   quickprint(FOREGROUND, BACKGROUND, 0);
 }
 
+// TODO: fg glyph not in correct position when im not defined
+//       and WIN_SIZE == normal, but only when the width is constrained
+//       to a certain size as well? huh. Just check the prints between im[-]
+//       and fg
 void neon(){
 
   double cycle_length = 0.3;
@@ -247,7 +251,7 @@ void shutter_slide(){
 };
 
 
-void pixel_fill(double cycle_length, int num_sides, int usleep_time){
+void pixel_fill(int usleep_time){
 
   clear();
   refresh();
@@ -256,14 +260,19 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
   // 0 == !'█'
   // 1 == '█'
   // 2 == '█' and successfully rolled to print to screen
-  int arr[NORMAL_GLYPH_HEIGHT][NORMAL_GLYPH_LENGTH];
-  int total = 0;
+  int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
+  int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
+  memset(fg_arr, 0, sizeof(fg_arr));
+  memset(bg_arr, 0, sizeof(bg_arr));
 
-  for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+  int fg_total = 0;
+  int bg_total = 0;
+
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
     mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
     memset(&state, 0, sizeof(mbstate_t));
-    const char *iter_row = titlefill[i];        // Grabs a line from glyph
+    const char *iter_row = fg[i];               // Grabs a line from glyph
     int iter_col = 0;                           // Track the column position
     while (*iter_row) {                         // Iterate through chars in row
       wchar_t wc;                               // Create wide character var
@@ -271,11 +280,9 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
       // Also records length of character at *iter_row in len
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-      if(is_char_in_search(wc, FG_STR)){
-        arr[i][iter_col] = 1;
-        total++;
-      } else {
-        arr[i][iter_col] = 0;
+      if(*iter_row != ' '){
+        fg_arr[i][iter_col] = 1;
+        fg_total++;
       }
 
       iter_row += len;                          // Increment the pointer one character
@@ -283,50 +290,64 @@ void pixel_fill(double cycle_length, int num_sides, int usleep_time){
     }
   }
 
+  print_bg();
+
   clock_t cycle_start = clock();
   int count = 0;
-  while(elapsed_time < cycle_length){
+  int round_fill_max = 1;
+  int round_fill_count = 0;
+  int break_flag = 0;
+  while(count <= fg_total - 4){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
 
-    for(int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
       mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
-      const char *iter_row = titlefill[i];
+      const char *iter_row = fg[i];
       int j = 0;
       while (*iter_row) {
 
         wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if (arr[i][j] == 1 && roll(num_sides) == 2){
-          arr[i][j] = 2;
+        if (fg_arr[i][j] == 1 && roll(2) == 2){
+          fg_arr[i][j] = 2;
           count++;
-          if (count == total){
-            quickprint(FOREGROUND, BACKGROUND, 0);
-            return;
-          }
+          round_fill_count++;
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
           attron(COLOR_PAIR(FOREGROUND));
-          mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + j, &cchar);
+          mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
           attroff(COLOR_PAIR(FOREGROUND));
+          if (round_fill_count == round_fill_max){
+            round_fill_count = 0;
+//          break_flag = 1; // break flag code will print line-by-line with pixel_fill(2000);
+            break;
+          }
         }
 
         iter_row += len;
         j++;
       }
+//    if(break_flag){
+//      break_flag = 0;
+//      break;
+//    }
     }
 
-    usleep(usleep_time);
     refresh();
+    check_char();
+    if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+    usleep(usleep_time);
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
   }
 
-  // TODO: remove globals as parameters
-  quickprint(FOREGROUND, BACKGROUND, 0);
+  print_overlay(fg, 0);
+  print_header();
 }
 
 void tv_static(double cycle_length){
@@ -431,11 +452,9 @@ void tv_static(double cycle_length){
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }
-
-  // TODO: remove globals as parameters
-  quickprint(FOREGROUND, BACKGROUND, 0);
 }
 
+// TODO: remove globals as parameters
 void quickprint(int fg_color, int bg_color, int printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){

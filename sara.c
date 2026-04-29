@@ -333,9 +333,9 @@ int check_char(){
         neon();
       }
     } else if(input == 'g'){
-      glitch(STANDARD_GLITCH_TIME, 1);
+//    glitch(STANDARD_GLITCH_TIME, 1);
 //    xray();
-//    pixel_fill(0.008, 15, 4000);
+      pixel_fill(12000);
 //    tv_static(0.086);
     } else if(input == 't'){
 
@@ -384,6 +384,8 @@ int check_char(){
         perror("fork");
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
+//      TODO: replace with this polybar command
+//        nohup bash -c "/home/hakirot/.config/polybar/bar.sh" 2>&1 > /dev/null &
         execl("/bin/bash", "bash", "/home/hakirot/.config/polybar/bar.sh", (char *)NULL);
         perror("execl");
       } else {

@@ -22,7 +22,7 @@ void neon_reverse();
 void shutter_slide();
 // cycle_length, roll_chance, and usleep_time can all be parameters to change
 // behavior TODO: move this description to config
-void pixel_fill(double cycle_length, int num_sides, int usleep_time);
+void pixel_fill(int usleep_time);
 void tv_static(double cycle_length);
 void xray();
 void mega_glitch(int duration);

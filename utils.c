@@ -175,7 +175,7 @@ void get_helped() {
 }
 
 int roll(int num_sides){
-  int random_roll = (rand() % num_sides) + 1;
+  int random_roll = rand() % num_sides + 1;
   return random_roll;
 }
 

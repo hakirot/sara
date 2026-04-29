@@ -1273,6 +1273,7 @@ void fork_newlook(char * file){
   }
 }
 
+// TODO: fix the multiple out-of-bounds printing problem
 void pshd(){
 
   CACHE = ROW + COL;

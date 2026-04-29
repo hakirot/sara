@@ -1134,6 +1134,7 @@ void prompt_newlook(){
         fork_newlook(wall);
         clear();
         refresh();
+        neon();
       }
 
       // break
@@ -1265,11 +1266,6 @@ void fork_newlook(char * file){
       execlp("nohup", "nohup", "bash", "-c", path_to_respawn, file, NULL);
     }
     perror("execl");
-  } else {
-    int status;
-    while(kill(pid, 0) == 0){
-      waitpid(pid, &status, 0);
-    }
   }
 }
 

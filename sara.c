@@ -333,9 +333,9 @@ int check_char(){
         neon();
       }
     } else if(input == 'g'){
-//    glitch(STANDARD_GLITCH_TIME, 1);
+      glitch(STANDARD_GLITCH_TIME, 1);
 //    xray();
-      pixel_fill(12000);
+//    pixel_fill(12000);
 //    tv_static(0.086);
     } else if(input == 't'){
 
@@ -1274,6 +1274,7 @@ void fork_newlook(char * file){
 }
 
 // TODO: fix the multiple out-of-bounds printing problem
+// TODO: implement bold fg color if use_bold_color_for_fg is set
 void pshd(){
 
   CACHE = ROW + COL;

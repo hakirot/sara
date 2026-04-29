@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TODO: New test glyphs reveal undefined behavior with the header
 void glitch(int numFrames, int full){
 
   quickprint(FOREGROUND, BACKGROUND, 1);

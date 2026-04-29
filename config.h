@@ -32,7 +32,6 @@ static const float HOLD_CHAR_TIME = 0.00001;
        Glyphs must contain distinct characters
        from other glyphs                        TODO is this even true anymore
                                                      (I want it to not be true)
-
        Ensure strings in character array are equal length 
 
        im[], if defined, must have identical dimensions to fg[]                       */
@@ -138,6 +137,7 @@ static const int tiny_mode_x = 44;
 /* automate this and perform checks [make a perform check cmd-line option]
      - ensure no duplicate chars */
 
+/* TODO: These shouldn't be required, see above */
 static const wchar_t FG_STR[] = L"█╔╗╚╝║═";
 static const wchar_t BG_STR[] = L"`+so:-./";
 

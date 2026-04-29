@@ -824,7 +824,8 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          tv_static(0.010);
+//        tv_static(0.010);
+          pixel_fill(12000);
         }
       }
 

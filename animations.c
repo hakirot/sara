@@ -255,18 +255,15 @@ void pixel_fill(int usleep_time){
 
   clear();
   refresh();
-  double elapsed_time = 0;
+  print_bg();
 
   // 0 == !'█'
   // 1 == '█'
   // 2 == '█' and successfully rolled to print to screen
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
-  int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
   memset(fg_arr, 0, sizeof(fg_arr));
-  memset(bg_arr, 0, sizeof(bg_arr));
 
-  int fg_total = 0;
-  int bg_total = 0;
+  int total_fg_chars = 0;
 
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
@@ -282,7 +279,7 @@ void pixel_fill(int usleep_time){
 
       if(*iter_row != ' '){
         fg_arr[i][iter_col] = 1;
-        fg_total++;
+        total_fg_chars++;
       }
 
       iter_row += len;                          // Increment the pointer one character
@@ -290,14 +287,11 @@ void pixel_fill(int usleep_time){
     }
   }
 
-  print_bg();
-
-  clock_t cycle_start = clock();
   int count = 0;
   int round_fill_max = 1;
   int round_fill_count = 0;
-  int break_flag = 0;
-  while(count <= fg_total - 4){
+//int break_flag = 0;                           // break flag code will print line-by-line with pixel_fill(2000);
+  while(count <= total_fg_chars - 3){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
@@ -332,7 +326,7 @@ void pixel_fill(int usleep_time){
         iter_row += len;
         j++;
       }
-//    if(break_flag){
+//    if(break_flag){// break flag code will print line-by-line with pixel_fill(2000);
 //      break_flag = 0;
 //      break;
 //    }
@@ -342,7 +336,6 @@ void pixel_fill(int usleep_time){
     check_char();
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     usleep(usleep_time);
-    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
   }
 

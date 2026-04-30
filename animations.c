@@ -574,6 +574,8 @@ void print_header(){
 
 void down_wipes(){
 
+  int wipe_time = 12000; // TODO: make this configurable
+
   clear();
   refresh();
   if (WIN_SIZE == NORMAL){
@@ -584,7 +586,7 @@ void down_wipes(){
       check_char();
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
-      usleep(20000);
+      usleep(wipe_time);
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(FOREGROUND));
@@ -592,47 +594,45 @@ void down_wipes(){
 
   } else if (WIN_SIZE == BIG){
 
-    attron(COLOR_PAIR(FOREGROUND));
-    for(int i = 0; i < GLYPH_HEIGHT; i++){
-      mvprintw(ROW/2 - 9 + i, (COL-GLYPH_LENGTH)/2, "%s", arch[i]);
+    if(use_bold_color_for_bg) attron(A_BOLD);
+    attron(COLOR_PAIR(BACKGROUND));
+    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+      mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
-      usleep(10000);
+      usleep(wipe_time);
     }
-    attroff(COLOR_PAIR(FOREGROUND));
+    attroff(A_BOLD);
+    attroff(COLOR_PAIR(BACKGROUND));
 
-    for(int i = 0; i < 6; i++){
-
-      mbstate_t state;                            // Tracks state of mbrtowc function when converting between types of chars
+    if(use_bold_color_for_fg) attron(A_BOLD);
+    attron(COLOR_PAIR(FOREGROUND));
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+      mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
-      const char *iter_row = titlefill[5 - i];    // Grabs a line from glyph
-      int iter_col = 0;                           // Track the column position
-      while (*iter_row) {                         // Iterate through chars in row
-        wchar_t wc;                               // Create wide character var
-        // Converts character from iter_row to wide char `wc`
-        // Also records length of character at *iter_row in len
+      const char *iter_row = fg[i];
+      int iter_col = 0;
+
+      while (*iter_row) {
+        wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if(is_char_in_search(wc, BG_STR)){
-          attron(A_BOLD);
-          attron(COLOR_PAIR(BACKGROUND));
-        } else {
-          attron(COLOR_PAIR(FOREGROUND));
+        if (*iter_row == ' '){
+          iter_row += len;
+          iter_col++;
+          continue;
         }
 
-        // Write wide char to `cchar` for mvadd_wch()
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(ROW/2 + 3 - i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
-
-        attroff(COLOR_PAIR(FOREGROUND));
-        attroff(COLOR_PAIR(BACKGROUND));
-        attroff(A_BOLD);
-        iter_row += len;                          // Increment the pointer one character
-        iter_col++;                               // Increment col
+        mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, &cchar);
+        iter_row += len;
+        iter_col++;
       }
-        usleep(20000);
-        refresh();
+      refresh();
+      usleep(wipe_time);
     }
   }
+  attroff(A_BOLD);
+  attroff(COLOR_PAIR(FOREGROUND));
 }

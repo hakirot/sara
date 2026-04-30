@@ -19,6 +19,7 @@
          . abstract GLYPH_HEIGHT variables to measure glyph sizes on startup
          . create options and toggles for header colors
 
+   . sleep() and usleep() functions affect measured program time T_T
    . sara -c
    . DNS server
    . More animations

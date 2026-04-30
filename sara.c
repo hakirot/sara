@@ -941,7 +941,8 @@ void print_start_animation(){
 //  }
 //}
 
-  START_ANIMATION = NEON; // override 'cus is's my favorite
+  // TODO: make this a config.h setting, allowing either random or specific setting
+  START_ANIMATION = NEON; // harcoding neon
 
   if (START_ANIMATION == NEON){
     neon();
@@ -1271,6 +1272,7 @@ void fork_newlook(char * file){
 
 // TODO: fix the multiple out-of-bounds printing problem
 // TODO: implement bold fg color if use_bold_color_for_fg is set
+// TODO: make ESC also exit pshd
 void pshd(){
 
   CACHE = ROW + COL;

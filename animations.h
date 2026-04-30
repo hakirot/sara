@@ -24,7 +24,5 @@ void shutter_slide();
 // behavior TODO: move this description to config
 void pixel_fill(int usleep_time);
 void tv_static(double cycle_length);
-void xray();
-void mega_glitch(int duration);
 
 #endif

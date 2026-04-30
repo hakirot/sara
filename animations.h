@@ -11,7 +11,7 @@
 #define ANIMATIONS_H
 
 void quickprint(int fg, int bg, int printColorbar);
-void printstandard();
+void down_wipes();
 void print_bg();
 void print_fg(const char * glyph[]);
 void print_header();

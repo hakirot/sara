@@ -333,7 +333,8 @@ int check_char(){
         neon();
       }
     } else if(input == 'g'){
-      glitch(STANDARD_GLITCH_TIME, 1);
+//    glitch(STANDARD_GLITCH_TIME, 1);
+      down_wipes();
 //    xray();
 //    pixel_fill(12000);
 //    tv_static(0.086);

@@ -572,18 +572,23 @@ void print_header(){
   }
 }
 
-void printstandard(){
+void down_wipes(){
 
+  clear();
+  refresh();
   if (WIN_SIZE == NORMAL){
     attron(COLOR_PAIR(FOREGROUND));
-    for(int i = 0; i < GLYPH_HEIGHT; i++){
-      mvprintw(ROW/2 - 3 + i, (COL-GLYPH_LENGTH)/2, "%s", title[i]);
+    if(use_bold_color_for_fg) attron(A_BOLD);
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+      mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
       check_char();
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(20000);
     }
+    attroff(A_BOLD);
     attroff(COLOR_PAIR(FOREGROUND));
+    print_header();
 
   } else if (WIN_SIZE == BIG){
 

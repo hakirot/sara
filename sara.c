@@ -337,7 +337,7 @@ int check_char(){
 //    down_wipes();
 //    xray();
 //    pixel_fill(6000);
-      tv_static(0.040);
+      tv_static(0.020);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

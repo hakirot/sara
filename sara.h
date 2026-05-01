@@ -19,7 +19,7 @@
          . abstract GLYPH_HEIGHT variables to measure glyph sizes on startup
          . create options and toggles for header colors
 
-   . sleep() and usleep() functions affect measured program time T_T
+   . sleep() and usleep() functions halt timings using clock() dx_xb
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
    . sara -c
    . DNS server

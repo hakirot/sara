@@ -410,6 +410,8 @@ void tv_static(double cycle_length){
     if (CACHE != ROW + COL) return;
     check_char();
 
+    attron(COLOR_PAIR(FOREGROUND));
+    if(use_bold_color_for_fg) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
       mbstate_t state;
@@ -422,6 +424,7 @@ void tv_static(double cycle_length){
 
         roll_result = roll(2);
 
+        // TODO: debug
         int idx = fg_arr[i][j];
         if(idx != 0 && idx != 1){
           char er[10] = {'\0'};
@@ -443,7 +446,51 @@ void tv_static(double cycle_length){
         j++;
       }
     }
-    usleep(500);
+    attroff(A_BOLD);
+    attroff(COLOR_PAIR(FOREGROUND));
+
+    if(WIN_SIZE == BIG){
+      attron(COLOR_PAIR(BACKGROUND));
+      if(use_bold_color_for_bg) attron(A_BOLD);
+      for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+
+        mbstate_t state;
+        memset(&state, 0, sizeof(mbstate_t));
+        const char *iter_row = bg[i];
+        j = 0;
+        while (*iter_row) {
+
+          size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+          roll_result = roll(2);
+
+          int idx = bg_arr[i][j];
+          // TODO: debug
+          if(idx != 0 && idx != 1){
+            char er[10] = {'\0'};
+            sprintf(er, "%d", idx);
+            error(er);
+          }
+
+          if (idx == 1 && roll_result == 2){
+            bg_arr[i][j] = 0;
+            mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, ' ');
+          } else if (idx == 0 && roll_result == 2){
+            bg_arr[i][j] = 1;
+            cchar_t cchar;
+            setcchar(&cchar, &wc, 0, 0, NULL);
+            mvadd_wch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, &cchar);
+          }
+
+          iter_row += len;
+          j++;
+        }
+      }
+      attroff(A_BOLD);
+      attroff(COLOR_PAIR(FOREGROUND));
+    }
+
+    usleep(1000);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }

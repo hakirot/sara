@@ -334,10 +334,10 @@ int check_char(){
       }
     } else if(input == 'g'){
 //    glitch(STANDARD_GLITCH_TIME, 1);
-      down_wipes();
+//    down_wipes();
 //    xray();
-//    pixel_fill(12000);
-//    tv_static(0.086);
+//    pixel_fill(6000);
+      tv_static(0.040);
     } else if(input == 't'){
 
       CACHE = ROW + COL;

@@ -20,6 +20,7 @@
          . create options and toggles for header colors
 
    . sleep() and usleep() functions affect measured program time T_T
+       https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
    . sara -c
    . DNS server
    . More animations

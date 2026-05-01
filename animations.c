@@ -256,7 +256,7 @@ void pixel_fill(int usleep_time){
 
   clear();
   refresh();
-  print_bg();
+  if(WIN_SIZE == BIG) print_bg();
 
   // 0 == !'█'
   // 1 == '█'
@@ -351,29 +351,46 @@ void tv_static(double cycle_length){
   clear();
   refresh();
 
-  double elapsed_time = 0;
+  int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
+  int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
 
-  int arr[BIG_GLYPH_HEIGHT][BIG_GLYPH_LENGTH];
+  if(WIN_SIZE == BIG){
+    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = bg[i];
+      int iter_col = 0;
+      while (*iter_row) {
 
-  for(int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
+        if(*iter_row == ' '){
+          bg_arr[i][iter_col] = 0;
+        } else {
+          bg_arr[i][iter_col] = 1;
+        }
+
+        iter_row += len;
+        iter_col++;
+      }
+    }
+  }
+
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     mbstate_t state;
     memset(&state, 0, sizeof(mbstate_t));
-    const char *iter_row = archsarafull[i];
+    const char *iter_row = fg[i];
     int iter_col = 0;
     while (*iter_row) {
 
       wchar_t wc;
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-      if(is_char_in_search(wc, FG_STR)){
-        arr[i][iter_col] = 2;
-      } else if (is_char_in_search(wc, BG_STR)){
-        arr[i][iter_col] = 1;
-      } else if (!is_char_in_search(wc, L" ")) {
-        arr[i][iter_col] = 3;
+      if(*iter_row == ' '){
+        fg_arr[i][iter_col] = 0;
       } else {
-        arr[i][iter_col] = 0;
+        fg_arr[i][iter_col] = 1;
       }
 
       iter_row += len;
@@ -381,70 +398,52 @@ void tv_static(double cycle_length){
     }
   }
 
+  double elapsed_time = 0;
   clock_t cycle_start = clock();
   cchar_t cchar;
   int j = 0;
+  int roll_result;
+  wchar_t wc;
   while(elapsed_time < cycle_length){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
+    check_char();
 
-    for(int i = 0; i < BIG_GLYPH_HEIGHT; i++){
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
       mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
-      const char *iter_row = archsarafull[i];
+      const char *iter_row = fg[i];
       j = 0;
-      int roll_result;
       while (*iter_row) {
 
-        wchar_t wc;
         size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
         roll_result = roll(2);
 
-        if(roll_result == 1){
-          iter_row += len;
-          j++;
-          continue;
+        int idx = fg_arr[i][j];
+        if(idx != 0 && idx != 1){
+          char er[10] = {'\0'};
+          sprintf(er, "%d", idx);
+          error(er);
         }
 
-        int idx = arr[i][j];
-
-        if (idx == 1 || idx == 2 || idx ==  3){
-          arr[i][j] = idx + 3;
-          mvaddch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, ' ');
-
-        } else if (idx == 4){
-
-          arr[i][j] = idx - 3;
-          attron(COLOR_PAIR(BACKGROUND));
+        if (idx == 1 && roll_result == 2){
+          fg_arr[i][j] = 0;
+          mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, ' ');
+        } else if (idx == 0 && roll_result == 2){
+          fg_arr[i][j] = 1;
+          cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
-          mvadd_wch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, &cchar);
-          attroff(COLOR_PAIR(BACKGROUND));
-
-        } else if (idx == 5){
-
-          arr[i][j] = idx - 3;
-          attron(COLOR_PAIR(FOREGROUND));
-          setcchar(&cchar, &wc, 0, 0, NULL);
-          mvadd_wch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, &cchar);
-          attroff(COLOR_PAIR(FOREGROUND));
-
-        } else if (idx == 6) {
-
-          arr[i][j] = idx - 3;
-          attron(COLOR_PAIR(FOREGROUND + 8));
-          setcchar(&cchar, &wc, 0, 0, NULL);
-          mvadd_wch(ROW/2 - 9 + i, (COL-BIG_GLYPH_LENGTH)/2 + j, &cchar);
-          attroff(COLOR_PAIR(FOREGROUND + 8));
+          mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
         }
 
         iter_row += len;
         j++;
       }
     }
-    usleep(1000);
+    usleep(500);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
   }

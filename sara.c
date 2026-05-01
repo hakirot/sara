@@ -106,12 +106,12 @@ int main(int argc, char* argv[]){
     if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
-      quickprint(FOREGROUND, BACKGROUND, 0);
+      print(FOREGROUND, BACKGROUND, 0);
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
     if (check_char_result == 0 && should_print == true && HOLD_CHAR == '\0'){
-      quickprint(FOREGROUND, BACKGROUND, 0);
+      print(FOREGROUND, BACKGROUND, 0);
       should_print = false;
     } else if (check_char_result == 1){
       should_print = true;
@@ -298,14 +298,14 @@ int check_char(){
       int temp = BACKGROUND;
       BACKGROUND = FOREGROUND;
       FOREGROUND = temp;
-      quickprint(FOREGROUND, BACKGROUND, 0);
+      print(FOREGROUND, BACKGROUND, 0);
     } else if(input == 'I'){
       BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
       while(FOREGROUND == BACKGROUND){
         FOREGROUND = rand() % 7 + 2;
       }
-      quickprint(FOREGROUND, BACKGROUND, 0);
+      print(FOREGROUND, BACKGROUND, 0);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
         HOLOGRAPHIC = 0;
@@ -552,7 +552,7 @@ int check_char(){
         int offset = 0;
         if(WIN_SIZE != BIG) offset = 1;
 
-        quickprint(FOREGROUND, FOREGROUND, 0);
+        print(FOREGROUND, FOREGROUND, 0);
 
         attron(COLOR_PAIR(BACKGROUND));
         for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
@@ -877,7 +877,7 @@ const char * select_option_window(char* choices[], int len){
   int selection = 0;
   CACHE = ROW + COL;
 
-  quickprint(FOREGROUND, FOREGROUND, 0); // hardcoded style choice
+  print(FOREGROUND, FOREGROUND, 0); // hardcoded style choice
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
@@ -948,7 +948,7 @@ void print_start_animation(){
   if (START_ANIMATION == NEON){
     neon();
   } else if (START_ANIMATION == QUICK){
-    quickprint(FOREGROUND, BACKGROUND, 0);
+    print(FOREGROUND, BACKGROUND, 0);
   } else {
     printstandard();
     glitch(STANDARD_GLITCH_TIME, 0);

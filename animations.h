@@ -10,7 +10,7 @@
 #ifndef ANIMATIONS_H
 #define ANIMATIONS_H
 
-void quickprint(int fg, int bg, int printColorbar);
+void print(int fg, int bg, int printColorbar);
 void down_wipes();
 void print_bg();
 void print_fg(const char * glyph[]);

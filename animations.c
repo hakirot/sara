@@ -22,7 +22,7 @@
 // TODO: New test glyphs reveal undefined behavior with the header
 void glitch(int numFrames, int full){
 
-  quickprint(FOREGROUND, BACKGROUND, 1);
+  print(FOREGROUND, BACKGROUND, 1);
   CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
@@ -96,7 +96,7 @@ void glitch(int numFrames, int full){
     usleep(GLITCH_FRAME_TIME);
   }
 
-  quickprint(FOREGROUND, BACKGROUND, 0);
+  print(FOREGROUND, BACKGROUND, 0);
 }
 
 // TODO: fg glyph not in correct position when im not defined
@@ -167,7 +167,7 @@ void neon(){
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
-  quickprint(FOREGROUND, BACKGROUND, 0);
+  print(FOREGROUND, BACKGROUND, 0);
 }
 
 void neon_reverse(){
@@ -497,7 +497,7 @@ void tv_static(double cycle_length){
 }
 
 // TODO: remove globals as parameters
-void quickprint(int fg_color, int bg_color, int printColorbar){
+void print(int fg_color, int bg_color, int printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){
     print_fg(fg);

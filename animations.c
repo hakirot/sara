@@ -155,7 +155,7 @@ void neon(){
 
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL && hd[0] != 0){
-        print_header();
+        print_hd();
       } else {
         print_overlay(fg, 0);
       }
@@ -342,7 +342,7 @@ void pixel_fill(int usleep_time){
   }
 
   print_overlay(fg, 0);
-  print_header();
+  print_hd();
 }
 
 void tv_static(double cycle_length){
@@ -500,11 +500,11 @@ void print(int fg_color, int bg_color, int printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){
     print_fg(fg);
-    print_header();
+    print_hd();
   } else if (WIN_SIZE == BIG){
     print_bg();
     print_overlay(fg, 0);
-    print_header();
+    print_hd();
 
     // colorbar TODO: abstract this to separate function and add config.h options to it
     if (printColorbar){
@@ -584,7 +584,7 @@ void print_fg(const char * glyph[]){
 }
 
 // TODO: add wipe option for pixel_fill
-void print_header(){
+void print_hd(){
 
   if(hd[0] != 0){
 
@@ -635,7 +635,7 @@ void down_wipes(){
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(FOREGROUND));
-    print_header();
+    print_hd();
 
   } else if (WIN_SIZE == BIG){
 

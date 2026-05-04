@@ -13,30 +13,30 @@
 #include <ncurses.h>
 #include "wchar.h"
 
-#define BLACK           1
-#define RED             2
-#define GREEN           3
-#define YELLOW          4
-#define BLUE            5
-#define MAGENTA         6
-#define CYAN            7
-#define WHITE           8
-#define WHITE_BLACK     9
-#define BLACK_RED       10
-#define BLACK_GREEN     11
-#define BLACK_YELLOW    12
-#define BLACK_BLUE      13
-#define BLACK_MAGENTA   14
-#define BLACK_CYAN      15
-#define BLACK_WHITE     16
-#define WHITE_BLACKD    17
-#define RED_BLACK       18
-#define GREEN_BLACK     19
-#define YELLOW_BLACK    20
-#define BLUE_BLACK      21
-#define MAGENTA_BLACK   22
-#define CYAN_BLACK      23
-#define BLACK_WHITED    24
+#define black           1
+#define red             2
+#define green           3
+#define yellow          4
+#define blue            5
+#define magenta         6
+#define cyan            7
+#define white           8
+#define white_black     9
+#define black_red       10
+#define black_green     11
+#define black_yellow    12
+#define black_blue      13
+#define black_magenta   14
+#define black_cyan      15
+#define black_white     16
+#define white_blackd    17
+#define red_black       18
+#define green_black     19
+#define yellow_black    20
+#define blue_black      21
+#define magenta_black   22
+#define cyan_black      23
+#define black_whited    24
 
 typedef enum {
   SMALL,

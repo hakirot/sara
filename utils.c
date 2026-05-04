@@ -124,32 +124,32 @@ void init_window(){
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()
   use_default_colors();
-  init_pair(BLACK, COLOR_BLACK, -1); // Foreground black, no background
-  init_pair(RED, COLOR_RED, -1);
-  init_pair(GREEN, COLOR_GREEN, -1);
-  init_pair(YELLOW, COLOR_YELLOW, -1);
-  init_pair(BLUE, COLOR_BLUE, -1);
-  init_pair(MAGENTA, COLOR_MAGENTA, -1);
-  init_pair(CYAN, COLOR_CYAN, -1);
-  init_pair(WHITE, COLOR_WHITE, -1);
+  init_pair(black, COLOR_BLACK, -1); // Foreground black, no background
+  init_pair(red, COLOR_RED, -1);
+  init_pair(green, COLOR_GREEN, -1);
+  init_pair(yellow, COLOR_YELLOW, -1);
+  init_pair(blue, COLOR_BLUE, -1);
+  init_pair(magenta, COLOR_MAGENTA, -1);
+  init_pair(cyan, COLOR_CYAN, -1);
+  init_pair(white, COLOR_WHITE, -1);
 
-  init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
-  init_pair(BLACK_RED, COLOR_BLACK, COLOR_RED);
-  init_pair(BLACK_GREEN, COLOR_BLACK, COLOR_GREEN);
-  init_pair(BLACK_YELLOW, COLOR_BLACK, COLOR_YELLOW);
-  init_pair(BLACK_BLUE, COLOR_BLACK, COLOR_BLUE);
-  init_pair(BLACK_MAGENTA, COLOR_BLACK, COLOR_MAGENTA);
-  init_pair(BLACK_CYAN, COLOR_BLACK, COLOR_CYAN);
-  init_pair(BLACK_WHITE, COLOR_BLACK, COLOR_WHITE);
+  init_pair(white_black, COLOR_WHITE, COLOR_BLACK);
+  init_pair(black_red, COLOR_BLACK, COLOR_RED);
+  init_pair(black_green, COLOR_BLACK, COLOR_GREEN);
+  init_pair(black_yellow, COLOR_BLACK, COLOR_YELLOW);
+  init_pair(black_blue, COLOR_BLACK, COLOR_BLUE);
+  init_pair(black_magenta, COLOR_BLACK, COLOR_MAGENTA);
+  init_pair(black_cyan, COLOR_BLACK, COLOR_CYAN);
+  init_pair(black_white, COLOR_BLACK, COLOR_WHITE);
 
-  init_pair(WHITE_BLACKD, COLOR_WHITE, COLOR_BLACK);
-  init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
-  init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
-  init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);
-  init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
-  init_pair(MAGENTA_BLACK, COLOR_MAGENTA, COLOR_BLACK);
-  init_pair(CYAN_BLACK, COLOR_CYAN, COLOR_BLACK);
-  init_pair(BLACK_WHITED, COLOR_WHITE, COLOR_BLACK);
+  init_pair(white_blackd, COLOR_WHITE, COLOR_BLACK);
+  init_pair(red_black, COLOR_RED, COLOR_BLACK);
+  init_pair(green_black, COLOR_GREEN, COLOR_BLACK);
+  init_pair(yellow_black, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(blue_black, COLOR_BLUE, COLOR_BLACK);
+  init_pair(magenta_black, COLOR_MAGENTA, COLOR_BLACK);
+  init_pair(cyan_black, COLOR_CYAN, COLOR_BLACK);
+  init_pair(black_whited, COLOR_WHITE, COLOR_BLACK);
 
   cbreak();                 // Disable line buffering
   noecho();                 // Don't display keyboard presses in window

@@ -406,15 +406,13 @@ int check_char(){
 
     } else if(input == 'b'){
 
-      // Display menu
-
       char * choices[] = {
         "BLUETOOTH",
         "BACKLIGHT",
       };
       const char * selection = select_option_window(choices, 2);
 
-      if (selection == choices[0]){ // When selected with `selection`
+      if (selection == choices[0]){
 
         char* bluetooth_choices[] = {
           "CONNECT",
@@ -549,7 +547,6 @@ int check_char(){
         fgets(buff, 8, fptr);
         fclose(fptr);
 
-        // Read buff to int
         int brightness;
         sscanf(buff, "%d", &brightness);
 
@@ -595,7 +592,6 @@ int check_char(){
               if (brightness > 1500) brightness = 1500;
             }
 
-            // Update UI
             sprintf(str, "%d", brightness);
 
             mvaddstr(ROW/2 - offset - 1, COL/2 - 11, "     ");
@@ -610,7 +606,6 @@ int check_char(){
             FILE *ptr = fopen(file_path, "w");
 
             if(ptr){
-              // Write brightness to file
               fprintf(ptr, "%s", str);
               fclose(ptr);
             } else {
@@ -1083,10 +1078,10 @@ void prompt_newlook(){
             int search_result = is_char_in_search(wc, search_str_block);
             // side borders when YES
             if ((iter_col == 0 || iter_col > 42) && selection == 1) {
-              attron(COLOR_PAIR(BLACK));
+              attron(COLOR_PAIR(black));
             // side borders when NO
             } else if ((iter_col == 0 || iter_col > 42) && selection == 0) {
-              attron(COLOR_PAIR(BLACK));
+              attron(COLOR_PAIR(black));
             // 'YES' dots when not selected
             } else if(search_result == 1 && iter_col > 19 && selection == 0){
               attron(COLOR_PAIR(FOREGROUND));
@@ -1100,7 +1095,7 @@ void prompt_newlook(){
               attron(COLOR_PAIR(FOREGROUND));
             //
             } else if (search_result == 0 && selection == 0 && iter_col > 19){
-              attron(COLOR_PAIR(BLACK));
+              attron(COLOR_PAIR(black));
             // NO blocks when not selected
             } else if (search_result == 1 && iter_col < 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
@@ -1111,7 +1106,7 @@ void prompt_newlook(){
               attron(COLOR_PAIR(FOREGROUND));
             // NO decorator blocks when not selected
             } else if (is_char_in_search(wc, search_str_doubles_lines) == 1 && iter_col < 21) {
-              attron(COLOR_PAIR(BLACK));
+              attron(COLOR_PAIR(black));
             // YES decorator blocks when selected
             } else if (iter_col > 20 && selection == 1){
               attron(COLOR_PAIR(FOREGROUND));
@@ -1219,10 +1214,10 @@ char * prompt_fuzzy(){
     attron(COLOR_PAIR(FOREGROUND));
     mvprintw(ROW/2 - 1 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
     attroff(COLOR_PAIR(FOREGROUND));
-    attron(COLOR_PAIR(BLACK));
+    attron(COLOR_PAIR(black));
     mvaddwstr(ROW/2 - 1 + rng_row, (COL/2) + 21, L"║");
     mvaddwstr(ROW/2 - 1 + rng_row, (COL/2) - 22, L"║");
-    attroff(COLOR_PAIR(BLACK));
+    attroff(COLOR_PAIR(black));
 
     getmaxyx(stdscr, ROW, COL);
     if(CACHE != ROW + COL){
@@ -1526,9 +1521,9 @@ void pshd(){
           l--;
           buffer[l] = 0;
           if (l < 0) l = 0;
-          attron(COLOR_PAIR(WHITE_BLACK));
+          attron(COLOR_PAIR(white_black));
           mvaddch(1, 9 + l, ' ');
-          attroff(COLOR_PAIR(WHITE_BLACK));
+          attroff(COLOR_PAIR(white_black));
 
           // copied from above
           attron(COLOR_PAIR(BACKGROUND));
@@ -1603,9 +1598,9 @@ void free_dir_list(struct file_node * list){
 int generate_pw_file(){
   clear();
 
-  attron(COLOR_PAIR(WHITE_BLACK));
+  attron(COLOR_PAIR(white_black));
   mvprintw(ROW/2 - 1, COL/2 - 8, "%s", "Enter Password");
-  attroff(COLOR_PAIR(WHITE_BLACK));
+  attroff(COLOR_PAIR(white_black));
   refresh();
 
   char pw[256] = {'\0'};

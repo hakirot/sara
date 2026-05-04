@@ -15,8 +15,8 @@
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = MAGENTA;
-static const int bg_c = YELLOW;
+static const int fg_c = magenta;
+static const int bg_c = yellow;
 
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;

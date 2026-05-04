@@ -1030,9 +1030,6 @@ void prompt_newlook(){
   wchar_t search_str_doubles_lines[] = L"╔╗╚╝═║";
   wchar_t search_str_block[] = L"█";
 
-  int offset = 0;
-  if (WIN_SIZE != BIG) offset = 1;
-
   int selection = 1;
   CACHE = ROW + COL;
   char input = 0;
@@ -1052,9 +1049,9 @@ void prompt_newlook(){
         selection = 0;
       }
 
-      for (int i = 0; i < BIG_GLYPH_HEIGHT; i++){
-        selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BLACK));
-        mvprintw(ROW/2 - 9 + i - offset, (COL-GLYPH_LENGTH)/2 - 0, "%s", arch[i]);
+      for (int i = 0; i < BG_GLYPH_HEIGHT; i++){
+        selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BACKGROUND));
+        print_bg();
         attroff(COLOR_PAIR(BACKGROUND));
         attroff(COLOR_PAIR(FOREGROUND));
       }
@@ -1067,7 +1064,7 @@ void prompt_newlook(){
 
         if (i == 0 || i == 6) {
           attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", no_yes_window[i]);
+          mvprintw(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2, "%s", no_yes_window[i]);
           attroff(COLOR_PAIR(FOREGROUND));
           refresh();
           continue;
@@ -1120,7 +1117,7 @@ void prompt_newlook(){
             }
           }
 
-          mvadd_wch(ROW/2 - 2 + i - offset, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+          mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
           iter_row += len;
@@ -1166,7 +1163,7 @@ void prompt_newlook(){
   }
 
   if(exit_glitch_flag){
-    glitch(STANDARD_GLITCH_TIME, 0);
+    CACHE = check_size();
   } else {
     neon();
   }

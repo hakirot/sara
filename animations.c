@@ -11,7 +11,6 @@
 #include "animations.h"
 #include "globals.h"
 #include "config.h"
-#include "glyphs.h"
 #include "utils.h"
 #include "sara.h"
 #include <ncurses.h>

@@ -14,16 +14,12 @@
 /* Toggle if you chdir */
 static int FOLLOW = true;
 
-/* COLORS */
-static const int fg_c = RED;
-static const int bg_c = GREEN;
+/* COLOR SETTINGS */
+static const int fg_c = MAGENTA;
+static const int bg_c = YELLOW;
 
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
-
-static const int GLITCH_FRAME_TIME = 3500;
-static const float HOLD_CHAR_TIME = 0.00001;
-
 
 /* CUSTOM GLYPHS */ 
 
@@ -38,26 +34,60 @@ static const float HOLD_CHAR_TIME = 0.00001;
 
 
 /* background glyph */
+//static const char * bg[] = {
+//  "                     -`                     ",
+//  "                    .o+`                    ",
+//  "                   `ooo/                    ",
+//  "                  `+oooo:                   ",
+//  "                 `+oooooo:                  ",
+//  "                 -+oooooo+:                 ",
+//  "               `/:-:++oooo+:                ",
+//  "              `/++++/+++++++:               ",
+//  "             `/++++++++++++++:              ",
+//  "            `/+++ooooooooooooo/`            ",
+//  "           ./ooosssso++osssssso+`           ",
+//  "          .oossssso-````/ossssss+`          ",
+//  "         -osssssso.      :ssssssso.         ",
+//  "        : sssssss/        osssso+++.        ",
+//  "       /ossssssss/        +ssssooo/-        ",
+//  "     `/ossssso+/:-        -:/+osssso+-      ",
+//  "    `+sso+:-`                 `.-/+oso:     ",
+//  "   `++:.                           `-/+/    ",
+//  "   .`                                 `/    ",
+//};
+
+//static const char * bg[] = {
+//  " ████    ████    ████          ",
+//  "  ████    ████    ████         ",
+//  "    ███     ███     ███        ",
+//  "     ███     ███     ███       ",
+//  "     █ ██    █ ██    █ ██      ",
+//  "        ██      ██      ██     ",
+//  "         ██      ██      ██    ",
+//  "          ██      ██      ██   ",
+//  "           ██      ██      ██  ",
+//  "            █       █       █  ",
+//  "             █       █       █ ",
+//};
+
 static const char * bg[] = {
-  "                     -`                     ",
-  "                    .o+`                    ",
-  "                   `ooo/                    ",
-  "                  `+oooo:                   ",
-  "                 `+oooooo:                  ",
-  "                 -+oooooo+:                 ",
-  "               `/:-:++oooo+:                ",
-  "              `/++++/+++++++:               ",
-  "             `/++++++++++++++:              ",
-  "            `/+++ooooooooooooo/`            ",
-  "           ./ooosssso++osssssso+`           ",
-  "          .oossssso-````/ossssss+`          ",
-  "         -osssssso.      :ssssssso.         ",
-  "        : sssssss/        osssso+++.        ",
-  "       /ossssssss/        +ssssooo/-        ",
-  "     `/ossssso+/:-        -:/+osssso+-      ",
-  "    `+sso+:-`                 `.-/+oso:     ",
-  "   `++:.                           `-/+/    ",
-  "   .`                                 `/    ",
+  "                                  *                   *  ",
+  "                         ✦                     ,         ",
+  "                                ,      *                 ",
+  "                                                        ✦",
+  "    .             ✦           ,           *    .         ",
+  "        .             ✦             ✦                    ",
+  "   *           .                          ✦              ",
+  "           .   ✦        ,         *                      ",
+  "          ,                                              ",
+  "        .                                                ",
+  "  ✦        ,              .                              ",
+  "   *           .                                         ",
+  "         .             .                                 ",
+  "˚          ,      .                                      ",
+  "          .                                              ",
+  "   *            ✦                                        ",
+  "        .                                                ",
 };
 
 
@@ -100,8 +130,8 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 0;
-static const int bg_offset_x = 0;
+static const int bg_offset_y = 1;
+static const int bg_offset_x = -2;
 static const int fg_offset_y = 1;
 static const int fg_offset_x = 0;
 
@@ -140,5 +170,23 @@ static const int tiny_mode_x = 44;
 /* TODO: These shouldn't be required, see above */
 static const wchar_t FG_STR[] = L"█╔╗╚╝║═";
 static const wchar_t BG_STR[] = L"`+so:-./";
+
+/* ANIMATION SETTINGS */
+
+/* ANIMATION OPTIONS:
+
+  print
+  down_wipes
+  glitch
+  neon
+  neon_reverse
+  shutter_slide
+  pixel_fill
+  tv_static
+
+*/
+
+static const int GLITCH_FRAME_TIME = 3500;
+static const float HOLD_CHAR_TIME = 0.00001;
 
 #endif

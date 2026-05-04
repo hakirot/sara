@@ -333,11 +333,15 @@ int check_char(){
         neon();
       }
     } else if(input == 'g'){
-//    glitch(STANDARD_GLITCH_TIME, 1);
-//    down_wipes();
-//    xray();
-//    pixel_fill(6000);
+      glitch(STANDARD_GLITCH_TIME, 1);
+    } else if(input == 'a'){
+      down_wipes();
+    } else if(input == 's'){
+      pixel_fill(6000);
+    } else if(input == 'd'){
       tv_static(0.020);
+    } else if(input == 'f'){
+      neon();
     } else if(input == 't'){
 
       CACHE = ROW + COL;

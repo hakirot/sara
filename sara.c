@@ -559,7 +559,7 @@ int check_char(){
         print(FOREGROUND, FOREGROUND, 0);
 
         attron(COLOR_PAIR(BACKGROUND));
-        for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
+        for (int i = 0; i < option_window_height; i++){
           mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
         }
         attroff(COLOR_PAIR(BACKGROUND));
@@ -887,8 +887,8 @@ const char * select_option_window(char* choices[], int len){
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(BACKGROUND));
-  for (int i = 0; i < NORMAL_GLYPH_HEIGHT; i++){
-    mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
+  for (int i = 0; i < option_window_height; i++){
+    mvprintw(ROW/2-2 + i - offset, (COL-option_window_length)/2, "%s", option_window[i]);
   }
   attroff(COLOR_PAIR(BACKGROUND));
 
@@ -921,13 +921,13 @@ const char * select_option_window(char* choices[], int len){
 
     for (int i = 0; i < len; i++){
       i == selection ? attron(COLOR_PAIR(FOREGROUND + 8)) : attron(COLOR_PAIR(FOREGROUND));
-      mvprintw(ROW/2 + i - 1 - offset, (COL-GLYPH_LENGTH)/2 + 1, "%s", choices[i]);
+      mvprintw(ROW/2 + i - 1 - offset, (COL-option_window_length)/2 + 1, "%s", choices[i]);
       attroff(COLOR_PAIR(FOREGROUND + 8));
       attroff(COLOR_PAIR(FOREGROUND));
     }
 
     refresh();
-    usleep(1000); // chill
+    usleep(1000);
   }
 
   return NULL;
@@ -970,7 +970,8 @@ int check_size(){
     clear();
 
 //  small win size jail
-    while (COL < NORMAL_GLYPH_LENGTH || ROW < NORMAL_GLYPH_HEIGHT){
+    // TODO: possibly define resize windows in config.h
+    while (COL < FG_GLYPH_LENGTH || ROW < FG_GLYPH_HEIGHT){
       WIN_SIZE = SMALL;
       clear();
       mvprintw(ROW/2, (COL-10)/2, "%s", tn);
@@ -983,14 +984,14 @@ int check_size(){
       getmaxyx(stdscr,ROW,COL); // Get total screen dimensions again
     }
 
-    if (ROW > BIG_GLYPH_HEIGHT && COL > BIG_GLYPH_LENGTH){
+    if (ROW > BG_GLYPH_HEIGHT && COL > BG_GLYPH_LENGTH){
       WIN_SIZE = BIG;
-      GLYPH_LENGTH = BIG_GLYPH_LENGTH;
-      GLYPH_HEIGHT = BIG_GLYPH_HEIGHT;
+      GLYPH_LENGTH = BG_GLYPH_LENGTH;
+      GLYPH_HEIGHT = BG_GLYPH_HEIGHT;
     } else {
       WIN_SIZE = NORMAL;
-      GLYPH_LENGTH = NORMAL_GLYPH_LENGTH;
-      GLYPH_HEIGHT = NORMAL_GLYPH_HEIGHT;
+      GLYPH_LENGTH = FG_GLYPH_LENGTH;
+      GLYPH_HEIGHT = FG_GLYPH_HEIGHT;
     }
   }
 
@@ -1064,7 +1065,7 @@ void prompt_newlook(){
 
         if (i == 0 || i == 6) {
           attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2, "%s", no_yes_window[i]);
+          mvprintw(ROW/2 - 2 + i, (COL-44)/2, "%s", no_yes_window[i]);
           attroff(COLOR_PAIR(FOREGROUND));
           refresh();
           continue;
@@ -1117,7 +1118,7 @@ void prompt_newlook(){
             }
           }
 
-          mvadd_wch(ROW/2 - 2 + i, (COL-GLYPH_LENGTH)/2 + iter_col, &cchar);
+          mvadd_wch(ROW/2 - 2 + i, (COL-44)/2 + iter_col, &cchar);
           attroff(COLOR_PAIR(FOREGROUND)); // no foreground manipulation in function
           attroff(COLOR_PAIR(BACKGROUND));
           iter_row += len;

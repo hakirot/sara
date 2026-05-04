@@ -17,13 +17,6 @@ int GLYPH_HEIGHT;
 int FOREGROUND = fg_c;
 int BACKGROUND = bg_c;
 
-// Pull this from config.h
-// how does sucklesss get away with this
-const int BIG_GLYPH_HEIGHT = 19;
-const int BIG_GLYPH_LENGTH = 44;
-const int NORMAL_GLYPH_HEIGHT = 7;
-const int NORMAL_GLYPH_LENGTH = 44;
-
 int ROW;
 int COL;
 int CACHE;
@@ -36,6 +29,9 @@ int BG_GLYPH_HEIGHT;
 int FG_GLYPH_HEIGHT;
 int BG_GLYPH_LENGTH;
 int FG_GLYPH_LENGTH;
+
+int option_window_height = 7;
+int option_window_length = 44;
 
 int IM_SET = true;
 

@@ -58,13 +58,14 @@ extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
 extern const int BIG_GLYPH_HEIGHT;
 extern const int BIG_GLYPH_LENGTH;
-extern const int NORMAL_GLYPH_HEIGHT;
-extern const int NORMAL_GLYPH_LENGTH;
 
 extern int BG_GLYPH_HEIGHT;
 extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;
 extern int FG_GLYPH_LENGTH;
+
+extern int option_window_height;
+extern int option_window_length;
 
 extern int IM_SET;
 

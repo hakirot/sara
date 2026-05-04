@@ -1140,7 +1140,6 @@ void prompt_newlook(){
         neon();
       }
 
-      // break
     } else if (input == 'q' || input == 'n') {
       exit_glitch_flag = 1;
       break;
@@ -1164,6 +1163,7 @@ void prompt_newlook(){
 
   if(exit_glitch_flag){
     CACHE = check_size();
+    glitch(QUICK_GLITCH_TIME, 0);
   } else {
     neon();
   }

@@ -10,7 +10,6 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-
 /* Toggle if you chdir */
 static int FOLLOW = true;
 
@@ -56,39 +55,39 @@ static const int use_bold_color_for_fg = false;
 //  "   .`                                 `/    ",
 //};
 
-static const char * bg[] = {
-  " ████    ████    ████          ",
-  "  ████    ████    ████         ",
-  "    ███     ███     ███        ",
-  "     ███     ███     ███       ",
-  "     █ ██    █ ██    █ ██      ",
-  "        ██      ██      ██     ",
-  "         ██      ██      ██    ",
-  "          ██      ██      ██   ",
-  "           ██      ██      ██  ",
-  "            █       █       █  ",
-  "             █       █       █ ",
-};
-
 //static const char * bg[] = {
-//  "                                  *                   *  ",
-//  "                         ✦                     ,         ",
-//  "                                ,      *                 ",
-//  "                                                        ✦",
-//  "    .             ✦           ,           *    .         ",
-//  "        .             ✦             ✦                    ",
-//  "   *           .                          ✦              ",
-//  "           .   ✦        ,         *                      ",
-//  "          ,                                              ",
-//  "        .                                                ",
-//  "  ✦        ,              .                              ",
-//  "   *           .                                         ",
-//  "         .             .                                 ",
-//  "˚          ,      .                                      ",
-//  "          .                                              ",
-//  "   *            ✦                                        ",
-//  "        .                                                ",
+//  " ████    ████    ████          ",
+//  "  ████    ████    ████         ",
+//  "    ███     ███     ███        ",
+//  "     ███     ███     ███       ",
+//  "     █ ██    █ ██    █ ██      ",
+//  "        ██      ██      ██     ",
+//  "         ██      ██      ██    ",
+//  "          ██      ██      ██   ",
+//  "           ██      ██      ██  ",
+//  "            █       █       █  ",
+//  "             █       █       █ ",
 //};
+
+static const char * bg[] = {
+  "                                  *                   *  ",
+  "                         ✦                     ,         ",
+  "                                ,      *                 ",
+  "                                                        ✦",
+  "    .             ✦           ,           *    .         ",
+  "        .             ✦             ✦                    ",
+  "   *           .                          ✦              ",
+  "           .   ✦        ,         *                      ",
+  "          ,                                              ",
+  "        .                                                ",
+  "  ✦        ,              .                              ",
+  "   *           .                                         ",
+  "         .             .                                 ",
+  "˚          ,      .                                      ",
+  "          .                                              ",
+  "   *            ✦                                        ",
+  "        .                                                ",
+};
 
 
 /* foreground glyph */
@@ -140,7 +139,7 @@ static const int hd_offset_y = 0;
 static const int hd_offset_x = -9;
 
 /* header position when small window mode */
-static const int hd_offset_y_min = 2;
+static const int hd_offset_y_min = 0;
 static const int hd_offset_x_min = -9;
 
 /* header highlight options*/

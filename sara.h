@@ -11,13 +11,6 @@
        - ueberzug-integration
          . Replacement for fuzzy newlook option
          . Measure screen and generate thumbnails based on config wall_dir
-       - allow-custom-glyphs
-         . Use doopstr test function to create the third search_str for title
-         . Abstract search_str vars to config
-         . All animations derivable from fg_chars, bg_chars, title
-         . change BIG_GLYPH* to FULL_GLYPH*
-         . abstract GLYPH_HEIGHT variables to measure glyph sizes on startup
-         . create options and toggles for header colors
 
    . sleep() and usleep() functions halt timings using clock() dx_xb
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used

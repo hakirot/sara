@@ -56,39 +56,39 @@ static const int use_bold_color_for_fg = false;
 //  "   .`                                 `/    ",
 //};
 
-//static const char * bg[] = {
-//  " ████    ████    ████          ",
-//  "  ████    ████    ████         ",
-//  "    ███     ███     ███        ",
-//  "     ███     ███     ███       ",
-//  "     █ ██    █ ██    █ ██      ",
-//  "        ██      ██      ██     ",
-//  "         ██      ██      ██    ",
-//  "          ██      ██      ██   ",
-//  "           ██      ██      ██  ",
-//  "            █       █       █  ",
-//  "             █       █       █ ",
-//};
-
 static const char * bg[] = {
-  "                                  *                   *  ",
-  "                         ✦                     ,         ",
-  "                                ,      *                 ",
-  "                                                        ✦",
-  "    .             ✦           ,           *    .         ",
-  "        .             ✦             ✦                    ",
-  "   *           .                          ✦              ",
-  "           .   ✦        ,         *                      ",
-  "          ,                                              ",
-  "        .                                                ",
-  "  ✦        ,              .                              ",
-  "   *           .                                         ",
-  "         .             .                                 ",
-  "˚          ,      .                                      ",
-  "          .                                              ",
-  "   *            ✦                                        ",
-  "        .                                                ",
+  " ████    ████    ████          ",
+  "  ████    ████    ████         ",
+  "    ███     ███     ███        ",
+  "     ███     ███     ███       ",
+  "     █ ██    █ ██    █ ██      ",
+  "        ██      ██      ██     ",
+  "         ██      ██      ██    ",
+  "          ██      ██      ██   ",
+  "           ██      ██      ██  ",
+  "            █       █       █  ",
+  "             █       █       █ ",
 };
+
+//static const char * bg[] = {
+//  "                                  *                   *  ",
+//  "                         ✦                     ,         ",
+//  "                                ,      *                 ",
+//  "                                                        ✦",
+//  "    .             ✦           ,           *    .         ",
+//  "        .             ✦             ✦                    ",
+//  "   *           .                          ✦              ",
+//  "           .   ✦        ,         *                      ",
+//  "          ,                                              ",
+//  "        .                                                ",
+//  "  ✦        ,              .                              ",
+//  "   *           .                                         ",
+//  "         .             .                                 ",
+//  "˚          ,      .                                      ",
+//  "          .                                              ",
+//  "   *            ✦                                        ",
+//  "        .                                                ",
+//};
 
 
 /* foreground glyph */
@@ -130,18 +130,18 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 1;
+static const int bg_offset_y = 0;
 static const int bg_offset_x = -2;
-static const int fg_offset_y = 1;
+static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;
 
 /* header position when fullsize mode */
-static const int hd_offset_y = 1;
+static const int hd_offset_y = 0;
 static const int hd_offset_x = -9;
 
 /* header position when small window mode */
-static const int hd_offset_y_min = 1;
-static const int hd_offset_x_min = -8;
+static const int hd_offset_y_min = 2;
+static const int hd_offset_x_min = -9;
 
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = 1;
@@ -151,15 +151,14 @@ static const int highlight_hd_in_small_mode = 0;
 static const int use_fg_c_for_hd_as_bg = false;  // ensure both are not true
 static const int use_bg_c_for_hd_as_bg = true;   // ensure both are not true
 
-
-/* Toggle if you want to only print fg[] glyph at a certain size */
+/* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true; // TODO ensure this value is greater than tiny mode
-static const int resize_width = 44;
-static const int resize_height = 19;
+static const int resize_x = 44;
+static const int resize_y = 7;
 
-/* Tiny mode options */
-static const char tn[] = "S.A.R.A";
+/* Set tiny_mode to */
 static const int tiny_mode = true;
+static const char tn[] = "S.A.R.A";
 static const int tiny_mode_y = 7;
 static const int tiny_mode_x = 44;
 

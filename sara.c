@@ -965,8 +965,7 @@ int check_size(){
     clear();
 
 //  small win size jail
-    // TODO: possibly define resize windows in config.h
-    while (COL < FG_GLYPH_LENGTH || ROW < FG_GLYPH_HEIGHT){
+    while (COL < tiny_mode_x || ROW < tiny_mode_y){
       WIN_SIZE = SMALL;
       clear();
       mvprintw(ROW/2, (COL-10)/2, "%s", tn);
@@ -979,7 +978,7 @@ int check_size(){
       getmaxyx(stdscr,ROW,COL); // Get total screen dimensions again
     }
 
-    if (ROW > BG_GLYPH_HEIGHT && COL > BG_GLYPH_LENGTH){
+    if ((ROW > resize_y && COL > resize_x) || dynamic_resize == false){
       WIN_SIZE = BIG;
       GLYPH_LENGTH = BG_GLYPH_LENGTH;
       GLYPH_HEIGHT = BG_GLYPH_HEIGHT;

@@ -15,8 +15,8 @@ EQ            = =
 CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -O2 -flto -fno-fat-lto-objects -D_REENTRANT -fPIC $(DEFINES)
 #CFLAGS        = -pipe -O2 -flto -fno-fat-lto-objects -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CFLAGS        = -pipe -O2 -flto -fno-fat-lto-objects -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -flto -fno-fat-lto-objects -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I. -I/usr/include/qt -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
@@ -461,8 +461,9 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-animations.o: animations.c globals.h \
-		glyphs.h \
+animations.o: animations.c animations.h \
+		globals.h \
+		config.h \
 		utils.h \
 		sara.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o animations.o animations.c
@@ -470,7 +471,8 @@ animations.o: animations.c globals.h \
 command.o: command.c 
 	$(CC) -c $(CFLAGS) $(INCPATH) -o command.o command.c
 
-globals.o: globals.c globals.h
+globals.o: globals.c globals.h \
+		config.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o globals.o globals.c
 
 glyphs.o: glyphs.c 
@@ -485,6 +487,7 @@ sara.o: sara.c sara.h \
 	$(CC) -c $(CFLAGS) $(INCPATH) -o sara.o sara.c
 
 utils.o: utils.c globals.h \
+		config.h \
 		sara.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o utils.o utils.c
 

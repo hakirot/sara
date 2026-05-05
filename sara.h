@@ -8,18 +8,15 @@
 
    . Active branches
      | main
-       - ueberzug-integration
-         . Replacement for fuzzy newlook option
-         . Measure screen and generate thumbnails based on config wall_dir
+        - allow-custom-commands
+          . Build commands from a struct array
 
-   . sleep() and usleep() functions halt timings using clock() dx_xb
+   . sleep() and usleep() functions halt timings using clock()
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
    . sara -c
    . DNS server
    . More animations
        > Sparkle
-       > Simple Blink (backdrop -> sarafill -> backdrop -> sarafill)
-       > Scan (xray but single direction)
    . Fix WAIT_BUFFER inconsistency
    . mega_glitch()
    . Break relevant functions into new files (utils, animations, pshd)

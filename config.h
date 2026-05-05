@@ -14,8 +14,8 @@
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = magenta;
-static const int bg_c = yellow;
+static const int fg_c = white;
+static const int bg_c = black;
 
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
@@ -55,39 +55,39 @@ static const int use_bold_color_for_fg = false;
 //  "   .`                                 `/    ",
 //};
 
-//static const char * bg[] = {
-//  " ████    ████    ████          ",
-//  "  ████    ████    ████         ",
-//  "    ███     ███     ███        ",
-//  "     ███     ███     ███       ",
-//  "     █ ██    █ ██    █ ██      ",
-//  "        ██      ██      ██     ",
-//  "         ██      ██      ██    ",
-//  "          ██      ██      ██   ",
-//  "           ██      ██      ██  ",
-//  "            █       █       █  ",
-//  "             █       █       █ ",
-//};
-
 static const char * bg[] = {
-  "                                  *                   *  ",
-  "                         ✦                     ,         ",
-  "                                ,      *                 ",
-  "                                                        ✦",
-  "    .             ✦           ,           *    .         ",
-  "        .             ✦             ✦                    ",
-  "   *           .                          ✦              ",
-  "           .   ✦        ,         *                      ",
-  "          ,                                              ",
-  "        .                                                ",
-  "  ✦        ,              .                              ",
-  "   *           .                                         ",
-  "         .             .                                 ",
-  "˚          ,      .                                      ",
-  "          .                                              ",
-  "   *            ✦                                        ",
-  "        .                                                ",
+  " ████    ████    ████          ",
+  "  ████    ████    ████         ",
+  "    ███     ███     ███        ",
+  "     ███     ███     ███       ",
+  "     █ ██    █ ██    █ ██      ",
+  "        ██      ██      ██     ",
+  "         ██      ██      ██    ",
+  "          ██      ██      ██   ",
+  "           ██      ██      ██  ",
+  "            █       █       █  ",
+  "             █       █       █ ",
 };
+
+//static const char * bg[] = {
+//  "                                  *                   *  ",
+//  "                         ✦                     ,         ",
+//  "                                ,      *                 ",
+//  "                                                        ✦",
+//  "    .             ✦           ,           *    .         ",
+//  "        .             ✦             ✦                    ",
+//  "   *           .                          ✦              ",
+//  "           .   ✦        ,         *                      ",
+//  "          ,                                              ",
+//  "        .                                                ",
+//  "  ✦        ,              .                              ",
+//  "   *           .                                         ",
+//  "         .             .                                 ",
+//  "˚          ,      .                                      ",
+//  "          .                                              ",
+//  "   *            ✦                                        ",
+//  "        .                                                ",
+//};
 
 
 /* foreground glyph */
@@ -129,7 +129,7 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 0;
+static const int bg_offset_y = -1;
 static const int bg_offset_x = -2;
 static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;

@@ -165,10 +165,6 @@ static const int tiny_mode_x = 44;
 /* automate this and perform checks [make a perform check cmd-line option]
      - ensure no duplicate chars */
 
-/* TODO: These shouldn't be required, see above */
-static const wchar_t FG_STR[] = L"█╔╗╚╝║═";
-static const wchar_t BG_STR[] = L"`+so:-./";
-
 /* ANIMATION SETTINGS */
 
 /* ANIMATION OPTIONS:

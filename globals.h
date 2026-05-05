@@ -51,9 +51,6 @@ typedef enum {
   EMPTY
 } start_animation;
 
-static const wchar_t BG_STR[64];
-static const wchar_t FG_STR[16];
-
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
 extern const int BIG_GLYPH_HEIGHT;

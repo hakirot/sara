@@ -57,13 +57,13 @@ int main(int argc, char* argv[]){
     }
   }
 
-  double WAIT_BUFFER = 0.10000;
+//double WAIT_BUFFER = 0.10000;
   srand((unsigned)time(0));
 
   int opt;
   while ((opt = getopt(argc, argv, "cMFfbhrH")) != -1){
     switch (opt) {
-      case 'c': WAIT_BUFFER = 0.00005; break;
+//    case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8

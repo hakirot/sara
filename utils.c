@@ -163,7 +163,7 @@ void init_window(){
 void get_helped() {
   printf("Usage: %s [OPTIONS]\n", "sara");
   printf("  --help, -h    Get helped\n");
-  printf("  -c            Constant effects\n");
+//printf("  -c            Constant effects\n");
   printf("  -G            Constant glitch effect\n");
   printf("  -M            Constant MEGA glitch effect\n");
   printf("  -H            Holographic background\n");

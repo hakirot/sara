@@ -11,7 +11,6 @@
 
 #include <time.h>
 #include <ncurses.h>
-#include "wchar.h"
 
 #define black           1
 #define red             2
@@ -50,6 +49,32 @@ typedef enum {
   NEON,
   EMPTY
 } start_animation;
+
+typedef enum {
+  print,
+  down_wipes,
+  glitch,
+  neon,
+  neon_reverse,
+  shutter_slide,
+  pixel_fill,
+  tv_static,
+} animation;
+
+typedef enum {
+  WAIT,
+  WAIT_ON_ERR,
+  NOWAIT,
+  EXEC,
+} wait_option;
+
+typedef struct {
+  char smashkey;
+  const void * cmd;
+  wait_option option;
+  animation pre_animation;
+  animation post_animation;
+} Command;
 
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;

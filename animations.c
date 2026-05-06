@@ -17,17 +17,17 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
- 
-void animate(animation_option option, Arg arg){
-  if (option == none)           print_none(arg);
+
+void animate(animation_option option){
+  if (option == none)           print_none((Arg){0});
   if (option == down_wipes)     print_down_wipes();
-  if (option == glitch)         print_glitch(arg);
-  if (option == glitch_full)    print_glitch(arg);
+  if (option == glitch)         print_glitch((Arg){.x = 0});
+  if (option == glitch_full)    print_glitch((Arg){.x = 1});
   if (option == neon)           print_neon();
   if (option == neon_reverse)   print_neon_reverse();
   if (option == shutter_slide)  print_shutter_slide();
-  if (option == pixel_fill)     print_pixel_fill(arg);
-  if (option == tv_static)      print_tv_static(arg);
+  if (option == pixel_fill)     print_pixel_fill();
+  if (option == tv_static)      print_tv_static();
 }
 
 // TODO: New test glyphs reveal undefined behavior with the header
@@ -264,7 +264,7 @@ void print_shutter_slide(){
 };
 
 
-void print_pixel_fill(Arg usleep_time){
+void print_pixel_fill(){
 
   clear();
   refresh();
@@ -350,7 +350,9 @@ void print_pixel_fill(Arg usleep_time){
     refresh();
     check_char();
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
-    usleep(usleep_time.x);
+
+    // TODO: make this configurable
+    usleep(12000);
 
   }
 
@@ -358,7 +360,7 @@ void print_pixel_fill(Arg usleep_time){
   print_hd();
 }
 
-void print_tv_static(Arg cycle_length){
+void print_tv_static(){
 
   clear();
   refresh();
@@ -415,7 +417,8 @@ void print_tv_static(Arg cycle_length){
   int j = 0;
   int roll_result;
   wchar_t wc;
-  while(elapsed_time < cycle_length.y){
+  // TODO: make configurable
+  while(elapsed_time < 0.020){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
@@ -518,7 +521,8 @@ void print_none(Arg printColorbar){
     print_overlay(fg, 0);
     print_hd();
 
-    // colorbar TODO: abstract this to separate function and add config.h options to it
+    // TODO: abstract this to separate function and add config.h options to it
+    //   .. also this is no longer implemented
     if (printColorbar.x){
       for(int i = 1; i < 9; i++){
         attron(COLOR_PAIR(i));

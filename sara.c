@@ -337,9 +337,9 @@ int check_char(){
     } else if(input == 'a'){
       print_down_wipes();
     } else if(input == 's'){
-      print_pixel_fill((Arg){.x = 6000});
+      print_pixel_fill();
     } else if(input == 'd'){
-      print_tv_static((Arg){.y =.020});
+      print_tv_static();
     } else if(input == 'f'){
       print_neon();
     } else if(input == 't'){
@@ -825,7 +825,8 @@ int check_char(){
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
 //        tv_static(0.010);
-          print_pixel_fill((Arg){.x = 12000});
+          // TODO: define this speed in config.h
+          print_pixel_fill();
         }
       }
 

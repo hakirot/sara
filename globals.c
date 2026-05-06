@@ -40,4 +40,4 @@ char HOLD_CHAR;
 
 int HOLOGRAPHIC = 0;
 
-int GLITCH_TIME = 92;
+int GLITCH_TIME = 52;

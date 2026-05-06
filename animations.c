@@ -19,9 +19,10 @@
 #include <string.h>
 
 // TODO: New test glyphs reveal undefined behavior with the header
-void glitch(int numFrames, int full){
+// TODO: Place colorbar at same line as hd
+void print_glitch(int numFrames, int full){
 
-  print(FOREGROUND, BACKGROUND, 1);
+  print_none(FOREGROUND, BACKGROUND, 1);
   CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
@@ -95,14 +96,14 @@ void glitch(int numFrames, int full){
     usleep(GLITCH_FRAME_TIME);
   }
 
-  print(FOREGROUND, BACKGROUND, 0);
+  print_none(FOREGROUND, BACKGROUND, 0);
 }
 
 // TODO: fg glyph not in correct position when im not defined
 //       and WIN_SIZE == normal, but only when the width is constrained
 //       to a certain size as well? huh. Just check the prints between im[-]
 //       and fg
-void neon(){
+void print_neon(){
 
   double cycle_length = 0.3;
   double elapsed_time = 0;
@@ -166,10 +167,10 @@ void neon(){
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
-  print(FOREGROUND, BACKGROUND, 0);
+  print_none(FOREGROUND, BACKGROUND, 0);
 }
 
-void neon_reverse(){
+void print_neon_reverse(){
 
   clock_t cycle_start = clock();
   double cycle_length = 0.2;
@@ -216,7 +217,7 @@ void neon_reverse(){
   }
 }
 
-void shutter_slide(){
+void print_shutter_slide(){
   int num_frames = 8;
   int margin_width = (COL - FG_GLYPH_LENGTH) / 2;
   int left_stop = margin_width;
@@ -251,7 +252,7 @@ void shutter_slide(){
 };
 
 
-void pixel_fill(int usleep_time){
+void print_pixel_fill(int usleep_time){
 
   clear();
   refresh();
@@ -345,7 +346,7 @@ void pixel_fill(int usleep_time){
   print_hd();
 }
 
-void tv_static(double cycle_length){
+void print_tv_static(double cycle_length){
 
   clear();
   refresh();
@@ -399,7 +400,6 @@ void tv_static(double cycle_length){
 
   double elapsed_time = 0;
   clock_t cycle_start = clock();
-  cchar_t cchar;
   int j = 0;
   int roll_result;
   wchar_t wc;
@@ -496,7 +496,7 @@ void tv_static(double cycle_length){
 }
 
 // TODO: remove globals as parameters
-void print(int fg_color, int bg_color, int printColorbar){
+void print_none(int fg_color, int bg_color, int printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){
     print_fg(fg);
@@ -617,7 +617,7 @@ void print_hd(){
   }
 }
 
-void down_wipes(){
+void print_down_wipes(){
 
   int wipe_time = 12000; // TODO: make this configurable
 

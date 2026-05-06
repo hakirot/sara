@@ -17,18 +17,30 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+ 
+void animate(animation_option option, Arg arg){
+  if (option == none)           print_none(arg);
+  if (option == down_wipes)     print_down_wipes();
+  if (option == glitch)         print_glitch(arg);
+  if (option == glitch_full)    print_glitch(arg);
+  if (option == neon)           print_neon();
+  if (option == neon_reverse)   print_neon_reverse();
+  if (option == shutter_slide)  print_shutter_slide();
+  if (option == pixel_fill)     print_pixel_fill(arg);
+  if (option == tv_static)      print_tv_static(arg);
+}
 
 // TODO: New test glyphs reveal undefined behavior with the header
 // TODO: Place colorbar at same line as hd
-void print_glitch(int numFrames, int full){
+void print_glitch(Arg bigmode){
 
-  print_none(FOREGROUND, BACKGROUND, 1);
+  print_none((Arg){.x = 1});
   CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
   int rng_backdrop_rng = 2; if(IM_SET) rng_backdrop_rng++;
 
-  for( int i = 0 ; i < numFrames; i++ ) {
+  for( int i = 0 ; i < GLITCH_TIME; i++ ) {
     rng_row   = rand() % FG_GLYPH_HEIGHT;
     rng_shift = (rand() % 3) - 1;                       // RNG -1 and 1
     rng_backdrop = rand() % rng_backdrop_rng;           // RNG 0 and 2
@@ -51,7 +63,7 @@ void print_glitch(int numFrames, int full){
 
     if (WIN_SIZE == BIG) {
 
-      if(full == 1){
+      if(bigmode.x == 1){
 
         if(use_bold_color_for_bg) attron(A_BOLD);
         attron(COLOR_PAIR(BACKGROUND));
@@ -96,7 +108,7 @@ void print_glitch(int numFrames, int full){
     usleep(GLITCH_FRAME_TIME);
   }
 
-  print_none(FOREGROUND, BACKGROUND, 0);
+  print_none((Arg){.x = 0});
 }
 
 // TODO: fg glyph not in correct position when im not defined
@@ -167,7 +179,7 @@ void print_neon(){
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
-  print_none(FOREGROUND, BACKGROUND, 0);
+  print_none((Arg){.x = 0});
 }
 
 void print_neon_reverse(){
@@ -252,7 +264,7 @@ void print_shutter_slide(){
 };
 
 
-void print_pixel_fill(int usleep_time){
+void print_pixel_fill(Arg usleep_time){
 
   clear();
   refresh();
@@ -338,7 +350,7 @@ void print_pixel_fill(int usleep_time){
     refresh();
     check_char();
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
-    usleep(usleep_time);
+    usleep(usleep_time.x);
 
   }
 
@@ -346,7 +358,7 @@ void print_pixel_fill(int usleep_time){
   print_hd();
 }
 
-void print_tv_static(double cycle_length){
+void print_tv_static(Arg cycle_length){
 
   clear();
   refresh();
@@ -403,7 +415,7 @@ void print_tv_static(double cycle_length){
   int j = 0;
   int roll_result;
   wchar_t wc;
-  while(elapsed_time < cycle_length){
+  while(elapsed_time < cycle_length.y){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
@@ -496,7 +508,7 @@ void print_tv_static(double cycle_length){
 }
 
 // TODO: remove globals as parameters
-void print_none(int fg_color, int bg_color, int printColorbar){
+void print_none(Arg printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){
     print_fg(fg);
@@ -507,7 +519,7 @@ void print_none(int fg_color, int bg_color, int printColorbar){
     print_hd();
 
     // colorbar TODO: abstract this to separate function and add config.h options to it
-    if (printColorbar){
+    if (printColorbar.x){
       for(int i = 1; i < 9; i++){
         attron(COLOR_PAIR(i));
         mvaddwstr(ROW/2 + 5, (COL-FG_GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
@@ -515,8 +527,8 @@ void print_none(int fg_color, int bg_color, int printColorbar){
       }
     }
 
-    attroff(COLOR_PAIR(fg_color + 8));
-    attroff(COLOR_PAIR(fg_color));
+    attroff(COLOR_PAIR(FOREGROUND + 8));
+    attroff(COLOR_PAIR(FOREGROUND));
     attroff(COLOR_PAIR(FOREGROUND));
     attroff(A_BOLD);
     attroff(A_STANDOUT);

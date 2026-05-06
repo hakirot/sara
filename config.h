@@ -187,6 +187,7 @@ static const float HOLD_CHAR_TIME = 0.00001;
 
 static const char *test_cmd[] = { "mkdir", "TEST_DIR", NULL};
 
+/* TODO: issue a warning if duplicates or crash if necessary */
 static Command commands[] = {
 /*  triggerkey   command     wait_option  pre_animation, post animation */
   { 'a',         test_cmd,   WAIT,        neon_reverse,  neon },

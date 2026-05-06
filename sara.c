@@ -106,12 +106,12 @@ int main(int argc, char* argv[]){
     if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
-      print_none(FOREGROUND, BACKGROUND, 0);
+      print_none((Arg){.x = 0});
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
     if (check_char_result == 0 && should_print == true && HOLD_CHAR == '\0'){
-      print_none(FOREGROUND, BACKGROUND, 0);
+      print_none((Arg){.x = 0});
       should_print = false;
     } else if (check_char_result == 1){
       should_print = true;
@@ -254,7 +254,7 @@ int check_char(){
         char * buffer = NULL;
         size_t bufsize = 0;
         getline(&buffer, &bufsize, stdin);
-        print_glitch(10, 0);
+        print_glitch((Arg){.x = 0});
         return 1;
       }
 
@@ -291,21 +291,21 @@ int check_char(){
         execlp("shutdown", "shutdown", "-r", "now", NULL);
         error("reboot err");
       } else {
-        print_glitch(STANDARD_GLITCH_TIME, 0);
+        print_glitch((Arg){.x = 0});
       }
 
     } else if(input == 'i'){
       int temp = BACKGROUND;
       BACKGROUND = FOREGROUND;
       FOREGROUND = temp;
-      print_none(FOREGROUND, BACKGROUND, 0);
+      print_none((Arg){.x = 0});
     } else if(input == 'I'){
       BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
       while(FOREGROUND == BACKGROUND){
         FOREGROUND = rand() % 7 + 2;
       }
-      print_none(FOREGROUND, BACKGROUND, 0);
+      print_none((Arg){.x = 0});
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
         HOLOGRAPHIC = 0;
@@ -333,13 +333,13 @@ int check_char(){
         print_neon();
       }
     } else if(input == 'g'){
-      print_glitch(STANDARD_GLITCH_TIME, 1);
+      print_glitch((Arg){.x = 1});
     } else if(input == 'a'){
       print_down_wipes();
     } else if(input == 's'){
-      print_pixel_fill(6000);
+      print_pixel_fill((Arg){.x = 6000});
     } else if(input == 'd'){
-      print_tv_static(0.020);
+      print_tv_static((Arg){.y =.020});
     } else if(input == 'f'){
       print_neon();
     } else if(input == 't'){
@@ -357,7 +357,7 @@ int check_char(){
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
-        print_glitch(QUICK_GLITCH_TIME, 1);
+        print_glitch((Arg){.x = 1});
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
@@ -553,7 +553,7 @@ int check_char(){
         int offset = 0;
         if(WIN_SIZE != BIG) offset = 1;
 
-        print_none(FOREGROUND, FOREGROUND, 0);
+        print_none((Arg){.x = 0});
 
         attron(COLOR_PAIR(BACKGROUND));
         for (int i = 0; i < option_window_height; i++){
@@ -634,7 +634,7 @@ int check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        print_glitch(QUICK_GLITCH_TIME, 1);
+        print_glitch((Arg){.x = 1});
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
@@ -792,7 +792,7 @@ int check_char(){
           print_neon();
         } else {
           print_shutter_slide();
-          print_glitch(QUICK_GLITCH_TIME, 0);
+          print_glitch((Arg){.x = 0});
         }
 
         refresh();
@@ -824,8 +824,8 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-//        print_tv_static(0.010);
-          print_pixel_fill(12000);
+//        tv_static(0.010);
+          print_pixel_fill((Arg){.x = 12000});
         }
       }
 
@@ -876,7 +876,7 @@ const char * select_option_window(char* choices[], int len){
   int selection = 0;
   CACHE = ROW + COL;
 
-  print_none(FOREGROUND, FOREGROUND, 0); // hardcoded style choice
+  print_none((Arg){.x = 0});
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
@@ -933,7 +933,7 @@ void print_start_animation(){
 //if (START_ANIMATION == EMPTY){
 //  int start_roll = rand() % 3;
 //  if (start_roll == 0){
-//    START_ANIMATION = QUICK;
+//    START_ANIMATION = GLITCH_TIME;
 //  } else if (start_roll == 1){
 //    START_ANIMATION = STANDARD;
 //  } else {
@@ -946,11 +946,11 @@ void print_start_animation(){
 
   if (START_ANIMATION == NEON){
     print_neon();
-  } else if (START_ANIMATION == QUICK){
-    print_none(FOREGROUND, BACKGROUND, 0);
+  } else if (START_ANIMATION == GLITCH_TIME){
+    print_none((Arg){.x = 0});
   } else {
     printstandard();
-    print_glitch(STANDARD_GLITCH_TIME, 0);
+    print_glitch((Arg){.x = 0});
   }
 }
 
@@ -1158,7 +1158,7 @@ void prompt_newlook(){
 
   if(exit_glitch_flag){
     CACHE = check_size();
-    print_glitch(QUICK_GLITCH_TIME, 0);
+    print_glitch((Arg){.x = 0});
   } else {
     print_neon();
   }
@@ -1412,13 +1412,12 @@ void pshd(){
         }
         print_neon();
       } else {
-        print_glitch(QUICK_GLITCH_TIME, 1);
-
+        print_glitch((Arg){.x = 1});
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      print_glitch(QUICK_GLITCH_TIME, 1);
+      print_glitch((Arg){.x = 1});
       return;
     } else if (input == 'f' || input == '/') {
 
@@ -1565,7 +1564,7 @@ void pshd(){
             }
             print_neon();
           } else {
-            print_glitch(STANDARD_GLITCH_TIME, 0);
+            print_glitch((Arg){.x = 0});
           }
           return;
         }

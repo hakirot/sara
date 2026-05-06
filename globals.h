@@ -50,17 +50,24 @@ typedef enum {
   EMPTY
 } start_animation;
 
+typedef union {
+  int x;
+  double y;
+} Arg;
+
 typedef enum {
-  print,
+  none,
   down_wipes,
   glitch,
+  glitch_full,
   neon,
   neon_reverse,
   shutter_slide,
   pixel_fill,
   tv_static,
-} animation;
+} animation_option;
 
+// TODO: Consider options to confirm
 typedef enum {
   WAIT,
   WAIT_ON_ERR,
@@ -72,12 +79,13 @@ typedef struct {
   char smashkey;
   const void * cmd;
   wait_option option;
-  animation pre_animation;
-  animation post_animation;
+  animation_option pre_animation;
+  animation_option post_animation;
 } Command;
 
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
+// TODO: Delete me
 extern const int BIG_GLYPH_HEIGHT;
 extern const int BIG_GLYPH_LENGTH;
 
@@ -106,7 +114,6 @@ extern clock_t WAIT_START;
 extern start_animation START_ANIMATION;
 extern char HOLD_CHAR;
 
-extern int STANDARD_GLITCH_TIME;
-extern int QUICK_GLITCH_TIME;
+extern int GLITCH_TIME;
 
 #endif

@@ -183,4 +183,13 @@ static const int tiny_mode_x = 44;
 static const int GLITCH_FRAME_TIME = 3500;
 static const float HOLD_CHAR_TIME = 0.00001;
 
+/* CUSTOM COMMANDS */
+
+static const char *test_cmd[] = { "mkdir", "TEST_DIR", NULL};
+
+static Command commands[] = {
+/*  triggerkey   command     wait_option  pre_animation, post animation */
+  { 'a',         test_cmd,   WAIT,        neon_reverse,  neon },
+};
+
 #endif

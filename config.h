@@ -197,10 +197,14 @@ static Command commands[] = {
 };
 
 static Builtin builtins[] = {
+  { 'I', randomize_colors },
+  { 'i', invert_colors },
+  { 'H', rave },
   { 'p', pshd },
   { 'q', quit },
 };
 
+/* TODO: solve window options */
 //static Window_Options option_windows[] = {
 //  {},
 //};

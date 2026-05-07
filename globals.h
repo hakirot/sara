@@ -88,6 +88,9 @@ typedef struct {
 typedef enum {
   pshd,
   quit,
+  randomize_colors,
+  invert_colors,
+  rave,
 } internal;
 
 typedef struct {

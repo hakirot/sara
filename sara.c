@@ -725,7 +725,7 @@ int check_char(){
       endwin();
       char path_to_xdo[256] = {'\0'};
       char * env_home = getenv("HOME");
-      sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/xdo.sh");
+      sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
       execlp(path_to_xdo, "xdo", "3", NULL);
       error("ERROR: execlp xdo.sh");
 

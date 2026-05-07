@@ -557,7 +557,7 @@ int check_char(){
 
         attron(COLOR_PAIR(BACKGROUND));
         for (int i = 0; i < option_window_height; i++){
-          mvprintw(ROW/2-2 + i - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[i]);
+          mvprintw(ROW/2-2 + i - offset, (COL-option_window_length)/2, "%s", option_window[i]);
         }
         attroff(COLOR_PAIR(BACKGROUND));
 
@@ -983,12 +983,8 @@ int check_size(){
 
     if ((ROW > resize_y && COL > resize_x) || dynamic_resize == false){
       WIN_SIZE = BIG;
-      GLYPH_LENGTH = BG_GLYPH_LENGTH;
-      GLYPH_HEIGHT = BG_GLYPH_HEIGHT;
     } else {
       WIN_SIZE = NORMAL;
-      GLYPH_LENGTH = FG_GLYPH_LENGTH;
-      GLYPH_HEIGHT = FG_GLYPH_HEIGHT;
     }
   }
 
@@ -1000,7 +996,7 @@ void patch_backlight(){
   attron(COLOR_PAIR(FOREGROUND));
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
-  mvaddstr(ROW/2 - offset - 1, (COL-GLYPH_LENGTH)/2 + 1, "BACKLIGHT");
+  mvaddstr(ROW/2 - offset - 1, (COL-option_window_length)/2 + 1, "BACKLIGHT");
   attroff(COLOR_PAIR(FOREGROUND));
 }
 
@@ -1017,7 +1013,7 @@ void patch_border(){
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
   attron(COLOR_PAIR(BACKGROUND));
-  mvadd_wch(ROW/2 - offset - 1, (COL/2 + GLYPH_LENGTH/2) - 1, &cchar);
+  mvadd_wch(ROW/2 - offset - 1, (COL/2 + option_window_length/2) - 1, &cchar);
   attroff(COLOR_PAIR(BACKGROUND));
 }
 
@@ -1195,7 +1191,7 @@ char * prompt_fuzzy(){
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(FOREGROUND));
-  mvprintw(ROW/2 - 2 - offset, (COL-GLYPH_LENGTH)/2, "%s", option_window[0]);
+  mvprintw(ROW/2 - 2 - offset, (COL-option_window_length)/2, "%s", option_window[0]);
   attroff(COLOR_PAIR(FOREGROUND));
 
   char * wall_dir = "/home/hakirot/pix/walls";
@@ -1214,7 +1210,7 @@ char * prompt_fuzzy(){
     rng_shift = (rand() % 3) - 1;       // -1 and 1
 
     attron(COLOR_PAIR(FOREGROUND));
-    mvprintw(ROW/2 - 1 + rng_row, (COL - GLYPH_LENGTH)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
+    mvprintw(ROW/2 - 1 + rng_row, (COL - option_window_length)/2 - rng_shift + 1, "%s", fuzzy[rng_row]);
     attroff(COLOR_PAIR(FOREGROUND));
     attron(COLOR_PAIR(black));
     mvaddwstr(ROW/2 - 1 + rng_row, (COL/2) + 21, L"║");

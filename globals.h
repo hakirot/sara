@@ -98,8 +98,6 @@ typedef struct {
   internal option;
 } Builtin;
 
-extern int GLYPH_LENGTH;
-extern int GLYPH_HEIGHT;
 // TODO: Delete me
 extern const int BIG_GLYPH_HEIGHT;
 extern const int BIG_GLYPH_LENGTH;

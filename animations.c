@@ -162,7 +162,7 @@ void _neon(){
       if (WIN_SIZE == BIG) {
         for(int i = 1; i < 9; i++){
           attron(COLOR_PAIR(i));
-          mvaddwstr(ROW/2 + 4, (COL-GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+          mvaddwstr(ROW/2 + 4, (COL-FG_GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
           attroff(COLOR_PAIR(i));
           refresh();
         }

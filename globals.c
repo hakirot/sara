@@ -11,9 +11,6 @@
 #include "config.h"
 #include <time.h>
 
-int GLYPH_LENGTH;
-int GLYPH_HEIGHT;
-
 int FOREGROUND = fg_c;
 int BACKGROUND = bg_c;
 

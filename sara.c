@@ -106,12 +106,12 @@ int main(int argc, char* argv[]){
     if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
-      print_none((Arg){.x = 0});
+      animate(none);
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
     if (check_char_result == 0 && should_print == true && HOLD_CHAR == '\0'){
-      print_none((Arg){.x = 0});
+      animate(none);
       should_print = false;
     } else if (check_char_result == 1){
       should_print = true;
@@ -172,7 +172,7 @@ int check_char(){
         perror("fork");
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
-        print_neon_reverse();
+        animate(neon_reverse);
         endwin();
         execlp("ranger", "ranger", "--choosedir", cache_file, NULL);
         error("ERROR: execv ranger");
@@ -214,7 +214,7 @@ int check_char(){
       refresh();
       getmaxyx(stdscr, ROW, COL);
       if(CACHE == ROW + COL){
-        print_neon();
+        animate(neon);
       }
 
     } else if(input == 'R'){
@@ -245,7 +245,7 @@ int check_char(){
           }
         }
       }
-      print_neon();
+      animate(neon);
 
     } else if(input == 'S'){
 
@@ -254,7 +254,7 @@ int check_char(){
         char * buffer = NULL;
         size_t bufsize = 0;
         getline(&buffer, &bufsize, stdin);
-        print_glitch((Arg){.x = 0});
+        animate(glitch);
         return 1;
       }
 
@@ -291,21 +291,21 @@ int check_char(){
         execlp("shutdown", "shutdown", "-r", "now", NULL);
         error("reboot err");
       } else {
-        print_glitch((Arg){.x = 0});
+        animate(glitch);
       }
 
     } else if(input == 'i'){
       int temp = BACKGROUND;
       BACKGROUND = FOREGROUND;
       FOREGROUND = temp;
-      print_none((Arg){.x = 0});
+      animate(none);
     } else if(input == 'I'){
       BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
       FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
       while(FOREGROUND == BACKGROUND){
         FOREGROUND = rand() % 7 + 2;
       }
-      print_none((Arg){.x = 0});
+      animate(none);
     } else if(input == 'H'){
       if (HOLOGRAPHIC == 1){
         HOLOGRAPHIC = 0;
@@ -318,7 +318,7 @@ int check_char(){
         perror("fork");
         exit(EXIT_FAILURE);
       } else if (pid == 0) {
-        print_neon_reverse();
+        animate(neon_reverse);
         endwin();
         execlp("ranger", "ranger", "/home/hakirot/pix/walls/", NULL);
         error("execlp");
@@ -330,18 +330,18 @@ int check_char(){
           waitpid(pid, &status, 0);
         }
         endwin();
-        print_neon();
+        animate(neon);
       }
     } else if(input == 'g'){
-      print_glitch((Arg){.x = 1});
+      animate(glitch_full);
     } else if(input == 'a'){
-      print_down_wipes();
+      animate(down_wipes);
     } else if(input == 's'){
-      print_pixel_fill();
+      animate(pixel_fill);
     } else if(input == 'd'){
-      print_tv_static();
+      animate(tv_static);
     } else if(input == 'f'){
-      print_neon();
+      animate(neon);
     } else if(input == 't'){
 
       CACHE = ROW + COL;
@@ -357,7 +357,7 @@ int check_char(){
         if (setenv("PWD", notes_dir, 1) != 0) {
           error("setenv error");
         }
-        print_glitch((Arg){.x = 1});
+        animate(glitch_full);
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
         error("ERROR: execlp nvim");
@@ -375,7 +375,7 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          print_neon();
+          animate(neon);
         }
       }
 
@@ -398,7 +398,7 @@ int check_char(){
         waitpid(pid, &status, 0);
       }
 
-      print_neon();
+      animate(neon);
 
     } else if(input == 'n'){
 
@@ -553,7 +553,7 @@ int check_char(){
         int offset = 0;
         if(WIN_SIZE != BIG) offset = 1;
 
-        print_none((Arg){.x = 0});
+        animate(none);
 
         attron(COLOR_PAIR(BACKGROUND));
         for (int i = 0; i < option_window_height; i++){
@@ -622,7 +622,7 @@ int check_char(){
         }
       }
 
-    print_neon();
+    animate(neon);
 
     } else if(input == 'v'){
 
@@ -634,7 +634,7 @@ int check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        print_glitch((Arg){.x = 1});
+        animate(glitch_full);
         endwin();
         execv("/usr/bin/nvim", NULL);
         error("ERROR: execv nvim");
@@ -650,7 +650,7 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          print_neon();
+          animate(neon);
         }
       }
 
@@ -664,7 +664,7 @@ int check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        print_neon_reverse();
+        animate(neon_reverse);
         endwin();
         char path_to_xdo[256] = {'\0'};
         char * env_home = getenv("HOME");
@@ -683,7 +683,7 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          print_neon();
+          animate(neon);
         }
       }
 
@@ -697,7 +697,7 @@ int check_char(){
         exit(EXIT_FAILURE);
 
       } else if (pid == 0) {
-        print_neon_reverse();
+        animate(neon_reverse);
         endwin();
         char path_to_xdo[256] = {'\0'};
         char * env_home = getenv("HOME");
@@ -716,12 +716,12 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          print_neon();
+          animate(neon);
         }
       }
     } else if(input == 'F'){
 
-      print_neon_reverse();
+      animate(neon_reverse);
       endwin();
       char path_to_xdo[256] = {'\0'};
       char * env_home = getenv("HOME");
@@ -753,7 +753,7 @@ int check_char(){
         refresh();
         getmaxyx(stdscr, ROW, COL);
         if(CACHE == ROW + COL){
-          print_neon();
+          animate(neon);
         }
       }
 
@@ -788,11 +788,11 @@ int check_char(){
         getmaxyx(stdscr, ROW, COL);
         if(CACHE != ROW + COL) return 1;
         if (status == 0){
-          print_shutter_slide();
-          print_neon();
+          animate(shutter_slide);
+          animate(neon);
         } else {
-          print_shutter_slide();
-          print_glitch((Arg){.x = 0});
+          animate(shutter_slide);
+          animate(glitch);
         }
 
         refresh();
@@ -826,7 +826,7 @@ int check_char(){
         if(CACHE == ROW + COL){
 //        tv_static(0.010);
           // TODO: define this speed in config.h
-          print_pixel_fill();
+          animate(pixel_fill);
         }
       }
 
@@ -877,7 +877,7 @@ const char * select_option_window(char* choices[], int len){
   int selection = 0;
   CACHE = ROW + COL;
 
-  print_none((Arg){.x = 0});
+  animate(none);
 
   int offset = 0;
   if (WIN_SIZE != BIG) offset = 1;
@@ -946,12 +946,12 @@ void print_start_animation(){
   START_ANIMATION = NEON; // harcoding neon
 
   if (START_ANIMATION == NEON){
-    print_neon();
+    animate(neon);
   } else if (START_ANIMATION == GLITCH_TIME){
-    print_none((Arg){.x = 0});
+    animate(none);
   } else {
     printstandard();
-    print_glitch((Arg){.x = 0});
+    animate(glitch);
   }
 }
 
@@ -1047,7 +1047,7 @@ void prompt_newlook(){
 
       for (int i = 0; i < BG_GLYPH_HEIGHT; i++){
         selection == 1 ? attron(COLOR_PAIR(FOREGROUND)) : attron(COLOR_PAIR(BACKGROUND));
-        print_bg();
+        animate(print_b);
         attroff(COLOR_PAIR(BACKGROUND));
         attroff(COLOR_PAIR(FOREGROUND));
       }
@@ -1133,7 +1133,7 @@ void prompt_newlook(){
         fork_newlook(wall);
         clear();
         refresh();
-        print_neon();
+        animate(neon);
       }
 
     } else if (input == 'q' || input == 'n') {
@@ -1159,9 +1159,9 @@ void prompt_newlook(){
 
   if(exit_glitch_flag){
     CACHE = check_size();
-    print_glitch((Arg){.x = 0});
+    animate(glitch);
   } else {
-    print_neon();
+    animate(neon);
   }
 }
 
@@ -1411,14 +1411,14 @@ void pshd(){
         if (setenv("PWD", prev_line, 1) != 0) {
           error("setenv error");
         }
-        print_neon();
+        animate(neon);
       } else {
-        print_glitch((Arg){.x = 1});
+        animate(glitch_full);
       }
       return;
     } else if (input == 'q'){
       fclose(file);
-      print_glitch((Arg){.x = 1});
+      animate(glitch_full);
       return;
     } else if (input == 'f' || input == '/') {
 
@@ -1563,9 +1563,9 @@ void pshd(){
             if (setenv("PWD", sel_line, 1) != 0) {
               error("setenv error");
             }
-            print_neon();
+            animate(neon);
           } else {
-            print_glitch((Arg){.x = 0});
+            animate(glitch);
           }
           return;
         }

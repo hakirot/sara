@@ -8,6 +8,3 @@ xdotool key X
 sleep .5
 
 xdotool key super+w
-for i in {1..2}; do
-  xdotool key alt+z
-done

@@ -65,6 +65,8 @@ typedef enum {
   shutter_slide,
   pixel_fill,
   tv_static,
+  print_b,
+  print_f,
 } animation_option;
 
 // TODO: Consider options to confirm

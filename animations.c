@@ -18,6 +18,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+void print_none(Arg printColorbar);
+void print_down_wipes();
+void print_glitch(Arg bigmode);
+void print_neon();
+void print_neon_reverse();
+void print_shutter_slide();
+// cycle_length, roll_chance, and usleep_time can all be parameters to change
+// behavior TODO: move this description to config
+void print_pixel_fill();
+void print_tv_static();
+void print_bg();
+void print_fg(const char * glyph[]);
+void print_hd();
+void print_overlay(const char * glyph[], char fill);
+
 void animate(animation_option option){
   if (option == none)           print_none((Arg){0});
   if (option == down_wipes)     print_down_wipes();
@@ -28,6 +43,8 @@ void animate(animation_option option){
   if (option == shutter_slide)  print_shutter_slide();
   if (option == pixel_fill)     print_pixel_fill();
   if (option == tv_static)      print_tv_static();
+  if (option == print_f)        print_fg(fg);
+  if (option == print_b)        print_bg();
 }
 
 // TODO: New test glyphs reveal undefined behavior with the header

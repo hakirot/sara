@@ -193,11 +193,16 @@ static const char *make_cmd[] = { "make", NULL};
 static Command commands[] = {
 /*  triggerkey   command             wait_option         pre_animation, post animation */
   { 'a',         test_cmd,           WAIT,               neon_reverse,  neon },
-  { 'm',         make_cmd,    WAIT_ON_ERR,               neon_reverse,  shutter_slide },
+  { 'm',         make_cmd,    WAIT_ON_ERR,               none,          shutter_slide },
 };
 
 static Builtin builtins[] = {
   { 'p', pshd },
+  { 'q', quit },
 };
+
+//static Window_Options option_windows[] = {
+//  {},
+//};
 
 #endif

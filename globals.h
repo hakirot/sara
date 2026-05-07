@@ -87,7 +87,7 @@ typedef struct {
 
 typedef enum {
   pshd,
-  option_list,
+  quit,
 } internal;
 
 typedef struct {

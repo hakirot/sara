@@ -879,24 +879,24 @@ const char * select_option_window(char* choices[], int len){
 
   animate(none);
 
-  int offset = 0;
-  if (WIN_SIZE != BIG) offset = 1;
+//int offset = 0;
+//if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);
   for (int i = 0; i < option_window_height; i++){
-    mvprintw(ROW/2-2 + i + fg_offset_y, (COL-option_window_length)/2, "%s", option_window[i]);
+    mvprintw(ROW/2 + fg_offset_y + i - 3, (COL-option_window_length)/2, "%s", option_window[i]);
   }
   attroff(COLOR_PAIR(BACKGROUND));
   attroff(A_BOLD);
 
   while(1){
 
-    if (WIN_SIZE != BIG){
-      offset = 1;
-    } else {
-      offset = 0;
-    }
+//  if (WIN_SIZE != BIG){
+//    offset = 1;
+//  } else {
+//    offset = 0;
+//  }
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) break;
@@ -919,7 +919,7 @@ const char * select_option_window(char* choices[], int len){
 
     for (int i = 0; i < len; i++){
       i == selection ? attron(COLOR_PAIR(FOREGROUND + 8)) : attron(COLOR_PAIR(FOREGROUND));
-      mvprintw(ROW/2 + i - 1 - offset, (COL-option_window_length)/2 + 1, "%s", choices[i]);
+      mvprintw(ROW/2 + i - 2 + fg_offset_y, (COL-option_window_length)/2 + 1, "%s", choices[i]);
       attroff(COLOR_PAIR(FOREGROUND + 8));
       attroff(COLOR_PAIR(FOREGROUND));
     }

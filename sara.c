@@ -380,7 +380,7 @@ int check_char(){
       }
 
     } else if(input == 'p'){
-      pshd();
+      _pshd();
 
     } else if(input == 'P'){
 
@@ -883,10 +883,12 @@ const char * select_option_window(char* choices[], int len){
   if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(BACKGROUND));
+  if(use_bold_color_for_bg) attron(A_BOLD);
   for (int i = 0; i < option_window_height; i++){
-    mvprintw(ROW/2-2 + i - offset, (COL-option_window_length)/2, "%s", option_window[i]);
+    mvprintw(ROW/2-2 + i + fg_offset_y, (COL-option_window_length)/2, "%s", option_window[i]);
   }
   attroff(COLOR_PAIR(BACKGROUND));
+  attroff(A_BOLD);
 
   while(1){
 
@@ -1271,13 +1273,13 @@ void fork_newlook(char * file){
 // TODO: fix the multiple out-of-bounds printing problem
 // TODO: implement bold fg color if use_bold_color_for_fg is set
 // TODO: make ESC also exit pshd
-void pshd(){
+void _pshd(){
 
   CACHE = ROW + COL;
   FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
 
   if (file == NULL){
-    error("ERROR: error opening pshd");
+    error("ERROR: error opening pshd file");
   }
 
   char line[256] = {'\0'};

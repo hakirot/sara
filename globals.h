@@ -85,6 +85,16 @@ typedef struct {
   animation_option post_animation;
 } Command;
 
+typedef enum {
+  pshd,
+  option_list,
+} internal;
+
+typedef struct {
+  char smashkey;
+  internal option;
+} Builtin;
+
 extern int GLYPH_LENGTH;
 extern int GLYPH_HEIGHT;
 // TODO: Delete me

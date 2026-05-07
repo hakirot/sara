@@ -46,7 +46,7 @@ void patch_backlight();
 void patch_border();
 void prompt_newlook();
 int input_color(char * arg);
-void pshd();
+void _pshd();
 void ensure_path_perm(char * file_path, char perm);
 int generate_pw_file();
 char * prompt_fuzzy();

@@ -18,40 +18,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-void print_none(Arg printColorbar);
-void print_down_wipes();
-void print_glitch(Arg bigmode);
-void print_neon();
-void print_neon_reverse();
-void print_shutter_slide();
+void _none(Arg printColorbar);
+void _down_wipes();
+void _glitch(Arg bigmode);
+void _neon();
+void _neon_reverse();
+void _shutter_slide();
 // cycle_length, roll_chance, and usleep_time can all be parameters to change
 // behavior TODO: move this description to config
-void print_pixel_fill();
-void print_tv_static();
-void print_bg();
-void print_fg(const char * glyph[]);
-void print_hd();
-void print_overlay(const char * glyph[], char fill);
+void _pixel_fill();
+void _tv_static();
+void _bg();
+void _fg(const char * glyph[]);
+void _hd();
+void _overlay(const char * glyph[], char fill);
 
 void animate(animation_option option){
-  if (option == none)           print_none((Arg){0});
-  if (option == down_wipes)     print_down_wipes();
-  if (option == glitch)         print_glitch((Arg){.x = 0});
-  if (option == glitch_full)    print_glitch((Arg){.x = 1});
-  if (option == neon)           print_neon();
-  if (option == neon_reverse)   print_neon_reverse();
-  if (option == shutter_slide)  print_shutter_slide();
-  if (option == pixel_fill)     print_pixel_fill();
-  if (option == tv_static)      print_tv_static();
-  if (option == print_f)        print_fg(fg);
-  if (option == print_b)        print_bg();
+  if (option == none)           _none((Arg){0});
+  if (option == down_wipes)     _down_wipes();
+  if (option == glitch)         _glitch((Arg){.x = 0});
+  if (option == glitch_full)    _glitch((Arg){.x = 1});
+  if (option == neon)           _neon();
+  if (option == neon_reverse)   _neon_reverse();
+  if (option == shutter_slide)  _shutter_slide();
+  if (option == pixel_fill)     _pixel_fill();
+  if (option == tv_static)      _tv_static();
+  if (option == print_f)        _fg(fg);
+  if (option == print_b)        _bg();
 }
 
 // TODO: New test glyphs reveal undefined behavior with the header
 // TODO: Place colorbar at same line as hd
-void print_glitch(Arg bigmode){
+void _glitch(Arg bigmode){
 
-  print_none((Arg){.x = 1});
+  _none((Arg){.x = 1});
   CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
@@ -125,14 +125,14 @@ void print_glitch(Arg bigmode){
     usleep(GLITCH_FRAME_TIME);
   }
 
-  print_none((Arg){.x = 0});
+  _none((Arg){.x = 0});
 }
 
 // TODO: fg glyph not in correct position when im not defined
 //       and WIN_SIZE == normal, but only when the width is constrained
 //       to a certain size as well? huh. Just check the prints between im[-]
 //       and fg
-void print_neon(){
+void _neon(){
 
   double cycle_length = 0.3;
   double elapsed_time = 0;
@@ -151,11 +151,11 @@ void print_neon(){
 
     if(elapsed_time > 0.05 && first_frame == 0){
       if (WIN_SIZE == NORMAL && IM_SET){
-        print_fg(im);
+        _fg(im);
       } else if (WIN_SIZE == NORMAL && !IM_SET){
-        print_overlay(fg, '+');
+        _overlay(fg, '+');
       } else {
-        print_bg();
+        _bg();
       }
 
       // TODO: create colorbar options
@@ -172,12 +172,12 @@ void print_neon(){
 
     if(elapsed_time > 0.1 && second_frame == 0){
       if (WIN_SIZE == NORMAL){
-        print_fg(fg);
+        _fg(fg);
       } else {
         if (IM_SET){
-          print_overlay(im, 0);
+          _overlay(im, 0);
         } else {
-          print_overlay(fg, '-');
+          _overlay(fg, '-');
         }
       }
       second_frame = 1;
@@ -185,9 +185,9 @@ void print_neon(){
 
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL && hd[0] != 0){
-        print_hd();
+        _hd();
       } else {
-        print_overlay(fg, 0);
+        _overlay(fg, 0);
       }
       third_frame = 1;
     }
@@ -196,10 +196,10 @@ void print_neon(){
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
-  print_none((Arg){.x = 0});
+  _none((Arg){.x = 0});
 }
 
-void print_neon_reverse(){
+void _neon_reverse(){
 
   clock_t cycle_start = clock();
   double cycle_length = 0.2;
@@ -215,17 +215,17 @@ void print_neon_reverse(){
     if(elapsed_time > 0.00 && first_frame == 0){
       if (WIN_SIZE == NORMAL){
         if(IM_SET){
-          print_fg(im);
+          _fg(im);
         } else {
-          print_overlay(fg, '-');
+          _overlay(fg, '-');
         }
       } else {
 
         if(IM_SET){
-          print_bg();
-          print_overlay(im, 0);
+          _bg();
+          _overlay(im, 0);
         } else {
-          print_overlay(fg, '-');
+          _overlay(fg, '-');
         }
       }
       first_frame = 1;
@@ -234,9 +234,9 @@ void print_neon_reverse(){
     if(elapsed_time > 0.1 && second_frame == 0){
       clear();
       if (WIN_SIZE == NORMAL){
-        print_overlay(fg, '-');
+        _overlay(fg, '-');
       } else {
-        print_bg();
+        _bg();
       }
       second_frame = 1;
     }
@@ -246,7 +246,7 @@ void print_neon_reverse(){
   }
 }
 
-void print_shutter_slide(){
+void _shutter_slide(){
   int num_frames = 8;
   int margin_width = (COL - FG_GLYPH_LENGTH) / 2;
   int left_stop = margin_width;
@@ -281,11 +281,11 @@ void print_shutter_slide(){
 };
 
 
-void print_pixel_fill(){
+void _pixel_fill(){
 
   clear();
   refresh();
-  if(WIN_SIZE == BIG) print_bg();
+  if(WIN_SIZE == BIG) _bg();
 
   // 0 == !'█'
   // 1 == '█'
@@ -373,11 +373,11 @@ void print_pixel_fill(){
 
   }
 
-  print_overlay(fg, 0);
-  print_hd();
+  _overlay(fg, 0);
+  _hd();
 }
 
-void print_tv_static(){
+void _tv_static(){
 
   clear();
   refresh();
@@ -528,15 +528,15 @@ void print_tv_static(){
 }
 
 // TODO: remove globals as parameters
-void print_none(Arg printColorbar){
+void _none(Arg printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){
-    print_fg(fg);
-    print_hd();
+    _fg(fg);
+    _hd();
   } else if (WIN_SIZE == BIG){
-    print_bg();
-    print_overlay(fg, 0);
-    print_hd();
+    _bg();
+    _overlay(fg, 0);
+    _hd();
 
     // TODO: abstract this to separate function and add config.h options to it
     //   .. also this is no longer implemented
@@ -556,7 +556,7 @@ void print_none(Arg printColorbar){
   }
 }
 
-void print_bg() {
+void _bg() {
   clear();
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);
@@ -568,7 +568,7 @@ void print_bg() {
   attroff(COLOR_PAIR(BACKGROUND));
 }
 
-void print_overlay(const char * glyph[], char fill){
+void _overlay(const char * glyph[], char fill){
   if(use_bold_color_for_fg) attron(A_BOLD);
   attron(COLOR_PAIR(FOREGROUND));
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -605,7 +605,7 @@ void print_overlay(const char * glyph[], char fill){
   attroff(A_BOLD);
 }
 
-void print_fg(const char * glyph[]){
+void _fg(const char * glyph[]){
   attron(COLOR_PAIR(FOREGROUND));
   if(use_bold_color_for_fg) attron(A_BOLD);
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -617,7 +617,7 @@ void print_fg(const char * glyph[]){
 }
 
 // TODO: add wipe option for pixel_fill
-void print_hd(){
+void _hd(){
 
   if(hd[0] != 0){
 
@@ -650,7 +650,7 @@ void print_hd(){
   }
 }
 
-void print_down_wipes(){
+void _down_wipes(){
 
   int wipe_time = 12000; // TODO: make this configurable
 
@@ -668,7 +668,7 @@ void print_down_wipes(){
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(FOREGROUND));
-    print_hd();
+    _hd();
 
   } else if (WIN_SIZE == BIG){
 

@@ -199,10 +199,11 @@ static const char *v_cmd[]            = { "nvim", NULL};
 static const char *polybar_cmd[]      = { "nohup", "bash", "-c", "bar.sh", NULL};
 static const char *t_cmd[]            = { "nvim", "/home/hakirot/dox/.notes/tasks", NULL};
 static const char *w_cmd[]            = { "ranger", "/home/hakirot/pix/walls/", NULL};
+static const char *R_cmd[]            = { "rtorrent", NULL};
 
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
-/* TODO: implement pshd, option_windows */
+/* TODO: add optional chdir Args (tasks, rtorrent, walls) */
 static const Command commandkeys[] = {
 /*  triggerkey   command            wait_option      pre_animation,   post animation  */
   { 'a',         test_cmd,                 WAIT,     neon_reverse,    neon          },

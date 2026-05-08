@@ -186,20 +186,21 @@ static const float HOLD_CHAR_TIME = 0.00001;
 /* CUSTOM COMMANDS */
 
 static const char *test_cmd[]         = { "mkdir", "TEST_DIR_PLS_DELETE", NULL};
-static const char *make_cmd[]         = { "make", NULL};
-static const char *kill_session_cmd[] = { "nohup", "bash", "-c", "kill-session", NULL};
-static const char *kill_pane_cmd[]    = { "tmux", "kill-pane", NULL};
-static const char *rmpc_cmd[]         = { "rmpc", NULL};
-static const char *yay_cmd[]          = { "yay", NULL};
-static const char *F_cmd[]            = { "xdo", "3", NULL};
-static const char *O_cmd[]            = { "xdo", "2", NULL};
-static const char *V_cmd[]            = { "xdo", "1", NULL};
-static const char *v_cmd[]            = { "nvim", NULL};
-//static const char *newlook_cmd[]    = { "reskin", NULL};
-static const char *polybar_cmd[]      = { "nohup", "bash", "-c", "bar.sh", NULL};
-static const char *t_cmd[]            = { "nvim", "/home/hakirot/dox/.notes/tasks", NULL};
-static const char *w_cmd[]            = { "ranger", "/home/hakirot/pix/walls/", NULL};
+static const char *r_cmd[]            = { "ranger", NULL};
 static const char *R_cmd[]            = { "rtorrent", NULL};
+static const char *w_cmd[]            = { "ranger", "/home/hakirot/pix/walls/", NULL};
+static const char *t_cmd[]            = { "nvim", "/home/hakirot/dox/.notes/tasks", NULL};
+static const char *P_cmd[]            = { "nohup", "bash", "-c", "bar.sh", NULL};
+//static const char *newlook_cmd[]      = { "reskin", NULL};
+static const char *v_cmd[]            = { "nvim", NULL};
+static const char *V_cmd[]            = { "xdo", "1", NULL};
+static const char *O_cmd[]            = { "xdo", "2", NULL};
+static const char *F_cmd[]            = { "xdo", "3", NULL};
+static const char *y_cmd[]            = { "yay", NULL};
+static const char *m_cmd[]            = { "make", NULL};
+static const char *M_cmd[]            = { "rmpc", NULL};
+static const char *Q_cmd[]            = { "tmux", "kill-pane", NULL};
+static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
 
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
@@ -207,19 +208,21 @@ static const char *R_cmd[]            = { "rtorrent", NULL};
 static const Command commandkeys[] = {
 /*  triggerkey   command            wait_option      pre_animation,   post animation  */
   { 'a',         test_cmd,                 WAIT,     neon_reverse,    neon          },
-  { 'X',         kill_session_cmd,  EXEC_NO_OUT,     none,            none          },
-  { 'Q',         kill_pane_cmd,            EXEC,     none,            none          },
-  { 'M',         rmpc_cmd,                 WAIT,     none,            pixel_fill    },
-  { 'm',         make_cmd,          WAIT_ON_ERR,     none,            shutter_slide },
-  { 'y',         yay_cmd,           WAIT_ON_ERR,     none,            neon          },
-  { 'F',         F_cmd,                    EXEC,     none,            neon          },
-  { 'O',         O_cmd,                    WAIT,     neon_reverse,    neon          },
-  { 'V',         V_cmd,                    WAIT,     neon_reverse,    neon          },
-  { 'v',         v_cmd,                    WAIT,     glitch_full,     neon          },
-//{ 'n',         newlook_cmd,              EXEC,     glitch_full,     neon          },
-  { 'P',         polybar_cmd,              WAIT,     none,            none          },
-  { 't',         t_cmd,                    WAIT,     glitch_full,     neon          },
+  { 'r',         r_cmd,                    WAIT,     neon_reverse,    neon          },
+  { 'R',         R_cmd,                    WAIT,     neon_reverse,    neon          },
   { 'w',         w_cmd,                    WAIT,     neon_reverse,    neon          },
+  { 't',         t_cmd,                    WAIT,     glitch_full,     neon          },
+  { 'P',         P_cmd,                    WAIT,     none,            none          },
+// { 'n',         newlook_cmd,              EXEC,     glitch_full,     neon          },
+  { 'v',         v_cmd,                    WAIT,     glitch_full,     neon          },
+  { 'V',         V_cmd,                    WAIT,     neon_reverse,    neon          },
+  { 'O',         O_cmd,                    WAIT,     neon_reverse,    neon          },
+  { 'F',         F_cmd,                    EXEC,     none,            neon          },
+  { 'y',         y_cmd,             WAIT_ON_ERR,     none,            neon          },
+  { 'm',         m_cmd,             WAIT_ON_ERR,     none,            shutter_slide },
+  { 'M',         M_cmd,                    WAIT,     none,            pixel_fill    },
+  { 'Q',         Q_cmd,                    EXEC,     none,            none          },
+  { 'X',         X_cmd,             EXEC_NO_OUT,     none,            none          },
 };
 
 

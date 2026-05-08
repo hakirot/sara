@@ -533,6 +533,7 @@ int check_char(){
           }
         }
 
+        // TODO: Break this out into an entirely separate program
       } if (selection == choices[1]){
 
         char * file_path = "/sys/class/backlight/intel_backlight/brightness";
@@ -871,6 +872,8 @@ int check_char(){
 }
 
 // TODO: remove the second argument and infer length
+// TODO: implement auto scroll for lists exceeding window size
+// TODO: move this function (and others) elsewhere
 // int len = sizeof(choices)/sizeof(choices[0]); // test this for ** pointer
 const char * select_option_window(char* choices[], int len){
 
@@ -1017,6 +1020,7 @@ void patch_border(){
   attroff(COLOR_PAIR(BACKGROUND));
 }
 
+// TODO: Break this out into a separate program
 void prompt_newlook(){
 
   clear();

@@ -22,6 +22,10 @@
 #include <wait.h>
 #include <string.h>
 
+// TODO: implement
+void user_error(char * err) {
+}
+
 void error(char * err) {
   endwin();
   printf("%s\n", err);

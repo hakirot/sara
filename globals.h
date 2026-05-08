@@ -72,9 +72,10 @@ typedef enum {
 // TODO: Consider more options (WAIT_ON_SUCCESS)
 typedef enum {
   WAIT,
-  WAIT_ON_ERR,
+  WAIT_ON_ERR,    // TODO: Some confusion here
   NOWAIT,
   EXEC,
+  EXEC_NO_OUT,
 } wait_option;
 
 typedef struct {
@@ -122,7 +123,7 @@ typedef struct {
 typedef struct {
   char smashkey;
   const void * menu;
-} TopMenu;
+} MenuKey;
 
 // TODO: Delete me
 extern const int BIG_GLYPH_HEIGHT;

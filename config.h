@@ -185,15 +185,40 @@ static const float HOLD_CHAR_TIME = 0.00001;
 
 /* CUSTOM COMMANDS */
 
-static const char *test_cmd[] = { "mkdir", "TEST_DIR_PLS_DELETE", NULL};
-static const char *make_cmd[] = { "make", NULL};
+static const char *test_cmd[]         = { "mkdir", "TEST_DIR_PLS_DELETE", NULL};
+static const char *make_cmd[]         = { "make", NULL};
+static const char *kill_session_cmd[] = { "nohup", "bash", "-c", "kill-session", NULL};
+static const char *kill_pane_cmd[]    = { "tmux", "kill-pane", NULL};
+static const char *rmpc_cmd[]         = { "rmpc", NULL};
+static const char *yay_cmd[]          = { "yay", NULL};
+static const char *F_cmd[]            = { "xdo", "3", NULL};
+static const char *O_cmd[]            = { "xdo", "2", NULL};
+static const char *V_cmd[]            = { "xdo", "1", NULL};
+static const char *v_cmd[]            = { "nvim", NULL};
+//static const char *newlook_cmd[]    = { "reskin", NULL};
+static const char *polybar_cmd[]      = { "nohup", "bash", "-c", "bar.sh", NULL};
+static const char *t_cmd[]            = { "nvim", "/home/hakirot/dox/.notes/tasks", NULL};
+static const char *w_cmd[]            = { "ranger", "/home/hakirot/pix/walls/", NULL};
 
-/* TODO: issue a warning if duplicates or crash if necessary */
+
+/* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
 /* TODO: implement pshd, option_windows */
 static const Command commandkeys[] = {
-/*  triggerkey   command      wait_option      pre_animation,   post animation  */
-  { 'a',         test_cmd,           WAIT,     neon_reverse,    neon },
-  { 'm',         make_cmd,    WAIT_ON_ERR,     none,            shutter_slide },
+/*  triggerkey   command            wait_option      pre_animation,   post animation  */
+  { 'a',         test_cmd,                 WAIT,     neon_reverse,    neon          },
+  { 'X',         kill_session_cmd,  EXEC_NO_OUT,     none,            none          },
+  { 'Q',         kill_pane_cmd,            EXEC,     none,            none          },
+  { 'M',         rmpc_cmd,                 WAIT,     none,            pixel_fill    },
+  { 'm',         make_cmd,          WAIT_ON_ERR,     none,            shutter_slide },
+  { 'y',         yay_cmd,           WAIT_ON_ERR,     none,            neon          },
+  { 'F',         F_cmd,                    EXEC,     none,            neon          },
+  { 'O',         O_cmd,                    WAIT,     neon_reverse,    neon          },
+  { 'V',         V_cmd,                    WAIT,     neon_reverse,    neon          },
+  { 'v',         v_cmd,                    WAIT,     glitch_full,     neon          },
+//{ 'n',         newlook_cmd,              EXEC,     glitch_full,     neon          },
+  { 'P',         polybar_cmd,              WAIT,     none,            none          },
+  { 't',         t_cmd,                    WAIT,     glitch_full,     neon          },
+  { 'w',         w_cmd,                    WAIT,     neon_reverse,    neon          },
 };
 
 
@@ -208,8 +233,9 @@ static const Builtin builtins[] = {
 };
 
 
-/* MENUS AND SUBMENUS */
+/* MENUS CONFIGURATION */
 
+/* MENU B: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
 static const MenuCommand connect_xm5 = { connect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide };
 
@@ -253,8 +279,22 @@ static const Menu b_menu[] = {
   { "backlight", COMMAND, fake_backlight       },
 };
 
-static const TopMenu menukeys[] = {
+/* MENU S: SHUTDOWN COMMANDS */
+static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
+static const MenuCommand shutdown = { shutdown_cmd, EXEC, none, none };
+
+static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
+static const MenuCommand reboot = { reboot_cmd, EXEC, none, none };
+
+static const Menu S_menu[] = {
+  { "SHUTDOWN", COMMAND, shutdown     },
+  { "REBOOT",   COMMAND, reboot       },
+};
+
+/* menukey assignments */
+static const MenuKey menukeys[] = {
   {'b', b_menu },
+  {'S', S_menu},
 };
 
 #endif

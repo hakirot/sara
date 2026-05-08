@@ -185,18 +185,21 @@ static const float HOLD_CHAR_TIME = 0.00001;
 
 /* CUSTOM COMMANDS */
 
-static const char *test_cmd[] = { "mkdir", "TEST_DIR", NULL};
+static const char *test_cmd[] = { "mkdir", "TEST_DIR_PLS_DELETE", NULL};
 static const char *make_cmd[] = { "make", NULL};
 
 /* TODO: issue a warning if duplicates or crash if necessary */
 /* TODO: implement pshd, option_windows */
-static Command commands[] = {
-/*  triggerkey   command             wait_option         pre_animation, post animation */
-  { 'a',         test_cmd,           WAIT,               neon_reverse,  neon },
-  { 'm',         make_cmd,    WAIT_ON_ERR,               none,          shutter_slide },
+static const Command commandkeys[] = {
+/*  triggerkey   command      wait_option      pre_animation,   post animation  */
+  { 'a',         test_cmd,           WAIT,     neon_reverse,    neon },
+  { 'm',         make_cmd,    WAIT_ON_ERR,     none,            shutter_slide },
 };
 
-static Builtin builtins[] = {
+
+/* BUILTIN FUNCTIONS */
+
+static const Builtin builtins[] = {
   { 'I', randomize_colors },
   { 'i', invert_colors },
   { 'H', rave },
@@ -204,9 +207,54 @@ static Builtin builtins[] = {
   { 'q', quit },
 };
 
-/* TODO: solve window options */
-//static Window_Options option_windows[] = {
-//  {},
-//};
+
+/* MENUS AND SUBMENUS */
+
+static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
+static const MenuCommand connect_xm5 = { connect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const char *connect_acoustic_cmd[] = { "bluetoothctl", "connect", "FC:58:FA:9B:D7:3D", NULL };
+static const MenuCommand connect_acoustic = { connect_acoustic_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const char *connect_onforu_cmd[] = { "bluetoothctl", "connect", "31:51:27:F9:1D:62", NULL };
+static const MenuCommand connect_onforu = { connect_onforu_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const char *disconnect_xm5_cmd[] = { "bluetoothctl", "disconnect", "AC:80:0A:19:89:A8", NULL };
+static const MenuCommand disconnect_xm5 = { disconnect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const char *disconnect_acoustic_cmd[] = { "bluetoothctl", "disconnect", "FC:58:FA:9B:D7:3D", NULL };
+static const MenuCommand disconnect_acoustic = { disconnect_acoustic_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const char *disconnect_onforu_cmd[] = { "bluetoothctl", "disconnect", "31:51:27:F9:1D:62", NULL };
+static const MenuCommand disconnect_onforu = { disconnect_onforu_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const char *fake_backlight_cmd[] = { "mkdir", "FAKE_BACKLIGHT_CMD", NULL };
+static const MenuCommand fake_backlight = { fake_backlight_cmd, WAIT_ON_ERR, none, shutter_slide };
+
+static const Menu connect_devices[] = {
+  { "XM5",      COMMAND, connect_xm5           },
+  { "ACOUSTIC", COMMAND, connect_acoustic      },
+  { "ONFORU",   COMMAND, connect_onforu        },
+};
+
+static const Menu disconnect_devices[] = {
+  { "XM5",      COMMAND, disconnect_xm5        },
+  { "ACOUSTIC", COMMAND, disconnect_acoustic   },
+  { "ONFORU",   COMMAND, disconnect_onforu     },
+};
+
+static const Menu connect_options[] = {
+  { "connect",    SUBMENU, connect_devices     },
+  { "disconnect", SUBMENU, disconnect_devices  },
+};
+
+static const Menu b_menu[] = {
+  { "bluetooth", SUBMENU, connect_options      },
+  { "backlight", COMMAND, fake_backlight       },
+};
+
+static const TopMenu menukeys[] = {
+  {'b', b_menu },
+};
 
 #endif

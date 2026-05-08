@@ -69,7 +69,7 @@ typedef enum {
   print_f,
 } animation_option;
 
-// TODO: Consider options to confirm
+// TODO: Consider more options (WAIT_ON_SUCCESS)
 typedef enum {
   WAIT,
   WAIT_ON_ERR,
@@ -85,6 +85,13 @@ typedef struct {
   animation_option post_animation;
 } Command;
 
+typedef struct {
+  const void * cmd;
+  wait_option option;
+  animation_option pre_animation;
+  animation_option post_animation;
+} MenuCommand;
+
 typedef enum {
   pshd,
   quit,
@@ -93,10 +100,29 @@ typedef enum {
   rave,
 } internal;
 
+typedef enum {
+  COMMAND,
+  SUBMENU,
+} ItemType;
+
 typedef struct {
   char smashkey;
   internal option;
 } Builtin;
+
+typedef struct {
+  char * name;
+  ItemType type;
+  union {
+    MenuCommand cmd;
+    const struct Menu * next;
+  } next;
+} Menu;
+
+typedef struct {
+  char smashkey;
+  const void * menu;
+} TopMenu;
 
 // TODO: Delete me
 extern const int BIG_GLYPH_HEIGHT;

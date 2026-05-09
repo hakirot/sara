@@ -32,7 +32,6 @@ int option_window_length = 44;
 
 int IM_SET = true;
 
-start_animation START_ANIMATION = EMPTY;
 char HOLD_CHAR;
 
 int HOLOGRAPHIC = 0;

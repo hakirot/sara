@@ -30,7 +30,7 @@ void load_command_config(){
   memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
-  crit("success");
+//crit("success");
 }
 
 // TODO: PREFLIGHT CHECK
@@ -144,8 +144,11 @@ void print_clear_terminal(){
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 
-void boot_window_sequence(){
+void special_chars(){
   setlocale(LC_ALL, "");    // Allow special characters, initscr()
+}
+
+void launch_window(){
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()
   use_default_colors();

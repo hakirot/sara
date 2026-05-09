@@ -45,12 +45,13 @@ typedef enum {
   BIG
 } screen_size;
 
-typedef enum {
-  QUICK,
-  STANDARD,
-  NEON,
-  EMPTY
-} start_animation;
+// TODO: kill these
+//typedef enum {
+//  QUICK,
+//  STANDARD,
+//  NEON,
+//  EMPTY
+//} start_animation;
 
 typedef union {
   int x;
@@ -153,7 +154,7 @@ extern clock_t LAST_INPUT_TIME;
 extern screen_size WIN_SIZE;
 extern clock_t WAIT_START;
 
-extern start_animation START_ANIMATION;
+//extern const animation_option start_animation;
 extern char HOLD_CHAR;
 
 extern int GLITCH_TIME;

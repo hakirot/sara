@@ -11,6 +11,7 @@
                                                                          */
 
 static const int run_preflight_check = true;
+static const animation_option start_animation = neon;
 
 /* Toggle if you wrap sara in chdir command */
 static int FOLLOW = true;

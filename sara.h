@@ -39,7 +39,6 @@ struct file_node {
 int check_char();
 int check_size();
 int get_confirmation();
-void print_start_animation();
 void printstandard();
 const char * select_option_window(char* choices[], int len);
 void patch_backlight();

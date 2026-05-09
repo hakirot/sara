@@ -83,20 +83,22 @@ int main(int argc, char* argv[]){
 
 //double time_idle;
 //WAIT_START = clock();
-  LAST_INPUT_TIME = clock();
-  int should_print = false;
+
   load_command_config();
   if(run_preflight_check) preflight_check();
-
+  special_chars();
   set_glyph_dimensions(); // TODO: get away from glyph naming convention
-  boot_window_sequence();
+  launch_window();
+
+  CACHE = check_size();
+  LAST_INPUT_TIME = clock();
+  int should_print = false;
   while(1){
 
     int check_char_result = check_char(); // check input for this cycle
 
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
-    if (START_ANIMATION == EMPTY) print_start_animation();
 
 //  time_idle = (double)(clock() - WAIT_START) / CLOCKS_PER_SEC;
 
@@ -105,7 +107,7 @@ int main(int argc, char* argv[]){
 //    WAIT_START = clock();
 //  }
 
-    if(HOLOGRAPHIC > 0 && WIN_SIZE == BIG){
+    if(HOLOGRAPHIC == 1 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
       animate(none);
@@ -936,54 +938,25 @@ const char * select_option_window(char* choices[], int len){
   return NULL;
 }
 
-void print_start_animation(){
-
-//if (START_ANIMATION == EMPTY){
-//  int start_roll = rand() % 3;
-//  if (start_roll == 0){
-//    START_ANIMATION = GLITCH_TIME;
-//  } else if (start_roll == 1){
-//    START_ANIMATION = STANDARD;
-//  } else {
-//    START_ANIMATION = NEON;
-//  }
-//}
-
-  // TODO: make this a config.h setting, allowing either random or specific setting
-  START_ANIMATION = NEON; // harcoding neon
-
-  if (START_ANIMATION == NEON){
-    animate(neon);
-  } else if (START_ANIMATION == GLITCH_TIME){
-    animate(none);
-  } else {
-    printstandard();
-    animate(glitch);
-  }
-}
-
 // Check screen size, return updated sum of dimensions
 int check_size(){
 
   if (CACHE != ROW + COL){
 
-//  optionally changing animations when resized
-    START_ANIMATION = EMPTY;
-
     clear();
 
-//  small win size jail
+    // small win size jail
     while (COL < tiny_mode_x || ROW < tiny_mode_y){
       WIN_SIZE = SMALL;
       clear();
       mvprintw(ROW/2, (COL-10)/2, "%s", tn);
       refresh();
 
-//    sleep 2 milliseconds
+      // 2 milliseconds
       usleep(2000);
       check_char();
 
-      getmaxyx(stdscr,ROW,COL); // Get total screen dimensions again
+      getmaxyx(stdscr,ROW,COL);
     }
 
     if ((ROW > resize_y && COL > resize_x) || dynamic_resize == false){
@@ -991,6 +964,7 @@ int check_size(){
     } else {
       WIN_SIZE = NORMAL;
     }
+    animate(start_animation);
   }
 
   return ROW + COL;

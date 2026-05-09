@@ -26,10 +26,32 @@
 
 void load_command_config(){
   memset(global_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
-  memset(menukeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
-  memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(menukeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
+  int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
+  int builtins_len = sizeof(builtins)/sizeof(builtins[0]);
+  int menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
+
+  int global_idx = 0;
+  for(int i = 0; i < commandkeys_len; i++){
+    global_chars[global_idx] = commandkeys[i].smashkey;
+    commandkeys_chars[i] = commandkeys[i].smashkey;
+    global_idx++;
+  }
+
+  for(int i = 0; i < builtins_len; i++){
+    global_chars[global_idx] = builtins[i].smashkey;
+    builtins_chars[i] = builtins[i].smashkey;
+    global_idx++;
+  }
+
+  for(int i = 0; i < menukeys_len; i++){
+    global_chars[global_idx] = menukeys[i].smashkey;
+    menukeys_chars[i] = menukeys[i].smashkey;
+    global_idx++;
+  }
 }
 
 // TODO: PREFLIGHT CHECK
@@ -52,12 +74,13 @@ void preflight_check() {
 
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     if((mbstowcs(NULL, bg[i], 0)) != (ulong)BG_GLYPH_LENGTH){
-      crit("bad dimensions");
+      crit("bad bg dimensions");
     }
   }
+
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     if((mbstowcs(NULL, fg[i], 0)) != (ulong)FG_GLYPH_LENGTH){
-      crit("bad dimensions");
+      crit("bad fg dimensions");
     }
   }
 

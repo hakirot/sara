@@ -18,7 +18,7 @@ static int FOLLOW = true;
 
 /* COLOR SETTINGS */
 static const int fg_c = white;
-static const int bg_c = black;
+static const int bg_c = yellow;
 
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
@@ -291,7 +291,7 @@ static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
 static const MenuCommand shutdown = { shutdown_cmd, EXEC, none, none };
 
 static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
-static const MenuCommand reboot = { reboot_cmd, EXEC, none, none };
+static const MenuCommand reboot = { reboot_cmd, EXEC, none, none  };
 
 static const Menu S_menu[] = {
   { "SHUTDOWN", COMMAND, shutdown     },

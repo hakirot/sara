@@ -30,7 +30,22 @@ void load_command_config(){
   memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
-//crit("success");
+  int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
+  int builtins_len = sizeof(builtins)/sizeof(builtins[0]);
+  int menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
+  int total = commandkeys_len + builtins_len + menukeys_len;
+
+  if(total > 128){
+    char err[128];
+    sprintf(err, "ERROR: Configured Key Limit exceeded\nKey Limit is %d",
+        KEY_ARRAY_SIZE);
+    crit("Key limit exceeded");
+  }
+
+//char err[32];
+//sprintf(err, "%d %d %d", commandkeys_len, builtins_len, menukeys_len);
+
+//crit(err);
 }
 
 // TODO: PREFLIGHT CHECK

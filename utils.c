@@ -30,11 +30,15 @@ void load_command_config(){
   memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
+  crit("success");
 }
 
+// TODO: PREFLIGHT CHECK
 void preflight_check() {
-
-  crit("success");
+  // ensure all glyph strings are the same length
+  // ensure all command menus terminate with commands
+  // ensure all commands are installed
+  // ensure use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
 }
 
 // TODO: implement

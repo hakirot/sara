@@ -86,9 +86,9 @@ int main(int argc, char* argv[]){
   LAST_INPUT_TIME = clock();
   int should_print = false;
   load_command_config();
-  set_glyph_dimensions(); // TODO: get away from glyph naming convention
   if(run_preflight_check) preflight_check();
 
+  set_glyph_dimensions(); // TODO: get away from glyph naming convention
   boot_window_sequence();
   while(1){
 

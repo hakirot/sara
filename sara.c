@@ -36,11 +36,11 @@ int main(int argc, char* argv[]){
         if (FOREGROUND == -1){
           char errstr[256] = {'\0'};
           sprintf(errstr, "Bad arg: '%s'", argv[i + 1]);
-          error(errstr);
+          crit(errstr);
         }
       } else {
         get_helped();
-        error("bad arg\n");
+        crit("bad arg\n");
       }
     } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--background") == 0){
       if(i + 1 < argc){
@@ -48,11 +48,11 @@ int main(int argc, char* argv[]){
         if (BACKGROUND == -1){
           char errstr[256] = {'\0'};
           sprintf(errstr, "Bad arg: '%s'", argv[i + 1]);
-          error(errstr);
+          crit(errstr);
         }
       } else {
         get_helped();
-        error("bad arg\n");
+        crit("bad arg\n");
       }
     }
   }
@@ -71,9 +71,9 @@ int main(int argc, char* argv[]){
           FOREGROUND = rand() % 7 + 2;
         }
         if (FOREGROUND > 8 || FOREGROUND < 2 || BACKGROUND > 7 || BACKGROUND < 1){
-          error("rand error");
+          crit("rand error");
         } else if (FOREGROUND == BACKGROUND) {
-          error("F == B");
+          crit("F == B");
         }
         break;
       case 'H': HOLOGRAPHIC = 1; break;
@@ -85,9 +85,11 @@ int main(int argc, char* argv[]){
 //WAIT_START = clock();
   LAST_INPUT_TIME = clock();
   int should_print = false;
-  init_window();
-  set_glyph_dimensions();
+  load_command_config();
+  set_glyph_dimensions(); // TODO: get away from glyph naming convention
+  if(run_preflight_check) preflight_check();
 
+  boot_window_sequence();
   while(1){
 
     int check_char_result = check_char(); // check input for this cycle
@@ -175,7 +177,7 @@ int check_char(){
         animate(neon_reverse);
         endwin();
         execlp("ranger", "ranger", "--choosedir", cache_file, NULL);
-        error("ERROR: execv ranger");
+        crit("ERROR: execv ranger");
 
       } else {
         int status;
@@ -196,17 +198,17 @@ int check_char(){
         if(fgets(target_chdir, 256, fp) == NULL) {
           char error_str[256] = {'\0'};
           sprintf(error_str, "%s%s" , "Error reading target_chdir file ", target_chdir);
-          error(error_str);
+          crit(error_str);
         }
 
         fclose(fp);
 
-        remove(cache_file) ? error("No file to be deleted"): 0;
+        remove(cache_file) ? crit("No file to be deleted"): 0;
 
         chdir(target_chdir);
 
 				if (setenv("PWD", target_chdir, 1) != 0) {  
-          error("setenv error");
+          crit("setenv error");
 				}
       }
 
@@ -225,7 +227,7 @@ int check_char(){
       sprintf(dl_dir, "%s%s", home_dir, dls);
       chdir(dl_dir);
       if (setenv("PWD", dl_dir, 1) != 0) {
-        error("setenv error");
+        crit("setenv error");
       } else {
 
         pid_t pid = fork();
@@ -235,7 +237,7 @@ int check_char(){
         } else if (pid == 0) {
           endwin();
           execv("/usr/bin/rtorrent", NULL);
-          error("ERROR: execv rtorrent");
+          crit("ERROR: execv rtorrent");
         } else {
           endwin();
           int status;
@@ -272,7 +274,7 @@ int check_char(){
         } else if (pid == 0) {
           endwin();
           execv("/home/hakirot/skps/cleanup.sh", NULL);
-          error("ERROR: execv cleanup");
+          crit("ERROR: execv cleanup");
         } else {
           endwin();
           int status;
@@ -286,10 +288,10 @@ int check_char(){
 
       if (selection == choices[0]){
         execlp("shutdown", "shutdown", "now", NULL);
-        error("shutdown err");
+        crit("shutdown err");
       } else if (selection == choices[1]){
         execlp("shutdown", "shutdown", "-r", "now", NULL);
-        error("reboot err");
+        crit("reboot err");
       } else {
         animate(glitch);
       }
@@ -321,7 +323,7 @@ int check_char(){
         animate(neon_reverse);
         endwin();
         execlp("ranger", "ranger", "/home/hakirot/pix/walls/", NULL);
-        error("execlp");
+        crit("execlp");
       } else {
         int status;
 
@@ -355,12 +357,12 @@ int check_char(){
         char * notes_dir = "/home/hakirot/dox/.notes/";
         chdir("notes_dir");
         if (setenv("PWD", notes_dir, 1) != 0) {
-          error("setenv error");
+          crit("setenv error");
         }
         animate(glitch_full);
         endwin();
         execlp("nvim", "nvim", "/home/hakirot/dox/.notes/tasks", NULL);
-        error("ERROR: execlp nvim");
+        crit("ERROR: execlp nvim");
       } else {
 
         int status;
@@ -541,7 +543,7 @@ int check_char(){
         ensure_path_perm(file_path, 'w');
 
 				FILE *fptr = fopen(file_path, "r");
-        if(!fptr) error("fopen(file_path)");
+        if(!fptr) crit("fopen(file_path)");
 
         char buff[8];
         memset(&buff, '\0', 8 * sizeof(char));
@@ -610,7 +612,7 @@ int check_char(){
               fprintf(ptr, "%s", str);
               fclose(ptr);
             } else {
-              error("Not writable");
+              crit("Not writable");
             }
 
           } else if (input == 'q' || input == '\n'){
@@ -638,7 +640,7 @@ int check_char(){
         animate(glitch_full);
         endwin();
         execv("/usr/bin/nvim", NULL);
-        error("ERROR: execv nvim");
+        crit("ERROR: execv nvim");
       } else {
         int status;
 
@@ -671,7 +673,7 @@ int check_char(){
         char * env_home = getenv("HOME");
         sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
         execlp(path_to_xdo, "xdo", "1", NULL);
-        error("ERROR: execvlp xdo.sh");
+        crit("ERROR: execvlp xdo.sh");
       } else {
         int status;
 
@@ -704,7 +706,7 @@ int check_char(){
         char * env_home = getenv("HOME");
         sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
         execlp(path_to_xdo, "xdo", "2", NULL);
-        error("ERROR: execlp xdo.sh");
+        crit("ERROR: execlp xdo.sh");
       } else {
         int status;
 
@@ -728,7 +730,7 @@ int check_char(){
       char * env_home = getenv("HOME");
       sprintf(path_to_xdo, "%s%s", env_home, "/git/sara/bash/xdo.sh");
       execlp(path_to_xdo, "xdo", "3", NULL);
-      error("ERROR: execlp xdo.sh");
+      crit("ERROR: execlp xdo.sh");
 
     } else if(input == 'y'){
       CACHE = ROW + COL;
@@ -741,7 +743,7 @@ int check_char(){
       } else if (pid == 0) {
         endwin();
         execlp("yay", "yay", NULL);
-        error("ERROR: execlp yay");
+        crit("ERROR: execlp yay");
       } else {
         endwin();
         int status;
@@ -769,7 +771,7 @@ int check_char(){
         endwin();
         print_clear_terminal();
         execlp("make", "make", NULL);
-        error("ERROR: execlp make");
+        crit("ERROR: execlp make");
       } else {
 
         endwin();
@@ -811,7 +813,7 @@ int check_char(){
         refresh();
         endwin();
         execlp("rmpc", "rmpc", NULL);
-        error("ERROR: execlp rmpc");
+        crit("ERROR: execlp rmpc");
       } else {
 
         endwin();
@@ -835,7 +837,7 @@ int check_char(){
 
       endwin();
       execlp("tmux", "tmux", "kill-pane", NULL);
-      error("ERROR: execlp tmux kill-pane");
+      crit("ERROR: execlp tmux kill-pane");
 
     } else if(input == 'X'){
 
@@ -851,7 +853,7 @@ int check_char(){
       char * env_home = getenv("HOME");
       sprintf(path_to_killsession, "%s%s", env_home, "/git/sara/bash/kill-session.sh");
       execlp("nohup", "nohup", "bash", "-c", path_to_killsession, NULL);
-      error("ERROR: execlp kill-session.sh");
+      crit("ERROR: execlp kill-session.sh");
 
     } else if(WIN_SIZE != SMALL){
       LAST_INPUT_TIME = clock();
@@ -1250,7 +1252,7 @@ void fork_newlook(char * file){
 
   pid_t pid = fork();
   if (pid < 0) {
-    error("fork_newlook");
+    crit("fork_newlook");
   } else if (pid == 0) {
 
     int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -1279,7 +1281,7 @@ void _pshd(){
   FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
 
   if (file == NULL){
-    error("ERROR: error opening pshd file");
+    crit("ERROR: error opening pshd file");
   }
 
   char line[256] = {'\0'};
@@ -1411,7 +1413,7 @@ void _pshd(){
         prev_line[strcspn(prev_line, "\n")] = 0;
         chdir(prev_line);
         if (setenv("PWD", prev_line, 1) != 0) {
-          error("setenv error");
+          crit("setenv error");
         }
         animate(neon);
       } else {
@@ -1563,7 +1565,7 @@ void _pshd(){
           if(strlen(sel_line) > 0){
             chdir(sel_line);
             if (setenv("PWD", sel_line, 1) != 0) {
-              error("setenv error");
+              crit("setenv error");
             }
             animate(neon);
           } else {
@@ -1635,7 +1637,7 @@ int generate_pw_file(){
   char popen_command[256] = {'\0'};
   sprintf(popen_command, "%s %s", "gpg --symmetric --output", "/home/hakirot/.config/pw.gpg");
   FILE * gpg = popen(popen_command, "w");
-  if (!gpg) error("gpg");
+  if (!gpg) crit("gpg");
   fputs(pw, gpg);
   int result = pclose(gpg);
 

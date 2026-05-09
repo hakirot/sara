@@ -37,6 +37,8 @@
 #define cyan_black      23
 #define black_whited    24
 
+#define KEY_ARRAY_SIZE  128
+
 typedef enum {
   SMALL,
   NORMAL,
@@ -155,5 +157,10 @@ extern start_animation START_ANIMATION;
 extern char HOLD_CHAR;
 
 extern int GLITCH_TIME;
+
+extern char global_chars[];
+extern char menukeys_chars[];
+extern char builtins_chars[];
+extern char commandkeys_chars[];
 
 #endif

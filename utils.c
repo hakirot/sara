@@ -6,6 +6,8 @@
 --  ╚██████╔╝   ██║   ██║███████╗███████║  --
 --   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝.h--
                                                */
+
+#include "utils.h"
 #include "globals.h"
 #include "config.h"
 #include "sara.h"
@@ -22,11 +24,26 @@
 #include <wait.h>
 #include <string.h>
 
-// TODO: implement
-void user_error(char * err) {
+void load_command_config(){
+  memset(global_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(menukeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+
 }
 
-void error(char * err) {
+void preflight_check() {
+
+  crit("success");
+}
+
+// TODO: implement
+void warning(char * err) {
+  clear();
+  mvprintw(ROW/2, COL/2, "%s", err);
+}
+
+void crit(char * err) {
   endwin();
   printf("%s\n", err);
   exit(1);
@@ -61,7 +78,7 @@ void ensure_cache_dir(){
     if (status != 0) {
       char error_str[256] = {'\0'};
       sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
-      error(error_str);
+      crit(error_str);
     }
   }
 }
@@ -96,11 +113,11 @@ void ensure_path_perm(char * file_path, char perm){
 
         // setenv SUDO_ASKPASS
 				if (setenv("SUDO_ASKPASS", "/home/hakirot/skps/secret.sh", 1) != 0) {
-          error("setenv error");
+          crit("setenv error");
 				}
 
         execlp("sudo", "sudo", "--askpass", "chmod", "666", file_path, NULL);
-        error("ERROR: execv sudo");
+        crit("ERROR: execv sudo");
 
       } else {
         endwin();
@@ -114,7 +131,7 @@ void ensure_path_perm(char * file_path, char perm){
     } else {
       char error_str[32] = {'\0'};
       sprintf(error_str, "A new errno: %d", errno);
-      error(error_str);
+      crit(error_str);
     }
   }
 }
@@ -123,7 +140,7 @@ void print_clear_terminal(){
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 
-void init_window(){
+void boot_window_sequence(){
   setlocale(LC_ALL, "");    // Allow special characters, initscr()
   initscr();                // Initialize screen
   start_color();            // Must be called right after initscr()

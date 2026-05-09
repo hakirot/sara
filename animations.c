@@ -460,7 +460,7 @@ void _tv_static(){
         if(idx != 0 && idx != 1){
           char er[10] = {'\0'};
           sprintf(er, "%d", idx);
-          error(er);
+          crit(er);
         }
 
         if (idx == 1 && roll_result == 2){
@@ -500,7 +500,7 @@ void _tv_static(){
           if(idx != 0 && idx != 1){
             char er[10] = {'\0'};
             sprintf(er, "%d", idx);
-            error(er);
+            crit(er);
           }
 
           if (idx == 1 && roll_result == 2){

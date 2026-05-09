@@ -12,10 +12,13 @@
 
 #include <wchar.h>
 
+void preflight_check();
+void load_command_config();
+void warning(char * err);
+void crit(char * err);
 int is_char_in_search(wchar_t wc, const wchar_t * search_str);
 void print_clear_terminal();
-void init_window();
-void error(char * err);
+void boot_window_sequence();
 void get_helped();
 void ensure_cache_dir();
 void ensure_path_perm(char * file_path, char perm);

@@ -10,7 +10,9 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-/* Toggle if you chdir */
+static const int run_preflight_check = true;
+
+/* Toggle if you wrap sara in chdir command */
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
@@ -185,26 +187,26 @@ static const float HOLD_CHAR_TIME = 0.00001;
 
 /* CUSTOM COMMANDS */
 
-static const char *test_cmd[]         = { "mkdir", "TEST_DIR_PLS_DELETE", NULL};
-static const char *r_cmd[]            = { "ranger", NULL};
-static const char *R_cmd[]            = { "rtorrent", NULL};
-static const char *w_cmd[]            = { "ranger", "/home/hakirot/pix/walls/", NULL};
-static const char *t_cmd[]            = { "nvim", "/home/hakirot/dox/.notes/tasks", NULL};
-static const char *P_cmd[]            = { "nohup", "bash", "-c", "bar.sh", NULL};
-//static const char *newlook_cmd[]      = { "reskin", NULL};
-static const char *v_cmd[]            = { "nvim", NULL};
-static const char *V_cmd[]            = { "xdo", "1", NULL};
-static const char *O_cmd[]            = { "xdo", "2", NULL};
-static const char *F_cmd[]            = { "xdo", "3", NULL};
-static const char *y_cmd[]            = { "yay", NULL};
-static const char *m_cmd[]            = { "make", NULL};
-static const char *M_cmd[]            = { "rmpc", NULL};
-static const char *Q_cmd[]            = { "tmux", "kill-pane", NULL};
+static const char *test_cmd[]         = { "mkdir", "TEST_DIR_PLS_DELETE",        NULL};
+static const char *r_cmd[]            = { "ranger",                              NULL};
+static const char *R_cmd[]            = { "rtorrent",                            NULL};
+static const char *w_cmd[]            = { "ranger", "/home/hakirot/pix/walls/",      NULL};
+static const char *t_cmd[]            = { "nvim", "/home/hakirot/dox/.notes/tasks",  NULL};
+static const char *P_cmd[]            = { "nohup", "bash", "-c", "bar.sh",       NULL};
+//static const char *newlook_cmd[]      = { "reskin",                              NULL};
+static const char *v_cmd[]            = { "nvim",                                NULL};
+static const char *V_cmd[]            = { "xdo", "1",                            NULL};
+static const char *O_cmd[]            = { "xdo", "2",                            NULL};
+static const char *F_cmd[]            = { "xdo", "3",                            NULL};
+static const char *y_cmd[]            = { "yay",                                 NULL};
+static const char *m_cmd[]            = { "make",                                NULL};
+static const char *M_cmd[]            = { "rmpc",                                NULL};
+static const char *Q_cmd[]            = { "tmux", "kill-pane",                   NULL};
 static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
 
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
-/* TODO: add optional chdir Args (tasks, rtorrent, walls) */
+/* TODO: add optional chdir, Args (tasks, rtorrent, walls), force_confirm */
 static const Command commandkeys[] = {
 /*  triggerkey   command            wait_option      pre_animation,   post animation  */
   { 'a',         test_cmd,                 WAIT,     neon_reverse,    neon          },
@@ -213,7 +215,7 @@ static const Command commandkeys[] = {
   { 'w',         w_cmd,                    WAIT,     neon_reverse,    neon          },
   { 't',         t_cmd,                    WAIT,     glitch_full,     neon          },
   { 'P',         P_cmd,                    WAIT,     none,            none          },
-// { 'n',         newlook_cmd,              EXEC,     glitch_full,     neon          },
+//{ 'n',         newlook_cmd,              EXEC,     glitch_full,     neon          },
   { 'v',         v_cmd,                    WAIT,     glitch_full,     neon          },
   { 'V',         V_cmd,                    WAIT,     neon_reverse,    neon          },
   { 'O',         O_cmd,                    WAIT,     neon_reverse,    neon          },
@@ -239,7 +241,7 @@ static const Builtin builtins[] = {
 
 /* MENUS CONFIGURATION */
 
-/* MENU B: BLUETOOTH/BACKLIGHT) */
+/* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
 static const MenuCommand connect_xm5 = { connect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide };
 

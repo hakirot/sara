@@ -38,3 +38,8 @@ char HOLD_CHAR;
 int HOLOGRAPHIC = 0;
 
 int GLITCH_TIME = 52;
+
+char global_chars[KEY_ARRAY_SIZE];
+char menukeys_chars[KEY_ARRAY_SIZE];
+char builtins_chars[KEY_ARRAY_SIZE];
+char commandkeys_chars[KEY_ARRAY_SIZE];

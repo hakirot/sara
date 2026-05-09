@@ -18,9 +18,9 @@ static int FOLLOW = true;
 
 /* COLOR SETTINGS */
 static const int fg_c = white;
-static const int bg_c = yellow;
+static const int bg_c = black;
 
-static const int use_bold_color_for_bg = true;
+static const int use_bold_color_for_bg = false;
 static const int use_bold_color_for_fg = false;
 
 /* CUSTOM GLYPHS */ 

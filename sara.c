@@ -84,11 +84,10 @@ int main(int argc, char* argv[]){
 //double time_idle;
 //WAIT_START = clock();
 
-  load_command_config();
   special_chars();
+  load_command_config();
   set_glyph_dimensions(); // TODO: get away from "*glyph*"
   launch_window();
-
   if(run_preflight_check) preflight_check();
 
   CACHE = check_size();
@@ -1250,6 +1249,7 @@ void fork_newlook(char * file){
 // TODO: fix the multiple out-of-bounds printing problem
 // TODO: implement bold fg color if use_bold_color_for_fg is set
 // TODO: make ESC also exit pshd
+// TODO: backspace reprints top border white
 void _pshd(){
 
   CACHE = ROW + COL;
@@ -1304,7 +1304,7 @@ void _pshd(){
     }
 
     input = getch();
-    if (input > 47 && input < 58 || input == 'j' || input == 'k'){
+    if ((input > 47 && input < 58) || input == 'j' || input == 'k'){
       if(input == 'j'){
         entry_as_int++;
         if (entry_as_int == i){

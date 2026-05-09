@@ -30,27 +30,37 @@ void load_command_config(){
   memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
+}
+
+// TODO: PREFLIGHT CHECK
+void preflight_check() {
+
   int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
   int builtins_len = sizeof(builtins)/sizeof(builtins[0]);
   int menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
   int total = commandkeys_len + builtins_len + menukeys_len;
 
   if(total > 128){
-    char err[128];
-    sprintf(err, "ERROR: Configured Key Limit exceeded\nKey Limit is %d",
-        KEY_ARRAY_SIZE);
+    char err[256];
+    sprintf(err, "ERROR: Configured Key Limit exceeded\nKey Limit is %d\n commandkeys: %d\n builtins: %d\n menukeys: %d\n",
+      KEY_ARRAY_SIZE,
+      commandkeys_len,
+      builtins_len,
+      menukeys_len);
     crit("Key limit exceeded");
   }
 
-//char err[32];
-//sprintf(err, "%d %d %d", commandkeys_len, builtins_len, menukeys_len);
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    if((mbstowcs(NULL, bg[i], 0)) != (ulong)BG_GLYPH_LENGTH){
+      crit("bad dimensions");
+    }
+  }
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    if((mbstowcs(NULL, fg[i], 0)) != (ulong)FG_GLYPH_LENGTH){
+      crit("bad dimensions");
+    }
+  }
 
-//crit(err);
-}
-
-// TODO: PREFLIGHT CHECK
-void preflight_check() {
-  // ensure all glyph strings are the same length
   // ensure all command menus terminate with commands
   // ensure all commands are installed
   // ensure use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
@@ -160,7 +170,7 @@ void print_clear_terminal(){
 }
 
 void special_chars(){
-  setlocale(LC_ALL, "");    // Allow special characters, initscr()
+  setlocale(LC_ALL, "");    // wide character support
 }
 
 void launch_window(){
@@ -217,8 +227,8 @@ void get_helped() {
   exit(0);
 }
 
-int roll(int num_sides){
-  return rand() % num_sides + 1;
+int roll(int sides){
+  return rand() % sides + 1;
 }
 
 void set_glyph_dimensions(){

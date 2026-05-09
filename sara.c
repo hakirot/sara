@@ -85,10 +85,11 @@ int main(int argc, char* argv[]){
 //WAIT_START = clock();
 
   load_command_config();
-  if(run_preflight_check) preflight_check();
   special_chars();
-  set_glyph_dimensions(); // TODO: get away from glyph naming convention
+  set_glyph_dimensions(); // TODO: get away from "*glyph*"
   launch_window();
+
+  if(run_preflight_check) preflight_check();
 
   CACHE = check_size();
   LAST_INPUT_TIME = clock();

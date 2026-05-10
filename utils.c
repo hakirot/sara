@@ -72,10 +72,12 @@ void __command__(char input){
     }
   }
 
-  if(strcmp("ranger", *(char **)command->cmd) == 0){
+  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0){
     crit("rangerrr");
   }
 
+  animate(command->pre_animation);
+  endwin();
 }
 
 void __builtin__(char input){

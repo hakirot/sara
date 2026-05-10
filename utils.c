@@ -92,6 +92,8 @@ void __builtin__(char input){
     _toggle_rave();
   } else if (selection == invert_colors){
     _invert_colors();
+  } else if (selection == randomize_colors){
+    _randomize_colors();
   }
 }
 
@@ -346,6 +348,15 @@ void _toggle_rave(){
   } else {
     HOLOGRAPHIC = 0;
   }
+}
+
+void _randomize_colors(){
+  BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
+  FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
+  while(FOREGROUND == BACKGROUND){
+    FOREGROUND = rand() % 7 + 2;
+  }
+  animate(none);
 }
 
 void _invert_colors(){

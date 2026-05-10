@@ -31,6 +31,7 @@ void set_glyph_dimensions();
 void special_chars();
 void _toggle_rave();
 void _invert_colors();
+void _randomize_colors();
 void _quit();
 
 #endif

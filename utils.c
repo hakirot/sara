@@ -24,6 +24,7 @@
 #include <dirent.h>
 #include <wait.h>
 #include <string.h>
+#include <fcntl.h>
 
 int __key__(){
 
@@ -41,7 +42,7 @@ int __key__(){
       } else if(strchr(menukeys_chars, input)){
         __menu__(input);
       } else {
-        crit("Something is wrong.");
+        crit("Something is broken :[");
       }
 
     } else if(WIN_SIZE != SMALL){
@@ -78,6 +79,54 @@ void __command__(char input){
 
   animate(command->pre_animation);
   endwin();
+
+  if(command->option == WAIT || command->option == WAIT_ON_ERR){
+
+    CACHE = ROW + COL;
+    endwin();
+    clear();
+    pid_t pid = fork();
+    if (pid < 0) {
+      perror("fork");
+      exit(EXIT_FAILURE);
+
+    } else if (pid == 0) {
+//    print_clear_terminal();
+      execvp(((char **)command->cmd)[0], (char **)command->cmd);
+      crit("ERROR: execlp __command__");
+    } else {
+
+      int status;
+
+      while(kill(pid, 0) == 0){
+        waitpid(pid, &status, 0);
+      }
+
+      if(command->option == WAIT_ON_ERR && status != 0){
+        printf("Press enter to continue");
+        getchar();
+        fflush(stdin);
+      }
+      getmaxyx(stdscr, ROW, COL);
+      if(CACHE != ROW + COL) return;
+    }
+
+  } else if (command->option == EXEC || command->option == EXEC_NO_OUT) {
+
+    if(command->option == EXEC_NO_OUT){
+      int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+      dup2(fd, 1);
+      dup2(fd, 2);
+      close(fd);
+    }
+
+
+    endwin();
+    execvp(((char **)command->cmd)[0], (char **)command->cmd);
+    crit("ERROR: execlp __command__");
+  }
+
+  animate(command->post_animation);
 }
 
 void __builtin__(char input){

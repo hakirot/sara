@@ -34,17 +34,18 @@ void _hd();
 void _overlay(const char * glyph[], char fill);
 
 void animate(animation_option option){
-  if (option == none)           _none((Arg){0});
-  if (option == down_wipes)     _down_wipes();
-  if (option == glitch)         _glitch((Arg){.x = 0});
-  if (option == glitch_full)    _glitch((Arg){.x = 1});
-  if (option == neon)           _neon();
-  if (option == neon_reverse)   _neon_reverse();
-  if (option == shutter_slide)  _shutter_slide();
-  if (option == pixel_fill)     _pixel_fill();
-  if (option == tv_static)      _tv_static();
-  if (option == print_f)        _fg(fg);
-  if (option == print_b)        _bg();
+  if (option == none)                _none((Arg){0});
+  if (option == down_wipes)          _down_wipes();
+  if (option == glitch)              _glitch((Arg){.x = 0});
+  if (option == glitch_full)         _glitch((Arg){.x = 1});
+  if (option == neon)                _neon();
+  if (option == neon_reverse)        _neon_reverse();
+  if (option == shutter_slide)       _shutter_slide();
+  if (option == shutter_slide_neon){ _shutter_slide(); _neon();}
+  if (option == pixel_fill)          _pixel_fill();
+  if (option == tv_static)           _tv_static();
+  if (option == print_f)             _fg(fg);
+  if (option == print_b)             _bg();
 }
 
 // TODO: New test glyphs reveal undefined behavior with the header

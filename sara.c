@@ -94,7 +94,6 @@ int main(int argc, char* argv[]){
   LAST_INPUT_TIME = clock();
   int should_print = false;
   while(1){
-
 //  int result = check_char(); // check input for this cycle
     int result = __key__();
 

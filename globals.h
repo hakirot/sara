@@ -45,14 +45,6 @@ typedef enum {
   BIG
 } screen_size;
 
-// TODO: kill these
-//typedef enum {
-//  QUICK,
-//  STANDARD,
-//  NEON,
-//  EMPTY
-//} start_animation;
-
 typedef union {
   int x;
   double y;
@@ -66,6 +58,7 @@ typedef enum {
   neon,
   neon_reverse,
   shutter_slide,
+  shutter_slide_neon,
   pixel_fill,
   tv_static,
   print_b,

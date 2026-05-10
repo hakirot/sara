@@ -230,7 +230,6 @@ static const Command commandkeys[] = {
 
 
 /* BUILTIN FUNCTIONS */
-
 static const Builtin builtins[] = {
   { 'I', randomize_colors },
   { 'i', invert_colors },

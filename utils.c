@@ -72,6 +72,10 @@ void __command__(char input){
     }
   }
 
+  if(strcmp("ranger", *(char **)command->cmd) == 0){
+    crit("rangerrr");
+  }
+
 }
 
 void __builtin__(char input){

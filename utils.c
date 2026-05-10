@@ -87,6 +87,12 @@ void __builtin__(char input){
     _quit();
   } else if (selection == pshd){
     _pshd();
+  } else if (selection == rave){
+    if(HOLOGRAPHIC == 0){
+      HOLOGRAPHIC = 1;
+    } else {
+      HOLOGRAPHIC = 0;
+    }
   }
 }
 

@@ -34,8 +34,11 @@ int __key__(){
 
     if(strchr(global_chars, input)){
       if(strchr(commandkeys_chars, input)){
+        __command__(input);
       } else if(strchr(builtins_chars, input)){
+        __builtin__(input);
       } else if(strchr(menukeys_chars, input)){
+        __menu__(input);
       } else {
         crit("Something is wrong.");
       }
@@ -58,15 +61,35 @@ int __key__(){
   return valid_input;
 }
 
+void __command__(char input){
+
+  const Command* command = NULL;
+  for(int i = 0; i < commandkeys_len; i++){
+    if(commandkeys[i].smashkey == input){
+      command = &commandkeys[i];
+      break;
+    }
+  }
+
+}
+
+void __builtin__(char input){
+
+}
+
+void __menu__(char input){
+
+}
+
 void load_command_config(){
   memset(global_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(menukeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
-  int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
-  int builtins_len = sizeof(builtins)/sizeof(builtins[0]);
-  int menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
+  commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
+  builtins_len = sizeof(builtins)/sizeof(builtins[0]);
+  menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
 
   int global_idx = 0;
   for(int i = 0; i < commandkeys_len; i++){

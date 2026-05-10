@@ -164,4 +164,8 @@ extern char commandkeys_chars[];
 extern char builtins_chars[];
 extern char menukeys_chars[];
 
+extern int commandkeys_len;
+extern int builtins_len;
+extern int menukeys_len;
+
 #endif

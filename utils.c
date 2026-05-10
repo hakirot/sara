@@ -80,7 +80,7 @@ void __command__(char input){
   animate(command->pre_animation);
   endwin();
 
-  if(command->option == WAIT || command->option == WAIT_ON_ERR){
+  if(command->option == WAIT || command->option == WAIT_ON_ERR || command->option == WAIT_NO_OUT){
 
     CACHE = ROW + COL;
     endwin();
@@ -92,6 +92,14 @@ void __command__(char input){
 
     } else if (pid == 0) {
 //    print_clear_terminal();
+      if(command->option == WAIT_NO_OUT){
+        int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+        dup2(fd, 1);
+        dup2(fd, 2);
+
+        close(fd);
+      }
+
       execvp(((char **)command->cmd)[0], (char **)command->cmd);
       crit("ERROR: execlp __command__");
     } else {
@@ -384,7 +392,7 @@ void get_helped() {
   printf("  --help, -h    Get helped\n");
 //printf("  -c            Constant effects\n");
   printf("  -G            Constant glitch effect\n");
-  printf("  -M            Constant MEGA glitch effect\n");
+//printf("  -M            Constant MEGA glitch effect\n");
   printf("  -H            Holographic background\n");
   printf("  -f [color]    set custom FOREGROUND color\n");
   printf("  -b [color]    set custom BACKGROUND color\n");

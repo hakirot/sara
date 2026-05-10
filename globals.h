@@ -69,6 +69,7 @@ typedef enum {
 typedef enum {
   WAIT,
   WAIT_ON_ERR,    // TODO: Some confusion here
+  WAIT_NO_OUT,
   NOWAIT,
   EXEC,
   EXEC_NO_OUT,

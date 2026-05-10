@@ -207,25 +207,25 @@ static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session",
 
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
-/* TODO: add optional chdir, Args (tasks, rtorrent, walls), force_confirm */
+/* TODO: add optional Args: chdir (tasks, rtorrent, walls), confirm (newlook), no_output */
 static const Command commandkeys[] = {
 /*  KEY          COMMAND       WAIT_OPTION      PRE_ANIMATION,   POST ANIMATION  */
-  { 'a',         test_cmd,            WAIT,     neon_reverse,    neon               },
-  { 'r',         r_cmd,               WAIT,     neon_reverse,    neon               },
-  { 'R',         R_cmd,               WAIT,     neon_reverse,    neon               },
-  { 'w',         w_cmd,               WAIT,     neon_reverse,    neon               },
-  { 't',         t_cmd,               WAIT,     glitch_full,     neon               },
-  { 'P',         P_cmd,               WAIT,     none,            none               },
-//{ 'n',         newlook_cmd,         EXEC,     glitch_full,     neon               },
-  { 'v',         v_cmd,               WAIT,     glitch_full,     neon               },
-  { 'V',         V_cmd,               WAIT,     neon_reverse,    neon               },
-  { 'O',         O_cmd,               WAIT,     neon_reverse,    neon               },
-  { 'F',         F_cmd,               EXEC,     none,            neon               },
-  { 'y',         y_cmd,        WAIT_ON_ERR,     none,            neon               },
-  { 'm',         m_cmd,        WAIT_ON_ERR,     none,            shutter_slide_neon },
-  { 'M',         M_cmd,               WAIT,     none,            pixel_fill         },
-  { 'Q',         Q_cmd,               EXEC,     none,            none               },
-  { 'X',         X_cmd,        EXEC_NO_OUT,     none,            none               },
+  { 'a',      test_cmd,               WAIT,     neon_reverse,                  neon },
+  { 'r',         r_cmd,               WAIT,     neon_reverse,                  neon },
+  { 'R',         R_cmd,               WAIT,     neon_reverse,                  neon },
+  { 'w',         w_cmd,               WAIT,     neon_reverse,                  neon },
+  { 't',         t_cmd,               WAIT,      glitch_full,                  neon },
+  { 'P',         P_cmd,        WAIT_NO_OUT,             none,                  none },
+//{ 'n',   newlook_cmd,               EXEC,      glitch_full,                  neon },
+  { 'v',         v_cmd,               WAIT,      glitch_full,                  neon },
+  { 'V',         V_cmd,               WAIT,     neon_reverse,                  neon },
+  { 'O',         O_cmd,               WAIT,     neon_reverse,                  neon },
+  { 'F',         F_cmd,               EXEC,             none,                  neon },
+  { 'y',         y_cmd,        WAIT_ON_ERR,             none,                  neon },
+  { 'm',         m_cmd,        WAIT_ON_ERR,             none,    shutter_slide_neon },
+  { 'M',         M_cmd,               WAIT,             none,            pixel_fill },
+  { 'Q',         Q_cmd,               EXEC,             none,                  none },
+  { 'X',         X_cmd,        EXEC_NO_OUT,             none,                  none },
 };
 
 

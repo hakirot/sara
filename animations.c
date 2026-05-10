@@ -24,8 +24,6 @@ void _glitch(Arg bigmode);
 void _neon();
 void _neon_reverse();
 void _shutter_slide();
-// cycle_length, roll_chance, and usleep_time can all be parameters to change
-// behavior TODO: move this description to config
 void _pixel_fill();
 void _tv_static();
 void _bg();

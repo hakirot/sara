@@ -11,6 +11,7 @@
 #include "globals.h"
 #include "config.h"
 #include "sara.h"
+#include "animations.h"
 #include <wchar.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,11 +89,9 @@ void __builtin__(char input){
   } else if (selection == pshd){
     _pshd();
   } else if (selection == rave){
-    if(HOLOGRAPHIC == 0){
-      HOLOGRAPHIC = 1;
-    } else {
-      HOLOGRAPHIC = 0;
-    }
+    _toggle_rave();
+  } else if (selection == invert_colors){
+    _invert_colors();
   }
 }
 
@@ -339,6 +338,21 @@ void get_helped() {
 
 int roll(int sides){
   return rand() % sides + 1;
+}
+
+void _toggle_rave(){
+  if(HOLOGRAPHIC == 0){
+    HOLOGRAPHIC = 1;
+  } else {
+    HOLOGRAPHIC = 0;
+  }
+}
+
+void _invert_colors(){
+  int temp = BACKGROUND;
+  BACKGROUND = FOREGROUND;
+  FOREGROUND = temp;
+  animate(none);
 }
 
 void _quit(){

@@ -29,6 +29,8 @@ void ensure_path_perm(char * file_path, char perm);
 int  roll(int num_sides);
 void set_glyph_dimensions();
 void special_chars();
+void _toggle_rave();
+void _invert_colors();
 void _quit();
 
 #endif

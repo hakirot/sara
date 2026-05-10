@@ -12,6 +12,7 @@
 
 #include <wchar.h>
 
+int __key__();
 void preflight_check();
 void load_command_config();
 void warning(char * err);

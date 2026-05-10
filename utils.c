@@ -24,6 +24,40 @@
 #include <wait.h>
 #include <string.h>
 
+int __key__(){
+
+  int valid_input = 0;
+  char input = getch();
+
+  if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
+    valid_input = 1;
+
+    if(strchr(global_chars, input)){
+      if(strchr(commandkeys_chars, input)){
+      } else if(strchr(builtins_chars, input)){
+      } else if(strchr(menukeys_chars, input)){
+      } else {
+        crit("Something is wrong.");
+      }
+
+    } else if(WIN_SIZE != SMALL){
+      LAST_INPUT_TIME = clock();
+      HOLD_CHAR = input;
+      mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+      refresh();
+    }
+  }
+
+  double time_since_input = (double)(clock() - LAST_INPUT_TIME)
+                            / CLOCKS_PER_SEC;
+
+  if(time_since_input > HOLD_CHAR_TIME && WIN_SIZE != SMALL){
+    HOLD_CHAR = '\0';
+  }
+
+  return valid_input;
+}
+
 void load_command_config(){
   memset(global_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));

@@ -17,7 +17,7 @@ static const animation_option start_animation = neon;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = red;
+static const int fg_c = green;
 static const int bg_c = black;
 
 static const int use_bold_color_for_bg = false;

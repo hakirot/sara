@@ -160,8 +160,8 @@ extern char HOLD_CHAR;
 extern int GLITCH_TIME;
 
 extern char global_chars[];
-extern char menukeys_chars[];
-extern char builtins_chars[];
 extern char commandkeys_chars[];
+extern char builtins_chars[];
+extern char menukeys_chars[];
 
 #endif

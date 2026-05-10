@@ -95,7 +95,8 @@ int main(int argc, char* argv[]){
   int should_print = false;
   while(1){
 
-    int check_char_result = check_char(); // check input for this cycle
+//  int result = check_char(); // check input for this cycle
+    int result = __key__();
 
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
@@ -114,10 +115,10 @@ int main(int argc, char* argv[]){
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
-    if (check_char_result == 0 && should_print == true && HOLD_CHAR == '\0'){
+    if (result == 0 && should_print == true && HOLD_CHAR == '\0'){
       animate(none);
       should_print = false;
-    } else if (check_char_result == 1){
+    } else if (result == 1){
       should_print = true;
     }
     usleep(50000); // chill
@@ -204,11 +205,9 @@ int check_char(){
         }
 
         fclose(fp);
-
         remove(cache_file) ? crit("No file to be deleted"): 0;
 
         chdir(target_chdir);
-
 				if (setenv("PWD", target_chdir, 1) != 0) {  
           crit("setenv error");
 				}

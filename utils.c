@@ -72,6 +72,17 @@ void preflight_check() {
     crit("Key limit exceeded");
   }
 
+  int global_chars_len = strlen(global_chars);
+  for(int idx = 0; idx < global_chars_len; idx++){
+    for(int j = idx + 1; j < global_chars_len; j++){
+      if(global_chars[idx] == global_chars[j]){
+        char err[64];
+        sprintf(err, "WARNING: Duplicate char: %c\n", global_chars[idx]);
+        crit(err);
+      }
+    }
+  }
+
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     if((mbstowcs(NULL, bg[i], 0)) != (ulong)BG_GLYPH_LENGTH){
       crit("bad bg dimensions");

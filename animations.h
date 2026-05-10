@@ -11,6 +11,6 @@
 #ifndef ANIMATIONS_H
 #define ANIMATIONS_H
 
-void animate(animation_option choice);
+void animate(animation_option option);
 
 #endif

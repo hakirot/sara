@@ -75,6 +75,19 @@ void __command__(char input){
 
 void __builtin__(char input){
 
+  internal selection = quit;
+  for(int i = 0; i < commandkeys_len; i++){
+    if(builtins[i].smashkey == input){
+      selection = builtins[i].option;
+      break;
+    }
+  }
+
+  if(selection == quit){
+    _quit();
+  } else if (selection == pshd){
+    _pshd();
+  }
 }
 
 void __menu__(char input){
@@ -320,6 +333,25 @@ void get_helped() {
 
 int roll(int sides){
   return rand() % sides + 1;
+}
+
+void _quit(){
+  if (FOLLOW){
+    ensure_cache_dir();
+    char cache_file[256] = {'\0'};
+    char * env_home = getenv("HOME");
+    char * env_pwd = getenv("PWD");
+    sprintf(cache_file, "%s%s", env_home, "/.cache/sara/saraexit");
+    FILE * fp = fopen(cache_file, "w");
+    fprintf(fp, "%s", env_pwd);
+    fclose(fp);
+  }
+
+  clear();
+  refresh();
+  move(0, 0);
+  endwin();
+  exit(0);
 }
 
 void set_glyph_dimensions(){

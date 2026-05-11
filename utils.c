@@ -75,6 +75,10 @@ void __command__(char input){
     }
   }
 
+  if(command->cmd_args.chdir != NULL){
+    _chdir(command->cmd_args.chdir);
+  }
+
   animate(command->pre_animation);
   endwin();
 
@@ -98,7 +102,8 @@ void __command__(char input){
 
     } else if (pid == 0) {
 //    print_clear_terminal();
-      if(command->option == WAIT_NO_OUT){
+//    if(command->option == WAIT_NO_OUT){
+      if(command->cmd_args.output_options == NOOUTS){
         int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         dup2(fd, 1);
         dup2(fd, 2);
@@ -283,6 +288,14 @@ void _free_range(const Command * command){
   }
 }
 
+void _chdir(char * target_dir){
+  chdir(target_dir);
+  if (setenv("PWD", target_dir, 1) != 0) {  
+    crit("setenv error");
+  }
+
+}
+
 // TODO: PREFLIGHT CHECK
 void preflight_check() {
 
@@ -324,10 +337,11 @@ void preflight_check() {
     }
   }
 
-  // ensure all command menus terminate with commands
-  // ensure all commands are installed
-  // ensure use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
-  // ensure --choosedir flag not present in any ranger command
+  // assert all command menus terminate with commands
+  // assert all commands are installed
+  // assert use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
+  // assert --choosedir flag not present in any ranger command
+  // assert any chdir arg directories exist
 }
 
 // TODO: implement

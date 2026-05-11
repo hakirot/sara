@@ -206,19 +206,20 @@ static const char *Q_cmd[]            = { "tmux", "kill-pane",                  
 static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
 
 
+// TODO: implement
 static const CommandArgs defaults = {
-  NULL,        /* OPTIONAL CHDIR                     */
-  NOCONFIRM,   /* OPTIONAL PREEXECUTION CONFIRMATION */
-  OUTS,        /* OPTIONALLY SUPPRESS OUTPUT         */
+  NULL,        /* CHDIR STRING                                  */
+  NOCONFIRM,   /* Optionally confirm command with: CONFIRM      */
+  OUTS,        /* Optionally suppress command output with NOOUTS */
 };
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
 /* TODO: add optional Args: chdir (tasks, rtorrent, walls), confirm (newlook), no_output */
 static const Command commandkeys[] = {
 /*  KEY        COMMAND       WAIT_OPTION     PRE_ANIMATION,        POST ANIMATION   ARGS    */
-  { 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/dls", NOCONFIRM, OUTS} },
+  { 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
   { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
-  { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
+  { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,   defaults },
   { 'P',         P_cmd,      WAIT_NO_OUT,             none,                  none,   defaults },
@@ -306,7 +307,7 @@ static const Menu S_menu[] = {
 /* menukey assignments */
 static const MenuKey menukeys[] = {
   {'b', b_menu },
-  {'S', S_menu},
+  {'S', S_menu },
 };
 
 #endif

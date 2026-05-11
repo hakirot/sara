@@ -19,6 +19,7 @@ void __builtin__(char input);
 void __menu__(char input);
 Command * ranger_command(const Command * command);
 void _free_range(const Command * command);
+void _chdir(char * target_dir);
 void preflight_check();
 void load_command_config();
 void warning(char * err);

@@ -65,6 +65,8 @@ int __key__(){
 
 void __command__(char input){
 
+  int RANGER_FLAG=0;
+
   const Command* command = NULL;
   for(int i = 0; i < commandkeys_len; i++){
     if(commandkeys[i].smashkey == input){
@@ -81,7 +83,7 @@ void __command__(char input){
     command->option != EXEC_NO_OUT)
   {
     command = ranger_command(command);
-    return;
+    RANGER_FLAG=1;
   }
 
   if(command->option == WAIT || command->option == WAIT_ON_ERR || command->option == WAIT_NO_OUT){
@@ -132,11 +134,12 @@ void __command__(char input){
       close(fd);
     }
 
-
     endwin();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     crit("ERROR: execlp __command__");
   }
+
+  if(RANGER_FLAG) _free_range(command);
 
   animate(command->post_animation);
 }
@@ -240,6 +243,46 @@ Command * ranger_command(const Command * command){
   return rangercmd;
 }
 
+void _free_range(const Command * command){
+  int rows = 0;
+  while ((char**)command->cmd && ((char**)command->cmd)[rows] != NULL) {
+    rows++;
+  }
+  char** kill_me = (char**)command->cmd;
+
+  for(int i = 0; i < rows; i++){
+    free(kill_me[i]);
+  }
+  free((void*)command);
+
+  char cache_file[256] = {'\0'};
+  pid_t cur_pid = getpid();
+  char * env_home = getenv("HOME");
+  sprintf(cache_file, "%s%s%d", env_home, "/.cache/sara/sara", cur_pid);
+
+  FILE *fp;
+  fp = fopen(cache_file, "r");
+  if(!fp){
+    refresh();
+    crit("error reading pwd cache file");
+  }
+
+  char target_chdir[256] = {'\0'};
+  if(fgets(target_chdir, 256, fp) == NULL) {
+    char error_str[256] = {'\0'};
+    sprintf(error_str, "%s%s" , "Error reading target_chdir file ", target_chdir);
+    crit(error_str);
+  }
+
+  fclose(fp);
+  remove(cache_file) ? crit("No file to be deleted"): 0;
+
+  chdir(target_chdir);
+  if (setenv("PWD", target_chdir, 1) != 0) {
+    crit("setenv error");
+  }
+}
+
 // TODO: PREFLIGHT CHECK
 void preflight_check() {
 
@@ -284,6 +327,7 @@ void preflight_check() {
   // ensure all command menus terminate with commands
   // ensure all commands are installed
   // ensure use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
+  // ensure --choosedir flag not present in any ranger command
 }
 
 // TODO: implement

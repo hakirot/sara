@@ -103,7 +103,7 @@ void __command__(char input){
     } else if (pid == 0) {
 //    print_clear_terminal();
 //    if(command->option == WAIT_NO_OUT){
-      if(command->cmd_args.output_options == NOOUTS){
+      if(command->cmd_args.output_option == NO_OUT){
         int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         dup2(fd, 1);
         dup2(fd, 2);
@@ -132,7 +132,7 @@ void __command__(char input){
 
   } else if (command->option == EXEC || command->option == EXEC_NO_OUT) {
 
-    if(command->option == EXEC_NO_OUT){
+    if(command->cmd_args.output_option == NO_OUT){
       int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
       dup2(fd, 1);
       dup2(fd, 2);

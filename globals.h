@@ -82,14 +82,14 @@ typedef enum {
 } confirm;
 
 typedef enum {
-  NOOUTS,
+  NO_OUT,
   OUTS,
 } out_option;
 
 typedef struct {
   char* chdir;
   confirm confirmtion;
-  out_option output_options;
+  out_option output_option;
 } CommandArgs;
 
 typedef struct {

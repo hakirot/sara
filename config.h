@@ -210,7 +210,7 @@ static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session",
 static const CommandArgs defaults = {
   NULL,        /* CHDIR STRING                                  */
   NOCONFIRM,   /* Optionally confirm command with: CONFIRM      */
-  OUTS,        /* Optionally suppress command output with NOOUTS */
+  OUTS,        /* Optionally suppress command output with NO_OUT */
 };
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/

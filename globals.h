@@ -105,6 +105,7 @@ typedef struct {
   wait_option option;
   animation_option pre_animation;
   animation_option post_animation;
+  CommandArgs cmd_args;
 } MenuCommand;
 
 typedef enum {

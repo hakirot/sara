@@ -249,25 +249,25 @@ static const Builtin builtins[] = {
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
-static const MenuCommand connect_xm5 = { connect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand connect_xm5 = { connect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const char *connect_acoustic_cmd[] = { "bluetoothctl", "connect", "FC:58:FA:9B:D7:3D", NULL };
-static const MenuCommand connect_acoustic = { connect_acoustic_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand connect_acoustic = { connect_acoustic_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const char *connect_onforu_cmd[] = { "bluetoothctl", "connect", "31:51:27:F9:1D:62", NULL };
-static const MenuCommand connect_onforu = { connect_onforu_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand connect_onforu = { connect_onforu_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const char *disconnect_xm5_cmd[] = { "bluetoothctl", "disconnect", "AC:80:0A:19:89:A8", NULL };
-static const MenuCommand disconnect_xm5 = { disconnect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand disconnect_xm5 = { disconnect_xm5_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const char *disconnect_acoustic_cmd[] = { "bluetoothctl", "disconnect", "FC:58:FA:9B:D7:3D", NULL };
-static const MenuCommand disconnect_acoustic = { disconnect_acoustic_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand disconnect_acoustic = { disconnect_acoustic_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const char *disconnect_onforu_cmd[] = { "bluetoothctl", "disconnect", "31:51:27:F9:1D:62", NULL };
-static const MenuCommand disconnect_onforu = { disconnect_onforu_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand disconnect_onforu = { disconnect_onforu_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const char *fake_backlight_cmd[] = { "mkdir", "FAKE_BACKLIGHT_CMD", NULL };
-static const MenuCommand fake_backlight = { fake_backlight_cmd, WAIT_ON_ERR, none, shutter_slide };
+static const MenuCommand fake_backlight = { fake_backlight_cmd, WAIT_ON_ERR, none, shutter_slide, defaults };
 
 static const Menu connect_devices[] = {
   { "XM5",      COMMAND, connect_xm5           },
@@ -293,10 +293,10 @@ static const Menu b_menu[] = {
 
 /* MENU S: SHUTDOWN COMMANDS */
 static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
-static const MenuCommand shutdown = { shutdown_cmd, EXEC, none, none };
+static const MenuCommand shutdown = { shutdown_cmd, EXEC, none, none, defaults };
 
 static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
-static const MenuCommand reboot = { reboot_cmd, EXEC, none, none  };
+static const MenuCommand reboot = { reboot_cmd, EXEC, none, none, defaults  };
 
 static const Menu S_menu[] = {
   { "SHUTDOWN", COMMAND, shutdown     },

@@ -42,7 +42,7 @@ int __key__(){
       } else if(strchr(menukeys_chars, input)){
         __menu__(input);
       } else {
-        crit("Something is broken :[");
+        crit("Something broke :[");
       }
 
     } else if(WIN_SIZE != SMALL){
@@ -349,6 +349,8 @@ void preflight_check() {
   // assert use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
   // assert --choosedir flag not present in any ranger command
   // assert any chdir arg directories exist
+  // assert MenuBorder length is 6
+  // assert menu_y > 1
 }
 
 // TODO: implement

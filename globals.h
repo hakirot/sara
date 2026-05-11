@@ -65,10 +65,9 @@ typedef enum {
   print_f,
 } animation_option;
 
-// TODO: Consider more options (WAIT_ON_SUCCESS)
 typedef enum {
   WAIT,
-  NOWAIT,         // TODO: redirect output to file that displays to screen?
+  NOWAIT,
   STOP,
   STOP_ON_ERR,
   EXEC,

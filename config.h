@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include "globals.h"
+#include "wchar.h"
 
 /*   ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   --
 --  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   --
@@ -17,10 +18,10 @@ static const animation_option start_animation = neon;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = green;
-static const int bg_c = black;
+static const int fg_c = yellow;
+static const int bg_c = green;
 
-static const int use_bold_color_for_bg = false;
+static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
 
 /* CUSTOM GLYPHS */ 
@@ -247,6 +248,12 @@ static const Builtin builtins[] = {
 
 
 /* MENUS CONFIGURATION */
+
+static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
+static const unsigned short menu_c            = magenta;
+static const unsigned short bold_color_menu   = false;
+static const unsigned short menu_x            = 44;
+static const unsigned short menu_y            = 5;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };

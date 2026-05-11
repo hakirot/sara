@@ -206,9 +206,9 @@ static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session",
 
 
 // TODO: implement
-static const CommandArgs defaults = {
-  NULL,        /* CHDIR STRING                                  */
-  NOCONFIRM,   /* Optionally confirm command with: CONFIRM      */
+static const ExtraArgs defaults = {
+  NULL,        /* CHDIR STRING                                   */
+  NOCONFIRM,   /* Optionally confirm command with: CONFIRM       */
   OUTS,        /* Optionally suppress command output with NO_OUT */
 };
 

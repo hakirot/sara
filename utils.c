@@ -75,12 +75,12 @@ void __command__(char input){
     }
   }
 
-  if(command->cmd_args.chdir != NULL){
-    _chdir(command->cmd_args.chdir);
+  if(command->extra_args.chdir != NULL){
+    _chdir(command->extra_args.chdir);
   }
 
   animate(command->pre_animation);
-  if(command->cmd_args.confirmtion == CONFIRM && _confirm() == 1) return;
+  if(command->extra_args.confirmtion == CONFIRM && _confirm() == 1) return;
   endwin();
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
@@ -103,7 +103,7 @@ void __command__(char input){
     } else if (pid == 0) {
 //    print_clear_terminal();
 //    if(command->option == WAIT_NO_OUT){
-      if(command->cmd_args.output_option == NO_OUT){
+      if(command->extra_args.output_option == NO_OUT){
         int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         dup2(fd, 1);
         dup2(fd, 2);
@@ -135,7 +135,7 @@ void __command__(char input){
 
   } else {
 
-    if(command->cmd_args.output_option == NO_OUT){
+    if(command->extra_args.output_option == NO_OUT){
       int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
       dup2(fd, 1);
       dup2(fd, 2);
@@ -215,7 +215,7 @@ Command * ranger_command(const Command * command){
   memset(rangercmd, 0, sizeof(Command));
 
   rangercmd->smashkey       = command->smashkey;
-  rangercmd->cmd_args       = command->cmd_args;
+  rangercmd->extra_args     = command->extra_args;
   rangercmd->option         = command->option;
   rangercmd->pre_animation  = command->pre_animation;
   rangercmd->post_animation = command->post_animation;
@@ -296,7 +296,6 @@ void _chdir(char * target_dir){
   if (setenv("PWD", target_dir, 1) != 0) {  
     crit("setenv error");
   }
-
 }
 
 // TODO: implement

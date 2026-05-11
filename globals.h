@@ -88,7 +88,7 @@ typedef struct {
   char* chdir;
   confirm confirmtion;
   out_option output_option;
-} CommandArgs;
+} ExtraArgs;
 
 typedef struct {
   char smashkey;
@@ -96,7 +96,7 @@ typedef struct {
   wait_option option;
   animation_option pre_animation;
   animation_option post_animation;
-  CommandArgs cmd_args;
+  ExtraArgs extra_args;
 } Command;
 
 typedef struct {
@@ -104,7 +104,7 @@ typedef struct {
   wait_option option;
   animation_option pre_animation;
   animation_option post_animation;
-  CommandArgs cmd_args;
+  ExtraArgs extra_args;
 } MenuCommand;
 
 typedef enum {

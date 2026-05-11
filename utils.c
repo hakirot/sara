@@ -89,7 +89,7 @@ void __command__(char input){
     RANGER_FLAG=1;
   }
 
-  if(command->option == WAIT || command->option == WAIT_ON_ERR){
+  if(command->option != EXEC){
 
     CACHE = ROW + COL;
     endwin();
@@ -115,21 +115,24 @@ void __command__(char input){
     } else {
 
       int status;
-
-      while(kill(pid, 0) == 0){
-        waitpid(pid, &status, 0);
+      if(command->option != NOWAIT){
+        while(kill(pid, 0) == 0){
+          waitpid(pid, &status, 0);
+        }
       }
 
-      if(command->option == WAIT_ON_ERR && status != 0){
+      if ((command->option == STOP_ON_ERR && status != 0) ||
+          STOP == command->option) {
         printf("Press enter to continue");
         getchar();
         fflush(stdin);
       }
+
       getmaxyx(stdscr, ROW, COL);
       if(CACHE != ROW + COL) return;
     }
 
-  } else if (command->option == EXEC) {
+  } else {
 
     if(command->cmd_args.output_option == NO_OUT){
       int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);

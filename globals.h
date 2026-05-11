@@ -68,8 +68,9 @@ typedef enum {
 // TODO: Consider more options (WAIT_ON_SUCCESS)
 typedef enum {
   WAIT,
-  WAIT_ON_ERR,    // TODO: Some confusion here
   NOWAIT,         // TODO: redirect output to file that displays to screen?
+  STOP,
+  STOP_ON_ERR,
   EXEC,
 } wait_option;
 

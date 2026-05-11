@@ -11,11 +11,13 @@
 #define UTILS_H
 
 #include <wchar.h>
+#include <globals.h>
 
 int  __key__();
 void __command__(char input);
 void __builtin__(char input);
 void __menu__(char input);
+void _ranger(const Command * command);
 void preflight_check();
 void load_command_config();
 void warning(char * err);

@@ -207,16 +207,16 @@ static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session",
 
 
 static const CommandArgs defaults = {
-  NULL,
-  NOCONFIRM,
-  OUT,
+  NULL,        /* OPTIONAL CHDIR                     */
+  NOCONFIRM,   /* OPTIONAL PREEXECUTION CONFIRMATION */
+  OUTS,        /* OPTIONALLY SUPPRESS OUTPUT         */
 };
 
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
 /* TODO: add optional Args: chdir (tasks, rtorrent, walls), confirm (newlook), no_output */
 static const Command commandkeys[] = {
 /*  KEY        COMMAND       WAIT_OPTION     PRE_ANIMATION,        POST ANIMATION   ARGS    */
-  { 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/dls", NOCONFIRM, OUT} },
+  { 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/dls", NOCONFIRM, OUTS} },
   { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,   defaults },

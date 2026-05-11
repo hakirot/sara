@@ -81,8 +81,8 @@ typedef enum {
 } confirm;
 
 typedef enum {
-  NOOUT,
-  OUT,
+  NOOUTS,
+  OUTS,
 } out_option;
 
 typedef struct {

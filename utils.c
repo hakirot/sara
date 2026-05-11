@@ -73,12 +73,13 @@ void __command__(char input){
     }
   }
 
-  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0){
-    crit("rangerrr");
-  }
-
   animate(command->pre_animation);
   endwin();
+
+  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0){
+    _ranger(command);
+    return;
+  }
 
   if(command->option == WAIT || command->option == WAIT_ON_ERR || command->option == WAIT_NO_OUT){
 
@@ -192,6 +193,10 @@ void load_command_config(){
     menukeys_chars[i] = menukeys[i].smashkey;
     global_idx++;
   }
+}
+
+void _ranger(const Command * command){
+
 }
 
 // TODO: PREFLIGHT CHECK

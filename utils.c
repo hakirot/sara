@@ -209,25 +209,35 @@ Command * ranger_command(const Command * command){
   rangercmd->pre_animation  = command->pre_animation;
   rangercmd->post_animation = command->post_animation;
 
-  //rangercmd->cmd            = (void*)malloc(sizeof(char[12][128]));
+  int rows = 0;
+  while ((char**)command->cmd && ((char**)command->cmd)[rows] != NULL) {
+    rows++;
+  }
 
-  //char array[strlen(command->cmd) + 128];
+  int new_rows = rows + 2;
 
-//execvp(((char **)command->cmd)[0], (char **)command->cmd);
-//int size = sizeof( (const char**)command->cmd)/sizeof(((char *)command->cmd)[0]);
+  char** new_cmd = malloc((new_rows + 1) * sizeof(char *));
+  if(!new_cmd) crit("malloc error");
 
- int row_count = 0;
- while ((char**)command->cmd && ((char**)command->cmd)[row_count] != NULL) {
-   row_count++;
- }
+  for (int i = 0; i < rows; i++) {
+    new_cmd[i] = strdup(((char**)command->cmd)[i]);
+  }
 
- char err[128];
-//sprintf(err, "%s", ((char **)command->cmd)[1]);
- sprintf(err, "%d", row_count);
- crit(err);
+  ensure_cache_dir();
+  char cache_file[256] = {'\0'};
+  pid_t cur_pid = getpid();
+  char * env_home = getenv("HOME");
+  sprintf(cache_file, "%s%s%d", env_home, "/.cache/sara/sara", cur_pid);
 
+  const char *extras[] = { "--choosedir", cache_file, NULL};
+  for (int i = 0; i < 2; i++) {
+    new_cmd[rows + i] = strdup(extras[i]); // segfault
+  }
 
- return rangercmd;
+  new_cmd[new_rows] = NULL;
+  rangercmd->cmd = new_cmd;
+
+  return rangercmd;
 }
 
 // TODO: PREFLIGHT CHECK

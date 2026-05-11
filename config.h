@@ -217,22 +217,22 @@ static const CommandArgs defaults = {
 /* TODO: add optional Args: chdir (tasks, rtorrent, walls), confirm (newlook), no_output */
 static const Command commandkeys[] = {
 /*  KEY        COMMAND       WAIT_OPTION     PRE_ANIMATION,        POST ANIMATION   ARGS    */
-  { 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
-  { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
+//{ 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
+  { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
-  { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
-  { 't',         t_cmd,             WAIT,      glitch_full,                  neon,   defaults },
-  { 'P',         P_cmd,      WAIT_NO_OUT,             none,                  none,   defaults },
-//{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,   defaults },
-  { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,   defaults },
-  { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
-  { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,   defaults },
-  { 'F',         F_cmd,             EXEC,             none,                  neon,   defaults },
-  { 'y',         y_cmd,      WAIT_ON_ERR,             none,                  neon,   defaults },
-  { 'm',         m_cmd,      WAIT_ON_ERR,             none,    shutter_slide_neon,   defaults },
-  { 'M',         M_cmd,             WAIT,             none,            pixel_fill,   defaults },
-  { 'Q',         Q_cmd,             EXEC,             none,                  none,   defaults },
-  { 'X',         X_cmd,      EXEC_NO_OUT,             none,                  none,   defaults },
+  { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
+  { 't',         t_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
+  { 'P',         P_cmd,             WAIT,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
+//{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
+  { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
+  { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
+  { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
+  { 'F',         F_cmd,             EXEC,             none,                  neon,                             defaults },
+  { 'y',         y_cmd,      WAIT_ON_ERR,             none,                  neon,                             defaults },
+  { 'm',         m_cmd,      WAIT_ON_ERR,             none,    shutter_slide_neon,                             defaults },
+  { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
+  { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
+  { 'X',         X_cmd,             EXEC,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
 };
 
 

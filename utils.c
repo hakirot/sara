@@ -83,14 +83,13 @@ void __command__(char input){
   endwin();
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
-    command->option != EXEC &&
-    command->option != EXEC_NO_OUT)
+    command->option != EXEC)
   {
     command = ranger_command(command);
     RANGER_FLAG=1;
   }
 
-  if(command->option == WAIT || command->option == WAIT_ON_ERR || command->option == WAIT_NO_OUT){
+  if(command->option == WAIT || command->option == WAIT_ON_ERR){
 
     CACHE = ROW + COL;
     endwin();
@@ -130,7 +129,7 @@ void __command__(char input){
       if(CACHE != ROW + COL) return;
     }
 
-  } else if (command->option == EXEC || command->option == EXEC_NO_OUT) {
+  } else if (command->option == EXEC) {
 
     if(command->cmd_args.output_option == NO_OUT){
       int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);

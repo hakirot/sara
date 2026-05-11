@@ -75,12 +75,29 @@ typedef enum {
   EXEC_NO_OUT,
 } wait_option;
 
+typedef enum {
+  CONFIRM,
+  NOCONFIRM,
+} confirm;
+
+typedef enum {
+  NOOUT,
+  OUT,
+} out_option;
+
+typedef struct {
+  char* chdir;
+  confirm confirmtion;
+  out_option output_options;
+} CommandArgs;
+
 typedef struct {
   char smashkey;
   const void * cmd;
   wait_option option;
   animation_option pre_animation;
   animation_option post_animation;
+  CommandArgs cmd_args;
 } Command;
 
 typedef struct {

@@ -80,6 +80,7 @@ void __command__(char input){
   }
 
   animate(command->pre_animation);
+  if(command->cmd_args.confirmtion == CONFIRM && _confirm() == 1) return;
   endwin();
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
@@ -296,6 +297,11 @@ void _chdir(char * target_dir){
     crit("setenv error");
   }
 
+}
+
+// TODO: implement
+int _confirm(){
+  return 0;
 }
 
 // TODO: PREFLIGHT CHECK

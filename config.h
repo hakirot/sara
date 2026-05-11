@@ -187,7 +187,6 @@ static const int GLITCH_FRAME_TIME = 3500;
 static const float HOLD_CHAR_TIME = 0.00001;
 
 /* CUSTOM COMMANDS */
-
 static const char *test_cmd[]         = { "mkdir", "TEST_DIR_PLS_DELETE",        NULL};
 static const char *r_cmd[]            = { "ranger",                              NULL};
 static const char *R_cmd[]            = { "rtorrent",                            NULL};
@@ -213,6 +212,7 @@ static const CommandArgs defaults = {
   OUTS,        /* Optionally suppress command output with NO_OUT */
 };
 
+/* CUSTOM COMMAND CONFIG */
 /* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
 /* TODO: add optional Args: chdir (tasks, rtorrent, walls), confirm (newlook), no_output */
 static const Command commandkeys[] = {
@@ -229,7 +229,7 @@ static const Command commandkeys[] = {
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'F',         F_cmd,             EXEC,             none,                  neon,                             defaults },
   { 'y',         y_cmd,      STOP_ON_ERR,             none,                  neon,                             defaults },
-  { 'm',         m_cmd,             STOP,             none,    shutter_slide_neon,                             defaults },
+  { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
   { 'X',         X_cmd,             EXEC,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },

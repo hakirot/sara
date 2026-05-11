@@ -76,8 +76,11 @@ void __command__(char input){
   animate(command->pre_animation);
   endwin();
 
-  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0){
-    _ranger(command);
+  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
+    command->option != EXEC &&
+    command->option != EXEC_NO_OUT)
+  {
+    command = ranger_command(command);
     return;
   }
 
@@ -195,8 +198,36 @@ void load_command_config(){
   }
 }
 
-void _ranger(const Command * command){
+Command * ranger_command(const Command * command){
 
+  Command * rangercmd       = (Command*)malloc(sizeof(Command));
+  memset(rangercmd, 0, sizeof(Command));
+
+  rangercmd->smashkey       = command->smashkey;
+  rangercmd->cmd_args       = command->cmd_args;
+  rangercmd->option         = command->option;
+  rangercmd->pre_animation  = command->pre_animation;
+  rangercmd->post_animation = command->post_animation;
+
+  //rangercmd->cmd            = (void*)malloc(sizeof(char[12][128]));
+
+  //char array[strlen(command->cmd) + 128];
+
+//execvp(((char **)command->cmd)[0], (char **)command->cmd);
+//int size = sizeof( (const char**)command->cmd)/sizeof(((char *)command->cmd)[0]);
+
+ int row_count = 0;
+ while ((char**)command->cmd && ((char**)command->cmd)[row_count] != NULL) {
+   row_count++;
+ }
+
+ char err[128];
+//sprintf(err, "%s", ((char **)command->cmd)[1]);
+ sprintf(err, "%d", row_count);
+ crit(err);
+
+
+ return rangercmd;
 }
 
 // TODO: PREFLIGHT CHECK

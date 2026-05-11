@@ -70,7 +70,8 @@ typedef enum {
   WAIT,
   WAIT_ON_ERR,    // TODO: Some confusion here
   WAIT_NO_OUT,
-  NOWAIT,
+  NOWAIT,         // TODO: redirect output to file that displays to screen?
+  NOWAIT_NOOUT,
   EXEC,
   EXEC_NO_OUT,
 } wait_option;

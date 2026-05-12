@@ -250,10 +250,12 @@ static const Builtin builtins[] = {
 /* MENUS CONFIGURATION */
 
 static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
-static const unsigned short menu_c            = magenta;
+static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
-static const unsigned short menu_x            = 44;
-static const unsigned short menu_y            = 5;
+static const unsigned short menu_x            = 44;       // Should be > 2
+static const unsigned short menu_y            = 7;        // Should be > 2
+static const unsigned short menu_offset_y     = 0;
+static const unsigned short menu_offset_x     = 0;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };

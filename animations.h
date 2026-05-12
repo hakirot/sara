@@ -12,5 +12,6 @@
 #define ANIMATIONS_H
 
 void animate(animation_option option);
+void _print_menu_borders();
 
 #endif

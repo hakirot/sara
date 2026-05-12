@@ -6,7 +6,6 @@
 --  ╚██████╔╝   ██║   ██║███████╗███████║  --
 --   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝.h--
                                                */
-
 #include "utils.h"
 #include "globals.h"
 #include "config.h"
@@ -15,7 +14,6 @@
 #include <wchar.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
 #include <locale.h>
 #include <errno.h>
 #include <unistd.h>
@@ -176,7 +174,7 @@ void __builtin__(char input){
 }
 
 void __menu__(char input){
-
+  _print_menu_borders();
 }
 
 void load_command_config(){

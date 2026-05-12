@@ -82,16 +82,21 @@ void _print_menu_borders(){
   }
   attroff(COLOR_PAIR(menu_c));
 
-  wc = L' ';
+  _clear_menu();
+
+  refresh();
+  getchar();
+}
+
+void _clear_menu(){
+  wchar_t wc = L' ';
+  cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < menu_y - 1; i++){
     for(int j = 1; j < menu_x - 1; j++){
       mvadd_wch(ROW/2 - menu_y/2 + i, COL/2 - menu_x/2 + j, &cchar);
     }
   }
-
-  refresh();
-  getchar();
 }
 
 // TODO: New test glyphs reveal undefined behavior with the header

@@ -38,7 +38,7 @@ int __key__(){
       } else if(strchr(builtins_chars, input)){
         __builtin__(input);
       } else if(strchr(menukeys_chars, input)){
-        __menu__(input);
+        __topmenu__(input);
       } else {
         crit("Something broke :[");
       }
@@ -176,7 +176,7 @@ void __builtin__(char input){
 
 }
 
-void __menu__(char input){
+void __topmenu__(char input){
 
   const MenuKey* menukey = NULL;
   for(int i = 0; i < menukeys_len; i++){
@@ -187,6 +187,11 @@ void __menu__(char input){
   }
 
   _print_menu_borders();
+  __menu__(menukey->submenu);
+}
+
+void __menu__(const Menu * menu){
+
 }
 
 void load_command_config(){

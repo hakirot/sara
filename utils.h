@@ -16,7 +16,8 @@
 int  __key__();
 void __command__(char input);
 void __builtin__(char input);
-void __menu__(char input);
+void __topmenu__(char input);
+void __menu__(const Menu * menu);
 Command * ranger_command(const Command * command);
 void _free_range(const Command * command);
 void _chdir(char * target_dir);

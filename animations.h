@@ -13,5 +13,6 @@
 
 void animate(animation_option option);
 void _print_menu_borders();
+void _clear_menu();
 
 #endif

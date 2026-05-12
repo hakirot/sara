@@ -128,8 +128,8 @@ typedef struct {
   char * name;
   ItemType type;
   union {
-    MenuCommand cmd;
-    const struct Menu * next;
+    const Command command;
+    const void * submenu;
   } next;
 } Menu;
 

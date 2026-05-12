@@ -259,58 +259,58 @@ static const unsigned short menu_offset_x     = 0;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
-static const MenuCommand connect_xm5 = { connect_xm5_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command connect_xm5 = { 0, connect_xm5_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const char *connect_acoustic_cmd[] = { "bluetoothctl", "connect", "FC:58:FA:9B:D7:3D", NULL };
-static const MenuCommand connect_acoustic = { connect_acoustic_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command connect_acoustic = { 0, connect_acoustic_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const char *connect_onforu_cmd[] = { "bluetoothctl", "connect", "31:51:27:F9:1D:62", NULL };
-static const MenuCommand connect_onforu = { connect_onforu_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command connect_onforu = { 0, connect_onforu_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const char *disconnect_xm5_cmd[] = { "bluetoothctl", "disconnect", "AC:80:0A:19:89:A8", NULL };
-static const MenuCommand disconnect_xm5 = { disconnect_xm5_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command disconnect_xm5 = { 0, disconnect_xm5_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const char *disconnect_acoustic_cmd[] = { "bluetoothctl", "disconnect", "FC:58:FA:9B:D7:3D", NULL };
-static const MenuCommand disconnect_acoustic = { disconnect_acoustic_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command disconnect_acoustic = { 0, disconnect_acoustic_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const char *disconnect_onforu_cmd[] = { "bluetoothctl", "disconnect", "31:51:27:F9:1D:62", NULL };
-static const MenuCommand disconnect_onforu = { disconnect_onforu_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command disconnect_onforu = { 0, disconnect_onforu_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const char *fake_backlight_cmd[] = { "mkdir", "FAKE_BACKLIGHT_CMD", NULL };
-static const MenuCommand fake_backlight = { fake_backlight_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
+static const Command fake_backlight = { 0, fake_backlight_cmd, STOP_ON_ERR, none, shutter_slide, defaults };
 
 static const Menu connect_devices[] = {
-  { "XM5",      COMMAND, connect_xm5           },
-  { "ACOUSTIC", COMMAND, connect_acoustic      },
-  { "ONFORU",   COMMAND, connect_onforu        },
+  { "XM5",      COMMAND, { .command = connect_xm5         } },
+  { "ACOUSTIC", COMMAND, { .command = connect_acoustic    } },
+  { "ONFORU",   COMMAND, { .command = connect_onforu      } },
 };
 
 static const Menu disconnect_devices[] = {
-  { "XM5",      COMMAND, disconnect_xm5        },
-  { "ACOUSTIC", COMMAND, disconnect_acoustic   },
-  { "ONFORU",   COMMAND, disconnect_onforu     },
+  { "XM5",      COMMAND, { .command = disconnect_xm5      } },
+  { "ACOUSTIC", COMMAND, { .command = disconnect_acoustic } },
+  { "ONFORU",   COMMAND, { .command = disconnect_onforu   } },
 };
 
 static const Menu connect_options[] = {
-  { "connect",    SUBMENU, connect_devices     },
-  { "disconnect", SUBMENU, disconnect_devices  },
+  { "connect",    SUBMENU, { .submenu = connect_devices    }  },
+  { "disconnect", SUBMENU, { .submenu = disconnect_devices } },
 };
 
 static const Menu b_menu[] = {
-  { "bluetooth", SUBMENU, connect_options      },
-  { "backlight", COMMAND, fake_backlight       },
+  { "bluetooth", SUBMENU, { .submenu = connect_options } },
+  { "backlight", COMMAND, { .command = fake_backlight  } },
 };
 
 /* MENU S: SHUTDOWN COMMANDS */
 static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
-static const MenuCommand shutdown = { shutdown_cmd, EXEC, none, none, defaults };
+static const Command shutdown = { 0, shutdown_cmd, EXEC, none, none, defaults };
 
 static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
-static const MenuCommand reboot = { reboot_cmd, EXEC, none, none, defaults  };
+static const Command reboot = { 0, reboot_cmd, EXEC, none, none, defaults  };
 
 static const Menu S_menu[] = {
-  { "SHUTDOWN", COMMAND, shutdown     },
-  { "REBOOT",   COMMAND, reboot       },
+  { "SHUTDOWN", COMMAND, {.command = shutdown } },
+  { "REBOOT",   COMMAND, {.command = reboot   }  },
 };
 
 /* menukey assignments */

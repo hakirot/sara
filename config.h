@@ -309,8 +309,8 @@ static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
 static const Command reboot = { 0, reboot_cmd, EXEC, none, none, defaults  };
 
 static const Menu S_menu[] = {
-  { "SHUTDOWN", COMMAND, {.command = shutdown } },
-  { "REBOOT",   COMMAND, {.command = reboot   }  },
+  { "SHUTDOWN", COMMAND, { .command = shutdown } },
+  { "REBOOT",   COMMAND, { .command = reboot   }  },
 };
 
 /* menukey assignments */

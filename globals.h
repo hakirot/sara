@@ -138,10 +138,6 @@ typedef struct {
   const void * menu;
 } MenuKey;
 
-// TODO: Delete me
-extern const int BIG_GLYPH_HEIGHT;
-extern const int BIG_GLYPH_LENGTH;
-
 extern int BG_GLYPH_HEIGHT;
 extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;

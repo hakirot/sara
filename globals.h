@@ -98,20 +98,13 @@ typedef struct {
   ExtraArgs extra_args;
 } Command;
 
-typedef struct {
-  const void * cmd;
-  wait_option option;
-  animation_option pre_animation;
-  animation_option post_animation;
-  ExtraArgs extra_args;
-} MenuCommand;
-
 typedef enum {
   pshd,
   quit,
   randomize_colors,
   invert_colors,
   rave,
+  check,         // TODO: implement show all config (run preflight_check)
 } internal;
 
 typedef enum {
@@ -124,18 +117,20 @@ typedef struct {
   internal option;
 } Builtin;
 
-typedef struct {
+typedef struct Menu Menu;
+
+struct Menu{
   char * name;
   ItemType type;
   union {
     const Command command;
-    const void * submenu;
+    const Menu * submenu;
   } next;
-} Menu;
+};
 
 typedef struct {
   char smashkey;
-  const void * menu;
+  const Menu * submenu;
 } MenuKey;
 
 extern int BG_GLYPH_HEIGHT;

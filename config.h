@@ -244,6 +244,7 @@ static const Builtin builtins[] = {
   { 'H', rave },
   { 'p', pshd },
   { 'q', quit },
+  { 'D', check },
 };
 
 

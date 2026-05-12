@@ -170,10 +170,22 @@ void __builtin__(char input){
     _invert_colors();
   } else if (selection == randomize_colors){
     _randomize_colors();
+  } else if (selection == check){
+    _check();
   }
+
 }
 
 void __menu__(char input){
+
+  const MenuKey* menukey = NULL;
+  for(int i = 0; i < menukeys_len; i++){
+    if(menukeys[i].smashkey == input){
+      menukey = &menukeys[i];
+      break;
+    }
+  }
+
   _print_menu_borders();
 }
 
@@ -531,6 +543,9 @@ void _randomize_colors(){
     FOREGROUND = rand() % 7 + 2;
   }
   animate(none);
+}
+void _check(){
+  return;
 }
 
 void _invert_colors(){

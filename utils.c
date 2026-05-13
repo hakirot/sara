@@ -97,8 +97,15 @@ void __command__(char input){
   refresh();
   getmaxyx(stdscr, ROW, COL);
   if(CACHE != ROW + COL) {
+//  char err[128];
+//  sprintf(err, "%s %d %d %d", "resize", ROW, COL, CACHE );
+//  crit(err);
     return;
   }
+
+//char err[128];
+//sprintf(err, "%s %d %d %d", "no resize", ROW, COL, CACHE );
+//crit(err);
 
   animate(command->post_animation);
 }

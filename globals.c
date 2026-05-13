@@ -14,9 +14,9 @@
 int FOREGROUND = fg_c;
 int BACKGROUND = bg_c;
 
-int ROW;
-int COL;
-int CACHE;
+int ROW = 0;
+int COL = 0;
+int CACHE = 10;
 
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;

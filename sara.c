@@ -81,18 +81,20 @@ int main(int argc, char* argv[]){
     }
   }
 
-//double time_idle;
-//WAIT_START = clock();
-
   special_chars();
   load_command_config();
   set_glyph_dimensions(); // TODO: get away from "*glyph*"
   launch_window();
   if(run_preflight_check) preflight_check();
 
-  CACHE = check_size();
+  getmaxyx(stdscr, ROW, COL);
+  CACHE = ROW + COL;
+  WIN_SIZE = BIG;
+
+  animate(start_animation);
+
   LAST_INPUT_TIME = clock();
-  int should_print = false;
+  int should_print = true;
   while(1){
 
     int result = __key__();

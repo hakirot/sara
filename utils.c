@@ -114,6 +114,7 @@ void __command__(char input){
 int _get_confirm(const Command * command){
   int selection = false;
   _print_confirm_window(((char **)command->cmd)[0]);
+  _print_confirm_selection(selection);
   while(1){
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) break;
@@ -121,7 +122,11 @@ int _get_confirm(const Command * command){
     int input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 103 && input < 109) {
       if (input == 'j' || input == 'k' || input == 'h' || input == 'l'){
-        selection == true ? selection = false : (selection = true);
+        if(selection == true){
+          selection = false;
+        } else {
+          selection = true;
+        }
       }
     } else if (input == 'q' || input == 27){
       return false;
@@ -129,7 +134,7 @@ int _get_confirm(const Command * command){
       return selection;
     }
 
-
+    _print_confirm_selection(selection);
     usleep(2000);
   }
   return false;

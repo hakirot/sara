@@ -149,6 +149,35 @@ void _print_confirm_window(char * header){
   refresh();
 }
 
+void _print_confirm_selection(int selection){
+
+  char * yes = "Yes";
+  char * no = "No";
+
+  if(selection == true){
+    attron(COLOR_PAIR(menu_c + 8));
+  } else {
+    attron(COLOR_PAIR(menu_c));
+  }
+
+  for(int i = 0; i < 3; i++){
+    mvaddch(ROW/2, (COL/2 - COL/4) + i, yes[i]);
+  }
+
+  if(selection == false){
+    attron(COLOR_PAIR(menu_c + 8));
+  } else {
+    attron(COLOR_PAIR(menu_c));
+  }
+
+  for(int i = 0; i < 2; i++){
+    mvaddch(ROW/2, (COL/2 + COL/4) + i, no[i]);
+  }
+
+  attroff(COLOR_PAIR(menu_c));
+  attroff(COLOR_PAIR(menu_c + 8));
+}
+
 // TODO: implement offsets
 void _clear_menu(){
   wchar_t wc = L' ';

@@ -253,8 +253,8 @@ static const Builtin builtins[] = {
 static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = use_bold_color_for_fg;
-static const unsigned short menu_x            = 44;       // Should be > 2
-static const unsigned short menu_y            = 7;        // Should be > 2
+static const unsigned short menu_x            = 44;       // Must be > 2
+static const unsigned short menu_y            = 7;        // Must be > 2
 static const unsigned short menu_offset_y     = 0;
 static const unsigned short menu_offset_x     = 0;
 

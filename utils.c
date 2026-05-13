@@ -206,13 +206,40 @@ void _menuselect(const Menu * menu){
   }
 
   int selection = 0;
+  int idx = menu_y - 2;
   while(1){
-    _print_menu_selection(menu, selection);
+
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) break;
+
+    int input = getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
+      if (input == 'j'){
+        selection = (selection + 1) % len;
+      } else {
+        selection = (selection + (len - 1)) % len;
+      }
+    } else if (input == 'q' || input == 27){
+      return;
+    } else if (input == '\n'){
+      // execute
+    }
+
+    idx = _print_menu_selection(menu, selection, len);
+    usleep(2000);
   }
 }
 
-int _print_menu_selection(const Menu * menu, int selection){
-
+int _print_menu_selection(const Menu * menu, int selection, int len){
+  _clear_menu();
+  // TODO: implement offsets
+  for(int i = 0; i < menu_y - 2; i++){
+    for(int j = 0; j < (int)strlen(menu->name); j++){
+      mvaddch(ROW/2 - menu_y/2 + 1 + i, COL/2 - menu_x/2 + 1 + j, menu[i].name[j]);
+      // TODO: account for small windows
+    }
+    if(i == len - 1) break;
+  }
 }
 
 void load_command_config(){

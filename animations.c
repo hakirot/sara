@@ -88,6 +88,7 @@ void _print_menu_borders(){
   refresh();
 }
 
+// TODO: implement offsets
 void _clear_menu(){
   wchar_t wc = L' ';
   cchar_t cchar;

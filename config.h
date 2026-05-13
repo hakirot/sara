@@ -303,6 +303,11 @@ static const Menu connect_options[] = {
 static const Menu b_menu[] = {
   { "bluetooth", SUBMENU, { .submenu = connect_options } },
   { "backlight", COMMAND, { .command = fake_backlight  } },
+  { "boogers", COMMAND, { .command = fake_backlight  } },
+  { "bananza", COMMAND, { .command = fake_backlight  } },
+  { "bonified", COMMAND, { .command = fake_backlight  } },
+  { "berzerk", COMMAND, { .command = fake_backlight  } },
+  { "boof", COMMAND, { .command = fake_backlight  } },
   END_OF_MENU
 };
 

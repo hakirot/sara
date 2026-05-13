@@ -188,7 +188,6 @@ void __topmenu__(char input){
 
   _print_menu_borders();
   _menuselect(menukey->submenu);
-  crit("crrrit");
 }
 
 void _menuselect(const Menu * menu){
@@ -225,20 +224,35 @@ void _menuselect(const Menu * menu){
       // execute
     }
 
-    idx = _print_menu_selection(menu, selection, len);
+    _print_menu_selection(menu, selection, len);
     usleep(2000);
   }
 }
 
-int _print_menu_selection(const Menu * menu, int selection, int len){
+void _print_menu_selection(const Menu * menu, int selection, int len){
   _clear_menu();
+  int window_size = menu_y - 2;
+  if(len < window_size) window_size = len;
+  int i = 0;
+  int k = 0;
+  if(selection > len - window_size) i = len - window_size;
+  else i = selection;
+
   // TODO: implement offsets
-  for(int i = 0; i < menu_y - 2; i++){
-    for(int j = 0; j < (int)strlen(menu->name); j++){
-      mvaddch(ROW/2 - menu_y/2 + 1 + i, COL/2 - menu_x/2 + 1 + j, menu[i].name[j]);
+  for(i; k < window_size; i++){
+
+    if(i == selection) attron(COLOR_PAIR(menu_c + 8));
+    else attron(COLOR_PAIR(menu_c));
+
+    for(int j = 0; j < (int)strlen(menu[i].name); j++){
+      mvaddch(ROW/2 - menu_y/2 + 1 + k, COL/2 - menu_x/2 + 1 + j, menu[i].name[j]);
       // TODO: account for small windows
     }
+
+    attroff(COLOR_PAIR(menu_c + 8));
+    attroff(COLOR_PAIR(menu_c));
     if(i == len - 1) break;
+    k++;
   }
 }
 

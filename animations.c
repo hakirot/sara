@@ -676,16 +676,16 @@ void _hd(){
 
     if((WIN_SIZE == BIG    && highlight_hd_in_full_mode)  ||
        (WIN_SIZE == NORMAL && highlight_hd_in_small_mode)) {
-      if(use_bold_color_for_fg){
+      if(use_bold_color_for_hd){
         attron(A_STANDOUT);
         attron(A_BOLD);
-        attron(COLOR_PAIR(FOREGROUND + 16)); // .. sometimes I even amaze myself
+        attron(COLOR_PAIR(HEADER + 16)); // .. sometimes I even amaze myself
       } else {
-        attron(COLOR_PAIR(FOREGROUND + 8));
+        attron(COLOR_PAIR(HEADER + 8));
       }
     } else {
-      if(use_bold_color_for_fg) attron(A_BOLD);
-      attron(COLOR_PAIR(FOREGROUND));
+      if(use_bold_color_for_hd) attron(A_BOLD);
+      attron(COLOR_PAIR(HEADER));
     }
 
     if(WIN_SIZE == BIG){
@@ -697,9 +697,9 @@ void _hd(){
     refresh();
     attroff(A_BOLD);
     attroff(A_STANDOUT);
-    attroff(COLOR_PAIR(FOREGROUND));
-    attroff(COLOR_PAIR(FOREGROUND + 8));
-    attroff(COLOR_PAIR(FOREGROUND + 16));
+    attroff(COLOR_PAIR(HEADER));
+    attroff(COLOR_PAIR(HEADER + 8));
+    attroff(COLOR_PAIR(HEADER + 16));
   }
 }
 

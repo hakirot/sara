@@ -147,6 +147,7 @@ extern int IM_SET;
 
 extern int FOREGROUND;
 extern int BACKGROUND;
+extern int HEADER;
 extern int HOLOGRAPHIC;
 
 extern int ROW;

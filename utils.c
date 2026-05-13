@@ -620,6 +620,7 @@ void _toggle_rave(){
 void _randomize_colors(){
   BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
   FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
+  HEADER = rand() % 7 + 2;    // RNG 2 and 8
   while(FOREGROUND == BACKGROUND){
     FOREGROUND = rand() % 7 + 2;
   }
@@ -632,7 +633,8 @@ void _check(){
 void _invert_colors(){
   int temp = BACKGROUND;
   BACKGROUND = FOREGROUND;
-  FOREGROUND = temp;
+  FOREGROUND = HEADER;
+  HEADER =  temp;
   animate(none);
 }
 

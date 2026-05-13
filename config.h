@@ -18,22 +18,21 @@ static const animation_option start_animation = neon;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = red;
-static const int bg_c = black;
+static const int fg_c = red;     /* fg color */
+static const int bg_c = black;   /* bg color */
+static const int hd_c = red;     /* hd color */
 
 static const int use_bold_color_for_bg = false;
 static const int use_bold_color_for_fg = false;
+static const int use_bold_color_for_hd = false;
 
 /* CUSTOM GLYPHS */ 
 
     /* RESTRICTIONS
 
-       Glyphs must contain distinct characters
-       from other glyphs                        TODO is this even true anymore
-                                                     (I want it to not be true)
        Ensure strings in character array are equal length 
 
-       im[], if defined, must have identical dimensions to fg[]                       */
+       im[], if defined, must have identical dimensions to fg[]   */
 
 
 /* background glyph */
@@ -129,7 +128,7 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 
 /* POSITION */
 /* Reposition glyphs here
-   - By default, all glyphs are printed in center of screen
+   - Glyphs are printed centered to screen
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
@@ -149,10 +148,6 @@ static const int hd_offset_x_min = -9;
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = 1;
 static const int highlight_hd_in_small_mode = 0;
-
-// TODO implement (conflicts with highlight options) (maybe just set a color) (or make this a toggle)
-static const int use_fg_c_for_hd_as_bg = false;  // ensure both are not true
-static const int use_bg_c_for_hd_as_bg = true;   // ensure both are not true
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true; // TODO ensure this value is greater than tiny mode

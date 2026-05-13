@@ -11,7 +11,7 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-static const int run_preflight_check = true;
+static const int run_preflight_check = false;
 static const animation_option start_animation = neon;
 
 /* Toggle if you wrap sara in chdir command */
@@ -302,7 +302,6 @@ static const Menu connect_options[] = {
 
 static const Menu b_menu[] = {
   { "bluetooth", SUBMENU, { .submenu = connect_options } },
-  { "backlight", COMMAND, { .command = fake_backlight  } },
   END_OF_MENU
 };
 

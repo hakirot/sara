@@ -92,13 +92,18 @@ void __command__(char input){
 
   if(RANGER_FLAG) _free_range(command);
 
+  refresh();
+  getmaxyx(stdscr, ROW, COL);
+  if(CACHE != ROW + COL) {
+    return;
+  }
+
   animate(command->post_animation);
 }
 
 void __execute__(const Command * command){
   if(command->option != EXEC){
 
-    CACHE = ROW + COL;
     endwin();
     clear();
     pid_t pid = fork();
@@ -134,9 +139,6 @@ void __execute__(const Command * command){
         getchar();
         fflush(stdin);
       }
-
-      getmaxyx(stdscr, ROW, COL);
-      if(CACHE != ROW + COL) return;
     }
 
   } else {
@@ -206,7 +208,6 @@ void _menuselect(const Menu * menu){
   }
 
   int selection = 0;
-  int idx = menu_y - 2;
   while(1){
 
     getmaxyx(stdscr, ROW, COL);

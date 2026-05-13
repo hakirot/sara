@@ -65,11 +65,6 @@ int __key__(){
 
 void __command__(char input){
 
-  if(KEY_LOCK == 1) return;
-  KEY_LOCK = 1;
-
-  int RANGER_FLAG=0;
-
   const Command* command = NULL;
   for(int i = 0; i < commandkeys_len; i++){
     if(commandkeys[i].smashkey == input){
@@ -77,6 +72,14 @@ void __command__(char input){
       break;
     }
   }
+
+  if(command->extra_args.confirmtion == CONFIRM &&
+                           _get_confirm(command) != true) return;
+
+  if(KEY_LOCK == 1) return;
+  KEY_LOCK = 1;
+
+  int RANGER_FLAG=0;
 
   if(command->extra_args.chdir != NULL){
     _chdir(command->extra_args.chdir);
@@ -106,6 +109,30 @@ void __command__(char input){
   }
 
   animate(command->post_animation);
+}
+
+int _get_confirm(const Command * command){
+  int selection = false;
+  _print_confirm_window(((char **)command->cmd)[0]);
+  while(1){
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL) break;
+
+    int input = getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 103 && input < 109) {
+      if (input == 'j' || input == 'k' || input == 'h' || input == 'l'){
+        selection == true ? selection = false : (selection = true);
+      }
+    } else if (input == 'q' || input == 27){
+      return false;
+    } else if (input == '\n'){
+      return selection;
+    }
+
+
+    usleep(2000);
+  }
+  return false;
 }
 
 void __execute__(const Command * command){
@@ -437,11 +464,11 @@ void preflight_check() {
 
   // assert all command menus terminate with commands
   // assert all commands are installed
-  // assert use_fg_c_for_hd_as_bg and use_bg_c_for_hd_as_bg are both not true
   // assert --choosedir flag not present in any ranger command
   // assert any chdir arg directories exist
   // assert MenuBorder length is 6
   // assert menu_y > 1
+  // assert resize_x/y values are larger than tiny_mode_x/y
 }
 
 // TODO: implement

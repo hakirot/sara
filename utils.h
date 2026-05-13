@@ -20,6 +20,7 @@ void __builtin__(char input);
 void __topmenu__(char input);
 void _menuselect(const Menu * menu);
 void _print_menu_selection(const Menu * menu, int selection, int len);
+int _get_confirm(const Command * command);
 Command * ranger_command(const Command * command);
 void _free_range(const Command * command);
 void _chdir(char * target_dir);

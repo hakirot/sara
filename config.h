@@ -18,13 +18,17 @@ static const animation_option start_animation = neon;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = red;     /* fg color */
-static const int bg_c = black;   /* bg color */
-static const int hd_c = red;     /* hd color */
+static const int fg_c = red;         /* fg color */
+static const int bg_c = yellow;      /* bg color */
+static const int hd_c = magenta;     /* hd color */
 
-static const int use_bold_color_for_bg = false;
-static const int use_bold_color_for_fg = false;
-static const int use_bold_color_for_hd = false;
+static const int use_bold_color_for_bg = true;
+static const int use_bold_color_for_fg = true;
+static const int use_bold_color_for_hd = true;
+
+/* header highlight options*/
+static const int highlight_hd_in_full_mode  = 0;
+static const int highlight_hd_in_small_mode = 0;
 
 /* CUSTOM GLYPHS */ 
 
@@ -58,39 +62,39 @@ static const int use_bold_color_for_hd = false;
 //  "   .`                                 `/    ",
 //};
 
-static const char * bg[] = {
-  " ████    ████    ████          ",
-  "  ████    ████    ████         ",
-  "    ███     ███     ███        ",
-  "     ███     ███     ███       ",
-  "     █ ██    █ ██    █ ██      ",
-  "        ██      ██      ██     ",
-  "         ██      ██      ██    ",
-  "          ██      ██      ██   ",
-  "           ██      ██      ██  ",
-  "            █       █       █  ",
-  "             █       █       █ ",
-};
-
 //static const char * bg[] = {
-//  "                                  *                   *  ",
-//  "                         ✦                     ,         ",
-//  "                                ,      *                 ",
-//  "                                                        ✦",
-//  "    .             ✦           ,           *    .         ",
-//  "        .             ✦             ✦                    ",
-//  "   *           .                          ✦              ",
-//  "           .   ✦        ,         *                      ",
-//  "          ,                                              ",
-//  "        .                                                ",
-//  "  ✦        ,              .                              ",
-//  "   *           .                                         ",
-//  "         .             .                                 ",
-//  "˚          ,      .                                      ",
-//  "          .                                              ",
-//  "   *            ✦                                        ",
-//  "        .                                                ",
+//  " ████    ████    ████          ",
+//  "  ████    ████    ████         ",
+//  "    ███     ███     ███        ",
+//  "     ███     ███     ███       ",
+//  "     █ ██    █ ██    █ ██      ",
+//  "        ██      ██      ██     ",
+//  "         ██      ██      ██    ",
+//  "          ██      ██      ██   ",
+//  "           ██      ██      ██  ",
+//  "            █       █       █  ",
+//  "             █       █       █ ",
 //};
+
+static const char * bg[] = {
+  "                                  *                   *  ",
+  "                         ✦                     ,         ",
+  "                                ,      *                 ",
+  "                                                        ✦",
+  "    .             ✦           ,           *    .         ",
+  "        .             ✦             ✦                    ",
+  "   *           .                          ✦              ",
+  "           .   ✦        ,         *                      ",
+  "          ,                                              ",
+  "        .                                                ",
+  "  ✦        ,              .                              ",
+  "   *           .                                         ",
+  "         .             .                                 ",
+  "˚          ,      .                                      ",
+  "          .                                              ",
+  "   *            ✦                                        ",
+  "        .                                                ",
+};
 
 
 /* foreground glyph */
@@ -145,12 +149,8 @@ static const int hd_offset_x = -9;
 static const int hd_offset_y_min = 0;
 static const int hd_offset_x_min = -9;
 
-/* header highlight options*/
-static const int highlight_hd_in_full_mode  = 1;
-static const int highlight_hd_in_small_mode = 0;
-
 /* Set dynamic_resize to skip printing bg at defined constraints */
-static const int dynamic_resize = true; // TODO ensure this value is greater than tiny mode
+static const int dynamic_resize = true; // TODO ensure these value is greater than tiny mode
 static const int resize_x = 44;
 static const int resize_y = 7;
 
@@ -203,7 +203,7 @@ static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session",
 
 // TODO: implement
 static const ExtraArgs defaults = {
-  NULL,        /* Optionally change directory before command execution */
+  NULL,        /* Optionally change directory before executing command */
   NOCONFIRM,   /* Optionally confirm command with: CONFIRM             */
   OUTS,        /* Optionally suppress command output with NO_OUT       */
 };
@@ -224,7 +224,7 @@ static const Command commandkeys[] = {
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'F',         F_cmd,             EXEC,             none,                  neon,                             defaults },
-  { 'y',         y_cmd,      STOP_ON_ERR,             none,                  neon,                             defaults },
+  { 'y',         y_cmd,      STOP_ON_ERR,             none,                  neon,                             {NULL, CONFIRM, OUTS} },
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
@@ -247,7 +247,7 @@ static const Builtin builtins[] = {
 
 static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 static const unsigned short menu_c            = fg_c;
-static const unsigned short bold_color_menu   = use_bold_color_for_fg;
+static const unsigned short bold_color_menu   = use_bold_color_for_fg; // TODO: implement
 static const unsigned short menu_x            = 44;       // Must be > 2
 static const unsigned short menu_y            = 7;        // Must be > 2
 static const unsigned short menu_offset_y     = 0;

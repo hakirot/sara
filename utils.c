@@ -88,6 +88,14 @@ void __command__(char input){
     RANGER_FLAG=1;
   }
 
+  __execute__(command);
+
+  if(RANGER_FLAG) _free_range(command);
+
+  animate(command->post_animation);
+}
+
+void __execute__(const Command * command){
   if(command->option != EXEC){
 
     CACHE = ROW + COL;
@@ -144,10 +152,6 @@ void __command__(char input){
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     crit("ERROR: execlp __command__");
   }
-
-  if(RANGER_FLAG) _free_range(command);
-
-  animate(command->post_animation);
 }
 
 void __builtin__(char input){
@@ -188,13 +192,10 @@ void __topmenu__(char input){
 
   _print_menu_borders();
   _menuselect(menukey->submenu);
+  animate(start_animation);
 }
 
 void _menuselect(const Menu * menu){
-
-//const Menu heck_menu[] = menukeys[1].submenu;
-//int len = sizeof(S_menu); // /sizeof(menu[0]);
-//int len = sizeof((*menu)); // /sizeof(menu[0]);
 
   Menu * ptr = (Menu *)menu;
   int len = 0;
@@ -221,7 +222,12 @@ void _menuselect(const Menu * menu){
     } else if (input == 'q' || input == 27){
       return;
     } else if (input == '\n'){
-      // execute
+      if(menu[selection].type == SUBMENU){
+        _menuselect(menu[selection].next.submenu);
+      } else if(menu[selection].type == COMMAND){
+        __execute__(&menu[selection].next.command);
+      }
+      return;
     }
 
     _print_menu_selection(menu, selection, len);

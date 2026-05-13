@@ -15,6 +15,7 @@
 
 int  __key__();
 void __command__(char input);
+void __execute__(const Command * command);
 void __builtin__(char input);
 void __topmenu__(char input);
 void _menuselect(const Menu * menu);

@@ -43,6 +43,8 @@ int __key__(){
         crit("Something broke :[");
       }
 
+//    valid_input = 2;
+
     } else if(WIN_SIZE != SMALL){
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;

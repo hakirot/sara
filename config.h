@@ -208,9 +208,9 @@ static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session",
 
 // TODO: implement
 static const ExtraArgs defaults = {
-  NULL,        /* CHDIR STRING                                   */
-  NOCONFIRM,   /* Optionally confirm command with: CONFIRM       */
-  OUTS,        /* Optionally suppress command output with NO_OUT */
+  NULL,        /* Optionally change directory before command execution */
+  NOCONFIRM,   /* Optionally confirm command with: CONFIRM             */
+  OUTS,        /* Optionally suppress command output with NO_OUT       */
 };
 
 /* CUSTOM COMMAND CONFIG */
@@ -307,7 +307,7 @@ static const Menu b_menu[] = {
 
 /* MENU S: SHUTDOWN COMMANDS */
 static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
-static const Command shutdown = { 0, shutdown_cmd, EXEC, none, none, defaults };
+static const Command shutdown = { 0, shutdown_cmd, EXEC, none, none, {NULL, CONFIRM, NO_OUT} };
 
 static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
 static const Command reboot = { 0, reboot_cmd, EXEC, none, none, defaults  };
@@ -321,7 +321,7 @@ static const Menu S_menu[] = {
 /* menukey assignments */
 static const MenuKey menukeys[] = {
   {'b', b_menu },
-  {'S', S_menu },
+//{'S', S_menu },
 };
 
 #endif

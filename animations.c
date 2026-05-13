@@ -168,7 +168,7 @@ void _glitch(Arg bigmode){
       attroff(A_BOLD);
     }
 
-    check_char();
+    __key__();
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     refresh();
 
@@ -245,7 +245,7 @@ void _neon(){
       third_frame = 1;
     }
 
-    check_char();
+    __key__();
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
@@ -294,7 +294,7 @@ void _neon_reverse(){
       second_frame = 1;
     }
 
-    check_char();
+    __key__();
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 }
@@ -418,7 +418,7 @@ void _pixel_fill(){
     }
 
     refresh();
-    check_char();
+    __key__();
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
 
     // TODO: make this configurable
@@ -492,7 +492,7 @@ void _tv_static(){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
-    check_char();
+    __key__();
 
     attron(COLOR_PAIR(FOREGROUND));
     if(use_bold_color_for_fg) attron(A_BOLD);
@@ -714,7 +714,7 @@ void _down_wipes(){
     if(use_bold_color_for_fg) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
-      check_char();
+      __key__();
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(wipe_time);

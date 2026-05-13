@@ -133,6 +133,8 @@ typedef struct {
   const Menu * submenu;
 } MenuKey;
 
+extern const Menu * RegisteredMenus[];
+
 extern int BG_GLYPH_HEIGHT;
 extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;
@@ -168,5 +170,7 @@ extern char menukeys_chars[];
 extern int commandkeys_len;
 extern int builtins_len;
 extern int menukeys_len;
+
+static const Menu END_OF_MENU = {"END_OF_MENU", COMMAND, {.command={0,"nocmd",WAIT,none,none,{0} }}};
 
 #endif

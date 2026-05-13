@@ -187,10 +187,31 @@ void __topmenu__(char input){
   }
 
   _print_menu_borders();
-  __menu__(menukey->submenu);
+  _menuselect(menukey->submenu);
+  crit("crrrit");
 }
 
-void __menu__(const Menu * menu){
+void _menuselect(const Menu * menu){
+
+//const Menu heck_menu[] = menukeys[1].submenu;
+//int len = sizeof(S_menu); // /sizeof(menu[0]);
+//int len = sizeof((*menu)); // /sizeof(menu[0]);
+
+  Menu * ptr = (Menu *)menu;
+  int len = 0;
+  while(1){
+    if(strcmp("END_OF_MENU", ptr->name) == 0) break;
+    ptr++;
+    len++;
+  }
+
+  int selection = 0;
+  while(1){
+    _print_menu_selection(menu, selection);
+  }
+}
+
+int _print_menu_selection(const Menu * menu, int selection){
 
 }
 

@@ -252,7 +252,7 @@ static const Builtin builtins[] = {
 
 static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 static const unsigned short menu_c            = fg_c;
-static const unsigned short bold_color_menu   = false;
+static const unsigned short bold_color_menu   = use_bold_color_for_fg;
 static const unsigned short menu_x            = 44;       // Should be > 2
 static const unsigned short menu_y            = 7;        // Should be > 2
 static const unsigned short menu_offset_y     = 0;
@@ -284,22 +284,26 @@ static const Menu connect_devices[] = {
   { "XM5",      COMMAND, { .command = connect_xm5         } },
   { "ACOUSTIC", COMMAND, { .command = connect_acoustic    } },
   { "ONFORU",   COMMAND, { .command = connect_onforu      } },
+  END_OF_MENU
 };
 
 static const Menu disconnect_devices[] = {
   { "XM5",      COMMAND, { .command = disconnect_xm5      } },
   { "ACOUSTIC", COMMAND, { .command = disconnect_acoustic } },
   { "ONFORU",   COMMAND, { .command = disconnect_onforu   } },
+  END_OF_MENU
 };
 
 static const Menu connect_options[] = {
-  { "connect",    SUBMENU, { .submenu = connect_devices    }  },
+  { "connect",    SUBMENU, { .submenu = connect_devices    } },
   { "disconnect", SUBMENU, { .submenu = disconnect_devices } },
+  END_OF_MENU
 };
 
 static const Menu b_menu[] = {
   { "bluetooth", SUBMENU, { .submenu = connect_options } },
   { "backlight", COMMAND, { .command = fake_backlight  } },
+  END_OF_MENU
 };
 
 /* MENU S: SHUTDOWN COMMANDS */
@@ -311,7 +315,8 @@ static const Command reboot = { 0, reboot_cmd, EXEC, none, none, defaults  };
 
 static const Menu S_menu[] = {
   { "SHUTDOWN", COMMAND, { .command = shutdown } },
-  { "REBOOT",   COMMAND, { .command = reboot   }  },
+  { "REBOOT",   COMMAND, { .command = reboot   } },
+  END_OF_MENU
 };
 
 /* menukey assignments */

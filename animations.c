@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TODO: audit this list
 void _none(Arg printColorbar);
 void _down_wipes();
 void _glitch(Arg bigmode);
@@ -85,7 +86,6 @@ void _print_menu_borders(){
   _clear_menu();
 
   refresh();
-  getchar();
 }
 
 void _clear_menu(){

@@ -171,6 +171,8 @@ extern int commandkeys_len;
 extern int builtins_len;
 extern int menukeys_len;
 
+extern int KEY_LOCK;
+
 static const Menu END_OF_MENU = {"END_OF_MENU", COMMAND, {.command={0,"eww_dont_look_at_me",WAIT,none,none,{0} }}};
 
 #endif

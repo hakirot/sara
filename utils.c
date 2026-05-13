@@ -43,7 +43,7 @@ int __key__(){
         crit("Something broke :[");
       }
 
-//    valid_input = 2;
+      valid_input = 2;
 
     } else if(WIN_SIZE != SMALL){
       LAST_INPUT_TIME = clock();
@@ -64,6 +64,9 @@ int __key__(){
 }
 
 void __command__(char input){
+
+  if(KEY_LOCK == 1) return;
+  KEY_LOCK = 1;
 
   int RANGER_FLAG=0;
 
@@ -94,18 +97,13 @@ void __command__(char input){
 
   if(RANGER_FLAG) _free_range(command);
 
+  KEY_LOCK = 0;
+
   refresh();
   getmaxyx(stdscr, ROW, COL);
   if(CACHE != ROW + COL) {
-//  char err[128];
-//  sprintf(err, "%s %d %d %d", "resize", ROW, COL, CACHE );
-//  crit(err);
     return;
   }
-
-//char err[128];
-//sprintf(err, "%s %d %d %d", "no resize", ROW, COL, CACHE );
-//crit(err);
 
   animate(command->post_animation);
 }

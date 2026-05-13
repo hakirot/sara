@@ -112,7 +112,7 @@ int main(int argc, char* argv[]){
     if (result == 0 && should_print == true && HOLD_CHAR == '\0'){
       animate(none);
       should_print = false;
-    } else if (result == 1){
+    } else if (result >= 1){
       should_print = true;
     }
     usleep(50000); // chill

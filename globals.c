@@ -46,3 +46,5 @@ char menukeys_chars[KEY_ARRAY_SIZE];
 int commandkeys_len;
 int builtins_len;
 int menukeys_len;
+
+int KEY_LOCK = 0;

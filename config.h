@@ -224,7 +224,7 @@ static const Command commandkeys[] = {
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'F',         F_cmd,             EXEC,             none,                  neon,                             defaults },
-  { 'y',         y_cmd,      STOP_ON_ERR,             none,                  neon,                             {NULL, CONFIRM, OUTS} },
+  { 'y',         y_cmd,      STOP_ON_ERR,     neon_reverse,                  neon,                             {NULL, CONFIRM, OUTS} },
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },

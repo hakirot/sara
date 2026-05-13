@@ -74,7 +74,11 @@ void __command__(char input){
   }
 
   if(command->extra_args.confirmtion == CONFIRM &&
-                           _get_confirm(command) != true) return;
+    _get_confirm(command) != true)
+  {
+    animate(glitch);
+    return;
+  }
 
   if(KEY_LOCK == 1) return;
   KEY_LOCK = 1;

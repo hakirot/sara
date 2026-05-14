@@ -301,6 +301,16 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   _clear_menu(dim_y, dim_x);
   int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
+
+  int offset_y = menu_offset_y;
+  int offset_x = menu_offset_x;
+
+  if(dim_y < 3) {
+    window_size = ROW;
+    offset_y = -1;
+    offset_x = 0;
+  }
+
   int i = 0;
   int k = 0;
   if(selection > len - window_size) i = len - window_size;
@@ -325,7 +335,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
       str_len = dim_x - 2;
     }
     for(int j = 0; j < str_len; j++){
-      mvaddch(ROW/2 - dim_y/2 + 1 + k + menu_offset_y, COL/2 - dim_x/2 + 1 + j + menu_offset_x, menu[i].name[j]);
+      mvaddch(ROW/2 - dim_y/2 + 1 + k + offset_y, COL/2 - dim_x/2 + 1 + j + offset_x, menu[i].name[j]);
       // TODO: account for small windows
     }
 

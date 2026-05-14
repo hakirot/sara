@@ -41,6 +41,11 @@ void animate(animation_option option){
 
 void _print_menu_borders(int dim_y, int dim_x){
 
+  if(dim_y < 3){
+    clear();
+    return;
+  }
+
   // TODO: handle small size offsets
   attron(COLOR_PAIR(menu_c));
   if(bold_color_menu) attron(A_BOLD);
@@ -187,12 +192,20 @@ void _print_confirm_selection(int selection){
 }
 
 void _clear_menu(int dim_y, int dim_x){
+  int offset_y = menu_offset_y;
+  int offset_x = menu_offset_x;
+
+  if(dim_y < 3){
+    clear();
+    return;
+  }
+
   wchar_t wc = L' ';
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < dim_y - 1; i++){
     for(int j = 1; j < dim_x - 1; j++){
-      mvadd_wch(ROW/2 - dim_y/2 + i + menu_offset_y, COL/2 - dim_x/2 + j + menu_offset_x, &cchar);
+      mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + j + offset_x, &cchar);
     }
   }
 }

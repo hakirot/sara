@@ -291,7 +291,6 @@ void _print_menu_selection(const Menu * menu, int selection, int len){
   if(selection > len - window_size) i = len - window_size;
   else i = selection;
 
-  // TODO: implement offsets
   if(bold_color_menu == true){
     attron(A_BOLD);
   }
@@ -307,7 +306,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len){
     else attron(COLOR_PAIR(menu_c));
 
     for(int j = 0; j < (int)strlen(menu[i].name); j++){
-      mvaddch(ROW/2 - menu_y/2 + 1 + k, COL/2 - menu_x/2 + 1 + j, menu[i].name[j]);
+      mvaddch(ROW/2 - menu_y/2 + 1 + k + menu_offset_y, COL/2 - menu_x/2 + 1 + j + menu_offset_x, menu[i].name[j]);
       // TODO: account for small windows
     }
 

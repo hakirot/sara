@@ -33,7 +33,6 @@ void animate(animation_option option){
   if (option == print_b)             _bg();
 }
 
-// TODO: implement offset
 void _print_menu_borders(){
 
   attron(COLOR_PAIR(menu_c));
@@ -41,32 +40,32 @@ void _print_menu_borders(){
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2, COL/2 - menu_x/2, &cchar);
+  mvadd_wch(ROW/2 - menu_y/2 + menu_offset_y, COL/2 - menu_x/2 + menu_offset_x, &cchar);
 
   wc = MenuBorder[1];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2, COL/2 - menu_x/2 + menu_x - 1, &cchar);
+  mvadd_wch(ROW/2 - menu_y/2 + menu_offset_y, COL/2 - menu_x/2 + menu_x - 1 + menu_offset_x, &cchar);
 
   wc = MenuBorder[2];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1, COL/2 - menu_x/2, &cchar);
+  mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1 + menu_offset_y, COL/2 - menu_x/2 + menu_offset_x, &cchar);
 
   wc = MenuBorder[3];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1, COL/2 - menu_x/2 + menu_x - 1, &cchar);
+  mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1 + menu_offset_y, COL/2 - menu_x/2 + menu_x - 1 + menu_offset_x, &cchar);
 
   wc = MenuBorder[4];
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < menu_x - 1; i++){
-    mvadd_wch(ROW/2 - menu_y/2, COL/2 - menu_x/2 + i, &cchar);
-    mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1, COL/2 - menu_x/2 + i, &cchar);
+    mvadd_wch(ROW/2 - menu_y/2 + menu_offset_y, COL/2 - menu_x/2 + i + menu_offset_x, &cchar);
+    mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1 + menu_offset_y, COL/2 - menu_x/2 + i + menu_offset_x, &cchar);
   }
 
   wc = MenuBorder[5];
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < menu_y - 1; i++){
-    mvadd_wch(ROW/2 - menu_y/2 + i, COL/2 - menu_x/2, &cchar);
-    mvadd_wch(ROW/2 - menu_y/2 + i, COL/2 - menu_x/2 + menu_x - 1, &cchar);
+    mvadd_wch(ROW/2 - menu_y/2 + i + menu_offset_y, COL/2 - menu_x/2 + menu_offset_x, &cchar);
+    mvadd_wch(ROW/2 - menu_y/2 + i + menu_offset_y, COL/2 - menu_x/2 + menu_x - 1 + menu_offset_x, &cchar);
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(menu_c));
@@ -173,7 +172,7 @@ void _clear_menu(){
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < menu_y - 1; i++){
     for(int j = 1; j < menu_x - 1; j++){
-      mvadd_wch(ROW/2 - menu_y/2 + i, COL/2 - menu_x/2 + j, &cchar);
+      mvadd_wch(ROW/2 - menu_y/2 + i + menu_offset_y, COL/2 - menu_x/2 + j + menu_offset_x, &cchar);
     }
   }
 }

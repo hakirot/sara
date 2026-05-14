@@ -51,6 +51,7 @@ void animate(animation_option option){
 void _print_menu_borders(){
 
   attron(COLOR_PAIR(menu_c));
+  if(bold_color_menu) attron(A_BOLD);
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
@@ -81,6 +82,7 @@ void _print_menu_borders(){
     mvadd_wch(ROW/2 - menu_y/2 + i, COL/2 - menu_x/2, &cchar);
     mvadd_wch(ROW/2 - menu_y/2 + i, COL/2 - menu_x/2 + menu_x - 1, &cchar);
   }
+  attroff(A_BOLD);
   attroff(COLOR_PAIR(menu_c));
 
   _clear_menu();

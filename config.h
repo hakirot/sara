@@ -150,7 +150,7 @@ static const int hd_offset_y_min = 0;
 static const int hd_offset_x_min = -9;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
-static const int dynamic_resize = true; // TODO ensure these value is greater than tiny mode
+static const int dynamic_resize = true;
 static const int resize_x = 44;
 static const int resize_y = 7;
 
@@ -208,8 +208,6 @@ static const ExtraArgs defaults = {
 };
 
 /* CUSTOM COMMAND CONFIG */
-/* TODO: issue a warning of duplicates or crash if necessary in a precheck function*/
-/* TODO: add optional Args: chdir (tasks, rtorrent, walls), confirm (newlook), no_output */
 static const Command commandkeys[] = {
 /*  KEY        COMMAND       WAIT_OPTION     PRE_ANIMATION,        POST ANIMATION   ARGS    */
 //{ 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
@@ -246,7 +244,7 @@ static const Builtin builtinkeys[] = {
 
 static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 static const unsigned short menu_c            = fg_c;
-static const unsigned short bold_color_menu   = use_bold_color_for_fg; // TODO: implement
+static const unsigned short bold_color_menu   = false;
 static const unsigned short menu_x            = 44;       // Must be > 2
 static const unsigned short menu_y            = 7;        // Must be > 2
 static const unsigned short menu_offset_y     = 0;
@@ -304,7 +302,7 @@ static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
 static const Command shutdown = { 0, shutdown_cmd, EXEC, none, none, {NULL, CONFIRM, NO_OUT} };
 
 static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };
-static const Command reboot = { 0, reboot_cmd, EXEC, none, none, defaults  };
+static const Command reboot = { 0, reboot_cmd, EXEC, none, none, {NULL, CONFIRM, NO_OUT} };
 
 static const Menu S_menu[] = {
   { "SHUTDOWN", COMMAND, { .command = shutdown } },
@@ -313,7 +311,7 @@ static const Menu S_menu[] = {
 };
 
 static const char *firefox_cmd[] = { "nohup", "firefox", NULL };
-static const Command firefox = { 0, firefox_cmd, WAIT, glitch_full, down_wipes, {NULL, CONFIRM, NO_OUT}  };
+static const Command firefox = { 0, firefox_cmd, WAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
 static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },
@@ -323,7 +321,7 @@ static const Menu F_menu[] = {
 /* menukey assignments */
 static const MenuKey menukeys[] = {
   {'b', b_menu },
-//{'S', S_menu },
+  {'S', S_menu },
   {'F', F_menu },
 };
 

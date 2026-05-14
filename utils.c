@@ -292,9 +292,18 @@ void _print_menu_selection(const Menu * menu, int selection, int len){
   else i = selection;
 
   // TODO: implement offsets
+  if(bold_color_menu == true){
+    attron(A_BOLD);
+  }
   for(i; k < window_size; i++){
 
-    if(i == selection) attron(COLOR_PAIR(menu_c + 8));
+    if(i == selection){
+      if(bold_color_menu == true) {
+        attron(COLOR_PAIR(menu_c + 16));
+      } else {
+        attron(COLOR_PAIR(menu_c + 8));
+      }
+    }
     else attron(COLOR_PAIR(menu_c));
 
     for(int j = 0; j < (int)strlen(menu[i].name); j++){
@@ -307,6 +316,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len){
     if(i == len - 1) break;
     k++;
   }
+  attroff(A_BOLD);
 }
 
 void load_command_config(){
@@ -451,7 +461,7 @@ void preflight_check() {
     for(int j = idx + 1; j < global_chars_len; j++){
       if(global_chars[idx] == global_chars[j]){
         char err[64];
-        sprintf(err, "WARNING: Duplicate char: %c\n", global_chars[idx]);
+        sprintf(err, "Error: '%c' key is configured more than once\n", global_chars[idx]);
         crit(err);
       }
     }

@@ -398,6 +398,7 @@ void _shutter_slide(){
   int r_idx = COL - FG_GLYPH_LENGTH;
   int frame_travel_width = margin_width / 10;
   int j = 0;
+  if(use_bold_color_for_fg) attron(A_BOLD);
   attron(COLOR_PAIR(FOREGROUND));
   while(j < num_frames){
     clear();
@@ -419,6 +420,7 @@ void _shutter_slide(){
     usleep(10000);
     j++;
   }
+  attroff(A_BOLD);
   attroff(COLOR_PAIR(FOREGROUND));
   return;
 };

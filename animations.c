@@ -19,6 +19,12 @@
 #include <string.h>
 
 void animate(animation_option option){
+
+  if(WIN_SIZE == SMALL){
+    tinyprint();
+    return;
+  }
+
   if (option == none)                _none((Arg){0});
   if (option == down_wipes)          _down_wipes();
   if (option == glitch)              _glitch((Arg){.x = 0});
@@ -34,6 +40,8 @@ void animate(animation_option option){
 }
 
 void _print_menu_borders(){
+
+  // TODO: check if window size is less that menu_x/y
 
   attron(COLOR_PAIR(menu_c));
   if(bold_color_menu) attron(A_BOLD);
@@ -165,7 +173,6 @@ void _print_confirm_selection(int selection){
   attroff(COLOR_PAIR(menu_c + 8));
 }
 
-// TODO: implement offsets
 void _clear_menu(){
   wchar_t wc = L' ';
   cchar_t cchar;
@@ -847,4 +854,11 @@ void _down_wipes(){
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(FOREGROUND));
+}
+
+void tinyprint() {
+  int len = strlen(tn);
+  for(int i = 0; i < len; i++){
+    mvaddch(ROW/2, COL/2 - len/2 + i, tn[i] );
+  }
 }

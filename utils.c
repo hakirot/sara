@@ -485,6 +485,7 @@ void preflight_check() {
   // assert MenuBorder length is 6
   // assert menu_y > 1
   // assert resize_x/y values are larger than tiny_mode_x/y
+  // assert MenuBorder is the correct length
 }
 
 // TODO: implement

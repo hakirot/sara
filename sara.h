@@ -31,12 +31,15 @@
 #ifndef SARA_H
 #define SARA_H
 
+#include "globals.h"
+
 struct file_node {
   char name[256];
   struct file_node * next;
 };
 
 int check_size();
+screen_size get_win_size();
 int get_confirmation();
 void printstandard();
 const char * select_option_window(char* choices[], int len);

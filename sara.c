@@ -87,11 +87,7 @@ int main(int argc, char* argv[]){
   launch_window();
   if(run_preflight_check) preflight_check();
 
-  getmaxyx(stdscr, ROW, COL);
-  CACHE = ROW + COL;
-  WIN_SIZE = BIG;
-
-  animate(start_animation);
+  CACHE = check_size();
 
   LAST_INPUT_TIME = clock();
   int should_print = true;
@@ -195,10 +191,10 @@ int check_size(){
     clear();
 
     // small win size jail
-    while (COL < tiny_mode_x || ROW < tiny_mode_y){
+    while (get_win_size() == SMALL){
       WIN_SIZE = SMALL;
       clear();
-      mvprintw(ROW/2, (COL-10)/2, "%s", tn);
+      tinyprint();
       refresh();
 
       // 2 milliseconds
@@ -206,9 +202,10 @@ int check_size(){
       __key__();
 
       getmaxyx(stdscr,ROW,COL);
+      CACHE = ROW + COL;
     }
 
-    if ((ROW > resize_y && COL > resize_x) || dynamic_resize == false){
+    if ((get_win_size() == BIG) || dynamic_resize == false){
       WIN_SIZE = BIG;
     } else {
       WIN_SIZE = NORMAL;
@@ -217,6 +214,16 @@ int check_size(){
   }
 
   return ROW + COL;
+}
+
+screen_size get_win_size(){
+    if (ROW > resize_y && COL > resize_x){
+      return BIG;
+    } else if (COL < tiny_mode_x || ROW < tiny_mode_y){
+      return SMALL;
+    } else {
+      return NORMAL;
+    }
 }
 
 void patch_backlight(){

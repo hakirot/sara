@@ -293,7 +293,7 @@ static const Menu connect_options[] = {
 };
 
 static const Menu b_menu[] = {
-  { "bluetooth", SUBMENU, { .submenu = connect_options } },
+  { "BLUETOOTH", SUBMENU, { .submenu = connect_options } },
   END_OF_MENU
 };
 
@@ -310,11 +310,19 @@ static const Menu S_menu[] = {
   END_OF_MENU
 };
 
-static const char *firefox_cmd[] = { "nohup", "firefox", NULL };
-static const Command firefox = { 0, firefox_cmd, WAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
+static const char *firefox_cmd[] = { "firefox", NULL };
+static const Command firefox = { 0, firefox_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
+
+static const char *slippi_cmd[] = { "slippi", NULL };
+static const Command slippi = { 0, slippi_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
+
+static const char *discord_cmd[] = { "discord", NULL };
+static const Command discord = { 0, discord_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
 static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },
+  { "SLIPPI", COMMAND, { .command = slippi } },
+  { "DISCORD", COMMAND, { .command = discord } },
   END_OF_MENU
 };
 

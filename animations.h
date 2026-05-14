@@ -28,5 +28,6 @@ void _print_menu_borders();
 void _print_confirm_window(char * header);
 void _print_confirm_selection(int selection);
 void _clear_menu();
+void tinyprint();
 
 #endif

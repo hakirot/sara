@@ -323,6 +323,10 @@ static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },
   { "SLIPPI", COMMAND, { .command = slippi } },
   { "DISCORD", COMMAND, { .command = discord } },
+  { "dISC", COMMAND, { .command = discord } },
+  { "fISCORD", COMMAND, { .command = discord } },
+  { "iI", COMMAND, { .command = discord } },
+  { "AISCORD", COMMAND, { .command = discord } },
   END_OF_MENU
 };
 

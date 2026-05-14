@@ -237,11 +237,26 @@ void __topmenu__(char input){
     }
   }
 
-  _print_menu_borders();
-  _menuselect(menukey->submenu);
+  int dim_y = 0;
+  int dim_x = 0;
+
+  if(ROW < menu_y){
+    dim_y = ROW;    
+  } else {
+    dim_y = menu_y;
+  }
+
+  if(COL < menu_x){
+    dim_x = COL;
+  } else {
+    dim_x = menu_x;
+  }
+
+  _print_menu_borders(dim_y, dim_x);
+  _menuselect(menukey->submenu, dim_y, dim_x);
 }
 
-void _menuselect(const Menu * menu){
+void _menuselect(const Menu * menu, int dim_y, int dim_x){
 
   Menu * ptr = (Menu *)menu;
   int len = 0;
@@ -269,7 +284,7 @@ void _menuselect(const Menu * menu){
       return;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
-        _menuselect(menu[selection].next.submenu);
+        _menuselect(menu[selection].next.submenu, dim_y, dim_x);
       } else if(menu[selection].type == COMMAND){
         __execute__(&menu[selection].next.command);
         animate(menu[selection].next.command.post_animation);
@@ -277,14 +292,14 @@ void _menuselect(const Menu * menu){
       return;
     }
 
-    _print_menu_selection(menu, selection, len);
+    _print_menu_selection(menu, selection, len, dim_y, dim_x);
     usleep(2000);
   }
 }
 
-void _print_menu_selection(const Menu * menu, int selection, int len){
-  _clear_menu();
-  int window_size = menu_y - 2;
+void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x){
+  _clear_menu(dim_y, dim_x);
+  int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
   int i = 0;
   int k = 0;
@@ -305,8 +320,12 @@ void _print_menu_selection(const Menu * menu, int selection, int len){
     }
     else attron(COLOR_PAIR(menu_c));
 
-    for(int j = 0; j < (int)strlen(menu[i].name); j++){
-      mvaddch(ROW/2 - menu_y/2 + 1 + k + menu_offset_y, COL/2 - menu_x/2 + 1 + j + menu_offset_x, menu[i].name[j]);
+    int str_len = (int)strlen(menu[i].name);
+    if(str_len > dim_x - 2){
+      str_len = dim_x - 2;
+    }
+    for(int j = 0; j < str_len; j++){
+      mvaddch(ROW/2 - dim_y/2 + 1 + k + menu_offset_y, COL/2 - dim_x/2 + 1 + j + menu_offset_x, menu[i].name[j]);
       // TODO: account for small windows
     }
 

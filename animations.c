@@ -39,46 +39,45 @@ void animate(animation_option option){
   if (option == print_b)             _bg();
 }
 
-void _print_menu_borders(){
+void _print_menu_borders(int dim_y, int dim_x){
 
-  // TODO: check if window size is less that menu_x/y
-
+  // TODO: handle small size offsets
   attron(COLOR_PAIR(menu_c));
   if(bold_color_menu) attron(A_BOLD);
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2 + menu_offset_y, COL/2 - menu_x/2 + menu_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + menu_offset_y, COL/2 - dim_x/2 + menu_offset_x, &cchar);
 
   wc = MenuBorder[1];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2 + menu_offset_y, COL/2 - menu_x/2 + menu_x - 1 + menu_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + menu_offset_y, COL/2 - dim_x/2 + dim_x - 1 + menu_offset_x, &cchar);
 
   wc = MenuBorder[2];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1 + menu_offset_y, COL/2 - menu_x/2 + menu_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + menu_offset_y, COL/2 - dim_x/2 + menu_offset_x, &cchar);
 
   wc = MenuBorder[3];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1 + menu_offset_y, COL/2 - menu_x/2 + menu_x - 1 + menu_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + menu_offset_y, COL/2 - dim_x/2 + dim_x - 1 + menu_offset_x, &cchar);
 
   wc = MenuBorder[4];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  for(int i = 1; i < menu_x - 1; i++){
-    mvadd_wch(ROW/2 - menu_y/2 + menu_offset_y, COL/2 - menu_x/2 + i + menu_offset_x, &cchar);
-    mvadd_wch(ROW/2 - menu_y/2 + menu_y - 1 + menu_offset_y, COL/2 - menu_x/2 + i + menu_offset_x, &cchar);
+  for(int i = 1; i < dim_x - 1; i++){
+    mvadd_wch(ROW/2 - dim_y/2 + menu_offset_y, COL/2 - dim_x/2 + i + menu_offset_x, &cchar);
+    mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + menu_offset_y, COL/2 - dim_x/2 + i + menu_offset_x, &cchar);
   }
 
   wc = MenuBorder[5];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  for(int i = 1; i < menu_y - 1; i++){
-    mvadd_wch(ROW/2 - menu_y/2 + i + menu_offset_y, COL/2 - menu_x/2 + menu_offset_x, &cchar);
-    mvadd_wch(ROW/2 - menu_y/2 + i + menu_offset_y, COL/2 - menu_x/2 + menu_x - 1 + menu_offset_x, &cchar);
+  for(int i = 1; i < dim_y - 1; i++){
+    mvadd_wch(ROW/2 - dim_y/2 + i + menu_offset_y, COL/2 - dim_x/2 + menu_offset_x, &cchar);
+    mvadd_wch(ROW/2 - dim_y/2 + i + menu_offset_y, COL/2 - dim_x/2 + dim_x - 1 + menu_offset_x, &cchar);
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(menu_c));
 
-  _clear_menu();
+  _clear_menu(dim_y, dim_x);
 
   refresh();
 }
@@ -173,13 +172,13 @@ void _print_confirm_selection(int selection){
   attroff(COLOR_PAIR(menu_c + 8));
 }
 
-void _clear_menu(){
+void _clear_menu(int dim_y, int dim_x){
   wchar_t wc = L' ';
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
-  for(int i = 1; i < menu_y - 1; i++){
-    for(int j = 1; j < menu_x - 1; j++){
-      mvadd_wch(ROW/2 - menu_y/2 + i + menu_offset_y, COL/2 - menu_x/2 + j + menu_offset_x, &cchar);
+  for(int i = 1; i < dim_y - 1; i++){
+    for(int j = 1; j < dim_x - 1; j++){
+      mvadd_wch(ROW/2 - dim_y/2 + i + menu_offset_y, COL/2 - dim_x/2 + j + menu_offset_x, &cchar);
     }
   }
 }

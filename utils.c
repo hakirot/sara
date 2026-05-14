@@ -239,7 +239,6 @@ void __topmenu__(char input){
 
   _print_menu_borders();
   _menuselect(menukey->submenu);
-  animate(start_animation);
 }
 
 void _menuselect(const Menu * menu){
@@ -266,12 +265,14 @@ void _menuselect(const Menu * menu){
         selection = (selection + (len - 1)) % len;
       }
     } else if (input == 'q' || input == 27){
+      animate(glitch);
       return;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _menuselect(menu[selection].next.submenu);
       } else if(menu[selection].type == COMMAND){
         __execute__(&menu[selection].next.command);
+        animate(menu[selection].next.command.post_animation);
       }
       return;
     }

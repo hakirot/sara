@@ -18,20 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// TODO: audit this list
-void _none(Arg printColorbar);
-void _down_wipes();
-void _glitch(Arg bigmode);
-void _neon();
-void _neon_reverse();
-void _shutter_slide();
-void _pixel_fill();
-void _tv_static();
-void _bg();
-void _fg(const char * glyph[]);
-void _hd();
-void _overlay(const char * glyph[], char fill);
-
 void animate(animation_option option){
   if (option == none)                _none((Arg){0});
   if (option == down_wipes)          _down_wipes();

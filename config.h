@@ -201,7 +201,6 @@ static const char *Q_cmd[]            = { "tmux", "kill-pane",                  
 static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
 
 
-// TODO: implement
 static const ExtraArgs defaults = {
   NULL,        /* Optionally change directory before executing command */
   NOCONFIRM,   /* Optionally confirm command with: CONFIRM             */
@@ -223,7 +222,7 @@ static const Command commandkeys[] = {
   { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
-  { 'F',         F_cmd,             EXEC,             none,                  neon,                             defaults },
+//{ 'F',         F_cmd,             EXEC,             none,                  neon,                             defaults },
   { 'y',         y_cmd,      STOP_ON_ERR,     neon_reverse,                  neon,                             {NULL, CONFIRM, OUTS} },
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
@@ -233,7 +232,7 @@ static const Command commandkeys[] = {
 
 
 /* BUILTIN FUNCTIONS */
-static const Builtin builtins[] = {
+static const Builtin builtinkeys[] = {
   { 'I', randomize_colors },
   { 'i', invert_colors },
   { 'H', rave },
@@ -313,10 +312,19 @@ static const Menu S_menu[] = {
   END_OF_MENU
 };
 
+static const char *firefox_cmd[] = { "nohup", "firefox", NULL };
+static const Command firefox = { 0, firefox_cmd, WAIT, none, none, {NULL, CONFIRM, NO_OUT}  };
+
+static const Menu F_menu[] = {
+  { "FIREFOX", COMMAND, { .command = firefox } },
+  END_OF_MENU
+};
+
 /* menukey assignments */
 static const MenuKey menukeys[] = {
   {'b', b_menu },
 //{'S', S_menu },
+  {'F', F_menu },
 };
 
 #endif

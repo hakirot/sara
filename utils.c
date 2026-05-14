@@ -35,7 +35,7 @@ int __key__(){
     if(strchr(global_chars, input)){
       if(strchr(commandkeys_chars, input)){
         __command__(input);
-      } else if(strchr(builtins_chars, input)){
+      } else if(strchr(builtinkeys_chars, input)){
         __builtin__(input);
       } else if(strchr(menukeys_chars, input)){
         __topmenu__(input);
@@ -73,36 +73,10 @@ void __command__(char input){
     }
   }
 
-  if(command->extra_args.confirmtion == CONFIRM &&
-    _get_confirm(command) != true)
-  {
-    animate(glitch);
-    return;
-  }
-
   if(KEY_LOCK == 1) return;
   KEY_LOCK = 1;
 
-  int RANGER_FLAG=0;
-
-  if(command->extra_args.chdir != NULL){
-    _chdir(command->extra_args.chdir);
-  }
-
-  animate(command->pre_animation);
-  if(command->extra_args.confirmtion == CONFIRM && _confirm() == 1) return;
-  endwin();
-
-  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
-    command->option != EXEC)
-  {
-    command = ranger_command(command);
-    RANGER_FLAG=1;
-  }
-
   __execute__(command);
-
-  if(RANGER_FLAG) _free_range(command);
 
   KEY_LOCK = 0;
 
@@ -145,6 +119,30 @@ int _get_confirm(const Command * command){
 }
 
 void __execute__(const Command * command){
+
+  if(command->extra_args.confirmtion == CONFIRM &&
+    _get_confirm(command) != true)
+  {
+    animate(glitch);
+    return;
+  }
+
+  int RANGER_FLAG=0;
+
+  if(command->extra_args.chdir != NULL){
+    _chdir(command->extra_args.chdir);
+  }
+
+  animate(command->pre_animation);
+  if(command->extra_args.confirmtion == CONFIRM && _confirm() == 1) return;
+  endwin();
+
+  if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
+    command->option != EXEC)
+  {
+    command = ranger_command(command);
+    RANGER_FLAG=1;
+  }
   if(command->option != EXEC){
 
     endwin();
@@ -197,14 +195,17 @@ void __execute__(const Command * command){
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     crit("ERROR: execlp __command__");
   }
+
+  if(RANGER_FLAG) _free_range(command);
+
 }
 
 void __builtin__(char input){
 
   internal selection = quit;
   for(int i = 0; i < commandkeys_len; i++){
-    if(builtins[i].smashkey == input){
-      selection = builtins[i].option;
+    if(builtinkeys[i].smashkey == input){
+      selection = builtinkeys[i].option;
       break;
     }
   }
@@ -309,11 +310,11 @@ void _print_menu_selection(const Menu * menu, int selection, int len){
 void load_command_config(){
   memset(global_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
-  memset(builtins_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(builtinkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(menukeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
 
   commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
-  builtins_len = sizeof(builtins)/sizeof(builtins[0]);
+  builtinkeys_len = sizeof(builtinkeys)/sizeof(builtinkeys[0]);
   menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
 
   int global_idx = 0;
@@ -323,9 +324,9 @@ void load_command_config(){
     global_idx++;
   }
 
-  for(int i = 0; i < builtins_len; i++){
-    global_chars[global_idx] = builtins[i].smashkey;
-    builtins_chars[i] = builtins[i].smashkey;
+  for(int i = 0; i < builtinkeys_len; i++){
+    global_chars[global_idx] = builtinkeys[i].smashkey;
+    builtinkeys_chars[i] = builtinkeys[i].smashkey;
     global_idx++;
   }
 
@@ -434,16 +435,16 @@ int _confirm(){
 void preflight_check() {
 
   int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
-  int builtins_len = sizeof(builtins)/sizeof(builtins[0]);
+  int builtinkeys_len = sizeof(builtinkeys)/sizeof(builtinkeys[0]);
   int menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
-  int total = commandkeys_len + builtins_len + menukeys_len;
+  int total = commandkeys_len + builtinkeys_len + menukeys_len;
 
   if(total > 128){
     char err[256];
-    sprintf(err, "ERROR: Configured Key Limit exceeded\nKey Limit is %d\n commandkeys: %d\n builtins: %d\n menukeys: %d\n",
+    sprintf(err, "ERROR: Configured Key Limit exceeded\nKey Limit is %d\n commandkeys: %d\n builtinkeys: %d\n menukeys: %d\n",
       KEY_ARRAY_SIZE,
       commandkeys_len,
-      builtins_len,
+      builtinkeys_len,
       menukeys_len);
     crit("Key limit exceeded");
   }

@@ -41,11 +41,11 @@ int GLITCH_TIME = 52;
 
 char global_chars[KEY_ARRAY_SIZE];
 char commandkeys_chars[KEY_ARRAY_SIZE];
-char builtins_chars[KEY_ARRAY_SIZE];
+char builtinkeys_chars[KEY_ARRAY_SIZE];
 char menukeys_chars[KEY_ARRAY_SIZE];
 
 int commandkeys_len;
-int builtins_len;
+int builtinkeys_len;
 int menukeys_len;
 
 int KEY_LOCK = 0;

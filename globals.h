@@ -165,11 +165,11 @@ extern int GLITCH_TIME;
 
 extern char global_chars[];
 extern char commandkeys_chars[];
-extern char builtins_chars[];
+extern char builtinkeys_chars[];
 extern char menukeys_chars[];
 
 extern int commandkeys_len;
-extern int builtins_len;
+extern int builtinkeys_len;
 extern int menukeys_len;
 
 extern int KEY_LOCK;

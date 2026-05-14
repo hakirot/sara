@@ -313,7 +313,7 @@ static const Menu S_menu[] = {
 };
 
 static const char *firefox_cmd[] = { "nohup", "firefox", NULL };
-static const Command firefox = { 0, firefox_cmd, WAIT, none, none, {NULL, CONFIRM, NO_OUT}  };
+static const Command firefox = { 0, firefox_cmd, WAIT, glitch_full, glitch, {NULL, CONFIRM, NO_OUT}  };
 
 static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },

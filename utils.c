@@ -38,7 +38,10 @@ int __key__(){
       } else if(strchr(builtinkeys_chars, input)){
         __builtin__(input);
       } else if(strchr(menukeys_chars, input)){
+        if(KEY_LOCK == 1) return valid_input;
+        KEY_LOCK = 1;
         __topmenu__(input);
+        KEY_LOCK = 0;
       } else {
         crit("Something broke :[");
       }
@@ -65,6 +68,9 @@ int __key__(){
 
 void __command__(char input){
 
+  if(KEY_LOCK == 1) return;
+  KEY_LOCK = 1;
+
   const Command* command = NULL;
   for(int i = 0; i < commandkeys_len; i++){
     if(commandkeys[i].smashkey == input){
@@ -72,9 +78,6 @@ void __command__(char input){
       break;
     }
   }
-
-  if(KEY_LOCK == 1) return;
-  KEY_LOCK = 1;
 
   __execute__(command);
 
@@ -123,7 +126,6 @@ void __execute__(const Command * command){
   if(command->extra_args.confirmtion == CONFIRM &&
     _get_confirm(command) != true)
   {
-    animate(glitch);
     return;
   }
 
@@ -134,7 +136,6 @@ void __execute__(const Command * command){
   }
 
   animate(command->pre_animation);
-  if(command->extra_args.confirmtion == CONFIRM && _confirm() == 1) return;
   endwin();
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
@@ -424,11 +425,6 @@ void _chdir(char * target_dir){
   if (setenv("PWD", target_dir, 1) != 0) {  
     crit("setenv error");
   }
-}
-
-// TODO: implement
-int _confirm(){
-  return 0;
 }
 
 // TODO: PREFLIGHT CHECK

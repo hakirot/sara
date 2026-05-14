@@ -85,65 +85,79 @@ void _print_menu_borders(int dim_y, int dim_x){
 void _print_confirm_window(char * header){
 
   clear();
+  int r_stop = COL - 2;
+  int l_stop = 1;
+  int width = COL - 3;
+
+  if(COL > 20){
+    r_stop = COL/2 + 8;
+    l_stop = COL/2 - 8;;
+    width = 16;
+  }
 
   attron(COLOR_PAIR(menu_c));
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - 1, 2, &cchar);
+  mvadd_wch(ROW/2 - 1, l_stop, &cchar);
 
   wc = MenuBorder[1];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - 1, COL - 2, &cchar);
+  mvadd_wch(ROW/2 - 1, r_stop, &cchar);
 
   wc = MenuBorder[2];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 + 1, 2, &cchar);
+  mvadd_wch(ROW/2 + 1, l_stop, &cchar);
 
   wc = MenuBorder[3];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 + 1, COL - 2, &cchar);
+  mvadd_wch(ROW/2 + 1, r_stop, &cchar);
 
   wc = MenuBorder[4];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  for(int i = 3; i < COL - 2; i++){
-    mvadd_wch(ROW/2 - 1, i, &cchar);
-    mvadd_wch(ROW/2 + 1, i, &cchar);
+  for(int i = 1; i < width; i++){
+    mvadd_wch(ROW/2 - 1, l_stop + i, &cchar);
+    mvadd_wch(ROW/2 + 1, l_stop + i, &cchar);
   }
 
   wc = MenuBorder[5];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  for(int i = 1; i < menu_y - 1; i++){
-    mvadd_wch(ROW/2, 2, &cchar);
-    mvadd_wch(ROW/2, COL - 2, &cchar);
+  for(int i = 1; i < width - 1; i++){
+    mvadd_wch(ROW/2, l_stop, &cchar);
+    mvadd_wch(ROW/2, r_stop, &cchar);
   }
 
   attroff(COLOR_PAIR(menu_c));
   attron(COLOR_PAIR(menu_c + 8));
-  int hpos = 8;
+
   char * str = "Execute ";
+  int len1 = strlen(str);
+  int len2 = strlen(header);
+  int len3 = len1 + len2;
 
-  int str_len = strlen(str);
-
-  for(int i = 0; i < str_len; i++){
-    mvaddch(ROW/2 - 1, hpos + i, str[i]);
+  for(int i = 0; i < len1; i++){
+    mvaddch(ROW/2 - 2, COL/2 - len3/2 + i - 1, str[i]);
   }
 
-  hpos += str_len;
-  str_len = strlen(header);
-
-  for(int i = 0; i < str_len; i++){
-    mvaddch(ROW/2 - 1, hpos + i, header[i] - 32);
+  for(int i = 0; i < len2; i++){
+    mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1 - 1, header[i] - 32);
   }
 
-  hpos += str_len;
-  mvaddch(ROW/2 - 1, hpos, '?');
+  mvaddch(ROW/2 - 2, COL/2 - len3/2 + len3 - 1, '?');
 
   attroff(COLOR_PAIR(menu_c + 8));
   refresh();
 }
 
 void _print_confirm_selection(int selection){
+
+  int r_stop = COL - 2;
+  int l_stop = 1;
+
+  if(COL > 20){
+    r_stop = COL/2 + 8;
+    l_stop = COL/2 - 8;;
+  }
 
   char * yes = "Yes";
   char * no = "No";
@@ -155,7 +169,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 3; i++){
-    mvaddch(ROW/2, (COL/2 - COL/4) + i, yes[i]);
+    mvaddch(ROW/2, l_stop + 2 + i, yes[i]);
   }
 
   if(selection == false){
@@ -165,7 +179,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 2; i++){
-    mvaddch(ROW/2, (COL/2 + COL/4) + i, no[i]);
+    mvaddch(ROW/2, r_stop - 3 + i, no[i]);
   }
 
   attroff(COLOR_PAIR(menu_c));

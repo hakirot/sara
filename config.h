@@ -313,7 +313,7 @@ static const Menu S_menu[] = {
 static const char *firefox_cmd[] = { "firefox", NULL };
 static const Command firefox = { 0, firefox_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
-static const char *slippi_cmd[] = { "slippi", NULL };
+static const char *slippi_cmd[] = { "nohup", "slippi", NULL };
 static const Command slippi = { 0, slippi_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
 static const char *discord_cmd[] = { "discord", NULL };
@@ -323,10 +323,6 @@ static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },
   { "SLIPPI", COMMAND, { .command = slippi } },
   { "DISCORD", COMMAND, { .command = discord } },
-  { "dISC", COMMAND, { .command = discord } },
-  { "fISCORD", COMMAND, { .command = discord } },
-  { "iI", COMMAND, { .command = discord } },
-  { "AISCORD", COMMAND, { .command = discord } },
   END_OF_MENU
 };
 

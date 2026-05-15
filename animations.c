@@ -87,7 +87,7 @@ void _print_menu_borders(int dim_y, int dim_x){
   refresh();
 }
 
-void _print_confirm_window(char * header){
+void _print_confirm_window(char * command_str){
 
   clear();
   int r_stop = COL - 2;
@@ -137,7 +137,7 @@ void _print_confirm_window(char * header){
 
   char * str = "Execute ";
   int len1 = strlen(str);
-  int len2 = strlen(header);
+  int len2 = strlen(command_str);
   int len3 = len1 + len2;
 
   for(int i = 0; i < len1; i++){
@@ -145,7 +145,12 @@ void _print_confirm_window(char * header){
   }
 
   for(int i = 0; i < len2; i++){
-    mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1 - 1, header[i] - 32);
+
+    if(command_str[i] > 96 && command_str[i] < 123){
+      mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1 - 1, command_str[i] - 32);
+    } else {
+      mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1 - 1, command_str[i]);
+    }
   }
 
   mvaddch(ROW/2 - 2, COL/2 - len3/2 + len3 - 1, '?');
@@ -883,8 +888,12 @@ void _down_wipes(){
 }
 
 void tinyprint() {
+  attron(COLOR_PAIR(FOREGROUND));
+  if(use_bold_color_for_fg) attron(A_BOLD);
   int len = strlen(tn);
   for(int i = 0; i < len; i++){
     mvaddch(ROW/2, COL/2 - len/2 + i, tn[i] );
   }
+  attroff(COLOR_PAIR(FOREGROUND));
+  attroff(A_BOLD);
 }

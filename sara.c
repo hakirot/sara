@@ -509,38 +509,86 @@ void fork_newlook(char * file){
 void _pshd(){
 
   CACHE = ROW + COL;
-  FILE *file = fopen("/home/hakirot/.config/pshd/dir", "r");
+  ensure_config_dir();
 
+  const char *env_home = getenv("HOME");
+  const char *sara_wd = "/.config/sara/dir";
+  char pshd_file[256] = {'\0'};
+  sprintf(pshd_file, "%s%s", env_home, sara_wd);
+
+
+  FILE *file = fopen(pshd_file, "r");
+
+  // TODO: Make this a usererror and return if it fails
   if (file == NULL){
-    crit("ERROR: error opening pshd file");
+    return;
   }
 
+  int count = 0;
   char line[256] = {'\0'};
-  int i = 0;
-  attron(COLOR_PAIR(FOREGROUND));
   while(fgets(line, sizeof(line), file)){
-    line[strcspn(line, "\n")] = 0;
-    int len = strlen(line);
-    if(len < 42){
-      if (i < 10) {
-        memset(line + len, ' ', 38 - len);
-      } else {
-        memset(line + len, ' ', 37 -  len);
-        line[37] = '\0';
+    count++;
+  }
+
+  rewind(file);
+
+  unsigned short dim_x = 0;
+  unsigned short dim_y = 0;
+
+  if(ROW <= pshd_y) {
+    dim_y = ROW;
+//  crit("a");
+  } else if (count <= pshd_y - 2) {
+    dim_y = count + 2;
+//  crit("b");
+  } else {
+    dim_y = pshd_y;
+//  crit("c");
+  }
+
+  if(COL < pshd_x){
+    dim_x = COL;
+  } else {
+    dim_x = pshd_x;
+  }
+
+  _print_pshd_borders(dim_y, dim_x);
+  refresh();
+
+  int i = 0;
+  int home_len = strlen(env_home);
+  int line_offset = 4;
+  attron(COLOR_PAIR(FOREGROUND));
+  while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+
+    if(strstr(line, env_home) != NULL){
+      line[0] = '~';
+      line[1] = '/';
+      for(int j = 2; j < strlen(line); j++){
+        line[j] = line[j + home_len - 1];
       }
     }
-    if(i == 0){
-      mvprintw(i + 1, 2, "%s", option_window[0]);
-      mvprintw(i + 2, 3, "[%d] %s", i, line);
-    } else if (i > 0){
-      mvprintw(i + 2, 3, "[%d] %s", i, line);
+
+    line[strcspn(line, "\n")] = 0;
+
+    int len = strlen(line);
+    mvprintw(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + 2, "%d", i);
+    for(int j = 0; j < len; j++){
+      mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
+      if((j + 8) > dim_x) break;
     }
-    refresh();
     i++;
-//  usleep(5000);
-    usleep(1000);
   }
-  mvprintw(i + 2, 2, "%s", option_window[6]);
+
+  refresh();
+  getchar();
+  return;
+
+
+
+
+
+//mvprintw(i + 2, 2, "%s", option_window[6]);
   attroff(COLOR_PAIR(FOREGROUND));
   refresh();
 
@@ -625,7 +673,7 @@ void _pshd(){
     } else if (input == 7){
       j = 0;
       memset(entry, '\0', 16);
-      mvprintw(1, 2, "%s", option_window[0]);
+//    mvprintw(1, 2, "%s", option_window[0]);
       if(prev_sel > -1){
         attron(COLOR_PAIR(FOREGROUND));
         mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
@@ -675,7 +723,7 @@ void _pshd(){
         if (input == 27){
 
           rewind(file);
-          mvprintw(1, 2, "%s", option_window[0]);
+//        mvprintw(1, 2, "%s", option_window[0]);
 
           // duplicated code
           attron(COLOR_PAIR(BACKGROUND));
@@ -699,7 +747,7 @@ void _pshd(){
               }
             }
             if(i == 0){
-              mvprintw(i + 1, 2, "%s", option_window[0]);
+//            mvprintw(i + 1, 2, "%s", option_window[0]);
               mvprintw(i + 2, 3, "[%d] %s", i, line);
             } else if (i > 0){
               mvprintw(i + 2, 3, "[%d] %s", i, line);
@@ -707,7 +755,7 @@ void _pshd(){
             refresh();
             i++;
           }
-          mvprintw(i + 2, 2, "%s", option_window[6]);
+//        mvprintw(i + 2, 2, "%s", option_window[6]);
           attroff(COLOR_PAIR(FOREGROUND));
           refresh();
 

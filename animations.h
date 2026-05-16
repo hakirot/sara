@@ -25,9 +25,11 @@ void _fg(const char * glyph[]);
 void _hd();
 void _overlay(const char * glyph[], char fill);
 void _print_menu_borders(int dim_y, int dim_x);
+void _print_pshd_borders(int dim_y, int dim_x);
 void _print_confirm_window(char * command_str);
 void _print_confirm_selection(int selection);
 void _clear_menu(int dim_y, int dim_x);
+void _clear_pshd_window(int dim_y, int dim_x);
 void tinyprint();
 
 #endif

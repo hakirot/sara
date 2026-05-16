@@ -298,6 +298,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
 }
 
 void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x){
+
   _clear_menu(dim_y, dim_x);
   int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
@@ -515,6 +516,7 @@ void preflight_check() {
   // assert menu_y > 1
   // assert resize_x/y values are larger than tiny_mode_x/y
   // assert MenuBorder is the correct length
+  // assert pshd_x < 258
 }
 
 // TODO: implement
@@ -531,7 +533,6 @@ void crit(char * err) {
 
 int is_char_in_search(wchar_t wc, const wchar_t * search_str) {
 
-//  Iterate through the wide-character array
     for (size_t i = 0; i < wcslen(search_str); i++) {
         if (wc == search_str[i]) {
             return 1; // Character found
@@ -546,7 +547,6 @@ void ensure_cache_dir(){
   char cache_dir[256] = {'\0'};
   sprintf(cache_dir, "%s%s", env_home, sara_wd);
 
-  // Check if dir exists
   DIR* dir = opendir(cache_dir);
   if (dir) {
     closedir(dir);
@@ -559,6 +559,28 @@ void ensure_cache_dir(){
       char error_str[256] = {'\0'};
       sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
       crit(error_str);
+    }
+  }
+}
+
+void ensure_config_dir(){
+  const char *env_home = getenv("HOME");
+  const char *sara_wd = "/.config/sara";
+  char config_dir[256] = {'\0'};
+  sprintf(config_dir, "%s%s", env_home, sara_wd);
+
+  DIR* dir = opendir(config_dir);
+  if (dir) {
+    closedir(dir);
+  } else if (ENOENT == errno) {
+    char dir_name[256] = {'\0'};
+    sprintf(dir_name, "%s%s", env_home, "/.cache/sara");
+    int status = mkdir(dir_name, 0755);
+
+    if (status != 0) {
+      char err[256] = {'\0'};
+      sprintf(err, "%s%s" , "Error creating directory ", dir_name);
+      crit(err);
     }
   }
 }

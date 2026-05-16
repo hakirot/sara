@@ -555,308 +555,93 @@ void _pshd(){
   _print_pshd_borders(dim_y, dim_x);
   refresh();
 
-  int i = 0;
   int home_len = strlen(env_home);
   int line_offset = 4;
+  int input;
+  int selection = 0;
+  int reprint = true;
   attron(COLOR_PAIR(FOREGROUND));
-  while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
-
-    if(strstr(line, env_home) != NULL){
-      line[0] = '~';
-      line[1] = '/';
-      for(int j = 2; j < strlen(line); j++){
-        line[j] = line[j + home_len - 1];
-      }
-    }
-
-    line[strcspn(line, "\n")] = 0;
-
-    int len = strlen(line);
-    mvprintw(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + 2, "%d", i);
-    for(int j = 0; j < len; j++){
-      mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
-      if((j + 8) > dim_x) break;
-    }
-    i++;
-  }
-
-  refresh();
-  getchar();
-  return;
-
-
-
-
-
-//mvprintw(i + 2, 2, "%s", option_window[6]);
-  attroff(COLOR_PAIR(FOREGROUND));
-  refresh();
-
-  char entry[16] = {'\0'};
-  char input;
-  int j = 0;
-  int entry_as_int = -1;
-  int prev_sel = -1;
-  char prev_line[256] = {'\0'};
 
   while(1){
 
     getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL){
-      CACHE = check_size();
-      break;
-    }
+    if (CACHE != ROW + COL) return;
 
     input = getch();
-    if ((input > 47 && input < 58) || input == 'j' || input == 'k'){
-      if(input == 'j'){
-        entry_as_int++;
-        if (entry_as_int == i){
-          entry_as_int = i - 1;
-        } else {
-          prev_sel = entry_as_int - 1;
-        }
-        sprintf(entry, "%d", entry_as_int);
-      } else if (input == 'k'){
-        entry_as_int--;
-        if (entry_as_int == -1){
-          entry_as_int = 0;
-        } else {
-          prev_sel = entry_as_int + 1;
-        }
-        sprintf(entry, "%d", entry_as_int);
+    if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
+      reprint = true;
+      if (input == 'j'){
+        selection = (selection + 1) % count;
       } else {
-        entry[j] = input;
-        j++;
+        selection = (selection + (count - 1)) % count;
       }
-      sscanf(entry, "%d", &entry_as_int);
-      if(entry_as_int >= i){
+    } else if (input == 'q' || input == 27){
+      animate(glitch);
+      return;
+    } else if (input == '\n'){
+      animate(neon);
+      int i = 0;
+      while(fgets(line, sizeof(line), file)){
+        line[strcspn(line, "\n")] = 0;
+        if(i == selection) break;
+        i++;
+      }
+
+      chdir(line);
+
+      if (setenv("PWD", line, 1) != 0) {
+        crit("setenv error");
+      }
+      fclose(file);
+      return;
+    }
+
+    if(reprint){
+      _clear_pshd_window(dim_y, dim_x);
+      int i = 0;
+      int k = -1;
+      while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+
+        k++;
+        if(k < selection && k < (count - (dim_y - 2))){
+          continue;
+        }
+
+        if(strstr(line, env_home) != NULL){
+          line[0] = '~';
+          line[1] = '/';
+          for(int j = 2; j < (int)strlen(line); j++){
+            line[j] = line[j + home_len - 1];
+          }
+        }
+
+        line[strcspn(line, "\n")] = 0;
+
         attron(COLOR_PAIR(FOREGROUND));
-        mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
-        refresh();
-        attroff(COLOR_PAIR(FOREGROUND));
-        j = 0;
-        memset(entry, '\0', 16);
-        memset(prev_line, '\0', 256);
-        entry_as_int = -1;
-        prev_sel = -1;
+
+        int len = strlen(line);
+        mvprintw(ROW/2 - dim_y/2 + i + 1, COL/2 - dim_x/2 + 2, "%d", k);
+
+        if(k == selection) attron(COLOR_PAIR(FOREGROUND + 8));
+
+        for(int j = 0; j < len; j++){
+          mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
+          if((j + 8) > dim_x) break;
+        }
+        if(k == selection) attroff(COLOR_PAIR(FOREGROUND));
+        if(k == selection) attroff(COLOR_PAIR(FOREGROUND + 8));
+
+        i++;
+        refresh(); //debug
       }
       rewind(file);
-      int k = 0;
-      if(entry_as_int > -1){
-
-        if(prev_sel > -1){
-          attron(COLOR_PAIR(FOREGROUND));
-          mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
-          refresh();
-          attroff(COLOR_PAIR(FOREGROUND));
-          prev_sel = -1;
-        }
-
-        while(fgets(line, sizeof(line), file)){
-          line[strcspn(line, "\n")] = 0;
-          if(k == entry_as_int){
-
-            prev_sel = entry_as_int;
-            strncpy(prev_line, line, 256);
-
-            attron(COLOR_PAIR(FOREGROUND + 8));
-            mvprintw(k + 2, 3, "[%d] %s", k, line);
-            attroff(COLOR_PAIR(FOREGROUND + 8));
-            refresh();
-          }
-          k++;
-        }
-      }
-
-    // TODO is this an ST implementation?
-    } else if (input == 7){
-      j = 0;
-      memset(entry, '\0', 16);
-//    mvprintw(1, 2, "%s", option_window[0]);
-      if(prev_sel > -1){
-        attron(COLOR_PAIR(FOREGROUND));
-        mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
-        refresh();
-        attroff(COLOR_PAIR(FOREGROUND));
-      }
-      prev_sel = -1;
-      refresh();
-
-    } else if (input == '\n'){
-
-      fclose(file);
-
-      if(strlen(prev_line) > 0){
-
-        prev_line[strcspn(prev_line, "\n")] = 0;
-        chdir(prev_line);
-        if (setenv("PWD", prev_line, 1) != 0) {
-          crit("setenv error");
-        }
-        animate(neon);
-      } else {
-        animate(glitch_full);
-      }
-      return;
-    } else if (input == 'q'){
-      fclose(file);
-      animate(glitch_full);
-      return;
-    } else if (input == 'f' || input == '/') {
-
-      attron(COLOR_PAIR(FOREGROUND));
-      mvprintw(prev_sel + 2, 3, "[%d] %s", prev_sel, prev_line);
-      refresh();
-      attroff(COLOR_PAIR(FOREGROUND));
-
-      char buffer[256] = {'\0'};
-      attron(COLOR_PAIR(FOREGROUND +  16));
-      mvprintw(1, 2, "%s", " FIND:               ");
-      attroff(COLOR_PAIR(FOREGROUND + 16));
-      refresh();
-      int l = 0;
-      char * padding = "                                            ";
-      char sel_line[256] = {'\0'};
-      while(1){
-        input = getch();
-        if (input == 27){
-
-          rewind(file);
-//        mvprintw(1, 2, "%s", option_window[0]);
-
-          // duplicated code
-          attron(COLOR_PAIR(BACKGROUND));
-          for(int n = 0; n < i; n++){
-            mvprintw(2 + n, 2, "%s", padding);
-          }
-          attroff(COLOR_PAIR(BACKGROUND));
-
-          // duplicated code
-          i = 0;
-          attron(COLOR_PAIR(FOREGROUND));
-          while(fgets(line, sizeof(line), file)){
-            line[strcspn(line, "\n")] = 0;
-            int len = strlen(line);
-            if(len < 42){
-              if (i < 10) {
-                memset(line + len, ' ', 38 - len);
-              } else {
-                memset(line + len, ' ', 37 -  len);
-                line[37] = '\0';
-              }
-            }
-            if(i == 0){
-//            mvprintw(i + 1, 2, "%s", option_window[0]);
-              mvprintw(i + 2, 3, "[%d] %s", i, line);
-            } else if (i > 0){
-              mvprintw(i + 2, 3, "[%d] %s", i, line);
-            }
-            refresh();
-            i++;
-          }
-//        mvprintw(i + 2, 2, "%s", option_window[6]);
-          attroff(COLOR_PAIR(FOREGROUND));
-          refresh();
-
-          break;
-        } else if (input > 31 && input < 127) {
-          memset(sel_line, '\0', 256);
-
-          buffer[l] = input;
-
-          attron(COLOR_PAIR(FOREGROUND + 8));
-          mvaddch(1, 9 + l, buffer[l]);
-          attroff(COLOR_PAIR(FOREGROUND + 8));
-          l++;
-
-          attron(COLOR_PAIR(BACKGROUND));
-          for(int n = 0; n < i; n++){
-            mvprintw(2 + n, 2, "%s", padding);
-          }
-          attroff(COLOR_PAIR(BACKGROUND));
-          refresh();
-
-          int m = 0;
-          int n = 0;
-          rewind(file);
-          while(fgets(line, sizeof(line), file)){
-            line[strcspn(line, "\n")] = 0;
-            if(strstr(line, buffer)){
-
-              if (m == 0){
-                strncpy(sel_line, line, 256);
-                attron(COLOR_PAIR(FOREGROUND + 8));
-                mvprintw(2 + m, 3, "[%d] %s", n, line);
-                attroff(COLOR_PAIR(FOREGROUND + 8));
-              } else {
-                attron(COLOR_PAIR(FOREGROUND));
-                mvprintw(2 + m, 3, "[%d] %s", n, line);
-                attroff(COLOR_PAIR(FOREGROUND));
-              }
-              m++;
-            }
-            n++;
-          }
-          refresh();
-        } else if (input == 7){ // this could be an ST implementation only..
-          l--;
-          buffer[l] = 0;
-          if (l < 0) l = 0;
-          attron(COLOR_PAIR(white_black));
-          mvaddch(1, 9 + l, ' ');
-          attroff(COLOR_PAIR(white_black));
-
-          // copied from above
-          attron(COLOR_PAIR(BACKGROUND));
-          for(int n = 0; n < i; n++){
-            mvprintw(2 + n, 2, "%s", padding);
-          }
-          attroff(COLOR_PAIR(BACKGROUND));
-
-          rewind(file);
-          int m = 0;
-          int n = 0;
-          while(fgets(line, sizeof(line), file)){
-            line[strcspn(line, "\n")] = 0;
-            if(strstr(line, buffer)){
-
-              if (m == 0){
-                strncpy(sel_line, line, 256);
-                attron(COLOR_PAIR(FOREGROUND + 8));
-                mvprintw(2 + m, 3, "[%d] %s", n, line);
-                attroff(COLOR_PAIR(FOREGROUND + 8));
-              } else {
-                attron(COLOR_PAIR(FOREGROUND));
-                mvprintw(2 + m, 3, "[%d] %s", n, line);
-                attroff(COLOR_PAIR(FOREGROUND));
-              }
-              m++;
-            }
-            n++;
-            usleep(10000);
-          }
-
-          refresh();
-        } else if (input == '\n'){
-
-          fclose(file);
-          if(strlen(sel_line) > 0){
-            chdir(sel_line);
-            if (setenv("PWD", sel_line, 1) != 0) {
-              crit("setenv error");
-            }
-            animate(neon);
-          } else {
-            animate(glitch);
-          }
-          return;
-        }
-        usleep(50000);
-      }
+      reprint = false;
     }
-    usleep(50000);
   }
+
+  refresh();
+  return;
+
 }
 
 struct file_node * init_dir_list(char * dir){

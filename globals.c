@@ -27,6 +27,7 @@ int BG_GLYPH_HEIGHT;
 int FG_GLYPH_HEIGHT;
 int BG_GLYPH_LENGTH;
 int FG_GLYPH_LENGTH;
+int HD_LENGTH;
 
 int option_window_height = 7;
 int option_window_length = 44;

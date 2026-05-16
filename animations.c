@@ -321,7 +321,7 @@ void _neon(){
       if (WIN_SIZE == NORMAL && IM_SET){
         _fg(im);
       } else if (WIN_SIZE == NORMAL && !IM_SET){
-        _overlay(fg, '+');
+        _overlay(fg, '_');
       } else {
         _bg();
       }
@@ -345,7 +345,7 @@ void _neon(){
         if (IM_SET){
           _overlay(im, 0);
         } else {
-          _overlay(fg, '-');
+          _overlay(fg, '_');
         }
       }
       second_frame = 1;
@@ -369,6 +369,8 @@ void _neon(){
 
 void _neon_reverse(){
 
+  clear();
+
   clock_t cycle_start = clock();
   double cycle_length = 0.2;
   double elapsed_time = 0;
@@ -385,7 +387,7 @@ void _neon_reverse(){
         if(IM_SET){
           _fg(im);
         } else {
-          _overlay(fg, '-');
+          _overlay(fg, '_');
         }
       } else {
 
@@ -393,7 +395,7 @@ void _neon_reverse(){
           _bg();
           _overlay(im, 0);
         } else {
-          _overlay(fg, '-');
+          _overlay(fg, '_');
         }
       }
       first_frame = 1;
@@ -402,7 +404,7 @@ void _neon_reverse(){
     if(elapsed_time > 0.1 && second_frame == 0){
       clear();
       if (WIN_SIZE == NORMAL){
-        _overlay(fg, '-');
+        _overlay(fg, '_');
       } else {
         _bg();
       }
@@ -806,7 +808,15 @@ void _hd(){
     }
 
     if(WIN_SIZE == BIG){
-      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x, hd);
+
+      cchar_t cchar;
+
+      for(int i = 0; i < HD_LENGTH; i++){
+        wchar_t wc = hd[i];
+        setcchar(&cchar, &wc, 0, 0, NULL);
+        mvadd_wch(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x + i, &cchar);
+      }
+
     } else {
       mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
     }

@@ -735,5 +735,6 @@ void set_glyph_dimensions(){
   FG_GLYPH_HEIGHT = sizeof(fg)/sizeof(fg[0]);
   BG_GLYPH_LENGTH = mbstowcs(NULL, bg[0], 0);
   FG_GLYPH_LENGTH = mbstowcs(NULL, fg[0], 0);
+  HD_LENGTH = mbstowcs(NULL, hd, 0);
   if(im[0] == NULL) IM_SET = false;
 }

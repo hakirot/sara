@@ -139,6 +139,7 @@ extern int BG_GLYPH_HEIGHT;
 extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;
 extern int FG_GLYPH_LENGTH;
+extern int HD_LENGTH;
 
 extern int option_window_height;
 extern int option_window_length;

@@ -502,10 +502,8 @@ void fork_newlook(char * file){
   }
 }
 
-// TODO: fix the multiple out-of-bounds printing problem
 // TODO: implement bold fg color if use_bold_color_for_fg is set
-// TODO: make ESC also exit pshd
-// TODO: backspace reprints top border white
+// TODO: fix color bug on filter backspace
 void _pshd(){
 
   CACHE = ROW + COL;
@@ -757,9 +755,8 @@ void _pshd(){
           mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
           if((j + 8) > dim_x) break;
         }
-        // TODO: what
-        if(k == selection) attroff(COLOR_PAIR(FOREGROUND));
-        if(k == selection) attroff(COLOR_PAIR(FOREGROUND + 8));
+        attroff(COLOR_PAIR(FOREGROUND));
+        attroff(COLOR_PAIR(FOREGROUND + 8));
 
         i++;
         refresh(); //debug

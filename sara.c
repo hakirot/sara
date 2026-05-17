@@ -535,7 +535,9 @@ void _pshd(){
   unsigned short dim_x = 0;
   unsigned short dim_y = 0;
 
-  if(ROW <= pshd_y) {
+  if(ROW >= count+2 && pshd_y-2 > count){
+    dim_y = count+2;
+  } else if(ROW <= pshd_y) {
     dim_y = ROW;
   } else if (count <= pshd_y - 2) {
     dim_y = count + 2;
@@ -564,7 +566,10 @@ void _pshd(){
   while(1){
 
     getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL) return;
+    if (CACHE != ROW + COL){
+      fclose(file);
+      return;
+    }
 
     input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
@@ -575,10 +580,10 @@ void _pshd(){
         selection = (selection + (count - 1)) % count;
       }
     } else if (input == 'q' || input == 27){
+      fclose(file);
       animate(glitch);
       return;
     } else if (input == '\n'){
-      animate(neon);
       int i = 0;
       while(fgets(line, sizeof(line), file)){
         line[strcspn(line, "\n")] = 0;
@@ -592,6 +597,7 @@ void _pshd(){
         crit("setenv error");
       }
       fclose(file);
+      animate(neon);
       return;
     } else if (input > 47 && input < 58){
 
@@ -603,12 +609,120 @@ void _pshd(){
         if(selection > count){
           selection = 0;
           memset(&input_digits, 0, 16);
-          input_digits_idx = 1;
+          input_digits_idx = 0;
         }
 
         reprint = true;
     } else if (input == '/' || input == 'f') {
+      attron(FOREGROUND);
+      mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2, "FILTER ");
+//    attroff(FOREGROUND);
+      refresh();
+      char search_buffer[256] = {'\0'};
+      int char_idx = 0;
+      int chdir_at_seletion = false;
 
+      while(1){
+        attron(FOREGROUND);
+        input = getch();
+
+        getmaxyx(stdscr, ROW, COL);
+        if (CACHE != ROW + COL){
+          fclose(file);
+          return;
+        }
+
+        if (input > 31 && input < 127){
+          _clear_pshd_window(dim_y, dim_x);
+          search_buffer[char_idx] = (char)input;
+          char_idx++;
+          attron(FOREGROUND);
+          mvaddch(ROW/2 - dim_y/2, COL/2 - dim_x/2 +  6 + char_idx, (char)input);
+//        attroff(FOREGROUND);
+          reprint = true;
+
+
+        } else if (input == '\n'){
+          reprint = true;
+          chdir_at_seletion = true;
+        } else if (input == 27){
+          _print_pshd_borders(dim_y, dim_x);
+          reprint = true;
+          break;
+        } else if (input > 0) {
+          // Backspaces
+          _print_pshd_borders(dim_y, dim_x);
+          attron(FOREGROUND);
+          mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2, "FILTER ");
+
+          char_idx--;
+          search_buffer[char_idx] = '\0';
+          mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2 + 7, "%s", search_buffer);
+          if(char_idx < 0) char_idx = 0;
+
+//        attroff(FOREGROUND);
+          refresh();
+          reprint = true;
+        }
+
+        if(reprint == true){
+          int i = 0;
+          int k = 0;
+          while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+
+            line[strcspn(line, "\n")] = 0;
+            if(strstr(line, search_buffer)){
+
+              attron(COLOR_PAIR(FOREGROUND));
+              mvprintw(ROW/2 - dim_y/2 + i + 1, COL/2 - dim_x/2 + 2, "%d", k);
+              attroff(COLOR_PAIR(FOREGROUND));
+
+              if(i == 0) {
+                attron(COLOR_PAIR(FOREGROUND + 8));
+                selection = k;
+                if(chdir_at_seletion){
+
+                  chdir(line);
+
+                  if (setenv("PWD", line, 1) != 0) {
+                    crit("setenv error");
+                  }
+                  fclose(file);
+                  animate(neon);
+                  return;
+                }
+              } else {
+                attron(COLOR_PAIR(FOREGROUND));
+              }
+
+              if(strstr(line, env_home) != NULL){
+                line[0] = '~';
+                line[1] = '/';
+                for(int j = 2; j < (int)strlen(line); j++){
+                  line[j] = line[j + home_len - 1];
+                }
+              }
+
+              int len = strlen(line);
+              for(int j = 0; j < len; j++){
+                mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
+                if((j + 8) > dim_x) break;
+              }
+//            attroff(COLOR_PAIR(FOREGROUND));
+//            attroff(COLOR_PAIR(FOREGROUND + 8));
+
+              i++;
+            }
+            k++;
+          }
+
+          reprint = false;
+          rewind(file);
+
+        }
+
+        usleep(2000);
+      }
     }
 
     if(reprint){
@@ -643,6 +757,7 @@ void _pshd(){
           mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
           if((j + 8) > dim_x) break;
         }
+        // TODO: what
         if(k == selection) attroff(COLOR_PAIR(FOREGROUND));
         if(k == selection) attroff(COLOR_PAIR(FOREGROUND + 8));
 
@@ -652,6 +767,7 @@ void _pshd(){
       rewind(file);
       reprint = false;
     }
+    usleep(2000);
   }
 
   refresh();

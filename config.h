@@ -285,8 +285,8 @@ static const Builtin builtinkeys[] = {
 
 /* MENUS CONFIGURATION */
 
-//static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
+//static const wchar_t MenuBorder[] = L"++++  ";
 static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
 static const unsigned short menu_x            = 44;       // Must be > 2
@@ -342,7 +342,6 @@ static const Command btm = { 0, btm_cmd, WAIT, neon_reverse, neon, defaults  };
 static const Menu b_menu[] = {
   { "BLUETOOTH", SUBMENU, { .submenu = connect_options } },
   { "boot_spawns", COMMAND, { .command = boot_spawns } },
-  { "btm", COMMAND, { .command = btm } },
   END_OF_MENU
 };
 
@@ -386,8 +385,9 @@ static const char *dmesg_cmd[] = { "sudo", "dmesg", "-w", NULL };
 static const Command dmesg = { 0, dmesg_cmd, WAIT, neon_reverse, neon, defaults  };
 
 static const Menu L_menu[] = {
-  { "journalctl", COMMAND, { .command = journalctl } },
-  { "dmesg", COMMAND, { .command = dmesg } },
+  { "journalctl -f", COMMAND, { .command = journalctl } },
+  { "dmesg -w", COMMAND, { .command = dmesg } },
+  { "btm", COMMAND, { .command = btm } },
   END_OF_MENU
 };
 
@@ -403,8 +403,8 @@ static const MenuKey menukeys[] = {
 /* PSHD UI CONFIG */
 
 // Menu dimensions
-static const unsigned short pshd_x = 30;
-static const unsigned short pshd_y = 10;
+static const unsigned short pshd_x = 32;
+static const unsigned short pshd_y = 12;
 static const unsigned short pshd_offset_x = 0;
 static const unsigned short pshd_offset_y = 0;
 

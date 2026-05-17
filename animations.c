@@ -127,7 +127,7 @@ void _print_pshd_borders(int dim_y, int dim_x){
     mvadd_wch(ROW/2 - dim_y/2 + i + menu_offset_y, COL/2 - dim_x/2 + dim_x - 1 + menu_offset_x, &cchar);
   }
   attroff(A_BOLD);
-  attroff(COLOR_PAIR(menu_c));
+  attroff(COLOR_PAIR(FOREGROUND));
 
   _clear_pshd_window(dim_y, dim_x);
   refresh();

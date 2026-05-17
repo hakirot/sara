@@ -178,7 +178,7 @@ static const int fg_offset_x = -1;
 
 /* header position when fullsize mode */
 static const int hd_offset_y = -1;
-static const int hd_offset_x = -1;
+static const int hd_offset_x = -4;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = 0;
@@ -291,8 +291,8 @@ static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
 static const unsigned short menu_x            = 44;       // Must be > 2
 static const unsigned short menu_y            = 8;        // Must be > 2
-static const short menu_offset_y              = 0;
-static const short menu_offset_x              = 0;
+static const short menu_offset_y              = 0;        // TODO: Implement
+static const short menu_offset_x              = 0;        // TODO: Implement
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
@@ -336,9 +336,13 @@ static const Menu connect_options[] = {
 static const char *boot_spawns_cmd[] = { "boot_spawns", NULL };
 static const Command boot_spawns = { 0, boot_spawns_cmd, STOP_ON_ERR, glitch_full, down_wipes, confirms };
 
+static const char *btm_cmd[] = { "btm", NULL };
+static const Command btm = { 0, btm_cmd, WAIT, neon_reverse, neon, defaults  };
+
 static const Menu b_menu[] = {
   { "BLUETOOTH", SUBMENU, { .submenu = connect_options } },
   { "boot_spawns", COMMAND, { .command = boot_spawns } },
+  { "btm", COMMAND, { .command = btm } },
   END_OF_MENU
 };
 
@@ -376,18 +380,14 @@ static const Menu F_menu[] = {
 };
 
 static const char *journalctl_cmd[] = { "journalctl", "-f", NULL };
-static const Command journalctl = { 0, journalctl_cmd, WAIT, glitch_full, glitch_full, defaults  };
+static const Command journalctl = { 0, journalctl_cmd, WAIT, neon_reverse, neon, defaults  };
 
 static const char *dmesg_cmd[] = { "sudo", "dmesg", "-w", NULL };
-static const Command dmesg = { 0, dmesg_cmd, WAIT, glitch_full, glitch_full, defaults  };
-
-static const char *btm_cmd[] = { "btm", NULL };
-static const Command btm = { 0, btm_cmd, WAIT, glitch_full, glitch_full, defaults  };
+static const Command dmesg = { 0, dmesg_cmd, WAIT, neon_reverse, neon, defaults  };
 
 static const Menu L_menu[] = {
   { "journalctl", COMMAND, { .command = journalctl } },
   { "dmesg", COMMAND, { .command = dmesg } },
-  { "btm", COMMAND, { .command = btm } },
   END_OF_MENU
 };
 

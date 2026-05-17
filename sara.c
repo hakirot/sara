@@ -537,13 +537,10 @@ void _pshd(){
 
   if(ROW <= pshd_y) {
     dim_y = ROW;
-//  crit("a");
   } else if (count <= pshd_y - 2) {
     dim_y = count + 2;
-//  crit("b");
   } else {
     dim_y = pshd_y;
-//  crit("c");
   }
 
   if(COL < pshd_x){
@@ -558,6 +555,8 @@ void _pshd(){
   int home_len = strlen(env_home);
   int line_offset = 4;
   int input;
+  char input_digits[16] = {'\0'};
+  int input_digits_idx = 0;
   int selection = 0;
   int reprint = true;
   attron(COLOR_PAIR(FOREGROUND));
@@ -594,6 +593,22 @@ void _pshd(){
       }
       fclose(file);
       return;
+    } else if (input > 47 && input < 58){
+
+        input_digits[input_digits_idx] = input;
+        input_digits[input_digits_idx + 1] = 0;
+        input_digits_idx++;
+        selection = atoi(input_digits);
+
+        if(selection > count){
+          selection = 0;
+          memset(&input_digits, 0, 16);
+          input_digits_idx = 1;
+        }
+
+        reprint = true;
+    } else if (input == '/' || input == 'f') {
+
     }
 
     if(reprint){

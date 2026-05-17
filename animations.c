@@ -94,7 +94,7 @@ void _print_pshd_borders(int dim_y, int dim_x){
   }
 
   // TODO: handle small size offsets
-  attron(COLOR_PAIR(menu_c));
+  attron(COLOR_PAIR(FOREGROUND));
   if(bold_color_menu) attron(A_BOLD);
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;

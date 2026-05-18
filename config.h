@@ -293,7 +293,7 @@ static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 //static const wchar_t MenuBorder[] = L"++++-|";
 static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
-static const unsigned short menu_x            = 44;       // Must be > 2
+static const unsigned short menu_x            = 20;       // Must be > 2
 static const unsigned short menu_y            = 8;        // Must be > 2
 static const short menu_offset_y              = 0;        // TODO: Implement
 static const short menu_offset_x              = 0;        // TODO: Implement
@@ -410,16 +410,16 @@ static const Command gc = { 0, gc_cmd, STOP, none, none, defaults  };
 static const char *gdv_cmd[] = { "/home/hakirot/skps/gdv", NULL };
 static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };
 
-static const char *gp_cmd[] = { "gdv", NULL };
-static const Command gp = { 0, gp_cmd, STOP, none, none, defaults  };
+static const char *gp_cmd[] = { "git", "push", NULL };
+static const Command gp = { 0, gp_cmd, WAIT, none, neon, defaults  };
 
 static const Menu git_menu[] = {
   { "Short", COMMAND, { .command = gss } },
   { "Status", COMMAND, { .command = gs } },
+  { "gdv", COMMAND, { .command = gdv } },
   { "Add -A", COMMAND, { .command = gaa } },
   { "Commit", COMMAND, { .command = gc } },
-  { "gdv", COMMAND, { .command = gdv } },
-  { "Push", COMMAND, { .command = gdv } },
+  { "Push", COMMAND, { .command = gp } },
   END_OF_MENU
 };
 

@@ -57,13 +57,13 @@ int main(int argc, char* argv[]){
     }
   }
 
-//double WAIT_BUFFER = 0.10000;
+  // double WAIT_BUFFER = 0.10000;
   srand((unsigned)time(0));
 
   int opt;
   while ((opt = getopt(argc, argv, "cMFfbhrH")) != -1){
     switch (opt) {
-//    case 'c': WAIT_BUFFER = 0.00005; break;
+      // case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]){
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
 
-//  _blink();
+    // _blink();
     if(HOLOGRAPHIC == 1 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
@@ -132,8 +132,8 @@ const char * select_option_window(char* choices[], int len){
 
   animate(none);
 
-//int offset = 0;
-//if (WIN_SIZE != BIG) offset = 1;
+  //int offset = 0;
+  //if (WIN_SIZE != BIG) offset = 1;
 
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);
@@ -145,11 +145,11 @@ const char * select_option_window(char* choices[], int len){
 
   while(1){
 
-//  if (WIN_SIZE != BIG){
-//    offset = 1;
-//  } else {
-//    offset = 0;
-//  }
+    // if (WIN_SIZE != BIG){
+    //   offset = 1;
+    // } else {
+    //   offset = 0;
+    // }
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) break;
@@ -631,16 +631,16 @@ void _pshd(){
 
         reprint = true;
     } else if (input == '/' || input == 'f') {
-//    attron(FOREGROUND);
+      // attron(FOREGROUND);
       mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2, "FILTER ");
-//    attroff(FOREGROUND);
+      // attroff(FOREGROUND);
       refresh();
       char search_buffer[256] = {'\0'};
       int char_idx = 0;
       int chdir_at_seletion = false;
 
       while(1){
-//      attron(FOREGROUND);
+        //attron(FOREGROUND);
         input = getch();
 
         getmaxyx(stdscr, ROW, COL);
@@ -653,13 +653,13 @@ void _pshd(){
           _clear_pshd_window(dim_y, dim_x);
           search_buffer[char_idx] = (char)input;
           char_idx++;
-//        attron(FOREGROUND);
+          // attron(FOREGROUND);
           attron(FOREGROUND + 8);
           mvaddch(ROW/2 - dim_y/2, COL/2 - dim_x/2 +  6 + char_idx, (char)input);
           attroff(FOREGROUND + 8);
-//        refresh();
-//        getchar();
-//        attroff(FOREGROUND);
+          // refresh();
+          // getchar();
+          // attroff(FOREGROUND);
           reprint = true;
 
 
@@ -787,8 +787,8 @@ void _pshd(){
         }
         if(selection == k) attroff(COLOR_PAIR(FOREGROUND));
         if(selection == k) attroff(COLOR_PAIR(FOREGROUND + 8));
-//      attroff(COLOR_PAIR(FOREGROUND));
-//      attroff(COLOR_PAIR(FOREGROUND + 8));
+        // attroff(COLOR_PAIR(FOREGROUND));
+        // attroff(COLOR_PAIR(FOREGROUND + 8));
 
         i++;
         refresh(); //debug
@@ -835,25 +835,25 @@ int generate_pw_file(){
   char input;
   while(1){
     input = getch();
-      if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
+    if (input != ERR && input != '\n' && input != EOF && input > 19 && input < 127) {
 
-        mvaddch(ROW/2, COL/2 - 8 + i, '*');
-        refresh();
+      mvaddch(ROW/2, COL/2 - 8 + i, '*');
+      refresh();
 
-        pw[i] = input;
-        i++;
+      pw[i] = input;
+      i++;
 
-      } else if (input == 7){ // this could be an ST implementation only..
+    } else if (input == 7){ // this could be an ST implementation only..
 
-        pw[i] = '\0';
-        i--;
-        if (i < 0) i = 0;
-        mvaddch(ROW/2, COL/2 - 8 + i, ' ');
+      pw[i] = '\0';
+      i--;
+      if (i < 0) i = 0;
+      mvaddch(ROW/2, COL/2 - 8 + i, ' ');
 
-      } else if (input == '\n'){
-        break;
-      }
-      if (i == 256) return 1;
+    } else if (input == '\n'){
+      break;
+    }
+    if (i == 256) return 1;
     usleep(50000); // chill
   }
   pw[i] = '\n';

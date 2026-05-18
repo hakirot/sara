@@ -44,5 +44,6 @@ void _invert_colors();
 void _randomize_colors();
 void _check();
 void _quit();
+void _write_exit_dir();
 
 #endif

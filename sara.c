@@ -536,7 +536,7 @@ void _pshd(){
 
   if(ROW >= count+2 && pshd_y-2 > count){
     dim_y = count+2;
-  } else if(ROW <= pshd_y) {
+  } else if(ROW < pshd_y) {
     dim_y = ROW;
   } else if (count <= pshd_y - 2) {
     dim_y = count + 2;

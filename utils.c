@@ -121,12 +121,12 @@ int _get_confirm(const Command * command){
   return false;
 }
 
-void __execute__(const Command * command){
+int __execute__(const Command * command){
 
   if(command->extra_args.confirmtion == CONFIRM &&
     _get_confirm(command) != true)
   {
-    return;
+    return false;
   }
 
   int RANGER_FLAG=0;
@@ -198,7 +198,7 @@ void __execute__(const Command * command){
   }
 
   if(RANGER_FLAG) _free_range(command);
-
+  return true;
 }
 
 void __builtin__(char input){
@@ -280,14 +280,18 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
         selection = (selection + (len - 1)) % len;
       }
     } else if (input == 'q' || input == 27){
-      animate(glitch);
+      animate(none);
       return;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _menuselect(menu[selection].next.submenu, dim_y, dim_x);
       } else if(menu[selection].type == COMMAND){
-        __execute__(&menu[selection].next.command);
-        animate(menu[selection].next.command.post_animation);
+        int result = __execute__(&menu[selection].next.command);
+        if(result == true){
+          animate(menu[selection].next.command.post_animation);
+        } else {
+          animate(none);
+        }
       }
       return;
     }

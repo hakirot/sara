@@ -137,6 +137,7 @@ int __execute__(const Command * command){
 
   animate(command->pre_animation);
   endwin();
+  system("clear");
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
     command->option != EXEC)
@@ -290,6 +291,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
       } else if(menu[selection].type == COMMAND){
         int result = __execute__(&menu[selection].next.command);
         if(result == true){
+          KEY_LOCK = 0;
           animate(menu[selection].next.command.post_animation);
         } else {
           animate(none);

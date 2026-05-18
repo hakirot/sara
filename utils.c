@@ -165,7 +165,8 @@ int __execute__(const Command * command){
       }
 
       execvp(((char **)command->cmd)[0], (char **)command->cmd);
-      crit("ERROR: execlp __command__");
+      perror("execvp");
+      crit("");
     } else {
 
       int status;
@@ -194,7 +195,8 @@ int __execute__(const Command * command){
 
     endwin();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
-    crit("ERROR: execlp __command__");
+    perror("execvp");
+    crit("");
   }
 
   if(RANGER_FLAG) _free_range(command);

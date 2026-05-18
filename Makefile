@@ -54,13 +54,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = animations.c \
-		command.c \
 		globals.c \
 		glyphs.c \
 		sara.c \
 		utils.c 
 OBJECTS       = animations.o \
-		command.o \
 		globals.o \
 		glyphs.o \
 		sara.o \
@@ -168,13 +166,11 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		sara.pro animations.h \
-		command.h \
 		config.h \
 		globals.h \
 		glyphs.h \
 		sara.h \
 		utils.h animations.c \
-		command.c \
 		globals.c \
 		glyphs.c \
 		sara.c \
@@ -412,8 +408,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents animations.h command.h config.h globals.h glyphs.h sara.h utils.h $(DISTDIR)/
-	$(COPY_FILE) --parents animations.c command.c globals.c glyphs.c sara.c utils.c $(DISTDIR)/
+	$(COPY_FILE) --parents animations.h config.h globals.h glyphs.h sara.h utils.h $(DISTDIR)/
+	$(COPY_FILE) --parents animations.c globals.c glyphs.c sara.c utils.c $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -467,9 +463,6 @@ animations.o: animations.c animations.h \
 		utils.h \
 		sara.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o animations.o animations.c
-
-command.o: command.c 
-	$(CC) -c $(CFLAGS) $(INCPATH) -o command.o command.c
 
 globals.o: globals.c globals.h \
 		config.h

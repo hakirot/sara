@@ -405,7 +405,7 @@ static const char *gaa_cmd[] = { "git", "add", "--all", NULL };
 static const Command gaa = { 0, gaa_cmd, WAIT, none, neon, defaults  };
 
 static const char *gc_cmd[] = { "git", "commit", NULL };
-static const Command gc = { 0, gc_cmd, STOP, none, none, defaults  };
+static const Command gc = { 0, gc_cmd, WAIT, none, neon, defaults  };
 
 static const char *gdv_cmd[] = { "/home/hakirot/skps/gdv", NULL };
 static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };

@@ -195,6 +195,7 @@ int __execute__(const Command * command){
     }
 
     endwin();
+    if(FOLLOW) _write_exit_dir();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     perror("execvp");
     crit("");
@@ -743,14 +744,7 @@ void _invert_colors(){
 
 void _quit(){
   if (FOLLOW){
-    ensure_cache_dir();
-    char cache_file[256] = {'\0'};
-    char * env_home = getenv("HOME");
-    char * env_pwd = getenv("PWD");
-    sprintf(cache_file, "%s%s", env_home, "/.cache/sara/saraexit");
-    FILE * fp = fopen(cache_file, "w");
-    fprintf(fp, "%s", env_pwd);
-    fclose(fp);
+    _write_exit_dir();
   }
 
   clear();
@@ -758,6 +752,17 @@ void _quit(){
   move(0, 0);
   endwin();
   exit(0);
+}
+
+void _write_exit_dir(){
+  ensure_cache_dir();
+  char cache_file[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  char * env_pwd = getenv("PWD");
+  sprintf(cache_file, "%s%s", env_home, "/.cache/sara/saraexit");
+  FILE * fp = fopen(cache_file, "w");
+  fprintf(fp, "%s", env_pwd);
+  fclose(fp);
 }
 
 void set_glyph_dimensions(){

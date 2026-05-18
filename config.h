@@ -255,7 +255,7 @@ static const ExtraArgs confirms = {
 static const Command commandkeys[] = {
 /*  KEY        COMMAND       WAIT_OPTION     PRE_ANIMATION,        POST ANIMATION   ARGS    */
 //{ 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
-  { 'r',         r_cmd,             WAIT,            blink,                 blink,                             defaults },
+  { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/hakirot/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
@@ -267,7 +267,7 @@ static const Command commandkeys[] = {
 //{ 'F',         F_cmd,             EXEC,             none,                  neon,                             confirms },
   { 'y',         y_cmd,      STOP_ON_ERR,     neon_reverse,                  neon,                             {NULL, CONFIRM, OUTS} },
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
-  { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
+  { 'M',         M_cmd,             WAIT,     neon_reverse,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
   { 'X',         X_cmd,             EXEC,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
   { 'n',         n_cmd,             WAIT,     neon_reverse,           none,                             confirms },
@@ -287,8 +287,10 @@ static const Builtin builtinkeys[] = {
 
 /* MENUS CONFIGURATION */
 
-static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
+static const wchar_t MenuBorder[] = L"┌┐└┘─│";
+//static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 //static const wchar_t MenuBorder[] = L"++++  ";
+//static const wchar_t MenuBorder[] = L"++++-|";
 static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
 static const unsigned short menu_x            = 44;       // Must be > 2
@@ -393,6 +395,30 @@ static const Menu L_menu[] = {
   END_OF_MENU
 };
 
+static const char *gss_cmd[] = { "git", "status", "-s", NULL };
+static const Command gss = { 0, gss_cmd, STOP, none, none, defaults  };
+
+static const char *gs_cmd[] = { "git", "status", NULL };
+static const Command gs = { 0, gs_cmd, STOP, none, none, defaults  };
+
+static const char *gaa_cmd[] = { "git", "add", "--all", NULL };
+static const Command gaa = { 0, gaa_cmd, STOP, none, none, defaults  };
+
+static const char *gc_cmd[] = { "git", "commit", NULL };
+static const Command gc = { 0, gc_cmd, STOP, none, none, defaults  };
+
+static const char *gdv_cmd[] = { "gdv", NULL };
+static const Command gdv = { 0, gdv_cmd, STOP, none, none, defaults  };
+
+static const Menu git_menu[] = {
+  { "g", COMMAND, { .command = gss } },
+  { "gs", COMMAND, { .command = gs } },
+  { "gaa", COMMAND, { .command = gaa } },
+  { "gc", COMMAND, { .command = gc } },
+  { "gdv", COMMAND, { .command = gdv } },
+  END_OF_MENU
+};
+
 
 /* menukey assignments */
 static const MenuKey menukeys[] = {
@@ -400,6 +426,7 @@ static const MenuKey menukeys[] = {
   {'S', S_menu },
   {'F', F_menu },
   {'L', L_menu },
+  {'g', git_menu },
 };
 
 /* PSHD UI CONFIG */

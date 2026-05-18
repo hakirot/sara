@@ -580,7 +580,7 @@ void _pshd(){
       }
     } else if (input == 'q' || input == 27){
       fclose(file);
-      animate(pixel_fill);
+      animate(none);
       return;
     } else if (input == 4){
       // ctrl+d
@@ -614,7 +614,7 @@ void _pshd(){
         crit("setenv error");
       }
       fclose(file);
-      animate(neon);
+      animate(blink);
       return;
     } else if (input > 47 && input < 58){
 

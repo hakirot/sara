@@ -49,6 +49,7 @@ void _blink(){
   int first_frame = 0;
   int second_frame = 0;
   int third_frame = 0;
+  char ch;
 
   clear();
   refresh();
@@ -58,147 +59,37 @@ void _blink(){
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.05 && first_frame == 0){
+      ch = '.';
       if (WIN_SIZE == NORMAL){
-
+        _overlay(fg, ch);
       }
       if (WIN_SIZE == BIG) {
-        attron(COLOR_PAIR(BACKGROUND));
-        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = bg[i];
-          int iter_col = 0;
-          while (*iter_row) {
-            wchar_t wc;
-            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-
-            if(*iter_row != ' '){
-              mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, '.');
-            }
-
-            iter_row += len;
-            iter_col++;
-          }
-        }
-        attroff(COLOR_PAIR(BACKGROUND));
-
-        attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = fg[i];
-          int iter_col = 0;
-          while (*iter_row) {
-            wchar_t wc;
-            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-
-            if(*iter_row != ' '){
-              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + iter_col, '.');
-            }
-
-            iter_row += len;
-            iter_col++;
-          }
-        }
-        attroff(COLOR_PAIR(FOREGROUND));
+        _overlay_bg(ch);
+        _overlay(fg, ch);
       }
       first_frame = 1;
       refresh();
     }
 
     if(elapsed_time > 0.1 && second_frame == 0){
+      ch = '_';
       if (WIN_SIZE == NORMAL){
-
+        _overlay(fg, ch);
       } else {
-
-        attron(COLOR_PAIR(BACKGROUND));
-        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = bg[i];
-          int iter_col = 0;
-          while (*iter_row) {
-            wchar_t wc;
-            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-
-            if(*iter_row != ' '){
-              mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, '_');
-            }
-
-            iter_row += len;
-            iter_col++;
-          }
-        }
-        attroff(COLOR_PAIR(BACKGROUND));
-
-        attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = fg[i];
-          int iter_col = 0;
-          while (*iter_row) {
-            wchar_t wc;
-            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-
-            if(*iter_row != ' '){
-              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + iter_col, '_');
-            }
-
-            iter_row += len;
-            iter_col++;
-          }
-        }
-        attroff(COLOR_PAIR(FOREGROUND));
+        _overlay_bg(ch);
+        _overlay(fg, ch);
       }
       second_frame = 1;
       refresh();
     }
 
+    ch = '-';
     if(elapsed_time > 0.2 && third_frame == 0){
       if (WIN_SIZE == NORMAL){
-
+        _overlay(fg, ch);
       } else {
-        attron(COLOR_PAIR(BACKGROUND));
-        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = bg[i];
-          int iter_col = 0;
-          while (*iter_row) {
-            wchar_t wc;
-            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-
-            if(*iter_row != ' '){
-              mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, '-');
-            }
-
-            iter_row += len;
-            iter_col++;
-          }
-        }
-        attroff(COLOR_PAIR(BACKGROUND));
-
-        attron(COLOR_PAIR(FOREGROUND));
-        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-          mbstate_t state;
-          memset(&state, 0, sizeof(mbstate_t));
-          const char *iter_row = fg[i];
-          int iter_col = 0;
-          while (*iter_row) {
-            wchar_t wc;
-            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-
-            if(*iter_row != ' '){
-              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + iter_col, '-');
-            }
-
-            iter_row += len;
-            iter_col++;
-          }
-        }
-        attroff(COLOR_PAIR(FOREGROUND));
-
+        _overlay_bg(ch);
+        _overlay(fg, ch);
       }
       third_frame = 1;
     }
@@ -207,7 +98,7 @@ void _blink(){
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
-//_none((Arg){.x = 0});
+  _none((Arg){.x = 0});
 }
 
 void _print_menu_borders(int dim_y, int dim_x){
@@ -1012,6 +903,28 @@ void _overlay(const char * glyph[], char fill){
   refresh();
   attroff(COLOR_PAIR(FOREGROUND));
   attroff(A_BOLD);
+}
+
+void _overlay_bg(char ch){
+  attron(COLOR_PAIR(BACKGROUND));
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = bg[i];
+    int iter_col = 0;
+    while (*iter_row) {
+      wchar_t wc;
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+      if(*iter_row != ' '){
+        mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, ch);
+      }
+
+      iter_row += len;
+      iter_col++;
+    }
+  }
+  attroff(COLOR_PAIR(BACKGROUND));
 }
 
 void _fg(const char * glyph[]){

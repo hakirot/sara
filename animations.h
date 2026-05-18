@@ -24,6 +24,7 @@ void _bg();
 void _fg(const char * glyph[]);
 void _hd();
 void _overlay(const char * glyph[], char fill);
+void _overlay_bg(char ch);
 void _print_menu_borders(int dim_y, int dim_x);
 void _print_pshd_borders(int dim_y, int dim_x);
 void _print_confirm_window(char * command_str);

@@ -12,7 +12,7 @@
                                                                          */
 
 static const int run_preflight_check = false;
-static const animation_option start_animation = neon;
+static const animation_option start_animation = blink;
 
 /* Toggle if you wrap sara in chdir command */
 static int FOLLOW = true;
@@ -23,10 +23,11 @@ static const int bg_c = cyan;      /* bg color */
 static const int hd_c = magenta;     /* hd color */
 
 static const int use_bold_color_for_bg = true;
-static const int use_bold_color_for_fg = true;
-static const int use_bold_color_for_hd = true;
+static const int use_bold_color_for_fg = false;
+static const int use_bold_color_for_hd = false;
 
 /* header highlight options*/
+//TODO: make this true/false
 static const int highlight_hd_in_full_mode  = 0;
 static const int highlight_hd_in_small_mode = 0;
 
@@ -160,7 +161,7 @@ static const char * im[] = {NULL};
 
 
 /* optional header */
-static const char hd[] = " SPECIAL APPLICATION RANGING AREA ";
+static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
 /* Set empty if desired */
 //static const char hd[] = {'\0'};
 
@@ -178,7 +179,7 @@ static const int fg_offset_x = -1;
 
 /* header position when fullsize mode */
 static const int hd_offset_y = -1;
-static const int hd_offset_x = -4;
+static const int hd_offset_x = -1;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = 0;
@@ -235,7 +236,7 @@ static const char *m_cmd[]            = { "make",                               
 static const char *M_cmd[]            = { "rmpc",                                NULL};
 static const char *Q_cmd[]            = { "tmux", "kill-pane",                   NULL};
 static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
-
+static const char *n_cmd[]            = { "respawn.sh",                          NULL};
 
 
 static const ExtraArgs defaults = {
@@ -254,7 +255,7 @@ static const ExtraArgs confirms = {
 static const Command commandkeys[] = {
 /*  KEY        COMMAND       WAIT_OPTION     PRE_ANIMATION,        POST ANIMATION   ARGS    */
 //{ 'a',      test_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/roe/dls", NOCONFIRM, OUTS} },
-  { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
+  { 'r',         r_cmd,             WAIT,            blink,                 blink,                             defaults },
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/roe/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
@@ -269,6 +270,7 @@ static const Command commandkeys[] = {
   { 'M',         M_cmd,             WAIT,             none,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
   { 'X',         X_cmd,             EXEC,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
+  { 'n',         n_cmd,             WAIT,     neon_reverse,           none,                             confirms },
 };
 
 
@@ -403,8 +405,8 @@ static const MenuKey menukeys[] = {
 /* PSHD UI CONFIG */
 
 // Menu dimensions
-static const unsigned short pshd_x = 32;
-static const unsigned short pshd_y = 12;
+static const unsigned short pshd_x = 50;
+static const unsigned short pshd_y = 8;
 static const unsigned short pshd_offset_x = 0;
 static const unsigned short pshd_offset_y = 0;
 

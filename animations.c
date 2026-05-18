@@ -37,6 +37,177 @@ void animate(animation_option option){
   if (option == tv_static)           _tv_static();
   if (option == print_f)             _fg(fg);
   if (option == print_b)             _bg();
+  if (option == blink)               _blink();
+}
+
+void _blink(){
+
+  double cycle_length = 0.3;
+  double elapsed_time = 0;
+  clock_t cycle_start = clock();
+
+  int first_frame = 0;
+  int second_frame = 0;
+  int third_frame = 0;
+
+  clear();
+  refresh();
+
+  while(cycle_length > elapsed_time){
+
+    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+    if(elapsed_time > 0.05 && first_frame == 0){
+      if (WIN_SIZE == NORMAL){
+
+      }
+      if (WIN_SIZE == BIG) {
+        attron(COLOR_PAIR(BACKGROUND));
+        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = bg[i];
+          int iter_col = 0;
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+            if(*iter_row != ' '){
+              mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, '.');
+            }
+
+            iter_row += len;
+            iter_col++;
+          }
+        }
+        attroff(COLOR_PAIR(BACKGROUND));
+
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = fg[i];
+          int iter_col = 0;
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+            if(*iter_row != ' '){
+              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + iter_col, '.');
+            }
+
+            iter_row += len;
+            iter_col++;
+          }
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      }
+      first_frame = 1;
+      refresh();
+    }
+
+    if(elapsed_time > 0.1 && second_frame == 0){
+      if (WIN_SIZE == NORMAL){
+
+      } else {
+
+        attron(COLOR_PAIR(BACKGROUND));
+        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = bg[i];
+          int iter_col = 0;
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+            if(*iter_row != ' '){
+              mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, '_');
+            }
+
+            iter_row += len;
+            iter_col++;
+          }
+        }
+        attroff(COLOR_PAIR(BACKGROUND));
+
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = fg[i];
+          int iter_col = 0;
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+            if(*iter_row != ' '){
+              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + iter_col, '_');
+            }
+
+            iter_row += len;
+            iter_col++;
+          }
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+      }
+      second_frame = 1;
+      refresh();
+    }
+
+    if(elapsed_time > 0.2 && third_frame == 0){
+      if (WIN_SIZE == NORMAL){
+
+      } else {
+        attron(COLOR_PAIR(BACKGROUND));
+        for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = bg[i];
+          int iter_col = 0;
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+            if(*iter_row != ' '){
+              mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, '-');
+            }
+
+            iter_row += len;
+            iter_col++;
+          }
+        }
+        attroff(COLOR_PAIR(BACKGROUND));
+
+        attron(COLOR_PAIR(FOREGROUND));
+        for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+          mbstate_t state;
+          memset(&state, 0, sizeof(mbstate_t));
+          const char *iter_row = fg[i];
+          int iter_col = 0;
+          while (*iter_row) {
+            wchar_t wc;
+            size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+            if(*iter_row != ' '){
+              mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + iter_col, '-');
+            }
+
+            iter_row += len;
+            iter_col++;
+          }
+        }
+        attroff(COLOR_PAIR(FOREGROUND));
+
+      }
+      third_frame = 1;
+    }
+
+    if(__key__() == 2) return;
+    if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+  }
+
+//_none((Arg){.x = 0});
 }
 
 void _print_menu_borders(int dim_y, int dim_x){

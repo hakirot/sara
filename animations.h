@@ -30,6 +30,7 @@ void _print_confirm_window(char * command_str);
 void _print_confirm_selection(int selection);
 void _clear_menu(int dim_y, int dim_x);
 void _clear_pshd_window(int dim_y, int dim_x);
+void _blink();
 void tinyprint();
 
 #endif

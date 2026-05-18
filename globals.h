@@ -63,6 +63,7 @@ typedef enum {
   tv_static,
   print_b,
   print_f,
+  blink,
 } animation_option;
 
 typedef enum {

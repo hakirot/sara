@@ -238,7 +238,6 @@ static const char *Q_cmd[]            = { "tmux", "kill-pane",                  
 static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
 static const char *n_cmd[]            = { "respawn.sh",                          NULL};
 
-
 static const ExtraArgs defaults = {
   NULL,        /* Optionally change directory before executing command */
   NOCONFIRM,   /* Optionally confirm command with: CONFIRM             */
@@ -287,8 +286,9 @@ static const Builtin builtinkeys[] = {
 
 /* MENUS CONFIGURATION */
 
-static const wchar_t MenuBorder[] = L"┌┐└┘─│";
+//static const wchar_t MenuBorder[] = L"┌┐└┘─│";
 //static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
+static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 //static const wchar_t MenuBorder[] = L"++++  ";
 //static const wchar_t MenuBorder[] = L"++++-|";
 static const unsigned short menu_c            = fg_c;
@@ -402,20 +402,24 @@ static const char *gs_cmd[] = { "git", "status", NULL };
 static const Command gs = { 0, gs_cmd, STOP, none, none, defaults  };
 
 static const char *gaa_cmd[] = { "git", "add", "--all", NULL };
-static const Command gaa = { 0, gaa_cmd, STOP, none, none, defaults  };
+static const Command gaa = { 0, gaa_cmd, WAIT, none, neon, defaults  };
 
 static const char *gc_cmd[] = { "git", "commit", NULL };
 static const Command gc = { 0, gc_cmd, STOP, none, none, defaults  };
 
-static const char *gdv_cmd[] = { "gdv", NULL };
-static const Command gdv = { 0, gdv_cmd, STOP, none, none, defaults  };
+static const char *gdv_cmd[] = { "/home/hakirot/skps/gdv", NULL };
+static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };
+
+static const char *gp_cmd[] = { "gdv", NULL };
+static const Command gp = { 0, gp_cmd, STOP, none, none, defaults  };
 
 static const Menu git_menu[] = {
-  { "g", COMMAND, { .command = gss } },
-  { "gs", COMMAND, { .command = gs } },
-  { "gaa", COMMAND, { .command = gaa } },
-  { "gc", COMMAND, { .command = gc } },
+  { "Short", COMMAND, { .command = gss } },
+  { "Status", COMMAND, { .command = gs } },
+  { "Add -A", COMMAND, { .command = gaa } },
+  { "Commit", COMMAND, { .command = gc } },
   { "gdv", COMMAND, { .command = gdv } },
+  { "Push", COMMAND, { .command = gdv } },
   END_OF_MENU
 };
 

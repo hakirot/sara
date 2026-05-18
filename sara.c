@@ -654,7 +654,11 @@ void _pshd(){
           search_buffer[char_idx] = (char)input;
           char_idx++;
 //        attron(FOREGROUND);
+          attron(FOREGROUND + 8);
           mvaddch(ROW/2 - dim_y/2, COL/2 - dim_x/2 +  6 + char_idx, (char)input);
+          attroff(FOREGROUND + 8);
+//        refresh();
+//        getchar();
 //        attroff(FOREGROUND);
           reprint = true;
 

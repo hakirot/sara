@@ -98,6 +98,7 @@ int main(int argc, char* argv[]){
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
 
+//  _blink();
     if(HOLOGRAPHIC == 1 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;
@@ -559,7 +560,7 @@ void _pshd(){
   int input_digits_idx = 0;
   int selection = 0;
   int reprint = true;
-  attron(COLOR_PAIR(FOREGROUND));
+//attron(COLOR_PAIR(FOREGROUND));
 
   while(1){
 
@@ -579,7 +580,7 @@ void _pshd(){
       }
     } else if (input == 'q' || input == 27){
       fclose(file);
-      animate(glitch);
+      animate(pixel_fill);
       return;
     } else if (input == 4){
       // ctrl+d

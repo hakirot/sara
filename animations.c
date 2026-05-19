@@ -864,6 +864,7 @@ void _bg() {
   clear();
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);
+  // TODO: make this print individual chars and see if bg will print in smaller panes
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
   }
@@ -909,6 +910,7 @@ void _overlay(const char * glyph[], char fill){
   attroff(A_BOLD);
 }
 
+// TODO: make this print regular bg if ch == 0, and replace _bg with this
 void _overlay_bg(char ch){
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);

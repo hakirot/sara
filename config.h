@@ -27,9 +27,8 @@ static const int use_bold_color_for_fg = false;
 static const int use_bold_color_for_hd = false;
 
 /* header highlight options*/
-//TODO: make this true/false
-static const int highlight_hd_in_full_mode  = 0;
-static const int highlight_hd_in_small_mode = 0;
+static const int highlight_hd_in_full_mode  = false;
+static const int highlight_hd_in_small_mode = false;
 
 /* CUSTOM GLYPHS */ 
 
@@ -179,11 +178,11 @@ static const int fg_offset_x = -1;
 
 /* header position when fullsize mode */
 static const int hd_offset_y = -1;
-static const int hd_offset_x = -1;
+static const int hd_offset_x = -2;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -1;
-static const int hd_offset_x_min = -1;
+static const int hd_offset_x_min = -2;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true;

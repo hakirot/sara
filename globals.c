@@ -29,9 +29,6 @@ int BG_GLYPH_LENGTH;
 int FG_GLYPH_LENGTH;
 int HD_LENGTH;
 
-int option_window_height = 7;
-int option_window_length = 44;
-
 int IM_SET = true;
 
 char HOLD_CHAR;

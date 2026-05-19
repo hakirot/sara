@@ -18,9 +18,9 @@ static const animation_option start_animation = blink;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = magenta;         /* fg color */
+static const int fg_c = red;         /* fg color */
 static const int bg_c = cyan;      /* bg color */
-static const int hd_c = magenta;     /* hd color */
+static const int hd_c = red;     /* hd color */
 
 static const int use_bold_color_for_bg = true;
 static const int use_bold_color_for_fg = false;
@@ -461,7 +461,7 @@ static const char *gaa_cmd[] = { "git", "add", "--all", NULL };
 static const Command gaa = { 0, gaa_cmd, WAIT, none, neon, defaults  };
 
 static const char *gc_cmd[] = { "git", "commit", NULL };
-static const Command gc = { 0, gc_cmd, WAIT, none, neon, defaults  };
+static const Command gc = { 0, gc_cmd, WAIT, glitch_full, neon, defaults  };
 
 static const char *gdv_cmd[] = { "/home/hakirot/skps/gdv", NULL };
 static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };

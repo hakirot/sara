@@ -45,9 +45,5 @@ void printstandard();
 int input_color(char * arg);
 void _pshd();
 void ensure_path_perm(char * file_path, char perm);
-int generate_pw_file();
-void fork_newlook(char * file);
-struct file_node * init_dir_list(char * dir);
-void free_dir_list(struct file_node * list);
 
 #endif

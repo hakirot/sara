@@ -751,6 +751,7 @@ void _quit(){
   refresh();
   move(0, 0);
   endwin();
+  system("clear");
   exit(0);
 }
 

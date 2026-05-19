@@ -249,19 +249,19 @@ void _print_confirm_window(char * command_str){
   int len3 = len1 + len2;
 
   for(int i = 0; i < len1; i++){
-    mvaddch(ROW/2 - 2, COL/2 - len3/2 + i - 1, str[i]);
+    mvaddch(ROW/2 - 2, COL/2 - len3/2 + i, str[i]);
   }
 
   for(int i = 0; i < len2; i++){
 
     if(command_str[i] > 96 && command_str[i] < 123){
-      mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1 - 1, command_str[i] - 32);
+      mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1, command_str[i] - 32);
     } else {
-      mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1 - 1, command_str[i]);
+      mvaddch(ROW/2 - 2, COL/2 - len3/2 + i + len1, command_str[i]);
     }
   }
 
-  mvaddch(ROW/2 - 2, COL/2 - len3/2 + len3 - 1, '?');
+  mvaddch(ROW/2 - 2, COL/2 - len3/2 + len3, '?');
 
   attroff(COLOR_PAIR(menu_c + 8));
   refresh();
@@ -287,7 +287,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 3; i++){
-    mvaddch(ROW/2, l_stop + 2 + i, yes[i]);
+    mvaddch(ROW/2, r_stop - 4 + i, yes[i]);
   }
 
   if(selection == false){
@@ -297,7 +297,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 2; i++){
-    mvaddch(ROW/2, r_stop - 3 + i, no[i]);
+    mvaddch(ROW/2, l_stop + 2 + i, no[i]);
   }
 
   attroff(COLOR_PAIR(menu_c));

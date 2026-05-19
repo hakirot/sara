@@ -42,7 +42,6 @@ int check_size();
 screen_size get_win_size();
 int get_confirmation();
 void printstandard();
-const char * select_option_window(char* choices[], int len);
 void patch_backlight();
 void patch_border();
 void prompt_newlook();

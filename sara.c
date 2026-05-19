@@ -121,69 +121,6 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-// TODO: remove the second argument and infer length
-// TODO: implement auto scroll for lists exceeding window size
-// TODO: move this function (and others) elsewhere
-// int len = sizeof(choices)/sizeof(choices[0]); // test this for ** pointer
-const char * select_option_window(char* choices[], int len){
-
-  int selection = 0;
-  CACHE = ROW + COL;
-
-  animate(none);
-
-  //int offset = 0;
-  //if (WIN_SIZE != BIG) offset = 1;
-
-  attron(COLOR_PAIR(BACKGROUND));
-  if(use_bold_color_for_bg) attron(A_BOLD);
-  for (int i = 0; i < option_window_height; i++){
-    mvprintw(ROW/2 + fg_offset_y + i - 3, (COL-option_window_length)/2, "%s", option_window[i]);
-  }
-  attroff(COLOR_PAIR(BACKGROUND));
-  attroff(A_BOLD);
-
-  while(1){
-
-    // if (WIN_SIZE != BIG){
-    //   offset = 1;
-    // } else {
-    //   offset = 0;
-    // }
-
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL) break;
-
-    int input = getch();
-
-    if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
-
-      if (input == 'j'){
-        selection = (selection + 1) % len;
-      } else {
-        selection = (selection + (len - 1)) % len;
-      }
-
-    } else if (input == 'q'){
-      return NULL;
-    } else if (input == '\n'){
-      return choices[selection];
-    }
-
-    for (int i = 0; i < len; i++){
-      i == selection ? attron(COLOR_PAIR(FOREGROUND + 8)) : attron(COLOR_PAIR(FOREGROUND));
-      mvprintw(ROW/2 + i - 2 + fg_offset_y, (COL-option_window_length)/2 + 1, "%s", choices[i]);
-      attroff(COLOR_PAIR(FOREGROUND + 8));
-      attroff(COLOR_PAIR(FOREGROUND));
-    }
-
-    refresh();
-    usleep(1000);
-  }
-
-  return NULL;
-}
-
 // Check screen size, return updated sum of dimensions
 int check_size(){
 

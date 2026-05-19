@@ -256,7 +256,6 @@ void __topmenu__(char input){
     dim_x = menu_x;
   }
 
-  _print_menu_borders(dim_y, dim_x);
   _menuselect(menukey->submenu, dim_y, dim_x);
 }
 
@@ -269,6 +268,12 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     ptr++;
     len++;
   }
+
+  if(len < dim_y - 2 || (len < menu_y - 2 && len < ROW - 2)){
+    dim_y = len+2;
+  }
+
+  _print_menu_borders(dim_y, dim_x);
 
   int selection = 0;
   while(1){

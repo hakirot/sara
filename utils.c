@@ -138,6 +138,8 @@ int __execute__(const Command * command){
     _chdir(command->extra_args.chdir);
   }
 
+  if(strcmp(((char**)command->cmd)[0], "NO_COMMAND") == 0) return true;
+
   animate(command->pre_animation);
   endwin();
   system("clear");
@@ -158,8 +160,8 @@ int __execute__(const Command * command){
       exit(EXIT_FAILURE);
 
     } else if (pid == 0) {
-//    print_clear_terminal();
-//    if(command->option == WAIT_NO_OUT){
+      // print_clear_terminal();
+      // if(command->option == WAIT_NO_OUT){
       if(command->extra_args.output_option == NO_OUT){
         int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         dup2(fd, 1);

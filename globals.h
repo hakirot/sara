@@ -106,6 +106,7 @@ typedef enum {
   invert_colors,
   rave,
   check,         // TODO: implement show all config (run preflight_check)
+  colors,
 } internal;
 
 typedef enum {
@@ -173,6 +174,8 @@ extern char menukeys_chars[];
 extern int commandkeys_len;
 extern int builtinkeys_len;
 extern int menukeys_len;
+
+extern int SHOW_COLORS;
 
 extern int KEY_LOCK;
 

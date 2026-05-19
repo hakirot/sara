@@ -46,4 +46,6 @@ int commandkeys_len;
 int builtinkeys_len;
 int menukeys_len;
 
+int SHOW_COLORS = false;
+
 int KEY_LOCK = 0;

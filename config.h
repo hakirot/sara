@@ -40,50 +40,93 @@ static const int highlight_hd_in_small_mode = false;
 
 
 /* background glyph */
+// static const char * bg[] = {
+//   "                        -`                     ",
+//   "                       .o+`                    ",
+//   "                      `ooo/                    ",
+//   "                     `+oooo:                   ",
+//   "                    `+oooooo:                  ",
+//   "                    -+oooooo+:                 ",
+//   "                                               ",
+//   "                                               ",
+//   "                                               ",
+//   "                                               ",
+//   "                                               ",
+//   "                                               ",
+//   "            -osssssso.      :ssssssso.         ",
+//   "           : sssssss/        osssso+++.        ",
+//   "          /ossssssss/        +ssssooo/-        ",
+//   "        `/ossssso+/:-        -:/+osssso+-      ",
+//   "       `+sso+:-`                 `.-/+oso:     ",
+//   "      `++:.                           `-/+/    ",
+//   "      .`                                 `/    ",
+// };
+
+// static const char * bg[] = {
+//   "                     -`                     ",
+//   "                    .o+`                    ",
+//   "                   `ooo/                    ",
+//   "                  `+oooo:                   ",
+//   "                 `+oooooo:                  ",
+//   "                 -+oooooo+:                 ",
+//   "               `/:-:++oooo+:                ",
+//   "              `/++++/+++++++:               ",
+//   "             `/++++++++++++++:              ",
+//   "            `/+++ooooooooooooo/`            ",
+//   "           ./ooosssso++osssssso+`           ",
+//   "          .oossssso-````/ossssss+`          ",
+//   "         -osssssso.      :ssssssso.         ",
+//   "        : sssssss/        osssso+++.        ",
+//   "       /ossssssss/        +ssssooo/-        ",
+//   "     `/ossssso+/:-        -:/+osssso+-      ",
+//   "    `+sso+:-`                 `.-/+oso:     ",
+//   "   `++:.                           `-/+/    ",
+//   "   .`                                 `/    ",
+// };
+
+// static const char * bg[] = {
+//   "                     -`                     ",
+//   "                    .o+`                    ",
+//   "                   `ooo/                    ",
+//   "                  `+oooo:                   ",
+//   "                 `+oooooo:                  ",
+//   "                 -+oo  oo+:                 ",
+//   "               `/:-:    oo+:                ",
+//   "              `/+++ /    +++:               ",
+//   "             `/+++ /      +++:              ",
+//   "            `/+++ /        ooo/`            ",
+//   "           ./ooo            sso+`           ",
+//   "          .ooss              sss+`          ",
+//   "         -osss                ssso.         ",
+//   "        : sss                  o+++.        ",
+//   "       /ossssssss/        +ssssooo/-        ",
+//   "     `/osss    /:-        -:/    sso+-      ",
+//   "    `+sso+                        +oso:     ",
+//   "   `++:.                           `-/+/    ",
+//   "   .`                                 `/    ",
+// };
+
 static const char * bg[] = {
-  "                        -`                     ",
-  "                       .o+`                    ",
-  "                      `ooo/                    ",
-  "                     `+oooo:                   ",
-  "                    `+oooooo:                  ",
-  "                    -+oooooo+:                 ",
-  "                                               ",
-  "                                               ",
-  "                                               ",
-  "                                               ",
-  "                                               ",
-  "                                               ",
-  "            -osssssso.      :ssssssso.         ",
-  "           : sssssss/        osssso+++.        ",
-  "          /ossssssss/        +ssssooo/-        ",
-  "        `/ossssso+/:-        -:/+osssso+-      ",
-  "       `+sso+:-`                 `.-/+oso:     ",
-  "      `++:.                           `-/+/    ",
-  "      .`                                 `/    ",
+  "                     -`                     ",
+  "                    .o+`                    ",
+  "                   `ooo/                    ",
+  "                  `+oooo:                   ",
+  "                 `+oooooo                   ",
+  "                 -+oo  oo                   ",
+  "               `/:-:    o                   ",
+  "              `/+++ /                       ",
+  "             `/+++ /                        ",
+  "            `/+++ /                         ",
+  "           ./ooo                            ",
+  "          .ooss                             ",
+  "         -osss                              ",
+  "        : sss                               ",
+  "       /ossssssss/                          ",
+  "     `/osss    /:-                          ",
+  "    `+sso+   -/:                            ",
+  "   `++:.                                    ",
+  "   .`                                       ",
 };
-
-//static const char * bg[] = {
-//  "                     -`                     ",
-//  "                    .o+`                    ",
-//  "                   `ooo/                    ",
-//  "                  `+oooo:                   ",
-//  "                 `+oooooo:                  ",
-//  "                 -+oooooo+:                 ",
-//  "               `/:-:++oooo+:                ",
-//  "              `/++++/+++++++:               ",
-//  "             `/++++++++++++++:              ",
-//  "            `/+++ooooooooooooo/`            ",
-//  "           ./ooosssso++osssssso+`           ",
-//  "          .oossssso-````/ossssss+`          ",
-//  "         -osssssso.      :ssssssso.         ",
-//  "        : sssssss/        osssso+++.        ",
-//  "       /ossssssss/        +ssssooo/-        ",
-//  "     `/ossssso+/:-        -:/+osssso+-      ",
-//  "    `+sso+:-`                 `.-/+oso:     ",
-//  "   `++:.                           `-/+/    ",
-//  "   .`                                 `/    ",
-//};
-
 //static const char * bg[] = {
 //  " ████    ████    ████          ",
 //  "  ████    ████    ████         ",
@@ -118,17 +161,28 @@ static const char * bg[] = {
 //  "        .                                                ",
 //};
 
-static const char * fg[] = {
-  "    ________  ________  ________  ________     ",
-  "   |\\   ____\\|\\   __  \\|\\   __  \\|\\   __  \\    ",
-  "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\   ",
-  "    \\ \\_____  \\ \\   __  \\ \\   _  _\\ \\   __  \\  ",
-  "     \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\ \\  \\ ",
-  "       ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\__\\ \\__\\",
-  "      |\\_________\\|__|\\|__|\\|__|\\|__|\\|__|\\|__|",
-  "      \\|_________|                             ",
-};
+//static const char * fg[] = {
+//  "    ________  ________  ________  ________     ",
+//  "   |\\   ____\\|\\   __  \\|\\   __  \\|\\   __  \\    ",
+//  "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\   ",
+//  "    \\ \\_____  \\ \\   __  \\ \\   _  _\\ \\   __  \\  ",
+//  "     \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\ \\  \\ ",
+//  "       ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\__\\ \\__\\",
+//  "      |\\_________\\|__|\\|__|\\|__|\\|__|\\|__|\\|__|",
+//  "      \\|_________|                             ",
+//};
 
+static const char * fg[] = {
+ "        /\\        ",
+ "       /  \\       ",
+ "      /    \\      ",
+ "     _\\     \\     ",
+ "    /        \\    ",
+ "   /          \\   ",
+ "  /     __   \\_\\  ",
+ " /     /  \\     \\ ",
+ "/__,--'    '--,__\\",
+};
 
 
 /* foreground glyph */
@@ -160,7 +214,8 @@ static const char * im[] = {NULL};
 
 
 /* optional header */
-static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
+//static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
+static const char hd[] = "SARA";
 /* Set empty if desired */
 //static const char hd[] = {'\0'};
 
@@ -172,13 +227,13 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Negative x values will position glyphs UPWARD
 */
 static const int bg_offset_y = 0;
-static const int bg_offset_x = -2;
-static const int fg_offset_y = 1;
-static const int fg_offset_x = -1;
+static const int bg_offset_x = 0;
+static const int fg_offset_y = 0;
+static const int fg_offset_x = 0;
 
 /* header position when fullsize mode */
-static const int hd_offset_y = -1;
-static const int hd_offset_x = -2;
+static const int hd_offset_y = 0;
+static const int hd_offset_x = -4;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -1;
@@ -186,7 +241,7 @@ static const int hd_offset_x_min = -2;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true;
-static const int resize_x = 44;
+static const int resize_x = 14;
 static const int resize_y = 12;
 
 /* Set tiny_mode to */
@@ -280,6 +335,7 @@ static const Builtin builtinkeys[] = {
   { 'p', pshd },
   { 'q', quit },
   { 'C', check },
+  { 'c', colors },
 };
 
 
@@ -411,7 +467,7 @@ static const char *gdv_cmd[] = { "/home/hakirot/skps/gdv", NULL };
 static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };
 
 static const char *gp_cmd[] = { "git", "push", NULL };
-static const Command gp = { 0, gp_cmd, WAIT, none, neon, defaults  };
+static const Command gp = { 0, gp_cmd, STOP_ON_ERR, none, neon, defaults  };
 
 static const Menu git_menu[] = {
   { "Short", COMMAND, { .command = gss } },

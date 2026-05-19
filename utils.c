@@ -6,6 +6,9 @@
 --  ╚██████╔╝   ██║   ██║███████╗███████║  --
 --   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝.h--
                                                */
+
+#define NCURSES_WIDECHAR 1
+
 #include "utils.h"
 #include "globals.h"
 #include "config.h"
@@ -227,6 +230,13 @@ void __builtin__(char input){
     _randomize_colors();
   } else if (selection == check){
     _check();
+  } else if (selection == colors){
+    if(SHOW_COLORS == false){
+      SHOW_COLORS = true;
+    } else {
+      SHOW_COLORS = false;
+    }
+    _show_colors();
   }
 
 }
@@ -700,7 +710,23 @@ void _randomize_colors(){
   }
   animate(none);
 }
+
+void _show_colors(){
+  for(int j = 0; j < 2; j++){
+    for(int i = 1; i < 9; i++){
+      attron(COLOR_PAIR(i));
+      mvaddwstr(ROW - 2 + j, (COL-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      attroff(COLOR_PAIR(i));
+    }
+    attron(A_BOLD);
+  }
+  attroff(A_BOLD);
+  refresh();
+//getchar();
+}
+
 void _check(){
+
   return;
 }
 

@@ -41,6 +41,7 @@ void special_chars();
 void _toggle_rave();
 void _invert_colors();
 void _randomize_colors();
+void _show_colors();
 void _check();
 void _quit();
 void _write_exit_dir();

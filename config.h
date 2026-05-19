@@ -182,13 +182,13 @@ static const int hd_offset_y = -1;
 static const int hd_offset_x = -1;
 
 /* header position when small window mode */
-static const int hd_offset_y_min = 0;
-static const int hd_offset_x_min = -9;
+static const int hd_offset_y_min = -1;
+static const int hd_offset_x_min = -1;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true;
 static const int resize_x = 44;
-static const int resize_y = 7;
+static const int resize_y = 12;
 
 /* Set tiny_mode to */
 static const int tiny_mode = true;
@@ -289,12 +289,13 @@ static const Builtin builtinkeys[] = {
 //static const wchar_t MenuBorder[] = L"┌┐└┘─│";
 //static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
 static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
+//static const wchar_t MenuBorder[] = L"      ";
 //static const wchar_t MenuBorder[] = L"++++  ";
 //static const wchar_t MenuBorder[] = L"++++-|";
 static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
-static const unsigned short menu_x            = 20;       // Must be > 2
-static const unsigned short menu_y            = 8;        // Must be > 2
+static const unsigned short menu_x            = 20;       // TODO set these to at least 3 if < 3 on startup
+static const unsigned short menu_y            = 10;        // TODO set these to at least 3 if < 3 on startup
 static const short menu_offset_y              = 0;        // TODO: Implement
 static const short menu_offset_x              = 0;        // TODO: Implement
 

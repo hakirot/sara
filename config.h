@@ -350,7 +350,7 @@ static const Menu b_menu[] = {
 };
 
 /* MENU S: SHUTDOWN COMMANDS */
-static const char *shutdown_cmd[] = { "shutdown", "now", NULL };
+static const char *shutdown_cmd[] = { "/home/hakirot/skps/shutdown.sh", NULL };
 static const Command shutdown = { 0, shutdown_cmd, EXEC, none, none, {NULL, CONFIRM, NO_OUT} };
 
 static const char *reboot_cmd[] = { "shutdown", "-r", "now", NULL };

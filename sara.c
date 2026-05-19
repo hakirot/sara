@@ -600,6 +600,12 @@ void _pshd(){
       selection -= (dim_y-2);
       if(selection < 0) selection = 0;
       reprint = true;
+    } else if (input == 'G'){
+      selection = count-1;
+      reprint = true;
+    } else if (input == 'g'){
+      selection = 0;
+      reprint = true;
     } else if (input == '\n'){
       int i = 0;
       while(fgets(line, sizeof(line), file)){

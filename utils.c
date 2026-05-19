@@ -291,6 +291,24 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     } else if (input == 'q' || input == 27){
       animate(none);
       return;
+    } else if (input == 4){
+      // ctrl+d
+      selection += (dim_y-2)/2;
+      if(selection >= len) selection = len-1;
+    } else if (input == 6){
+      selection += (dim_y-2);
+      if(selection >= len) selection = len-1;
+    } else if (input == 21){
+      //ctrl+u
+      selection -= (dim_y-2)/2;
+      if(selection < 0) selection = 0;
+    } else if (input == 2){
+      selection -= (dim_y-2);
+      if(selection < 0) selection = 0;
+    } else if (input == 'G'){
+      selection = len-1;
+    } else if (input == 'g'){
+      selection = 0;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _menuselect(menu[selection].next.submenu, dim_y, dim_x);

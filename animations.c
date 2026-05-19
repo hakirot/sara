@@ -911,6 +911,7 @@ void _overlay(const char * glyph[], char fill){
 
 void _overlay_bg(char ch){
   attron(COLOR_PAIR(BACKGROUND));
+  if(use_bold_color_for_bg) attron(A_BOLD);
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     mbstate_t state;
     memset(&state, 0, sizeof(mbstate_t));
@@ -928,6 +929,7 @@ void _overlay_bg(char ch){
       iter_col++;
     }
   }
+  attroff(A_BOLD);
   attroff(COLOR_PAIR(BACKGROUND));
 }
 

@@ -30,7 +30,6 @@ void load_command_config();
 void warning(char * err);
 void crit(char * err);
 int  is_char_in_search(wchar_t wc, const wchar_t * search_str);
-void print_clear_terminal();
 void launch_window();
 void get_helped();
 void ensure_cache_dir();

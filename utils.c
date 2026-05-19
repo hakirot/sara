@@ -617,63 +617,6 @@ void ensure_config_dir(){
   }
 }
 
-void ensure_path_perm(char * file_path, char perm){
-
-  if(perm == 'w'){
-    // open file
-    FILE *writeptr = fopen(file_path, "w");
-
-    // is it writable?
-    if(writeptr){
-      fclose(writeptr);
-      return;
-    } else if (errno == 13){
-      // test if pw file exists
-      char * pw_path = "/home/roe/.config/pw.gpg";
-      FILE * pw_file = fopen(pw_path, "r");
-      if (ENOENT == errno){
-        int result = generate_pw_file();
-      } else {
-        fclose(pw_file);
-      }
-
-      // fork
-      pid_t pid = fork();
-      if (pid < 0) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-      } else if (pid == 0) {
-        endwin();
-
-        // setenv SUDO_ASKPASS
-				if (setenv("SUDO_ASKPASS", "/home/roe/skps/secret.sh", 1) != 0) {
-          crit("setenv error");
-				}
-
-        execlp("sudo", "sudo", "--askpass", "chmod", "666", file_path, NULL);
-        crit("ERROR: execv sudo");
-
-      } else {
-        endwin();
-        int status;
-
-        while(kill(pid, 0) == 0){
-          waitpid(pid, &status, 0);
-        }
-      }
-
-    } else {
-      char error_str[32] = {'\0'};
-      sprintf(error_str, "A new errno: %d", errno);
-      crit(error_str);
-    }
-  }
-}
-
-void print_clear_terminal(){
-  printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-}
-
 void special_chars(){
   setlocale(LC_ALL, "");    // wide character support
 }

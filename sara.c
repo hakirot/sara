@@ -492,21 +492,3 @@ void _pshd(){
   return;
 
 }
-
-struct file_node * init_dir_list(char * dir){
-  return NULL;
-}
-
-void free_dir_list(struct file_node * list){
-
-  if (list == NULL){
-    return;
-  }
-
-  struct file_node * next;
-  while(list != NULL){
-    next = list->next;
-    free(list);
-    list = next;
-  }
-}

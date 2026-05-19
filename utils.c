@@ -244,7 +244,9 @@ void __topmenu__(char input){
   int dim_y = 0;
   int dim_x = 0;
 
-  if(ROW < menu_y){
+  if(menu_y < 3){
+    dim_y = ROW;
+  } else if(ROW < menu_y){
     dim_y = ROW;    
   } else {
     dim_y = menu_y;
@@ -281,6 +283,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) break;
 
+    // make this block a function
     int input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
       if (input == 'j'){
@@ -354,14 +357,15 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   }
   for(i; k < window_size; i++){
 
-    if(i == selection){
+    if(i == selection && dim_y != 1 && dim_y != 3){
       if(bold_color_menu == true) {
         attron(COLOR_PAIR(menu_c + 16));
       } else {
         attron(COLOR_PAIR(menu_c + 8));
       }
+    } else {
+      attron(COLOR_PAIR(menu_c));
     }
-    else attron(COLOR_PAIR(menu_c));
 
     int str_len = (int)strlen(menu[i].name);
     if(str_len > dim_x - 2){

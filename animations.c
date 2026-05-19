@@ -853,6 +853,10 @@ void _none(Arg printColorbar){
     attroff(COLOR_PAIR(FOREGROUND));
     attroff(A_BOLD);
     attroff(A_STANDOUT);
+
+    if(SHOW_COLORS){
+      _show_colors();
+    }
   }
 }
 

@@ -55,12 +55,10 @@ OBJECTS_DIR   = ./
 
 SOURCES       = animations.c \
 		globals.c \
-		glyphs.c \
 		sara.c \
 		utils.c 
 OBJECTS       = animations.o \
 		globals.o \
-		glyphs.o \
 		sara.o \
 		utils.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
@@ -168,11 +166,9 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		sara.pro animations.h \
 		config.h \
 		globals.h \
-		glyphs.h \
 		sara.h \
 		utils.h animations.c \
 		globals.c \
-		glyphs.c \
 		sara.c \
 		utils.c
 QMAKE_TARGET  = sara
@@ -408,8 +404,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents animations.h config.h globals.h glyphs.h sara.h utils.h $(DISTDIR)/
-	$(COPY_FILE) --parents animations.c globals.c glyphs.c sara.c utils.c $(DISTDIR)/
+	$(COPY_FILE) --parents animations.h config.h globals.h sara.h utils.h $(DISTDIR)/
+	$(COPY_FILE) --parents animations.c globals.c sara.c utils.c $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -468,11 +464,7 @@ globals.o: globals.c globals.h \
 		config.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o globals.o globals.c
 
-glyphs.o: glyphs.c 
-	$(CC) -c $(CFLAGS) $(INCPATH) -o glyphs.o glyphs.c
-
 sara.o: sara.c sara.h \
-		glyphs.h \
 		animations.h \
 		globals.h \
 		config.h \

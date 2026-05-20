@@ -150,6 +150,7 @@ int __execute__(const Command * command){
     command = ranger_command(command);
     RANGER_FLAG=1;
   }
+
   if(command->option != EXEC){
 
     endwin();
@@ -170,6 +171,7 @@ int __execute__(const Command * command){
         close(fd);
       }
 
+      if(FOLLOW) _write_exit_dir();
       execvp(((char **)command->cmd)[0], (char **)command->cmd);
       perror("execvp");
       crit("");
@@ -743,9 +745,7 @@ void _invert_colors(){
 }
 
 void _quit(){
-  if (FOLLOW){
-    _write_exit_dir();
-  }
+  if (FOLLOW) _write_exit_dir();
 
   clear();
   refresh();

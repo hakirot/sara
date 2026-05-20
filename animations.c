@@ -451,7 +451,7 @@ void _neon(){
       } else if (WIN_SIZE == NORMAL && !IM_SET){
         _overlay(fg, '_');
       } else {
-        _bg();
+          _overlay_bg(0);
       }
 
       // TODO: create colorbar options
@@ -523,6 +523,7 @@ void _neon_reverse(){
           _bg();
           _overlay(im, 0);
         } else {
+          _bg();
           _overlay(fg, '_');
         }
       }
@@ -848,16 +849,7 @@ void _none(Arg printColorbar){
 }
 
 void _bg() {
-  clear();
-  attron(COLOR_PAIR(BACKGROUND));
-  if(use_bold_color_for_bg) attron(A_BOLD);
-  // TODO: make this print individual chars and see if bg will print in smaller panes
-  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-    mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
-  }
-  refresh();
-  attroff(A_BOLD);
-  attroff(COLOR_PAIR(BACKGROUND));
+  _overlay_bg(0);
 }
 
 void _overlay(const char * glyph[], char fill){
@@ -910,8 +902,12 @@ void _overlay_bg(char ch){
       wchar_t wc;
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-      if(*iter_row != ' '){
+      if(*iter_row != ' ' && ch != 0){
         mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, ch);
+      } else if(*iter_row != ' '){
+        cchar_t cchar;
+        setcchar(&cchar, &wc, 0, 0, NULL);
+        mvadd_wch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, &cchar);
       }
 
       iter_row += len;

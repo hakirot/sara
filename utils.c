@@ -320,10 +320,12 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     } else if (input == 2){
       selection -= (dim_y-2);
       if(selection < 0) selection = 0;
-    } else if (input == 'G'){
+    } else if (input == 'G' || input == 'L'){
       selection = len-1;
-    } else if (input == 'g'){
+    } else if (input == 'g' || input == 'H'){
       selection = 0;
+    } else if(input == 'M'){
+      selection = len/2;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _menuselect(menu[selection].next.submenu, dim_y, dim_x);

@@ -755,13 +755,7 @@ void _tv_static(){
 
         roll_result = roll(2);
 
-        // TODO: debug
         int idx = fg_arr[i][j];
-        if(idx != 0 && idx != 1){
-          char er[10] = {'\0'};
-          sprintf(er, "%d", idx);
-          crit(er);
-        }
 
         if (idx == 1 && roll_result == 2){
           fg_arr[i][j] = 0;
@@ -796,12 +790,6 @@ void _tv_static(){
           roll_result = roll(2);
 
           int idx = bg_arr[i][j];
-          // TODO: debug
-          if(idx != 0 && idx != 1){
-            char er[10] = {'\0'};
-            sprintf(er, "%d", idx);
-            crit(er);
-          }
 
           if (idx == 1 && roll_result == 2){
             bg_arr[i][j] = 0;
@@ -827,7 +815,6 @@ void _tv_static(){
   }
 }
 
-// TODO: remove globals as parameters
 void _none(Arg printColorbar){
   clear();
   if(dynamic_resize && WIN_SIZE == NORMAL){

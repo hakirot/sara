@@ -20,10 +20,10 @@ static int FOLLOW = true;
 /* COLOR SETTINGS */
 static const int fg_c = red;         /* fg color */
 static const int bg_c = cyan;      /* bg color */
-static const int hd_c = red;     /* hd color */
+static const int hd_c = magenta;     /* hd color */
 
 static const int use_bold_color_for_bg = true;
-static const int use_bold_color_for_fg = false;
+static const int use_bold_color_for_fg = true;
 static const int use_bold_color_for_hd = false;
 
 /* header highlight options*/
@@ -84,47 +84,25 @@ static const int highlight_hd_in_small_mode = false;
 //   "   .`                                 `/    ",
 // };
 
-// static const char * bg[] = {
-//   "                     -`                     ",
-//   "                    .o+`                    ",
-//   "                   `ooo/                    ",
-//   "                  `+oooo:                   ",
-//   "                 `+oooooo:                  ",
-//   "                 -+oo  oo+:                 ",
-//   "               `/:-:    oo+:                ",
-//   "              `/+++ /    +++:               ",
-//   "             `/+++ /      +++:              ",
-//   "            `/+++ /        ooo/`            ",
-//   "           ./ooo            sso+`           ",
-//   "          .ooss              sss+`          ",
-//   "         -osss                ssso.         ",
-//   "        : sss                  o+++.        ",
-//   "       /ossssssss/        +ssssooo/-        ",
-//   "     `/osss    /:-        -:/    sso+-      ",
-//   "    `+sso+                        +oso:     ",
-//   "   `++:.                           `-/+/    ",
-//   "   .`                                 `/    ",
-// };
-
 static const char * bg[] = {
   "                     -`                     ",
   "                    .o+`                    ",
   "                   `ooo/                    ",
   "                  `+oooo:                   ",
-  "                 `+oooooo                   ",
-  "                 -+oo  oo                   ",
-  "               `/:-:    o                   ",
-  "              `/+++ /                       ",
-  "             `/+++ /                        ",
-  "            `/+++ /                         ",
-  "           ./ooo                            ",
-  "          .ooss                             ",
-  "         -osss                              ",
-  "        : sss                               ",
-  "       /ossssssss/                          ",
-  "     `/osss    /:-                          ",
-  "    `+sso+   -/:                            ",
-  "   `++:.                                    ",
+  "                 `+oo  oo:                  ",
+  "                 -+o   oo+                  ",
+  "               `/:- /   o                   ",
+  "              `/++                          ",
+  "             `/++ /                         ",
+  "            `/++ /                          ",
+  "           ./oo                             ",
+  "          .oos                              ",
+  "         -oss                               ",
+  "        : sss   s/                          ",
+  "       /osss  -/:-                          ",
+  "     `/osss  -/:                            ",
+  "    `+sso+  -                               ",
+  "   `++:.    -                               ",
   "   .`                                       ",
 };
 //static const char * bg[] = {
@@ -226,29 +204,29 @@ static const char hd[] = "SARA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 0;
+static const int bg_offset_y = 1;
 static const int bg_offset_x = 0;
 static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;
 
 /* header position when fullsize mode */
 static const int hd_offset_y = 0;
-static const int hd_offset_x = -4;
+static const int hd_offset_x = -3;
 
 /* header position when small window mode */
-static const int hd_offset_y_min = -1;
-static const int hd_offset_x_min = -2;
+static const int hd_offset_y_min = -0;
+static const int hd_offset_x_min = -3;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true;
-static const int resize_x = 14;
-static const int resize_y = 12;
+static const int resize_x = 18;
+static const int resize_y = 10;
 
 /* Set tiny_mode to */
 static const int tiny_mode = true;
-static const char tn[] = "START";
+static const char tn[] = "SARA";
 static const int tiny_mode_y = 7;
-static const int tiny_mode_x = 44;
+static const int tiny_mode_x = 18;
 
 
 /* automate this and perform checks [make a perform check cmd-line option]
@@ -291,6 +269,8 @@ static const char *M_cmd[]            = { "rmpc",                               
 static const char *Q_cmd[]            = { "tmux", "kill-pane",                   NULL};
 static const char *X_cmd[]            = { "nohup", "bash", "-c", "kill-session", NULL};
 static const char *n_cmd[]            = { "respawn.sh",                          NULL};
+static const char *x_cmd[]            = { "xcolor",                              NULL};
+static const char *N_cmd[]            = { "fastfetch",                           NULL};
 
 static const ExtraArgs defaults = {
   NULL,        /* Optionally change directory before executing command */
@@ -323,7 +303,9 @@ static const Command commandkeys[] = {
   { 'M',         M_cmd,             WAIT,     neon_reverse,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
   { 'X',         X_cmd,             EXEC,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
-  { 'n',         n_cmd,             WAIT,     neon_reverse,           none,                             confirms },
+  { 'n',         n_cmd,             WAIT,     neon_reverse,                  none,                             confirms },
+  { 'x',         x_cmd,             STOP,     neon_reverse,                  none,                             defaults },
+  { 'N',         N_cmd,             STOP,             none,                  neon,                             defaults },
 };
 
 
@@ -334,8 +316,8 @@ static const Builtin builtinkeys[] = {
   { 'H', rave },
   { 'p', pshd },
   { 'q', quit },
-  { 'C', check },
-  { 'c', colors },
+//{ 'C', check },
+  { 'C', colors },
 };
 
 
@@ -394,7 +376,7 @@ static const Menu connect_options[] = {
 };
 
 static const char *boot_spawns_cmd[] = { "boot_spawns", NULL };
-static const Command boot_spawns = { 0, boot_spawns_cmd, STOP_ON_ERR, glitch_full, down_wipes, confirms };
+static const Command boot_spawns = { 0, boot_spawns_cmd, EXEC, glitch_full, down_wipes, confirms };
 
 static const char *btm_cmd[] = { "btm", NULL };
 static const Command btm = { 0, btm_cmd, WAIT, neon_reverse, neon, defaults  };
@@ -479,6 +461,62 @@ static const Menu git_menu[] = {
   END_OF_MENU
 };
 
+static const char *pix_cmd[] = { "NO_COMMAND", NULL };
+static const Command pix = { 0, pix_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/pix", NOCONFIRM, OUTS } };
+
+static const char *dls_cmd[] = { "NO_COMMAND", NULL };
+static const Command dls = { 0, dls_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/dls", NOCONFIRM, OUTS } };
+
+static const char *Downloads_cmd[] = { "NO_COMMAND", NULL };
+static const Command Downloads = { 0, Downloads_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/Downloads", NOCONFIRM, OUTS } };
+
+static const char *git_cmd[] = { "NO_COMMAND", NULL };
+static const Command git = { 0, git_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/git", NOCONFIRM, OUTS } };
+
+static const char *gmz_cmd[] = { "NO_COMMAND", NULL };
+static const Command gmz = { 0, gmz_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/gmz", NOCONFIRM, OUTS } };
+
+static const char *lib_cmd[] = { "NO_COMMAND", NULL };
+static const Command lib = { 0, lib_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/lib", NOCONFIRM, OUTS } };
+
+static const char *mnt_cmd[] = { "NO_COMMAND", NULL };
+static const Command mnt = { 0, mnt_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/mnt", NOCONFIRM, OUTS } };
+
+static const char *slash_mnt_cmd[] = { "NO_COMMAND", NULL };
+static const Command slash_mnt = { 0, slash_mnt_cmd, STOP_ON_ERR, none, blink, { "/mnt", NOCONFIRM, OUTS } };
+
+static const char *mzk_cmd[] = { "NO_COMMAND", NULL };
+static const Command mzk = { 0, mzk_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/mzk", NOCONFIRM, OUTS } };
+
+static const char *skps_cmd[] = { "NO_COMMAND", NULL };
+static const Command skps = { 0, skps_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/skps", NOCONFIRM, OUTS } };
+
+static const char *chtest_cmd[] = { "NO_COMMAND", NULL };
+static const Command test = { 0, chtest_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/test", NOCONFIRM, OUTS } };
+
+static const char *vidz_cmd[] = { "NO_COMMAND", NULL };
+static const Command vidz = { 0, vidz_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/vidz", NOCONFIRM, OUTS } };
+
+static const char *dox_cmd[] = { "NO_COMMAND", NULL };
+static const Command dox = { 0, dox_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/dox", NOCONFIRM, OUTS } };
+
+static const Menu chdir_menu[] = {
+  { "dls",       COMMAND, { .command = dls } },
+  { "Downloads", COMMAND, { .command = Downloads } },
+  { "dox",       COMMAND, { .command = dox } },
+  { "git",       COMMAND, { .command = git } },
+  { "gmz",       COMMAND, { .command = gmz } },
+  { "lib",       COMMAND, { .command = lib } },
+  { "mnt",       COMMAND, { .command = mnt } },
+  { "/mnt",      COMMAND, { .command = slash_mnt } },
+  { "mzk",       COMMAND, { .command = mzk } },
+  { "pix",       COMMAND, { .command = pix } },
+  { "skps",      COMMAND, { .command = skps } },
+  { "test",      COMMAND, { .command = test } },
+  { "vidz",      COMMAND, { .command = vidz } },
+  END_OF_MENU
+};
+
 
 /* menukey assignments */
 static const MenuKey menukeys[] = {
@@ -487,6 +525,7 @@ static const MenuKey menukeys[] = {
   {'F', F_menu },
   {'L', L_menu },
   {'g', git_menu },
+  {'c', chdir_menu },
 };
 
 /* PSHD UI CONFIG */

@@ -283,11 +283,14 @@ void _pshd(){
       selection -= (dim_y-2);
       if(selection < 0) selection = 0;
       reprint = true;
-    } else if (input == 'G'){
+    } else if (input == 'G' || input == 'L'){
       selection = count-1;
       reprint = true;
-    } else if (input == 'g'){
+    } else if (input == 'g' || input == 'H'){
       selection = 0;
+      reprint = true;
+    } else if (input == 'M'){
+      selection = count/2;
       reprint = true;
     } else if (input == '\n'){
       int i = 0;

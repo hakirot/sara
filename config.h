@@ -345,11 +345,11 @@ static const Builtin builtinkeys[] = {
 
 // pshd window color
 static const unsigned short pshd_c            = green;
-static const unsigned short bold_color_pshd   = true;
+static const unsigned short bold_color_pshd   = false; // TODO: not implemented
 
 // pshd dimensions
-static const unsigned short pshd_x = 30;
 static const unsigned short pshd_y = 12;
+static const unsigned short pshd_x = 30;
 
 // pshd position
 static const short pshd_offset_y = 200;
@@ -366,8 +366,8 @@ static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 //static const wchar_t MenuBorder[] = L"++++-|";
 static const unsigned short menu_c            = blue;
 static const unsigned short bold_color_menu   = false;
-static const unsigned short menu_x            = 22;       // TODO set these to at least 3 if < 3 on startup
-static const unsigned short menu_y            = 11;        // TODO set these to at least 3 if < 3 on startup
+static const unsigned short menu_y            = 5;        // TODO set these to at least 3 if < 3 on startup
+static const unsigned short menu_x            = 22;        // TODO set these to at least 3 if < 3 on startup
 static const short menu_offset_y              = 200;
 static const short menu_offset_x              = -200;
 
@@ -491,7 +491,7 @@ static const char *gp_cmd[] = { "git", "push", NULL };
 static const Command gp = { 0, gp_cmd, STOP_ON_ERR, none, neon, defaults  };
 
 static const Menu git_menu[] = {
-  { "Short", COMMAND, { .command = gss } },
+  { "s", COMMAND, { .command = gss } },
   { "Status", COMMAND, { .command = gs } },
   { "gdv", COMMAND, { .command = gdv } },
   { "Add -A", COMMAND, { .command = gaa } },

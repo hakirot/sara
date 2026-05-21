@@ -264,14 +264,20 @@ void __topmenu__(char input){
   int dim_x = 0;
 
   if(menu_y < 3){
-    dim_y = ROW;
+    if(menu_y < ROW){
+      dim_y = 3;
+    } else {
+      dim_y = ROW;
+    }
   } else if(ROW < menu_y){
     dim_y = ROW;    
   } else {
     dim_y = menu_y;
   }
 
-  if(COL < menu_x){
+  if(menu_x < 3){
+    dim_x = 3;
+  } else if(COL < menu_x){
     dim_x = COL;
   } else {
     dim_x = menu_x;

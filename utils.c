@@ -289,8 +289,8 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     dim_y = len+2;
   }
 
-  int offset_y = _deduce_offset_y(len, dim_y);
-  int offset_x = menu_offset_x;
+  int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
+  int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
 
@@ -390,7 +390,6 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
     }
     for(int j = 0; j < str_len; j++){
       mvaddch(ROW/2 - dim_y/2 + 1 + k + offset_y, COL/2 - dim_x/2 + 1 + j + offset_x, menu[i].name[j]);
-      // TODO: account for small windows
     }
 
     attroff(COLOR_PAIR(menu_c + 8));
@@ -401,14 +400,29 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   attroff(A_BOLD);
 }
 
-int _deduce_offset_y(int len, int dim_y){
-  if((ROW - dim_y + menu_offset_y) > ROW){
+int _deduce_offset_y(int dim_y, int requested_offset_y){
+
+  // lower
+  if((ROW/2 + dim_y + requested_offset_y) > ROW){
     int ret_val = ROW/2 - dim_y/2;
-    if(ret_val + dim_y < ROW) ret_val++;
+    if(ret_val + dim_y < ROW) {
+      ret_val++;
+    }
+    if((ROW/2 - dim_y/2 + ret_val + dim_y) > ROW) {
+      ret_val--;
+    }
     return ret_val;
   }
 
-  return menu_offset_y;
+  if((ROW/2 + requested_offset_y - dim_y/2) < 0){
+    int ret_val = -(ROW/2 - dim_y/2);
+    return ret_val;
+  }
+
+  return requested_offset_y;
+}
+
+int _deduce_offset_x(int dim_x, int requested_offset_x){
 }
 
 void load_command_config(){

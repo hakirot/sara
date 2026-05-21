@@ -289,7 +289,10 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     dim_y = len+2;
   }
 
-  _print_menu_borders(dim_y, dim_x);
+  int offset_y = _deduce_offset_y(len, dim_y);
+  int offset_x = menu_offset_x;
+
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
 
   int selection = 0;
   while(1){
@@ -343,19 +346,17 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
       return;
     }
 
-    _print_menu_selection(menu, selection, len, dim_y, dim_x);
+    _print_menu_selection(menu, selection, len, dim_y, dim_x, offset_y, offset_x);
     usleep(2000);
   }
 }
 
-void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x){
+void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x, int offset_y, int offset_x){
 
-  _clear_menu(dim_y, dim_x);
+
+  _clear_menu(dim_y, dim_x, offset_y, offset_x);
   int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
-
-  int offset_y = menu_offset_y;
-  int offset_x = menu_offset_x;
 
   if(dim_y < 3) {
     window_size = ROW;
@@ -398,6 +399,16 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
     k++;
   }
   attroff(A_BOLD);
+}
+
+int _deduce_offset_y(int len, int dim_y){
+  if((ROW - dim_y + menu_offset_y) > ROW){
+    int ret_val = ROW/2 - dim_y/2;
+    if(ret_val + dim_y < ROW) ret_val++;
+    return ret_val;
+  }
+
+  return menu_offset_y;
 }
 
 void load_command_config(){

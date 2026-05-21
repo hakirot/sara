@@ -187,13 +187,12 @@ int __execute__(const Command * command){
       if ((command->option == STOP_ON_ERR && status != 0) ||
           STOP == command->option) {
         printf("Press enter to continue");
-        getchar();
-        // char input = getch();
-        // input = getch();
-        // while(input != -1){
-        //   input = getch();
-        //   printf("%c", input);
-        // }
+
+        size_t bufsize = 256;
+        char *buffer = (char *)malloc(bufsize * sizeof(char));
+        if( buffer == NULL) crit("Unable to allocate buffer");
+        getline(&buffer,&bufsize,stdin);
+        free(buffer);
       }
     }
 

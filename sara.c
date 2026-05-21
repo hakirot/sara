@@ -27,7 +27,6 @@ int main(int argc, char* argv[]){
     }
   }
 
-  // Override arg fg and bg colors
   for (int i = 0; i < argc; i++) {
     if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--foreground") == 0){
       if(i + 1 < argc){
@@ -236,7 +235,7 @@ void _pshd(){
   int offset_y = _deduce_offset_y(dim_y, pshd_offset_y);
   int offset_x = _deduce_offset_x(dim_x, pshd_offset_x);
 
-  _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
   refresh();
 
   int home_len = strlen(env_home);
@@ -246,7 +245,7 @@ void _pshd(){
   int input_digits_idx = 0;
   int selection = 0;
   int reprint = true;
-//attron(COLOR_PAIR(FOREGROUND));
+//attron(COLOR_PAIR(pshd_c));
 
   while(1){
 
@@ -326,16 +325,16 @@ void _pshd(){
 
         reprint = true;
     } else if (input == '/' || input == 'f') {
-      // attron(FOREGROUND);
+      // attron(pshd_c);
       mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
-      // attroff(FOREGROUND);
+      // attroff(pshd_c);
       refresh();
       char search_buffer[256] = {'\0'};
       int char_idx = 0;
       int chdir_at_seletion = false;
 
       while(1){
-        //attron(FOREGROUND);
+        //attron(pshd_c);
         input = getch();
 
         getmaxyx(stdscr, ROW, COL);
@@ -348,13 +347,13 @@ void _pshd(){
           _clear_menu(dim_y, dim_x, offset_y, offset_x);
           search_buffer[char_idx] = (char)input;
           char_idx++;
-          // attron(FOREGROUND);
-          attron(FOREGROUND + 8);
+          // attron(pshd_c);
+          attron(pshd_c + 8);
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
-          attroff(FOREGROUND + 8);
+          attroff(pshd_c + 8);
           // refresh();
           // getchar();
-          // attroff(FOREGROUND);
+          // attroff(pshd_c);
           reprint = true;
 
 
@@ -362,26 +361,26 @@ void _pshd(){
           reprint = true;
           chdir_at_seletion = true;
         } else if (input == 27){
-          _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
+          _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
           reprint = true;
           break;
         } else if (input > 0) {
           // Backspaces
           if(char_idx == 0){
-            _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
+            _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
             reprint = true;
             break;
           }
-          _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
-          attron(FOREGROUND);
+          _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
+          attron(pshd_c);
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
-          attroff(FOREGROUND);
+          attroff(pshd_c);
 
           char_idx--;
           search_buffer[char_idx] = '\0';
-          attron(FOREGROUND);
+          attron(pshd_c);
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
-          attroff(FOREGROUND);
+          attroff(pshd_c);
           if(char_idx < 0) char_idx = 0;
 
           refresh();
@@ -396,9 +395,9 @@ void _pshd(){
             line[strcspn(line, "\n")] = 0;
             if(strstr(line, search_buffer)){
 
-              attron(COLOR_PAIR(FOREGROUND));
+              attron(COLOR_PAIR(pshd_c));
               mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
-              attroff(COLOR_PAIR(FOREGROUND));
+              attroff(COLOR_PAIR(pshd_c));
 
               if(i == 0) {
                 selection = k;
@@ -413,9 +412,9 @@ void _pshd(){
                   animate(neon);
                   return;
                 }
-                attron(COLOR_PAIR(FOREGROUND + 8));
+                attron(COLOR_PAIR(pshd_c + 8));
               } else {
-                attron(COLOR_PAIR(FOREGROUND));
+                attron(COLOR_PAIR(pshd_c));
               }
 
               if(strstr(line, env_home) != NULL){
@@ -431,8 +430,8 @@ void _pshd(){
                 mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
                 if((j + 8) > dim_x) break;
               }
-              attroff(COLOR_PAIR(FOREGROUND));
-              attroff(COLOR_PAIR(FOREGROUND + 8));
+              attroff(COLOR_PAIR(pshd_c));
+              attroff(COLOR_PAIR(pshd_c + 8));
 
               i++;
             }
@@ -450,8 +449,24 @@ void _pshd(){
 
     if(reprint){
       _clear_menu(dim_y, dim_x, offset_y, offset_x);
+      _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, count);
+      reprint = false;
+    }
+    usleep(2000);
+  }
+
+  refresh();
+  return;
+
+}
+
+void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selection, FILE* file, int count){
       int i = 0;
       int k = -1;
+      const char *env_home = getenv("HOME");
+      int home_len = strlen(env_home);
+      char line[256] = {'\0'};
+      int line_offset = 4;
       while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
 
         k++;
@@ -469,32 +484,24 @@ void _pshd(){
 
         line[strcspn(line, "\n")] = 0;
 
-        attron(COLOR_PAIR(FOREGROUND));
+        attron(COLOR_PAIR(pshd_c));
 
         int len = strlen(line);
         mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
 
-        if(k == selection) attron(COLOR_PAIR(FOREGROUND + 8));
+        if(k == selection) attron(COLOR_PAIR(pshd_c + 8));
 
         for(int j = 0; j < len; j++){
           mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
           if((j + 8) > dim_x) break;
         }
-        if(selection == k) attroff(COLOR_PAIR(FOREGROUND));
-        if(selection == k) attroff(COLOR_PAIR(FOREGROUND + 8));
-        // attroff(COLOR_PAIR(FOREGROUND));
-        // attroff(COLOR_PAIR(FOREGROUND + 8));
+        if(selection == k) attroff(COLOR_PAIR(pshd_c));
+        if(selection == k) attroff(COLOR_PAIR(pshd_c + 8));
+        // attroff(COLOR_PAIR(pshd_c));
+        // attroff(COLOR_PAIR(pshd_c + 8));
 
         i++;
         refresh(); //debug
       }
       rewind(file);
-      reprint = false;
-    }
-    usleep(2000);
-  }
-
-  refresh();
-  return;
-
 }

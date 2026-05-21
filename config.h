@@ -19,8 +19,8 @@ static int FOLLOW = true;
 
 /* COLOR SETTINGS */
 static const int fg_c = magenta;         /* fg color */
-static const int bg_c = green;      /* bg color */
-static const int hd_c = yellow;     /* hd color */
+static const int bg_c = red;      /* bg color */
+static const int hd_c = green;     /* hd color */
 
 static const int use_bold_color_for_fg = false;
 static const int use_bold_color_for_bg = true;
@@ -31,12 +31,6 @@ static const int highlight_hd_in_full_mode  = false;
 static const int highlight_hd_in_small_mode = false;
 
 /* CUSTOM GLYPHS */ 
-
-    /* RESTRICTIONS
-
-       Ensure strings in character array are equal length 
-
-       im[], if defined, must have identical dimensions to fg[]   */
 
 
 /* background glyph */
@@ -294,6 +288,7 @@ static const char *n_cmd[]            = { "respawn.sh",                         
 static const char *x_cmd[]            = { "xcolor",                              NULL};
 static const char *N_cmd[]            = { "fastfetch",                           NULL};
 static const char *G_cmd[]            = { "nodemon",                             NULL};
+static const char *Reload_cmd[]       = { "sara_reload",                         NULL};
 
 static const ExtraArgs defaults = {
   NULL,        /* Optionally change directory before executing command */
@@ -315,7 +310,7 @@ static const Command commandkeys[] = {
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/roe/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
-  { 'P',         P_cmd,             WAIT,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
+  { 'P',         P_cmd,             WAIT,             none,                  none,              {NULL, CONFIRM, NO_OUT} },
 //{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
   { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
@@ -329,7 +324,8 @@ static const Command commandkeys[] = {
   { 'n',         n_cmd,             WAIT,     neon_reverse,                  none,                             confirms },
   { 'x',         x_cmd,             STOP,     neon_reverse,                  none,                             defaults },
   { 'N',         N_cmd,             STOP,             none,                  neon,                             defaults },
-  { 'G',         G_cmd,             WAIT,             none,                  neon,                             defaults },
+  { 'G',         G_cmd,             STOP,             none,                  neon,                             defaults },
+  { ':',         Reload_cmd,        EXEC,             none,                  neon,                             defaults },
 };
 
 
@@ -345,6 +341,21 @@ static const Builtin builtinkeys[] = {
 };
 
 
+/* PSHD UI CONFIG */
+
+// pshd window color
+static const unsigned short pshd_c            = green;
+static const unsigned short bold_color_pshd   = true;
+
+// pshd dimensions
+static const unsigned short pshd_x = 30;
+static const unsigned short pshd_y = 12;
+
+// pshd position
+static const short pshd_offset_y = 200;
+static const short pshd_offset_x = 200;
+
+
 /* MENUS CONFIGURATION */
 
 //static const wchar_t MenuBorder[] = L"┌┐└┘─│";
@@ -353,12 +364,12 @@ static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 //static const wchar_t MenuBorder[] = L"      ";
 //static const wchar_t MenuBorder[] = L"++++  ";
 //static const wchar_t MenuBorder[] = L"++++-|";
-static const unsigned short menu_c            = fg_c;
+static const unsigned short menu_c            = blue;
 static const unsigned short bold_color_menu   = false;
 static const unsigned short menu_x            = 22;       // TODO set these to at least 3 if < 3 on startup
 static const unsigned short menu_y            = 11;        // TODO set these to at least 3 if < 3 on startup
-static const short menu_offset_y              = 200;
-static const short menu_offset_x              = -200;
+static const short menu_offset_y              = -200;
+static const short menu_offset_x              = 200;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
@@ -425,7 +436,7 @@ static const Menu S_menu[] = {
 };
 
 static const char *firefox_cmd[] = { "firefox", NULL };
-static const Command firefox = { 0, firefox_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
+static const Command firefox = { 0, firefox_cmd, NOWAIT, glitch, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
 static const char *slippi_cmd[] = { "nohup", "slippi", NULL };
 static const Command slippi = { 0, slippi_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
@@ -562,13 +573,5 @@ static const MenuKey menukeys[] = {
   {'c', chdir_menu },
   {'A', killme_menu },
 };
-
-/* PSHD UI CONFIG */
-
-// Menu dimensions
-static const unsigned short pshd_x = 30;
-static const unsigned short pshd_y = 12;
-static const short pshd_offset_x = 100;
-static const short pshd_offset_y = 100;
 
 #endif

@@ -44,6 +44,7 @@ int get_confirmation();
 void printstandard();
 int input_color(char * arg);
 void _pshd();
+void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selection, FILE* file, int count);
 void ensure_path_perm(char * file_path, char perm);
 
 #endif

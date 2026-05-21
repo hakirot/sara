@@ -188,7 +188,12 @@ int __execute__(const Command * command){
           STOP == command->option) {
         printf("Press enter to continue");
         getchar();
-        fflush(stdin);
+        // char input = getch();
+        // input = getch();
+        // while(input != -1){
+        //   input = getch();
+        //   printf("%c", input);
+        // }
       }
     }
 
@@ -202,6 +207,7 @@ int __execute__(const Command * command){
     }
 
     endwin();
+    system("clear");
     if(FOLLOW) _write_exit_dir();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     perror("execvp");
@@ -292,7 +298,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
   int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 
-  _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
 
   int selection = 0;
   while(1){
@@ -408,7 +414,7 @@ int _deduce_offset_y(int dim_y, int requested_offset_y){
     if(ret_val + dim_y < ROW) {
       ret_val++;
     }
-    if((ROW/2 - dim_y/2 + ret_val + dim_y) > ROW) {
+    while((ROW/2 - dim_y/2 + ret_val + dim_y) > ROW) {
       ret_val--;
     }
     return ret_val;

@@ -568,7 +568,7 @@ static const MenuKey menukeys[] = {
 // Menu dimensions
 static const unsigned short pshd_x = 30;
 static const unsigned short pshd_y = 12;
-static const unsigned short pshd_offset_x = 0;
-static const unsigned short pshd_offset_y = 0;
+static const short pshd_offset_x = 100;
+static const short pshd_offset_y = -100;
 
 #endif

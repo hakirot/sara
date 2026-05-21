@@ -85,28 +85,6 @@ static const int highlight_hd_in_small_mode = false;
 // };
 
 //static const char * bg[] = {
-//  "                     -`                     ",
-//  "                    .o+`                    ",
-//  "                   `ooo/                    ",
-//  "                  `+oooo:                   ",
-//  "                 `+oo  oo:                  ",
-//  "                 -+o   oo+                  ",
-//  "               `/:- /   o                   ",
-//  "              `/++                          ",
-//  "             `/++ /                         ",
-//  "            `/++ /                          ",
-//  "           ./oo                             ",
-//  "          .oos                              ",
-//  "         -oss                               ",
-//  "        : ss    s/                          ",
-//  "       /oss   -/:                           ",
-//  "     `/oss   -/                             ",
-//  "    `+sso   -                               ",
-//  "   `++:.                                    ",
-//  "   .`                                       ",
-//};
-
-//static const char * bg[] = {
 //  " ████    ████    ████          ",
 //  "  ████    ████    ████         ",
 //  "    ███     ███     ███        ",
@@ -163,10 +141,32 @@ static const int highlight_hd_in_small_mode = false;
 // "/__,--'    '--,__\\",
 //};
 
+//static const char * bg[] = {
+//  "                     -`                     ",
+//  "                    .o+`                    ",
+//  "                   `ooo/                    ",
+//  "                  `+oooo:                   ",
+//  "                 `+oo  oo:                  ",
+//  "                 -+o   oo+                  ",
+//  "               `/:- /   o                   ",
+//  "              `/++                          ",
+//  "             `/++ /                         ",
+//  "            `/++ /                          ",
+//  "           ./oo                             ",
+//  "          .oos                              ",
+//  "         -oss                               ",
+//  "        : ss    s/                          ",
+//  "       /oss   -/:                           ",
+//  "     `/oss   -/                             ",
+//  "    `+sso   -                               ",
+//  "   `++:.                                    ",
+//  "   .`                                       ",
+//};
+
 static const char * fg[] = {
+ "     |-|           ",
  " |-|               ",
  "      |-|          ",
- "   |-|             ",
 };
 
 static const char * bg[] = {
@@ -230,10 +230,10 @@ static const char hd[] = "SARA";
 */
 static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
-static const int fg_offset_y = 2;
-static const int fg_offset_x = 11;
+static const int fg_offset_y = 3;
+static const int fg_offset_x = 12;
 static const int hd_offset_y = 3;
-static const int hd_offset_x = 6;
+static const int hd_offset_x = -8;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -0;
@@ -355,10 +355,10 @@ static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 //static const wchar_t MenuBorder[] = L"++++-|";
 static const unsigned short menu_c            = fg_c;
 static const unsigned short bold_color_menu   = false;
-static const unsigned short menu_x            = 20;       // TODO set these to at least 3 if < 3 on startup
-static const unsigned short menu_y            = 8;        // TODO set these to at least 3 if < 3 on startup
-static const short menu_offset_y              = 0;        // TODO: Implement
-static const short menu_offset_x              = 0;        // TODO: Implement
+static const unsigned short menu_x            = 22;       // TODO set these to at least 3 if < 3 on startup
+static const unsigned short menu_y            = 11;        // TODO set these to at least 3 if < 3 on startup
+static const short menu_offset_y              = 200;
+static const short menu_offset_x              = -200;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
@@ -545,6 +545,12 @@ static const Menu chdir_menu[] = {
   END_OF_MENU
 };
 
+static const Menu killme_menu[] = {
+  { "test",         COMMAND, { .command = home } },
+  END_OF_MENU
+};
+
+
 
 /* menukey assignments */
 static const MenuKey menukeys[] = {
@@ -554,6 +560,7 @@ static const MenuKey menukeys[] = {
   {'L', L_menu },
   {'g', git_menu },
   {'c', chdir_menu },
+  {'A', killme_menu },
 };
 
 /* PSHD UI CONFIG */

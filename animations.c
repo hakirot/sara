@@ -148,7 +148,7 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x){
   refresh();
 }
 
-void _print_pshd_borders(int dim_y, int dim_x){
+void _print_pshd_borders(int dim_y, int dim_x, int offset_y, int offset_x){
 
   if(dim_y < 3){
     clear();
@@ -161,37 +161,37 @@ void _print_pshd_borders(int dim_y, int dim_x){
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - dim_y/2 + pshd_offset_y, COL/2 - dim_x/2 + pshd_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, &cchar);
 
   wc = MenuBorder[1];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - dim_y/2 + pshd_offset_y, COL/2 - dim_x/2 + dim_x - 1 + pshd_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
 
   wc = MenuBorder[2];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + pshd_offset_y, COL/2 - dim_x/2 + pshd_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + offset_y, COL/2 - dim_x/2 + offset_x, &cchar);
 
   wc = MenuBorder[3];
   setcchar(&cchar, &wc, 0, 0, NULL);
-  mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + pshd_offset_y, COL/2 - dim_x/2 + dim_x - 1 + pshd_offset_x, &cchar);
+  mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
 
   wc = MenuBorder[4];
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < dim_x - 1; i++){
-    mvadd_wch(ROW/2 - dim_y/2 + pshd_offset_y, COL/2 - dim_x/2 + i + pshd_offset_x, &cchar);
-    mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + pshd_offset_y, COL/2 - dim_x/2 + i + pshd_offset_x, &cchar);
+    mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + i + offset_x, &cchar);
+    mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + offset_y, COL/2 - dim_x/2 + i + offset_x, &cchar);
   }
 
   wc = MenuBorder[5];
   setcchar(&cchar, &wc, 0, 0, NULL);
   for(int i = 1; i < dim_y - 1; i++){
-    mvadd_wch(ROW/2 - dim_y/2 + i + pshd_offset_y, COL/2 - dim_x/2 + pshd_offset_x, &cchar);
-    mvadd_wch(ROW/2 - dim_y/2 + i + pshd_offset_y, COL/2 - dim_x/2 + dim_x - 1 + pshd_offset_x, &cchar);
+    mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + offset_x, &cchar);
+    mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(FOREGROUND));
 
-  _clear_pshd_window(dim_y, dim_x);
+  _clear_pshd_window(dim_y, dim_x, offset_y, offset_x);
   refresh();
 }
 
@@ -306,8 +306,6 @@ void _print_confirm_selection(int selection){
 
 // TODO: this and _clear_pshd_window can be one function by passing pshd/menu offsets
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
-  // int offset_y = menu_offset_y;
-  // int offset_x = menu_offset_x;
 
   if(dim_y < 3){
     clear();
@@ -324,9 +322,7 @@ void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
   }
 }
 
-void _clear_pshd_window(int dim_y, int dim_x){
-  int offset_y = pshd_offset_y;
-  int offset_x = pshd_offset_x;
+void _clear_pshd_window(int dim_y, int dim_x, int offset_y, int offset_x){
 
   if(dim_y < 3){
     clear();

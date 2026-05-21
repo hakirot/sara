@@ -233,7 +233,10 @@ void _pshd(){
     dim_x = pshd_x;
   }
 
-  _print_pshd_borders(dim_y, dim_x);
+  int offset_y = _deduce_offset_y(dim_y, pshd_offset_y);
+  int offset_x = _deduce_offset_x(dim_x, pshd_offset_x);
+
+  _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
   refresh();
 
   int home_len = strlen(env_home);
@@ -324,7 +327,7 @@ void _pshd(){
         reprint = true;
     } else if (input == '/' || input == 'f') {
       // attron(FOREGROUND);
-      mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2, "FILTER ");
+      mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
       // attroff(FOREGROUND);
       refresh();
       char search_buffer[256] = {'\0'};
@@ -342,12 +345,12 @@ void _pshd(){
         }
 
         if (input > 31 && input < 127){
-          _clear_pshd_window(dim_y, dim_x);
+          _clear_pshd_window(dim_y, dim_x, offset_y, offset_x);
           search_buffer[char_idx] = (char)input;
           char_idx++;
           // attron(FOREGROUND);
           attron(FOREGROUND + 8);
-          mvaddch(ROW/2 - dim_y/2, COL/2 - dim_x/2 +  6 + char_idx, (char)input);
+          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
           attroff(FOREGROUND + 8);
           // refresh();
           // getchar();
@@ -359,25 +362,25 @@ void _pshd(){
           reprint = true;
           chdir_at_seletion = true;
         } else if (input == 27){
-          _print_pshd_borders(dim_y, dim_x);
+          _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
           reprint = true;
           break;
         } else if (input > 0) {
           // Backspaces
           if(char_idx == 0){
-            _print_pshd_borders(dim_y, dim_x);
+            _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
             reprint = true;
             break;
           }
-          _print_pshd_borders(dim_y, dim_x);
+          _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
           attron(FOREGROUND);
-          mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2, "FILTER ");
+          mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
           attroff(FOREGROUND);
 
           char_idx--;
           search_buffer[char_idx] = '\0';
           attron(FOREGROUND);
-          mvprintw(ROW/2 - dim_y/2, COL/2 - dim_x/2 + 7, "%s", search_buffer);
+          mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
           attroff(FOREGROUND);
           if(char_idx < 0) char_idx = 0;
 
@@ -394,7 +397,7 @@ void _pshd(){
             if(strstr(line, search_buffer)){
 
               attron(COLOR_PAIR(FOREGROUND));
-              mvprintw(ROW/2 - dim_y/2 + i + 1, COL/2 - dim_x/2 + 2, "%d", k);
+              mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
               attroff(COLOR_PAIR(FOREGROUND));
 
               if(i == 0) {
@@ -425,7 +428,7 @@ void _pshd(){
 
               int len = strlen(line);
               for(int j = 0; j < len; j++){
-                mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
+                mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
                 if((j + 8) > dim_x) break;
               }
               attroff(COLOR_PAIR(FOREGROUND));
@@ -446,7 +449,7 @@ void _pshd(){
     }
 
     if(reprint){
-      _clear_pshd_window(dim_y, dim_x);
+      _clear_pshd_window(dim_y, dim_x, offset_y, offset_x);
       int i = 0;
       int k = -1;
       while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
@@ -469,12 +472,12 @@ void _pshd(){
         attron(COLOR_PAIR(FOREGROUND));
 
         int len = strlen(line);
-        mvprintw(ROW/2 - dim_y/2 + i + 1, COL/2 - dim_x/2 + 2, "%d", k);
+        mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
 
         if(k == selection) attron(COLOR_PAIR(FOREGROUND + 8));
 
         for(int j = 0; j < len; j++){
-          mvaddch(ROW/2 - dim_y/2 + i + 1,COL/2 - dim_x/2 + j + 1 + line_offset, line[j]);
+          mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
           if((j + 8) > dim_x) break;
         }
         if(selection == k) attroff(COLOR_PAIR(FOREGROUND));

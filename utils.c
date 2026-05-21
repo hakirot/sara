@@ -431,6 +431,11 @@ int _deduce_offset_x(int dim_x, int requested_offset_x){
     return ret_val;
   }
 
+  if((COL/2 - dim_x/2 + requested_offset_x) < 0){
+    int ret_val = -(COL/2 - dim_x/2);
+    return ret_val;
+  }
+
   return requested_offset_x;
 }
 

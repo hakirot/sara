@@ -236,7 +236,7 @@ void _pshd(){
   int offset_y = _deduce_offset_y(dim_y, pshd_offset_y);
   int offset_x = _deduce_offset_x(dim_x, pshd_offset_x);
 
-  _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
   refresh();
 
   int home_len = strlen(env_home);
@@ -345,7 +345,7 @@ void _pshd(){
         }
 
         if (input > 31 && input < 127){
-          _clear_pshd_window(dim_y, dim_x, offset_y, offset_x);
+          _clear_menu(dim_y, dim_x, offset_y, offset_x);
           search_buffer[char_idx] = (char)input;
           char_idx++;
           // attron(FOREGROUND);
@@ -362,17 +362,17 @@ void _pshd(){
           reprint = true;
           chdir_at_seletion = true;
         } else if (input == 27){
-          _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
+          _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
           reprint = true;
           break;
         } else if (input > 0) {
           // Backspaces
           if(char_idx == 0){
-            _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
+            _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
             reprint = true;
             break;
           }
-          _print_pshd_borders(dim_y, dim_x, offset_y, offset_x);
+          _print_menu_borders(dim_y, dim_x, offset_y, offset_x);
           attron(FOREGROUND);
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
           attroff(FOREGROUND);
@@ -449,7 +449,7 @@ void _pshd(){
     }
 
     if(reprint){
-      _clear_pshd_window(dim_y, dim_x, offset_y, offset_x);
+      _clear_menu(dim_y, dim_x, offset_y, offset_x);
       int i = 0;
       int k = -1;
       while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){

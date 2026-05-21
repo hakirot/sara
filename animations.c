@@ -101,7 +101,7 @@ void _blink(){
   _none((Arg){.x = 0});
 }
 
-void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x){
+void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c){
 
   if(dim_y < 3){
     clear();
@@ -109,8 +109,9 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x){
   }
 
   // TODO: handle small size offsets
-  attron(COLOR_PAIR(menu_c));
-  if(bold_color_menu) attron(A_BOLD);
+  attron(COLOR_PAIR(c));
+  if(c == menu_c && bold_color_menu) attron(A_BOLD);
+  if(c == pshd_c && bold_color_pshd) attron(A_BOLD);
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
@@ -142,7 +143,7 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x){
     mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
   }
   attroff(A_BOLD);
-  attroff(COLOR_PAIR(menu_c));
+  attroff(COLOR_PAIR(c));
 
   _clear_menu(dim_y, dim_x, offset_y, offset_x);
   refresh();

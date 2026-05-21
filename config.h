@@ -353,7 +353,7 @@ static const unsigned short pshd_y = 12;
 
 // pshd position
 static const short pshd_offset_y = 200;
-static const short pshd_offset_x = 200;
+static const short pshd_offset_x = -200;
 
 
 /* MENUS CONFIGURATION */
@@ -368,8 +368,8 @@ static const unsigned short menu_c            = blue;
 static const unsigned short bold_color_menu   = false;
 static const unsigned short menu_x            = 22;       // TODO set these to at least 3 if < 3 on startup
 static const unsigned short menu_y            = 11;        // TODO set these to at least 3 if < 3 on startup
-static const short menu_offset_y              = -200;
-static const short menu_offset_x              = 200;
+static const short menu_offset_y              = 200;
+static const short menu_offset_x              = -200;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };
@@ -415,6 +415,9 @@ static const Command boot_spawns = { 0, boot_spawns_cmd, EXEC, glitch_full, down
 
 static const char *btm_cmd[] = { "btm", NULL };
 static const Command btm = { 0, btm_cmd, WAIT, neon_reverse, neon, defaults  };
+
+static const char *dysk_cmd[] = { "dysk", NULL };
+static const Command dysk = { 0, dysk_cmd, STOP, neon_reverse, neon, defaults  };
 
 static const Menu b_menu[] = {
   { "BLUETOOTH", SUBMENU, { .submenu = connect_options } },
@@ -465,6 +468,7 @@ static const Menu L_menu[] = {
   { "journalctl -f", COMMAND, { .command = journalctl } },
   { "dmesg -w", COMMAND, { .command = dmesg } },
   { "btm", COMMAND, { .command = btm } },
+  { "dysk", COMMAND, { .command = dysk } },
   END_OF_MENU
 };
 

@@ -423,6 +423,15 @@ int _deduce_offset_y(int dim_y, int requested_offset_y){
 }
 
 int _deduce_offset_x(int dim_x, int requested_offset_x){
+
+  if((COL/2 - dim_x/2 + dim_x - 1 + requested_offset_x) >= COL){
+    int ret_val = COL/2 - dim_x/2;
+    if((COL/2 - dim_x/2 + dim_x - 1 + ret_val) < COL) ret_val++;
+    if((COL/2 - dim_x/2 + dim_x - 1 + ret_val) >= COL) ret_val--;
+    return ret_val;
+  }
+
+  return requested_offset_x;
 }
 
 void load_command_config(){

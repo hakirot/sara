@@ -325,8 +325,8 @@ void _pshd(){
     } else if (input == '/' || input == 'f') {
 
       if(bold_color_pshd) {
+        attron(COLOR_PAIR(pshd_c));
         attron(A_STANDOUT);
-        attron(COLOR_PAIR(pshd_c + 16));
         attron(A_BOLD);
       } else {
         attron(COLOR_PAIR(pshd_c + 8));
@@ -335,7 +335,6 @@ void _pshd(){
       attroff(A_BOLD);
       attroff(A_STANDOUT);
       attroff(COLOR_PAIR(pshd_c + 8));
-      attroff(COLOR_PAIR(pshd_c + 16));
 
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
 
@@ -388,7 +387,7 @@ void _pshd(){
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
           if(bold_color_pshd) {
             attron(A_STANDOUT);
-            attron(COLOR_PAIR(pshd_c + 16));
+            attron(COLOR_PAIR(pshd_c));
             attron(A_BOLD);
           } else {
             attron(COLOR_PAIR(pshd_c + 8));
@@ -397,7 +396,6 @@ void _pshd(){
           attroff(A_BOLD);
           attroff(A_STANDOUT);
           attroff(COLOR_PAIR(pshd_c + 8));
-          attroff(COLOR_PAIR(pshd_c + 16));
 
           attron(COLOR_PAIR(pshd_c));
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
@@ -447,8 +445,8 @@ void _pshd(){
                   return;
                 }
                 if(bold_color_pshd) {
+                  attron(COLOR_PAIR(pshd_c));
                   attron(A_STANDOUT);
-                  attron(COLOR_PAIR(pshd_c + 16));
                   attron(A_BOLD);
                 } else {
                   attron(COLOR_PAIR(pshd_c + 8));
@@ -474,7 +472,6 @@ void _pshd(){
               attroff(A_STANDOUT);
               attroff(COLOR_PAIR(pshd_c));
               attroff(COLOR_PAIR(pshd_c + 8));
-              attroff(COLOR_PAIR(pshd_c + 16));
 
               i++;
             }
@@ -536,8 +533,8 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
 
     if(k == selection) {
       if(bold_color_pshd){
+        attron(COLOR_PAIR(pshd_c));
         attron(A_STANDOUT);
-        attron(COLOR_PAIR(pshd_c + 16));
       } else {
         attron(COLOR_PAIR(pshd_c + 8));
       }
@@ -549,7 +546,6 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     if(selection == k) {
       attroff(COLOR_PAIR(pshd_c));
       attroff(COLOR_PAIR(pshd_c + 8));
-      attroff(COLOR_PAIR(pshd_c + 16)); // .. sometimes I even amaze myself
       attroff(A_STANDOUT);
       attroff(A_BOLD);
     }

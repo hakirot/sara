@@ -29,7 +29,7 @@ void _chdir(char * target_dir);
 int _confirm();
 void preflight_check();
 void load_command_config();
-void warning(char * err);
+void warn(char * err);
 void crit(char * err);
 int  is_char_in_search(wchar_t wc, const wchar_t * search_str);
 void launch_window();
@@ -47,5 +47,7 @@ void _show_colors();
 void _check();
 void _quit();
 void _write_exit_dir();
+void _deflect_signals();
+void __interrupt__(int signum);
 
 #endif

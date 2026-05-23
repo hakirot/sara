@@ -19,7 +19,7 @@ static int FOLLOW = true;
 
 /* COLOR SETTINGS */
 static const int fg_c = magenta;         /* fg color */
-static const int bg_c = black;      /* bg color */
+static const int bg_c = yellow;      /* bg color */
 static const int hd_c = white;     /* hd color */
 
 static const int use_bold_color_for_fg = false;
@@ -60,7 +60,7 @@ static const unsigned short menu_y            = 1000;        // TODO set these t
 static const unsigned short menu_x            = 22;        // TODO set these to at least 3 if < 3 on startup
 
 /* pshd position      */
-static const short menu_offset_y              = 200;
+static const short menu_offset_y              = -200;
 static const short menu_offset_x              = -200;
 
 
@@ -274,10 +274,10 @@ static const char hd[] = "SARA";
 */
 static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
-static const int fg_offset_y = 4;
-static const int fg_offset_x = 15;
+static const int fg_offset_y = -1;
+static const int fg_offset_x = 9;
 static const int hd_offset_y = 2;
-static const int hd_offset_x = -8;
+static const int hd_offset_x = -1;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -0;
@@ -370,9 +370,9 @@ static const Command commandkeys[] = {
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,     neon_reverse,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
-  { 'X',         X_cmd,             EXEC,             none,                  none,            {NULL, NOCONFIRM, NO_OUT} },
+  { 'X',         X_cmd,             EXEC,             none,                  neon,            {NULL, NOCONFIRM, NO_OUT} },
   { 'n',         n_cmd,             WAIT,     neon_reverse,                  none,                             confirms },
-  { 'x',         x_cmd,             STOP,     neon_reverse,                  none,                             defaults },
+  { 'x',         x_cmd,             STOP,             none,                  neon,                             defaults },
   { 'N',         N_cmd,             STOP,             none,                  neon,                             defaults },
   { 'G',         G_cmd,             STOP,             none,                  neon,                             defaults },
   { ':',         Reload_cmd,        EXEC,             none,                  neon,                             defaults },

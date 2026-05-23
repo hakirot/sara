@@ -8,8 +8,7 @@
 
    . Active branches
      | main
-        - allow-custom-commands
-          . Build commands from a struct array
+        - tackle-loose-todos 
 
    . sleep() and usleep() functions halt timings using clock()
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
@@ -45,5 +44,6 @@ int input_color(char * arg);
 void _pshd();
 void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selection, FILE* file, int count);
 void ensure_path_perm(char * file_path, char perm);
+void __interrupt__(int signum);
 
 #endif

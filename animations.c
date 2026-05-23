@@ -162,6 +162,8 @@ void _print_confirm_window(char * command_str){
     width = 16;
   }
 
+  _clear_menu(3, width + 1, 0, 0);
+
   attron(COLOR_PAIR(menu_c));
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
@@ -258,7 +260,6 @@ void _print_confirm_selection(int selection){
   attroff(COLOR_PAIR(menu_c + 8));
 }
 
-// TODO: this and _clear_pshd_window can be one function by passing pshd/menu offsets
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
 
   if(dim_y < 3){
@@ -276,8 +277,6 @@ void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
   }
 }
 
-// TODO: New test glyphs reveal undefined behavior with the header
-// TODO: Place colorbar at same line as hd
 void _glitch(Arg bigmode){
 
   _none((Arg){.x = 1});

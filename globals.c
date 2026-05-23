@@ -48,4 +48,6 @@ int menukeys_len;
 
 int SHOW_COLORS = false;
 
+int INTERRUPT = false;
+
 int KEY_LOCK = 0;

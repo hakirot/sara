@@ -35,7 +35,7 @@ static const int highlight_hd_in_small_mode = false;
 
 /* pshd window COLOR    */
 static const unsigned short pshd_c            = green;
-static const unsigned short bold_color_pshd   = true; // TODO: not implemented
+static const unsigned short bold_color_pshd   = true;
 
 /* pshd dimensions      */
 static const unsigned short pshd_y = 12;
@@ -53,7 +53,7 @@ static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 
 /* pshd window color  */
 static const unsigned short menu_c            = blue;
-static const unsigned short bold_color_menu   = false;
+static const unsigned short bold_color_menu   = true;
 
 /* pshd dimensions    */
 static const unsigned short menu_y            = 1000;        // TODO set these to at least 3 if < 3 on startup

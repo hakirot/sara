@@ -393,7 +393,8 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
 
     if(i == selection && dim_y != 1 && dim_y != 3){
       if(bold_color_menu == true) {
-        attron(COLOR_PAIR(menu_c + 16));
+        attron(A_STANDOUT);
+        attron(COLOR_PAIR(menu_c));
       } else {
         attron(COLOR_PAIR(menu_c + 8));
       }
@@ -409,6 +410,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
       mvaddch(ROW/2 - dim_y/2 + 1 + k + offset_y, COL/2 - dim_x/2 + 1 + j + offset_x, menu[i].name[j]);
     }
 
+    attroff(A_STANDOUT);
     attroff(COLOR_PAIR(menu_c + 8));
     attroff(COLOR_PAIR(menu_c));
     if(i == len - 1) break;

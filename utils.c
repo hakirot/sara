@@ -370,7 +370,6 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
 
 void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x, int offset_y, int offset_x){
 
-
   _clear_menu(dim_y, dim_x, offset_y, offset_x);
   int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
@@ -378,7 +377,6 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(dim_y < 3) {
     window_size = ROW;
     offset_y = -1;
-    offset_x = 0;
   }
 
   int i = 0;

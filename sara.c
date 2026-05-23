@@ -245,6 +245,11 @@ void _pshd(){
   int reprint = true;
 //attron(COLOR_PAIR(pshd_c));
 
+  if (dim_y < 3) {
+    dim_y = 3;
+    offset_y = 0;
+  }
+
   while(1){
 
     getmaxyx(stdscr, ROW, COL);
@@ -509,7 +514,6 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
   int line_offset = 4;
   if(bold_color_pshd) attron(A_BOLD);
   while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
-
     k++;
     if(k < selection && k < (count - (dim_y - 2))){
       continue;

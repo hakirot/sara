@@ -145,16 +145,16 @@ static const short menu_offset_x              = -200;
 //  "        .                                                ",
 //};
 
-static const char * fg[] = {
-  "    ________  ________  ________  ________     ",
-  "   |\\   ____\\|\\   __  \\|\\   __  \\|\\   __  \\    ",
-  "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\   ",
-  "    \\ \\_____  \\ \\   __  \\ \\   _  _\\ \\   __  \\  ",
-  "     \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\ \\  \\ ",
-  "       ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\__\\ \\__\\",
-  "      |\\_________\\|__|\\|__|\\|__|\\|__|\\|__|\\|__|",
-  "      \\|_________|                             ",
-};
+//static const char * fg[] = {
+//  "    ________  ________  ________  ________     ",
+//  "   |\\   ____\\|\\   __  \\|\\   __  \\|\\   __  \\    ",
+//  "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\   ",
+//  "    \\ \\_____  \\ \\   __  \\ \\   _  _\\ \\   __  \\  ",
+//  "     \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\ \\  \\ ",
+//  "       ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\__\\ \\__\\",
+//  "      |\\_________\\|__|\\|__|\\|__|\\|__|\\|__|\\|__|",
+//  "      \\|_________|                             ",
+//};
 
 //static const char * fg[] = {
 // "        /\\        ",
@@ -190,48 +190,41 @@ static const char * fg[] = {
 //  "   .`                                       ",
 //};
 
-//static const char * fg[] = {
-// "     |-|           ",
-// " |-|               ",
-// "      |-|          ",
-//};
-
-// static const char * bg[] = {
-//   "      ,------..         ",
-//   "   ,-\":%%%%::==.        ",
-//   "  /:::__ ::%::==        ",
-//   " /::.'  `.:%%=:=`-=,    ",
-//   "Y:::f    j :%%%%:::=::  ",
-//   "l   `.__+ :::%%%%:::_;[ ",
-//   "|^~'-------------\"\"~:^| ",
-//   "! ::::::::::%%%%==:{    ",
-//   " \\ `::====: ==== :='    ",
-//   "  \\:== :: == :=='       ",
-//   "   \"-. =_::::           ",
-//   "      `-------'         ",
-// };
+static const char * fg[] = {
+ "     |-|           ",
+ " |-|               ",
+ "      |-|          ",
+};
 
 static const char * bg[] = {
-  "                                                   ",
-  "                                                   ",
-  "                              |-|                  ",
-  "                                                   ",
-  "                                |-|                ",
-  "                                                   ",
-  "                                                   ",
-  "      ,------..                                    ",
-  "   ,-\":%%%%::==.                                    ",
-  "  /:::__ ::%::==                                   ",
-  " /::.'  `.:%%=:=`-=,                               ",
-  "Y:::f    j :%%%%:::=::                             ",
-  "l   `.__+ :::%%%%:::_;[                            ",
-  "|^~'-------------\"\"~:^|                            ",
-  "! ::::::::::%%%%==:{                               ",
-  " \\ `::====: ==== :='  |-|                           ",
-  "  \\:== :: == :=='       |-|                         ",
-  "   \"-. =_::::      |-|                              ",
-  "      `-------'                                    ",
+  "      ,------..         ",
+  "   ,-\":%%%%::==.        ",
+  "  /:::__ ::%::==        ",
+  " /::.'  `.:%%=:=`-=,    ",
+  "Y:::f    j :%%%%:::=::  ",
+  "l   `.__+ :::%%%%:::_;[ ",
+  "|^~'-------------\"\"~:^| ",
+  "! ::::::::::%%%%==:{    ",
+  " \\ `::====: ==== :='    ",
+  "  \\:== :: == :=='       ",
+  "   \"-. =_::::           ",
+  "      `-------'         ",
 };
+
+//static const char * bg[] = {
+//  "      ,------..             ",
+//  "   ,-\":%%%%::==.             ",
+//  "  /:::__ ::%::==            ",
+//  " /::.'  `.:%%=:=`-=,        ",
+//  "Y:::f    j :%%%%:::=::      ",
+//  "l   `.__+ :::%%%%:::_;[     ",
+//  "|^~'-------------\"\"~:^|     ",
+//  "! ::::::::::%%%%==:{        ",
+//  " \\ `::====: ==== :='  |-|    ",
+//  "  \\:== :: == :=='       |-|  ",
+//  "   \"-. =_::::      |-|       ",
+//  "      `-------'             ",
+//};
 
 
 
@@ -262,12 +255,13 @@ static const char * bg[] = {
 //  "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
 //};
 /* Set empty if desired */
+// TODO: remove this
 static const char * im[] = {NULL};
 
 
 /* optional header */
-static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
-//static const char hd[] = "SARA";
+//static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
+static const char hd[] = "SARA";
 /* Set empty if desired */
 //static const char hd[] = {'\0'};
 
@@ -278,12 +272,12 @@ static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 3;
-static const int bg_offset_x = 15;
-static const int fg_offset_y = -3;
-static const int fg_offset_x = -4;
-static const int hd_offset_y = -5;
-static const int hd_offset_x = -5;
+static const int bg_offset_y = 0;
+static const int bg_offset_x = 0;
+static const int fg_offset_y = 4;
+static const int fg_offset_x = 15;
+static const int hd_offset_y = 2;
+static const int hd_offset_x = -8;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -0;

@@ -185,9 +185,6 @@ int input_color(char * arg){
   }
 }
 
-
-// TODO: implement bold fg color if use_bold_color_for_fg is set
-// TODO: fix filter color bug
 void _pshd(){
 
   CACHE = ROW + COL;
@@ -327,12 +324,12 @@ void _pshd(){
         reprint = true;
     } else if (input == '/' || input == 'f') {
       attron(COLOR_PAIR(pshd_c + 8));
+      if(bold_color_pshd) attron(A_BOLD);
       mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
       attroff(COLOR_PAIR(pshd_c + 8));
+      attroff(A_BOLD);
 
-      attron(COLOR_PAIR(pshd_c));
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
-      attroff(COLOR_PAIR(pshd_c));
 
       refresh();
       char search_buffer[256] = {'\0'};
@@ -353,14 +350,14 @@ void _pshd(){
           _clear_menu(dim_y, dim_x, offset_y, offset_x);
           search_buffer[char_idx] = (char)input;
           char_idx++;
-          // attron(pshd_c);
+
           attron(COLOR_PAIR(pshd_c));
+          if(bold_color_pshd) attron(A_BOLD);
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x + 1, ' ');
           attroff(COLOR_PAIR(pshd_c));
-          // refresh();
-          // getchar();
-          // attroff(pshd_c);
+          attroff(A_BOLD);
+
           refresh();
           reprint = true;
 
@@ -370,6 +367,7 @@ void _pshd(){
         } else if (input == 27){
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
           attron(COLOR_PAIR(pshd_c));
+          if(bold_color_pshd) attron(A_BOLD);
           reprint = true;
           break;
         } else if (input > 0) {
@@ -381,6 +379,7 @@ void _pshd(){
           }
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
           attron(COLOR_PAIR(pshd_c + 8));
+          if(bold_color_pshd) attron(A_BOLD);
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
           attroff(COLOR_PAIR(pshd_c + 8));
 
@@ -393,6 +392,7 @@ void _pshd(){
           search_buffer[char_idx] = '\0';
           attron(COLOR_PAIR(pshd_c));
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
+          attroff(A_BOLD);
           attroff(COLOR_PAIR(pshd_c));
           if(char_idx < 0) char_idx = 0;
 
@@ -409,6 +409,7 @@ void _pshd(){
             if(strstr(line, search_buffer)){
 
               attron(COLOR_PAIR(pshd_c));
+              if(bold_color_pshd) attron(A_BOLD);
               mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
               attroff(COLOR_PAIR(pshd_c));
 
@@ -443,6 +444,7 @@ void _pshd(){
                 mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
                 if((j + 8) > dim_x) break;
               }
+              attroff(A_BOLD);
               attroff(COLOR_PAIR(pshd_c));
               attroff(COLOR_PAIR(pshd_c + 8));
 
@@ -480,6 +482,7 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
   int home_len = strlen(env_home);
   char line[256] = {'\0'};
   int line_offset = 4;
+  if(bold_color_pshd) attron(A_BOLD);
   while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
 
     k++;
@@ -516,5 +519,6 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     i++;
     refresh(); //debug
   }
+  if(bold_color_pshd) attron(A_BOLD);
   rewind(file);
 }

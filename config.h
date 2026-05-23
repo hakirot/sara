@@ -35,7 +35,7 @@ static const int highlight_hd_in_small_mode = false;
 
 /* pshd window COLOR    */
 static const unsigned short pshd_c            = green;
-static const unsigned short bold_color_pshd   = false; // TODO: not implemented
+static const unsigned short bold_color_pshd   = true; // TODO: not implemented
 
 /* pshd dimensions      */
 static const unsigned short pshd_y = 12;

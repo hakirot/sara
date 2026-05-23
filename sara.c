@@ -473,47 +473,47 @@ void _pshd(){
 }
 
 void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selection, FILE* file, int count){
-      int i = 0;
-      int k = -1;
-      const char *env_home = getenv("HOME");
-      int home_len = strlen(env_home);
-      char line[256] = {'\0'};
-      int line_offset = 4;
-      while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+  int i = 0;
+  int k = -1;
+  const char *env_home = getenv("HOME");
+  int home_len = strlen(env_home);
+  char line[256] = {'\0'};
+  int line_offset = 4;
+  while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
 
-        k++;
-        if(k < selection && k < (count - (dim_y - 2))){
-          continue;
-        }
+    k++;
+    if(k < selection && k < (count - (dim_y - 2))){
+      continue;
+    }
 
-        if(strstr(line, env_home) != NULL){
-          line[0] = '~';
-          line[1] = '/';
-          for(int j = 2; j < (int)strlen(line); j++){
-            line[j] = line[j + home_len - 1];
-          }
-        }
-
-        line[strcspn(line, "\n")] = 0;
-
-        attron(COLOR_PAIR(pshd_c));
-
-        int len = strlen(line);
-        mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
-
-        if(k == selection) attron(COLOR_PAIR(pshd_c + 8));
-
-        for(int j = 0; j < len; j++){
-          mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
-          if((j + 8) > dim_x) break;
-        }
-        if(selection == k) attroff(COLOR_PAIR(pshd_c));
-        if(selection == k) attroff(COLOR_PAIR(pshd_c + 8));
-        // attroff(COLOR_PAIR(pshd_c));
-        // attroff(COLOR_PAIR(pshd_c + 8));
-
-        i++;
-        refresh(); //debug
+    if(strstr(line, env_home) != NULL){
+      line[0] = '~';
+      line[1] = '/';
+      for(int j = 2; j < (int)strlen(line); j++){
+        line[j] = line[j + home_len - 1];
       }
-      rewind(file);
+    }
+
+    line[strcspn(line, "\n")] = 0;
+
+    attron(COLOR_PAIR(pshd_c));
+
+    int len = strlen(line);
+    mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
+
+    if(k == selection) attron(COLOR_PAIR(pshd_c + 8));
+
+    for(int j = 0; j < len; j++){
+      mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
+      if((j + 8) > dim_x) break;
+    }
+    if(selection == k) attroff(COLOR_PAIR(pshd_c));
+    if(selection == k) attroff(COLOR_PAIR(pshd_c + 8));
+    // attroff(COLOR_PAIR(pshd_c));
+    // attroff(COLOR_PAIR(pshd_c + 8));
+
+    i++;
+    refresh(); //debug
+  }
+  rewind(file);
 }

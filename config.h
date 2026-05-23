@@ -19,12 +19,12 @@ static int FOLLOW = true;
 
 /* COLOR SETTINGS */
 static const int fg_c = magenta;         /* fg color */
-static const int bg_c = red;      /* bg color */
-static const int hd_c = green;     /* hd color */
+static const int bg_c = black;      /* bg color */
+static const int hd_c = white;     /* hd color */
 
 static const int use_bold_color_for_fg = false;
 static const int use_bold_color_for_bg = true;
-static const int use_bold_color_for_hd = true;
+static const int use_bold_color_for_hd = false;
 
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = false;
@@ -112,16 +112,16 @@ static const int highlight_hd_in_small_mode = false;
 //  "        .                                                ",
 //};
 
-//static const char * fg[] = {
-//  "    ________  ________  ________  ________     ",
-//  "   |\\   ____\\|\\   __  \\|\\   __  \\|\\   __  \\    ",
-//  "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\   ",
-//  "    \\ \\_____  \\ \\   __  \\ \\   _  _\\ \\   __  \\  ",
-//  "     \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\ \\  \\ ",
-//  "       ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\__\\ \\__\\",
-//  "      |\\_________\\|__|\\|__|\\|__|\\|__|\\|__|\\|__|",
-//  "      \\|_________|                             ",
-//};
+static const char * fg[] = {
+  "    ________  ________  ________  ________     ",
+  "   |\\   ____\\|\\   __  \\|\\   __  \\|\\   __  \\    ",
+  "   \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\|\\  \\   ",
+  "    \\ \\_____  \\ \\   __  \\ \\   _  _\\ \\   __  \\  ",
+  "     \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\ \\  \\ ",
+  "       ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\__\\ \\__\\",
+  "      |\\_________\\|__|\\|__|\\|__|\\|__|\\|__|\\|__|",
+  "      \\|_________|                             ",
+};
 
 //static const char * fg[] = {
 // "        /\\        ",
@@ -157,26 +157,49 @@ static const int highlight_hd_in_small_mode = false;
 //  "   .`                                       ",
 //};
 
-static const char * fg[] = {
- "     |-|           ",
- " |-|               ",
- "      |-|          ",
-};
+//static const char * fg[] = {
+// "     |-|           ",
+// " |-|               ",
+// "      |-|          ",
+//};
+
+// static const char * bg[] = {
+//   "      ,------..         ",
+//   "   ,-\":%%%%::==.        ",
+//   "  /:::__ ::%::==        ",
+//   " /::.'  `.:%%=:=`-=,    ",
+//   "Y:::f    j :%%%%:::=::  ",
+//   "l   `.__+ :::%%%%:::_;[ ",
+//   "|^~'-------------\"\"~:^| ",
+//   "! ::::::::::%%%%==:{    ",
+//   " \\ `::====: ==== :='    ",
+//   "  \\:== :: == :=='       ",
+//   "   \"-. =_::::           ",
+//   "      `-------'         ",
+// };
 
 static const char * bg[] = {
-  "      ,------..         ",
-  "   ,-\":%%%%::==.        ",
-  "  /:::__ ::%::==        ",
-  " /::.'  `.:%%=:=`-=,    ",
-  "Y:::f    j :%%%%:::=::  ",
-  "l   `.__+ :::%%%%:::_;[ ",
-  "|^~'-------------\"\"~:^| ",
-  "! ::::::::::%%%%==:{    ",
-  " \\ `::====: ==== :='    ",
-  "  \\:== :: == :=='       ",
-  "   \"-. =_::::           ",
-  "      `-------'         ",
+  "                                                   ",
+  "                                                   ",
+  "                              |-|                  ",
+  "                                                   ",
+  "                                |-|                ",
+  "                                                   ",
+  "                                                   ",
+  "      ,------..                                    ",
+  "   ,-\":%%%%::==.                                    ",
+  "  /:::__ ::%::==                                   ",
+  " /::.'  `.:%%=:=`-=,                               ",
+  "Y:::f    j :%%%%:::=::                             ",
+  "l   `.__+ :::%%%%:::_;[                            ",
+  "|^~'-------------\"\"~:^|                            ",
+  "! ::::::::::%%%%==:{                               ",
+  " \\ `::====: ==== :='  |-|                           ",
+  "  \\:== :: == :=='       |-|                         ",
+  "   \"-. =_::::      |-|                              ",
+  "      `-------'                                    ",
 };
+
 
 
 
@@ -210,8 +233,8 @@ static const char * im[] = {NULL};
 
 
 /* optional header */
-//static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
-static const char hd[] = "SARA";
+static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
+//static const char hd[] = "SARA";
 /* Set empty if desired */
 //static const char hd[] = {'\0'};
 
@@ -222,12 +245,12 @@ static const char hd[] = "SARA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 0;
-static const int bg_offset_x = 0;
-static const int fg_offset_y = 3;
-static const int fg_offset_x = 12;
-static const int hd_offset_y = 3;
-static const int hd_offset_x = -8;
+static const int bg_offset_y = 3;
+static const int bg_offset_x = 15;
+static const int fg_offset_y = -3;
+static const int fg_offset_x = -4;
+static const int hd_offset_y = -5;
+static const int hd_offset_x = -5;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -0;
@@ -309,7 +332,7 @@ static const Command commandkeys[] = {
   { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/roe/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
-  { 't',         t_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
+  { 't',         t_cmd,             WAIT,      glitch_full,                  neon,              {"/home/roe/dox/.notes", NOCONFIRM, OUTS} },
   { 'P',         P_cmd,             WAIT,             none,                  none,              {NULL, CONFIRM, NO_OUT} },
 //{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
   { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
@@ -343,16 +366,16 @@ static const Builtin builtinkeys[] = {
 
 /* PSHD UI CONFIG */
 
-// pshd window color
+/* pshd window COLOR    */
 static const unsigned short pshd_c            = green;
 static const unsigned short bold_color_pshd   = false; // TODO: not implemented
 
-// pshd dimensions
+/* pshd dimensions      */
 static const unsigned short pshd_y = 12;
 static const unsigned short pshd_x = 30;
 
-// pshd position
-static const short pshd_offset_y = 200;
+/* pshd position        */
+static const short pshd_offset_y = -200;
 static const short pshd_offset_x = -200;
 
 
@@ -364,10 +387,17 @@ static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
 //static const wchar_t MenuBorder[] = L"      ";
 //static const wchar_t MenuBorder[] = L"++++  ";
 //static const wchar_t MenuBorder[] = L"++++-|";
+
+
+/* pshd window color  */
 static const unsigned short menu_c            = blue;
 static const unsigned short bold_color_menu   = false;
-static const unsigned short menu_y            = 5;        // TODO set these to at least 3 if < 3 on startup
+
+/* pshd dimensions    */
+static const unsigned short menu_y            = 1000;        // TODO set these to at least 3 if < 3 on startup
 static const unsigned short menu_x            = 22;        // TODO set these to at least 3 if < 3 on startup
+
+/* pshd position      */
 static const short menu_offset_y              = 200;
 static const short menu_offset_x              = -200;
 
@@ -413,12 +443,6 @@ static const Menu connect_options[] = {
 static const char *boot_spawns_cmd[] = { "boot_spawns", NULL };
 static const Command boot_spawns = { 0, boot_spawns_cmd, EXEC, glitch_full, down_wipes, confirms };
 
-static const char *btm_cmd[] = { "btm", NULL };
-static const Command btm = { 0, btm_cmd, WAIT, neon_reverse, neon, defaults  };
-
-static const char *dysk_cmd[] = { "dysk", NULL };
-static const Command dysk = { 0, dysk_cmd, STOP, neon_reverse, neon, defaults  };
-
 static const Menu b_menu[] = {
   { "BLUETOOTH", SUBMENU, { .submenu = connect_options } },
   { "boot_spawns", COMMAND, { .command = boot_spawns } },
@@ -438,7 +462,7 @@ static const Menu S_menu[] = {
   END_OF_MENU
 };
 
-static const char *firefox_cmd[] = { "firefox", NULL };
+static const char *firefox_cmd[] = { "nohup", "firefox", NULL };
 static const Command firefox = { 0, firefox_cmd, NOWAIT, glitch, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
 static const char *slippi_cmd[] = { "nohup", "slippi", NULL };
@@ -450,11 +474,15 @@ static const Command discord = { 0, discord_cmd, NOWAIT, glitch_full, down_wipes
 static const char *st_cmd[] = { "st", NULL };
 static const Command st = { 0, st_cmd, NOWAIT, glitch_full, glitch_full, {NULL, NOCONFIRM, NO_OUT}  };
 
+static const char *steam_cmd[] = { "nohup", "steam", NULL };
+static const Command steam = { 0, steam_cmd, NOWAIT, glitch_full, glitch_full, {NULL, NOCONFIRM, NO_OUT}  };
+
 static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },
   { "SLIPPI", COMMAND, { .command = slippi } },
   { "DISCORD", COMMAND, { .command = discord } },
   { "ST", COMMAND, { .command = st } },
+  { "STEAM", COMMAND, { .command = steam } },
   END_OF_MENU
 };
 
@@ -464,11 +492,21 @@ static const Command journalctl = { 0, journalctl_cmd, WAIT, neon_reverse, neon,
 static const char *dmesg_cmd[] = { "sudo", "dmesg", "-w", NULL };
 static const Command dmesg = { 0, dmesg_cmd, WAIT, neon_reverse, neon, defaults  };
 
+static const char *btm_cmd[] = { "btm", NULL };
+static const Command btm = { 0, btm_cmd, WAIT, neon_reverse, neon, defaults  };
+
+static const char *dysk_cmd[] = { "dysk", NULL };
+static const Command dysk = { 0, dysk_cmd, STOP, neon_reverse, neon, defaults  };
+
+static const char *ping_cmd[] = { "ping", "9.9.9.9",  NULL };
+static const Command ping = { 0, ping_cmd, WAIT, neon_reverse, neon, defaults  };
+
 static const Menu L_menu[] = {
   { "journalctl -f", COMMAND, { .command = journalctl } },
   { "dmesg -w", COMMAND, { .command = dmesg } },
   { "btm", COMMAND, { .command = btm } },
   { "dysk", COMMAND, { .command = dysk } },
+  { "ping", COMMAND, { .command = ping } },
   END_OF_MENU
 };
 
@@ -488,7 +526,7 @@ static const char *gdv_cmd[] = { "/home/roe/skps/gdv", NULL };
 static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };
 
 static const char *gp_cmd[] = { "git", "push", NULL };
-static const Command gp = { 0, gp_cmd, STOP_ON_ERR, none, neon, defaults  };
+static const Command gp = { 0, gp_cmd, STOP, none, neon, defaults  };
 
 static const Menu git_menu[] = {
   { "s", COMMAND, { .command = gss } },
@@ -566,13 +604,12 @@ static const Menu killme_menu[] = {
 };
 
 
-
 /* menukey assignments */
 static const MenuKey menukeys[] = {
   {'b', b_menu },
   {'S', S_menu },
   {'F', F_menu },
-  {'L', L_menu },
+  {'D', L_menu },
   {'g', git_menu },
   {'c', chdir_menu },
   {'A', killme_menu },

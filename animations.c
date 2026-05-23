@@ -151,7 +151,7 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
 
 void _print_confirm_window(char * command_str){
 
-  clear();
+  // clear();
   int r_stop = COL - 2;
   int l_stop = 1;
   int width = COL - 3;

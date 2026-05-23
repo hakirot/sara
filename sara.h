@@ -40,7 +40,6 @@ struct file_node {
 
 int check_size();
 screen_size get_win_size();
-int get_confirmation();
 void printstandard();
 int input_color(char * arg);
 void _pshd();

@@ -325,9 +325,14 @@ void _pshd(){
 
         reprint = true;
     } else if (input == '/' || input == 'f') {
-      // attron(pshd_c);
-      mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
-      // attroff(pshd_c);
+      attron(COLOR_PAIR(pshd_c + 8));
+      mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
+      attroff(COLOR_PAIR(pshd_c + 8));
+
+      attron(COLOR_PAIR(pshd_c));
+      mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
+      attroff(COLOR_PAIR(pshd_c));
+
       refresh();
       char search_buffer[256] = {'\0'};
       int char_idx = 0;
@@ -348,20 +353,22 @@ void _pshd(){
           search_buffer[char_idx] = (char)input;
           char_idx++;
           // attron(pshd_c);
-          attron(pshd_c + 8);
+          attron(COLOR_PAIR(pshd_c));
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
-          attroff(pshd_c + 8);
+          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x + 1, ' ');
+          attroff(COLOR_PAIR(pshd_c));
           // refresh();
           // getchar();
           // attroff(pshd_c);
+          refresh();
           reprint = true;
-
 
         } else if (input == '\n'){
           reprint = true;
           chdir_at_seletion = true;
         } else if (input == 27){
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
+          attron(COLOR_PAIR(pshd_c));
           reprint = true;
           break;
         } else if (input > 0) {
@@ -372,15 +379,20 @@ void _pshd(){
             break;
           }
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
-          attron(pshd_c);
-          mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER ");
-          attroff(pshd_c);
+          attron(COLOR_PAIR(pshd_c + 8));
+          mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
+          attroff(COLOR_PAIR(pshd_c + 8));
+
+          attron(COLOR_PAIR(pshd_c));
+          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
+          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
+          attroff(COLOR_PAIR(pshd_c));
 
           char_idx--;
           search_buffer[char_idx] = '\0';
-          attron(pshd_c);
+          attron(COLOR_PAIR(pshd_c));
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
-          attroff(pshd_c);
+          attroff(COLOR_PAIR(pshd_c));
           if(char_idx < 0) char_idx = 0;
 
           refresh();

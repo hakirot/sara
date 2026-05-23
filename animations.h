@@ -31,5 +31,6 @@ void _print_confirm_selection(int selection);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
 void _blink();
 void tinyprint();
+void _colorbar();
 
 #endif

@@ -348,10 +348,6 @@ void _glitch(Arg bigmode){
   _none((Arg){.x = 0});
 }
 
-// TODO: fg glyph not in correct position when im not defined
-//       and WIN_SIZE == normal, but only when the width is constrained
-//       to a certain size as well? huh. Just check the prints between im[-]
-//       and fg
 void _neon(){
 
   double cycle_length = 0.3;
@@ -376,15 +372,7 @@ void _neon(){
           _overlay_bg(0);
       }
 
-      // TODO: create colorbar options
-      if (WIN_SIZE == BIG) {
-        for(int i = 1; i < 9; i++){
-          attron(COLOR_PAIR(i));
-          mvaddwstr(ROW/2 + 4, (COL-FG_GLYPH_LENGTH)/2 + 3 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
-          attroff(COLOR_PAIR(i));
-          refresh();
-        }
-      }
+      _colorbar();
       first_frame = 1;
     }
 
@@ -577,7 +565,6 @@ void _pixel_fill(){
     if(__key__() == 2) return;
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
 
-    // TODO: make this configurable
     usleep(12000);
 
   }
@@ -737,11 +724,7 @@ void _none(Arg printColorbar){
     // TODO: abstract this to separate function and add config.h options to it
     //   .. also this is no longer implemented
     if (printColorbar.x){
-      for(int i = 1; i < 9; i++){
-        attron(COLOR_PAIR(i));
-        mvaddwstr(ROW/2 + 5, (COL-FG_GLYPH_LENGTH)/2 + 15 + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
-        attroff(COLOR_PAIR(i));
-      }
+      _colorbar();
     }
 
     attroff(COLOR_PAIR(FOREGROUND + 8));
@@ -954,4 +937,15 @@ void tinyprint() {
   }
   attroff(COLOR_PAIR(FOREGROUND));
   attroff(A_BOLD);
+}
+
+void _colorbar(){
+  if (WIN_SIZE == BIG) {
+    for(int i = 1; i < 9; i++){
+      attron(COLOR_PAIR(i));
+      mvaddwstr(ROW - 1, (COL-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      attroff(COLOR_PAIR(i));
+      refresh();
+    }
+  }
 }

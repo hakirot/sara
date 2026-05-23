@@ -29,8 +29,6 @@ int BG_GLYPH_LENGTH;
 int FG_GLYPH_LENGTH;
 int HD_LENGTH;
 
-int IM_SET = true;
-
 char HOLD_CHAR;
 
 int HOLOGRAPHIC = 0;

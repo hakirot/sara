@@ -283,7 +283,7 @@ void _glitch(Arg bigmode){
   CACHE = ROW + COL;
 
   int rng_row, rng_shift, rng_backdrop = 0;
-  int rng_backdrop_rng = 2; if(IM_SET) rng_backdrop_rng++;
+  int rng_backdrop_rng = 2;
 
   for( int i = 0 ; i < GLITCH_TIME; i++ ) {
     rng_row   = rand() % FG_GLYPH_HEIGHT;
@@ -297,10 +297,6 @@ void _glitch(Arg bigmode){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
                 (COL - FG_GLYPH_LENGTH)/2 - rng_shift,
                  "%s", fg[rng_row]);
-      } else if (IM_SET){
-        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
-                (COL - FG_GLYPH_LENGTH)/2 - rng_shift,
-                 "%s", im[rng_row]);
       }
       attroff(A_BOLD);
       attroff(COLOR_PAIR(FOREGROUND));
@@ -334,10 +330,6 @@ void _glitch(Arg bigmode){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
                 (COL - FG_GLYPH_LENGTH)/2 + fg_offset_x - rng_shift,
                  "%s", fg[rng_row]);
-      } else {
-        mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
-                (COL - FG_GLYPH_LENGTH)/2 + fg_offset_x - rng_shift,
-                 "%s", im[rng_row]);
       }
       attroff(COLOR_PAIR(FOREGROUND));
       attroff(A_BOLD);
@@ -378,9 +370,7 @@ void _neon(){
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.05 && first_frame == 0){
-      if (WIN_SIZE == NORMAL && IM_SET){
-        _fg(im);
-      } else if (WIN_SIZE == NORMAL && !IM_SET){
+      if (WIN_SIZE == NORMAL){
         _overlay(fg, '_');
       } else {
           _overlay_bg(0);
@@ -402,11 +392,7 @@ void _neon(){
       if (WIN_SIZE == NORMAL){
         _fg(fg);
       } else {
-        if (IM_SET){
-          _overlay(im, 0);
-        } else {
-          _overlay(fg, '_');
-        }
+        _overlay(fg, '_');
       }
       second_frame = 1;
     }
@@ -444,20 +430,10 @@ void _neon_reverse(){
 
     if(elapsed_time > 0.00 && first_frame == 0){
       if (WIN_SIZE == NORMAL){
-        if(IM_SET){
-          _fg(im);
-        } else {
-          _overlay(fg, '_');
-        }
+        _overlay(fg, '_');
       } else {
-
-        if(IM_SET){
-          _bg();
-          _overlay(im, 0);
-        } else {
-          _bg();
-          _overlay(fg, '_');
-        }
+        _bg();
+        _overlay(fg, '_');
       }
       first_frame = 1;
     }

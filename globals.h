@@ -146,8 +146,6 @@ extern int HD_LENGTH;
 extern int option_window_height;
 extern int option_window_length;
 
-extern int IM_SET;
-
 extern int FOREGROUND;
 extern int BACKGROUND;
 extern int HEADER;

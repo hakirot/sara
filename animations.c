@@ -822,7 +822,6 @@ void _overlay(const char * glyph[], char fill){
   attroff(A_BOLD);
 }
 
-// TODO: make this print regular bg if ch == 0, and replace _bg with this
 void _overlay_bg(char ch){
   attron(COLOR_PAIR(BACKGROUND));
   if(use_bold_color_for_bg) attron(A_BOLD);

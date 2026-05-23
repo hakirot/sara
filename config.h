@@ -30,8 +30,41 @@ static const int use_bold_color_for_hd = false;
 static const int highlight_hd_in_full_mode  = false;
 static const int highlight_hd_in_small_mode = false;
 
-/* CUSTOM GLYPHS */ 
 
+/* PSHD UI CONFIG */
+
+/* pshd window COLOR    */
+static const unsigned short pshd_c            = green;
+static const unsigned short bold_color_pshd   = false; // TODO: not implemented
+
+/* pshd dimensions      */
+static const unsigned short pshd_y = 12;
+static const unsigned short pshd_x = 30;
+
+/* pshd position        */
+static const short pshd_offset_y = -200;
+static const short pshd_offset_x = -200;
+
+/* MENU UI CONFIG       */
+
+//static const wchar_t MenuBorder[] = L"┌┐└┘─│";
+//static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
+static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
+
+/* pshd window color  */
+static const unsigned short menu_c            = blue;
+static const unsigned short bold_color_menu   = false;
+
+/* pshd dimensions    */
+static const unsigned short menu_y            = 1000;        // TODO set these to at least 3 if < 3 on startup
+static const unsigned short menu_x            = 22;        // TODO set these to at least 3 if < 3 on startup
+
+/* pshd position      */
+static const short menu_offset_y              = 200;
+static const short menu_offset_x              = -200;
+
+
+/* CUSTOM GLYPHS */ 
 
 /* background glyph */
 // static const char * bg[] = {
@@ -364,42 +397,6 @@ static const Builtin builtinkeys[] = {
 };
 
 
-/* PSHD UI CONFIG */
-
-/* pshd window COLOR    */
-static const unsigned short pshd_c            = green;
-static const unsigned short bold_color_pshd   = false; // TODO: not implemented
-
-/* pshd dimensions      */
-static const unsigned short pshd_y = 12;
-static const unsigned short pshd_x = 30;
-
-/* pshd position        */
-static const short pshd_offset_y = -200;
-static const short pshd_offset_x = -200;
-
-
-/* MENUS CONFIGURATION */
-
-//static const wchar_t MenuBorder[] = L"┌┐└┘─│";
-//static const wchar_t MenuBorder[] = L"╔╗╚╝═║";
-static const wchar_t MenuBorder[] = L"╔╗╚╝─│";
-//static const wchar_t MenuBorder[] = L"      ";
-//static const wchar_t MenuBorder[] = L"++++  ";
-//static const wchar_t MenuBorder[] = L"++++-|";
-
-
-/* pshd window color  */
-static const unsigned short menu_c            = blue;
-static const unsigned short bold_color_menu   = false;
-
-/* pshd dimensions    */
-static const unsigned short menu_y            = 1000;        // TODO set these to at least 3 if < 3 on startup
-static const unsigned short menu_x            = 22;        // TODO set these to at least 3 if < 3 on startup
-
-/* pshd position      */
-static const short menu_offset_y              = 200;
-static const short menu_offset_x              = -200;
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */
 static const char *connect_xm5_cmd[] = { "bluetoothctl", "connect", "AC:80:0A:19:89:A8", NULL };

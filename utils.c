@@ -185,6 +185,11 @@ int __execute__(const Command * command){
         }
       }
 
+      if(INTERRUPT){
+        INTERRUPT = false;
+        return true;
+      }
+
       if ((command->option == STOP_ON_ERR && status != 0) ||
           STOP == command->option) {
         printf("Press enter to continue");
@@ -623,7 +628,7 @@ void preflight_check() {
 }
 
 // TODO: implement
-void warning(char * err) {
+void warn(char * err) {
   clear();
   mvprintw(ROW/2, COL/2, "%s", err);
 }
@@ -824,4 +829,20 @@ void set_glyph_dimensions(){
   FG_GLYPH_LENGTH = mbstowcs(NULL, fg[0], 0);
   HD_LENGTH = mbstowcs(NULL, hd, 0);
   if(im[0] == NULL) IM_SET = false;
+}
+
+
+void __interrupt__(int signum){
+  INTERRUPT = 1;
+  animate(glitch_full);
+  refresh();
+}
+
+void _deflect_signals(){
+  struct sigaction signal_action;  
+  signal_action.sa_handler = __interrupt__;
+  sigemptyset(&signal_action.sa_mask);
+  signal_action.sa_flags = 0;
+
+  sigaction(SIGINT, &signal_action, NULL);
 }

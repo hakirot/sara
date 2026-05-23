@@ -243,9 +243,8 @@ void _pshd(){
   int input_digits_idx = 0;
   int selection = 0;
   int reprint = true;
-//attron(COLOR_PAIR(pshd_c));
 
-  if (dim_y < 3) {
+  if (dim_y < 3 || ROW < 3) {
     dim_y = 3;
     offset_y = 0;
   }

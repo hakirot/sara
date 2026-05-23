@@ -323,11 +323,19 @@ void _pshd(){
 
         reprint = true;
     } else if (input == '/' || input == 'f') {
-      attron(COLOR_PAIR(pshd_c + 8));
-      if(bold_color_pshd) attron(A_BOLD);
+
+      if(bold_color_pshd) {
+        attron(A_STANDOUT);
+        attron(COLOR_PAIR(pshd_c + 16));
+        attron(A_BOLD);
+      } else {
+        attron(COLOR_PAIR(pshd_c + 8));
+      }
       mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
-      attroff(COLOR_PAIR(pshd_c + 8));
       attroff(A_BOLD);
+      attroff(A_STANDOUT);
+      attroff(COLOR_PAIR(pshd_c + 8));
+      attroff(COLOR_PAIR(pshd_c + 16));
 
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
 
@@ -378,10 +386,18 @@ void _pshd(){
             break;
           }
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
-          attron(COLOR_PAIR(pshd_c + 8));
-          if(bold_color_pshd) attron(A_BOLD);
+          if(bold_color_pshd) {
+            attron(A_STANDOUT);
+            attron(COLOR_PAIR(pshd_c + 16));
+            attron(A_BOLD);
+          } else {
+            attron(COLOR_PAIR(pshd_c + 8));
+          }
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
+          attroff(A_BOLD);
+          attroff(A_STANDOUT);
           attroff(COLOR_PAIR(pshd_c + 8));
+          attroff(COLOR_PAIR(pshd_c + 16));
 
           attron(COLOR_PAIR(pshd_c));
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
@@ -391,8 +407,12 @@ void _pshd(){
           char_idx--;
           search_buffer[char_idx] = '\0';
           attron(COLOR_PAIR(pshd_c));
+          if(bold_color_pshd) {
+            attron(A_BOLD);
+          } 
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
           attroff(A_BOLD);
+          attroff(A_STANDOUT);
           attroff(COLOR_PAIR(pshd_c));
           if(char_idx < 0) char_idx = 0;
 
@@ -426,7 +446,13 @@ void _pshd(){
                   animate(neon);
                   return;
                 }
-                attron(COLOR_PAIR(pshd_c + 8));
+                if(bold_color_pshd) {
+                  attron(A_STANDOUT);
+                  attron(COLOR_PAIR(pshd_c + 16));
+                  attron(A_BOLD);
+                } else {
+                  attron(COLOR_PAIR(pshd_c + 8));
+                }
               } else {
                 attron(COLOR_PAIR(pshd_c));
               }
@@ -445,8 +471,10 @@ void _pshd(){
                 if((j + 8) > dim_x) break;
               }
               attroff(A_BOLD);
+              attroff(A_STANDOUT);
               attroff(COLOR_PAIR(pshd_c));
               attroff(COLOR_PAIR(pshd_c + 8));
+              attroff(COLOR_PAIR(pshd_c + 16));
 
               i++;
             }
@@ -501,20 +529,30 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     line[strcspn(line, "\n")] = 0;
 
     attron(COLOR_PAIR(pshd_c));
+    if(bold_color_pshd) attron(A_BOLD);
 
     int len = strlen(line);
     mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
 
-    if(k == selection) attron(COLOR_PAIR(pshd_c + 8));
-
+    if(k == selection) {
+      if(bold_color_pshd){
+        attron(A_STANDOUT);
+        attron(COLOR_PAIR(pshd_c + 16));
+      } else {
+        attron(COLOR_PAIR(pshd_c + 8));
+      }
+    }
     for(int j = 0; j < len; j++){
       mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
       if((j + 8) > dim_x) break;
     }
-    if(selection == k) attroff(COLOR_PAIR(pshd_c));
-    if(selection == k) attroff(COLOR_PAIR(pshd_c + 8));
-    // attroff(COLOR_PAIR(pshd_c));
-    // attroff(COLOR_PAIR(pshd_c + 8));
+    if(selection == k) {
+      attroff(COLOR_PAIR(pshd_c));
+      attroff(COLOR_PAIR(pshd_c + 8));
+      attroff(COLOR_PAIR(pshd_c + 16)); // .. sometimes I even amaze myself
+      attroff(A_STANDOUT);
+      attroff(A_BOLD);
+    }
 
     i++;
     refresh(); //debug

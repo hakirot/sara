@@ -246,18 +246,6 @@ static const char * bg[] = {
    - glitch
    - neon
 */
-//static const char * im[] = {
-//  "╔══════╗    ╔════╗    ╔═════╗     ╔════╗    ",
-//  "║ ╔════╝   ╔╝╔══╗╚╗   ║ ╔══╗╚╗   ╔╝╔══╗╚╗   ",
-//  "║ ╚════╗   ║ ╚══╝ ║   ║ ╚══╝╔╝   ║ ╚══╝ ║   ",
-//  "╚════╗ ║   ║ ╔══╗ ║   ║ ╔══╗╚╗   ║ ╔══╗ ║   ",
-//  "╔════╝ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗║ ║  ║ ║╔═╗",
-//  "╚══════╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝",
-//};
-/* Set empty if desired */
-// TODO: remove this
-static const char * im[] = {NULL};
-
 
 /* optional header */
 //static const char hd[] = "SPECIAL APPLICATION RANGING AREA";

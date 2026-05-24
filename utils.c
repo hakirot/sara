@@ -121,6 +121,7 @@ void __command__(char input){
 
 int _get_confirm(const Command * command){
   int selection = false;
+  animate(none);
   _print_confirm_window(((char **)command->cmd)[0]);
   _print_confirm_selection(selection);
   while(1){
@@ -198,7 +199,7 @@ int __execute__(const Command * command){
       if(FOLLOW) _write_exit_dir();
       execvp(((char **)command->cmd)[0], (char **)command->cmd);
       perror("execvp");
-      crit("");
+      crit("execvp critical error :|");
     } else {
 
       int status;

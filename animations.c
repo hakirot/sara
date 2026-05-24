@@ -408,6 +408,7 @@ void _neon(){
 void _neon_reverse(){
 
   clear();
+  _colorbar();
 
   clock_t cycle_start = clock();
   double cycle_length = 0.2;
@@ -432,6 +433,7 @@ void _neon_reverse(){
 
     if(elapsed_time > 0.1 && second_frame == 0){
       clear();
+      _colorbar();
       if (WIN_SIZE == NORMAL){
         _overlay(fg, '_');
       } else {
@@ -459,6 +461,7 @@ void _shutter_slide(){
   attron(COLOR_PAIR(FOREGROUND));
   while(j < num_frames){
     clear();
+    _colorbar();
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       if (i % 2 == 0){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, l_idx + (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);

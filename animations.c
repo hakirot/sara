@@ -582,6 +582,7 @@ void _pixel_fill(){
 void _tv_static(){
 
   clear();
+  _colorbar();
   refresh();
 
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];

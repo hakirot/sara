@@ -108,7 +108,6 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
     return;
   }
 
-  // TODO: handle small size offsets
   attron(COLOR_PAIR(c));
   if(c == menu_c && bold_color_menu) attron(A_BOLD);
   if(c == pshd_c && bold_color_pshd) attron(A_BOLD);
@@ -630,8 +629,8 @@ void _tv_static(){
   int j = 0;
   int roll_result;
   wchar_t wc;
-  // TODO: make configurable
-  while(elapsed_time < 0.020){
+
+  while(elapsed_time < 0.009){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;

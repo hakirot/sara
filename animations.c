@@ -7,12 +7,13 @@
 --  ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝.c--
                                                                                        */
 #define NCURSES_WIDECHAR 1
+#define __key__(...) ___key___((key_arg){__VA_ARGS__});
 
 #include "animations.h"
 #include "globals.h"
 #include "config.h"
 #include "utils.h"
-#include "sara.h"
+//#include "sara.h"
 #include <ncurses.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -94,7 +95,8 @@ void _blink(){
       third_frame = 1;
     }
 
-    if(__key__() == 2) return;
+    int result = __key__();
+    if(result == 2) return;
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
@@ -198,6 +200,7 @@ void _print_confirm_window(char * command_str){
   attroff(COLOR_PAIR(menu_c));
   attron(COLOR_PAIR(menu_c + 8));
 
+  // TODO: skip nohup strings
   char * str = "Execute ";
   int len1 = strlen(str);
   int len2 = strlen(command_str);
@@ -334,7 +337,8 @@ void _glitch(Arg bigmode){
       attroff(A_BOLD);
     }
 
-    if(__key__() == 2) return;
+    int result = __key__();
+    if(result == 2) return;
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     refresh();
 
@@ -393,7 +397,8 @@ void _neon(){
       third_frame = 1;
     }
 
-    if(__key__() == 2) return;
+    int result = __key__();
+    if(result == 2) return;
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 
@@ -435,7 +440,8 @@ void _neon_reverse(){
       second_frame = 1;
     }
 
-    if(__key__() == 2) return;
+    int result = __key__();
+    if(result == 2) return;
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
 }
@@ -561,7 +567,8 @@ void _pixel_fill(){
     }
 
     refresh();
-    if(__key__() == 2) return;
+    int result = __key__();
+    if(result == 2) return;
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
 
     usleep(12000);
@@ -634,7 +641,8 @@ void _tv_static(){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
-    if(__key__() == 2) return;
+    int result = __key__();
+    if(result == 2) return;
 
     attron(COLOR_PAIR(FOREGROUND));
     if(use_bold_color_for_fg) attron(A_BOLD);
@@ -871,7 +879,8 @@ void _down_wipes(){
     if(use_bold_color_for_fg) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
-      if(__key__() == 2) return;
+      int result = __key__();
+      if(result == 2) return;
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(wipe_time);
@@ -889,7 +898,8 @@ void _down_wipes(){
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(wipe_time);
-      if(__key__() == 2) return;
+      int result = __key__();
+      if(result == 2) return;
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(BACKGROUND));
@@ -920,7 +930,8 @@ void _down_wipes(){
       }
       refresh();
       usleep(wipe_time);
-      if(__key__() == 2) return;
+      int result = __key__();
+      if(result == 2) return;
     }
   }
   attroff(A_BOLD);

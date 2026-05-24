@@ -13,7 +13,12 @@
 #include <wchar.h>
 #include <globals.h>
 
-int  __key__();
+typedef struct {
+  char i;
+} key_arg ;
+
+int  ___key___(key_arg arg);
+int key(char optional_input);
 void __command__(char input);
 int __execute__(const Command * command);
 void __builtin__(char input);

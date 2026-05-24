@@ -7,6 +7,7 @@
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.c--
                                            */
 #define NCURSES_WIDECHAR 1
+#define __key__(...) ___key___((key_arg){__VA_ARGS__});
 
 #include "sara.h"
 #include "animations.h"

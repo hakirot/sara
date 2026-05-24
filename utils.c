@@ -8,6 +8,8 @@
                                                */
 
 #define NCURSES_WIDECHAR 1
+#define __key__(...) ___key___((key_arg){__VA_ARGS__});
+
 
 #include "utils.h"
 #include "globals.h"
@@ -28,10 +30,22 @@
 #include <fcntl.h>
 #include <signal.h>
 
-int __key__(){
+int ___key___(key_arg arg){
+  char arg_out = arg.i ? arg.i : 0;
+
+  return key(arg_out);
+}
+
+int key(char optional_input){
+
+  char input;
 
   int valid_input = 0;
-  char input = getch();
+  if(optional_input){
+    input = optional_input;
+  } else {
+    input = getch();
+  }
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
     valid_input = 1;
@@ -361,6 +375,9 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
         }
       }
       return;
+    } else if (input != -1){
+      int result = __key__(input);
+      if(result > 0) return;
     }
 
     _print_menu_selection(menu, selection, len, dim_y, dim_x, offset_y, offset_x);

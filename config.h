@@ -20,11 +20,11 @@ static int FOLLOW = true;
 /* COLOR SETTINGS */
 static const int fg_c = magenta;         /* fg color */
 static const int bg_c = yellow;      /* bg color */
-static const int hd_c = white;     /* hd color */
+static const int hd_c = green;     /* hd color */
 
 static const int use_bold_color_for_fg = false;
-static const int use_bold_color_for_bg = true;
-static const int use_bold_color_for_hd = false;
+static const int use_bold_color_for_bg = false;
+static const int use_bold_color_for_hd = true;
 
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = false;
@@ -65,6 +65,27 @@ static const short menu_offset_x              = -200;
 
 
 /* CUSTOM GLYPHS */ 
+
+static const char * bg[] = {
+  " ___  ___  ________  ________  ___  __    ___      ",
+  "|\\  \\|\\  \\|\\   __  \\|\\   ____\\|\\  \\|\\  \\ |\\  \\     ",
+  "\\ \\  \\\\\\  \\ \\  \\|\\  \\ \\  \\___|\\ \\  \\/  /|\\ \\  \\    ",
+  " \\ \\   __  \\ \\   __  \\ \\  \\    \\ \\   ___  \\ \\  \\   ",
+  "  \\ \\  \\ \\  \\ \\  \\ \\  \\ \\  \\____\\ \\  \\\\ \\  \\ \\  \\  ",
+  "   \\ \\__\\ \\__\\ \\__\\ \\__\\ \\_______\\ \\__\\\\ \\__\\ \\__\\ ",
+  "    \\                                _| \\|__|\\|__| ",
+};;
+
+
+static const char * fg[] = {
+  " __ _ __   __ _ __   _______ _     ",
+  "|\\   __  \\|\\   __  \\|\\___   ___\\   ",
+  "\\ \\  \\|\\  \\ \\  \\|\\  \\|___ \\  \\_|   ",
+  " \\ \\   _  _\\ \\  \\\\\\  \\   \\ \\  \\    ",
+  "  \\ \\  \\\\  \\\\ \\  \\\\\\  \\   \\ \\  \\   ",
+  "   \\ \\__\\\\ _\\\\ \\_______\\   \\ \\__\\  ",
+  "    \\|__|\\|__|\\|_______|    \\|__|  ",
+};
 
 /* background glyph */
 // static const char * bg[] = {
@@ -190,26 +211,26 @@ static const short menu_offset_x              = -200;
 //  "   .`                                       ",
 //};
 
-static const char * fg[] = {
- "     |-|           ",
- " |-|               ",
- "      |-|          ",
-};
+//static const char * fg[] = {
+// "     |-|           ",
+// " |-|               ",
+// "      |-|          ",
+//};
 
-static const char * bg[] = {
-  "      ,------..         ",
-  "   ,-\":%%%%::==.        ",
-  "  /:::__ ::%::==        ",
-  " /::.'  `.:%%=:=`-=,    ",
-  "Y:::f    j :%%%%:::=::  ",
-  "l   `.__+ :::%%%%:::_;[ ",
-  "|^~'-------------\"\"~:^| ",
-  "! ::::::::::%%%%==:{    ",
-  " \\ `::====: ==== :='    ",
-  "  \\:== :: == :=='       ",
-  "   \"-. =_::::           ",
-  "      `-------'         ",
-};
+//static const char * bg[] = {
+//  "      ,------..         ",
+//  "   ,-\":%%%%::==.        ",
+//  "  /:::__ ::%::==        ",
+//  " /::.'  `.:%%=:=`-=,    ",
+//  "Y:::f    j :%%%%:::=::  ",
+//  "l   `.__+ :::%%%%:::_;[ ",
+//  "|^~'-------------\"\"~:^| ",
+//  "! ::::::::::%%%%==:{    ",
+//  " \\ `::====: ==== :='    ",
+//  "  \\:== :: == :=='       ",
+//  "   \"-. =_::::           ",
+//  "      `-------'         ",
+//};
 
 //static const char * bg[] = {
 //  "      ,------..             ",
@@ -260,12 +281,12 @@ static const char hd[] = "SARA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = 0;
-static const int bg_offset_x = 0;
-static const int fg_offset_y = -1;
-static const int fg_offset_x = 9;
-static const int hd_offset_y = 2;
-static const int hd_offset_x = -1;
+static const int bg_offset_y = -3;
+static const int bg_offset_x = 3;
+static const int fg_offset_y = 2;
+static const int fg_offset_x = 0;
+static const int hd_offset_y = 3;
+static const int hd_offset_x = -9;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = -0;

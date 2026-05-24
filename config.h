@@ -34,12 +34,12 @@ static const int highlight_hd_in_small_mode = false;
 /* PSHD UI CONFIG */
 
 /* pshd window COLOR    */
-static const unsigned short pshd_c            = green;
+static const unsigned short pshd_c            = red;
 static const unsigned short bold_color_pshd   = false;
 
 /* pshd dimensions      */
 static const unsigned short pshd_y =          15;
-static const unsigned short pshd_x =          22;
+static const unsigned short pshd_x =          28;
 
 /* pshd position        */
 static const short pshd_offset_y              = -200;
@@ -52,12 +52,12 @@ static const short pshd_offset_x              = -200;
 static const wchar_t MenuBorder[] =           L"╔╗╚╝─│";
 
 /* pshd window color  */
-static const unsigned short menu_c            = blue;
+static const unsigned short menu_c            = cyan;
 static const unsigned short bold_color_menu   = false;
 
 /* pshd dimensions    */
 static const unsigned short menu_y            = 12;
-static const unsigned short menu_x            = 22;
+static const unsigned short menu_x            = 16;
 
 /* pshd position      */
 static const short menu_offset_y              = -200;
@@ -474,6 +474,9 @@ static const Command discord = { 0, discord_cmd, NOWAIT, glitch_full, down_wipes
 static const char *st_cmd[] = { "st", NULL };
 static const Command st = { 0, st_cmd, NOWAIT, glitch_full, glitch_full, {NULL, NOCONFIRM, NO_OUT}  };
 
+static const char *kitty_cmd[] = { "nohup", "kitty", NULL };
+static const Command kitty = { 0, kitty_cmd, NOWAIT, glitch_full, glitch_full, {NULL, NOCONFIRM, NO_OUT}  };
+
 static const char *steam_cmd[] = { "nohup", "steam", NULL };
 static const Command steam = { 0, steam_cmd, NOWAIT, glitch_full, glitch_full, {NULL, NOCONFIRM, NO_OUT}  };
 
@@ -482,6 +485,7 @@ static const Menu F_menu[] = {
   { "SLIPPI", COMMAND, { .command = slippi } },
   { "DISCORD", COMMAND, { .command = discord } },
   { "ST", COMMAND, { .command = st } },
+  { "KITTY", COMMAND, { .command = kitty } },
   { "STEAM", COMMAND, { .command = steam } },
   END_OF_MENU
 };

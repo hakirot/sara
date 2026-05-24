@@ -488,7 +488,7 @@ void _pshd(){
 
         }
 
-        usleep(2000);
+        usleep(1000);
       }
     } else if (input != -1){
       int result = __key__(input);

@@ -33,6 +33,15 @@
 int ___key___(key_arg arg){
   char arg_out = arg.i ? arg.i : 0;
 
+  if (arg_out != 0){
+    if(strchr(global_chars, arg_out)){
+      KEY_LOCK = 0;
+      animate(none);
+    } else {
+      return 0;
+    }
+  }
+
   return key(arg_out);
 }
 

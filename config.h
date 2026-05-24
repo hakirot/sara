@@ -35,7 +35,7 @@ static const int highlight_hd_in_small_mode = false;
 
 /* pshd window COLOR    */
 static const unsigned short pshd_c            = green;
-static const unsigned short bold_color_pshd   = true;
+static const unsigned short bold_color_pshd   = false;
 
 /* pshd dimensions      */
 static const unsigned short pshd_y =          15;
@@ -53,7 +53,7 @@ static const wchar_t MenuBorder[] =           L"╔╗╚╝─│";
 
 /* pshd window color  */
 static const unsigned short menu_c            = blue;
-static const unsigned short bold_color_menu   = true;
+static const unsigned short bold_color_menu   = false;
 
 /* pshd dimensions    */
 static const unsigned short menu_y            = 12;
@@ -350,7 +350,7 @@ static const Command commandkeys[] = {
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,              {"/home/roe/dox/.notes", NOCONFIRM, OUTS} },
   { 'P',         P_cmd,             WAIT,             none,                  none,              {NULL, CONFIRM, NO_OUT} },
 //{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
-  { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
+  { 'v',         v_cmd,             WAIT,        tv_static,                  neon,                             defaults },
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
 //{ 'F',         F_cmd,             EXEC,             none,                  neon,                             confirms },

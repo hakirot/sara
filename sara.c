@@ -490,6 +490,12 @@ void _pshd(){
 
         usleep(2000);
       }
+    } else if (input != -1){
+      int result = __key__(input);
+      if(result > 0) {
+        fclose(file);
+        return;
+      }
     }
 
     if(reprint){

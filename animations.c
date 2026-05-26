@@ -835,6 +835,9 @@ void _hd(){
 
   if(hd[0] != 0){
 
+    int offset_y = 0;
+    int offset_x = 0;
+
     if((WIN_SIZE == BIG    && highlight_hd_in_full_mode)  ||
        (WIN_SIZE == NORMAL && highlight_hd_in_small_mode)) {
       if(use_bold_color_for_hd){
@@ -850,17 +853,28 @@ void _hd(){
     }
 
     if(WIN_SIZE == BIG){
-
-      cchar_t cchar;
-
-      for(int i = 0; i < HD_LENGTH; i++){
-        wchar_t wc = hd[i];
-        setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x + i, &cchar);
-      }
-
+      offset_y = hd_offset_y;
+      offset_x = hd_offset_x;
     } else {
-      mvprintw(ROW/2 + FG_GLYPH_HEIGHT/2 + hd_offset_y_min, (COL - FG_GLYPH_HEIGHT)/2 + hd_offset_x_min, hd);
+      offset_y = hd_offset_y_min;
+      offset_x = hd_offset_x_min;
+    }
+
+    cchar_t cchar;
+
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = hd;
+    int iter_col = 0;
+    while (*iter_row) {
+      wchar_t wc;
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+      setcchar(&cchar, &wc, 0, 0, NULL);
+      mvadd_wch(ROW/2 - offset_y, COL/2 + offset_x + iter_col, &cchar);
+
+      iter_row += len;
+      iter_col++;
     }
 
     refresh();

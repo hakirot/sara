@@ -20,11 +20,11 @@ static int FOLLOW = true;
 /* COLOR SETTINGS */
 static const int fg_c = magenta;         /* fg color */
 static const int bg_c = yellow;      /* bg color */
-static const int hd_c = green;     /* hd color */
+static const int hd_c = black;     /* hd color */
 
 static const int use_bold_color_for_fg = false;
 static const int use_bold_color_for_bg = false;
-static const int use_bold_color_for_hd = true;
+static const int use_bold_color_for_hd = false;
 
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = false;
@@ -72,7 +72,7 @@ static const char * bg[] = {
   "  \\  \\_____           \\  \\_\\  \\              ",
   "   \\_____  \\           \\   _  _\\             ",
   "    _____\\  \\           \\  \\\\  \\             ",
-  "    \\________\\           \\__\\\\ _\\            ",
+  "    \\________\\           \\__\\\\ _\\           v1 ",
 };
 
 static const char * fg[] = {
@@ -285,9 +285,9 @@ static const char * fg[] = {
 
 /* optional header */
 //static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
-//static const char hd[] = "© Entity"; // TODO make this work
+static const char hd[] = "© HoldForward"; // TODO make this work
 /* Set empty if desired */
-static const char hd[] = {'\0'};
+//static const char hd[] = {'\0'};
 
 
 /* POSITION */
@@ -300,17 +300,17 @@ static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
 static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;
-static const int hd_offset_y = 1;
-static const int hd_offset_x = 22;
+static const int hd_offset_y = -3;
+static const int hd_offset_x = 11;
 
 /* header position when small window mode */
-static const int hd_offset_y_min = -1;
-static const int hd_offset_x_min = -34;
+static const int hd_offset_y_min = 0;
+static const int hd_offset_x_min = 0;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true;
 static const int resize_x = 10;
-static const int resize_y = 3;
+static const int resize_y = 9;
 
 /* Set tiny_mode to */
 static const int tiny_mode = true;
@@ -326,15 +326,17 @@ static const int tiny_mode_x = 10;
 
 /* ANIMATION OPTIONS:
 
-  print
+  none
   down_wipes
   glitch
+  glitch_full
   neon
   neon_reverse
   shutter_slide
   shutter_slide_neon
   pixel_fill
   tv_static
+  blink
 
 */
 
@@ -382,13 +384,13 @@ static const Command commandkeys[] = {
   { 'r',         r_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/roe/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
-  { 't',         t_cmd,             WAIT,      glitch_full,                  neon,              {"/home/roe/dox/.notes", NOCONFIRM, OUTS} },
+  { 't',         t_cmd,             WAIT,      glitch_full,                  neon,   {"/home/roe/dox/.notes", NOCONFIRM, OUTS} },
 //{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
   { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
 //{ 'F',         F_cmd,             EXEC,             none,                  neon,                             confirms },
-  { 'y',         y_cmd,      STOP_ON_ERR,     neon_reverse,                  neon,                             {NULL, CONFIRM, OUTS} },
+  { 'y',         y_cmd,      STOP_ON_ERR,     neon_reverse,                  neon,                {NULL, CONFIRM, OUTS} },
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,     neon_reverse,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
@@ -411,7 +413,6 @@ static const Builtin builtinkeys[] = {
 //{ 'C', check },
   { 'C', colors },
 };
-
 
 
 /* MENU b: BLUETOOTH/BACKLIGHT) */

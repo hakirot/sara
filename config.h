@@ -43,7 +43,7 @@ static const unsigned short pshd_x =          28;
 
 /* pshd position        */
 static const short pshd_offset_y              = -200;
-static const short pshd_offset_x              = -200;
+static const short pshd_offset_x              = 200;
 
 /* MENU UI CONFIG       */
 
@@ -61,31 +61,46 @@ static const unsigned short menu_x            = 16;
 
 /* pshd position      */
 static const short menu_offset_y              = -200;
-static const short menu_offset_x              = -200;
+static const short menu_offset_x              = 200;
 
 
 /* CUSTOM GLYPHS */ 
 
 static const char * bg[] = {
-  " ___  ___  ________  ________  ___  __    ___      ",
-  "|\\  \\|\\  \\|\\   __  \\|\\   ____\\|\\  \\|\\  \\ |\\  \\     ",
-  "\\ \\  \\\\\\  \\ \\  \\|\\  \\ \\  \\___|\\ \\  \\/  /|\\ \\  \\    ",
-  " \\ \\   __  \\ \\   __  \\ \\  \\    \\ \\   ___  \\ \\  \\   ",
-  "  \\ \\  \\ \\  \\ \\  \\ \\  \\ \\  \\____\\ \\  \\\\ \\  \\ \\  \\  ",
-  "   \\ \\__\\ \\__\\ \\__\\ \\__\\ \\_______\\ \\__\\\\ \\__\\ \\__\\ ",
-  "    \\                                _| \\|__|\\|__| ",
-};;
-
+  " ________            ________                ",
+  " \\   ____\\           \\   __  \\               ",
+  "  \\  \\_____           \\  \\_\\  \\              ",
+  "   \\_____  \\           \\   _  _\\             ",
+  "    _____\\  \\           \\  \\\\  \\             ",
+  "    \\________\\           \\__\\\\ _\\            ",
+};
 
 static const char * fg[] = {
-  " __ _ __   __ _ __   _______ _     ",
-  "|\\   __  \\|\\   __  \\|\\___   ___\\   ",
-  "\\ \\  \\|\\  \\ \\  \\|\\  \\|___ \\  \\_|   ",
-  " \\ \\   _  _\\ \\  \\\\\\  \\   \\ \\  \\    ",
-  "  \\ \\  \\\\  \\\\ \\  \\\\\\  \\   \\ \\  \\   ",
-  "   \\ \\__\\\\ _\\\\ \\_______\\   \\ \\__\\  ",
-  "    \\|__|\\|__|\\|_______|    \\|__|  ",
+  "           ________            ________      ",
+  "           \\   __  \\           \\   __  \\     ",
+  "            \\  \\_\\  \\           \\  \\_\\  \\    ",
+  "             \\   __  \\           \\   __  \\   ",
+  "              \\  \\ \\  \\           \\  \\ \\  \\  ",
+  "               \\__\\ \\__\\           \\__\\ \\__\\ ",
 };
+
+//static const char * bg[] = {
+//  "___  ___  ________  ___  ___   ___      ",
+//  "\\  \\ \\  \\ \\   __  \\ \\  \\ \\  \\  \\  \\    ",
+//  " \\  \\_\\  \\ \\  \\_\\  \\ \\  \\/  /__ \\  \\   ",
+//  "  \\   __  \\ \\   __  \\ \\   ___  \\ \\  \\  ",
+//  "   \\  \\ \\  \\ \\  \\ \\  \\ \\  \\  \\  \\ \\  \\ ",
+//  "    \\__\\ \\__\\ \\__\\ \\__\\ \\__\\  \\__\\ \\__\\",
+//};
+
+//static const char * fg[] = {
+//  "________  ________  __________     ",
+//  "\\   __  \\ \\   __  \\ \\___   ___\\   ",
+//  " \\  \\_\\  \\ \\  \\ \\  \\    \\  \\      ",
+//  "  \\   _  _\\ \\  \\ \\  \\    \\  \\    ",
+//  "   \\  \\\\  \\  \\  \\_\\  \\    \\  \\   ",
+//  "    \\__\\\\ _\\  \\_______\\    \\__\\  ",
+//};
 
 /* background glyph */
 // static const char * bg[] = {
@@ -270,9 +285,9 @@ static const char * fg[] = {
 
 /* optional header */
 //static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
-static const char hd[] = "SARA";
+//static const char hd[] = "© Entity"; // TODO make this work
 /* Set empty if desired */
-//static const char hd[] = {'\0'};
+static const char hd[] = {'\0'};
 
 
 /* POSITION */
@@ -281,27 +296,27 @@ static const char hd[] = "SARA";
    - Positive x values will position glyphs DOWNWARD
    - Negative x values will position glyphs UPWARD
 */
-static const int bg_offset_y = -3;
-static const int bg_offset_x = 3;
-static const int fg_offset_y = 2;
+static const int bg_offset_y = 0;
+static const int bg_offset_x = 0;
+static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;
-static const int hd_offset_y = 3;
-static const int hd_offset_x = -9;
+static const int hd_offset_y = 1;
+static const int hd_offset_x = 22;
 
 /* header position when small window mode */
-static const int hd_offset_y_min = -0;
-static const int hd_offset_x_min = -3;
+static const int hd_offset_y_min = -1;
+static const int hd_offset_x_min = -34;
 
 /* Set dynamic_resize to skip printing bg at defined constraints */
 static const int dynamic_resize = true;
-static const int resize_x = 18;
-static const int resize_y = 10;
+static const int resize_x = 10;
+static const int resize_y = 3;
 
 /* Set tiny_mode to */
 static const int tiny_mode = true;
 static const char tn[] = "SARA";
-static const int tiny_mode_y = 7;
-static const int tiny_mode_x = 18;
+static const int tiny_mode_y = 3;
+static const int tiny_mode_x = 10;
 
 
 /* automate this and perform checks [make a perform check cmd-line option]
@@ -332,7 +347,6 @@ static const char *r_cmd[]            = { "ranger",                             
 static const char *R_cmd[]            = { "rtorrent",                            NULL};
 static const char *w_cmd[]            = { "ranger", "/home/roe/pix/walls/",      NULL};
 static const char *t_cmd[]            = { "nvim", "/home/roe/dox/.notes/tasks",  NULL};
-static const char *P_cmd[]            = { "nohup", "bash", "-c", "bar.sh",       NULL};
 //static const char *newlook_cmd[]      = { "reskin",                              NULL};
 static const char *v_cmd[]            = { "nvim",                                NULL};
 static const char *V_cmd[]            = { "xdo", "1",                            NULL};
@@ -357,7 +371,7 @@ static const ExtraArgs defaults = {
 
 static const ExtraArgs confirms = {
   NULL,        /* Optionally change directory before executing command */
-  CONFIRM,   /* Optionally confirm command with: CONFIRM             */
+  CONFIRM,     /* Optionally confirm command with: CONFIRM             */
   OUTS,        /* Optionally suppress command output with NO_OUT       */
 };
 
@@ -369,9 +383,8 @@ static const Command commandkeys[] = {
   { 'R',         R_cmd,             WAIT,     neon_reverse,                  neon,   {"/home/roe/dls", NOCONFIRM, OUTS} },
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,              {"/home/roe/dox/.notes", NOCONFIRM, OUTS} },
-  { 'P',         P_cmd,             WAIT,             none,                  none,              {NULL, CONFIRM, NO_OUT} },
 //{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
-  { 'v',         v_cmd,             WAIT,        tv_static,                  neon,                             defaults },
+  { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
 //{ 'F',         F_cmd,             EXEC,             none,                  neon,                             confirms },
@@ -383,7 +396,7 @@ static const Command commandkeys[] = {
   { 'n',         n_cmd,             WAIT,     neon_reverse,                  none,                             confirms },
   { 'x',         x_cmd,             STOP,             none,                  neon,                             defaults },
   { 'N',         N_cmd,             STOP,             none,                  neon,                             defaults },
-  { 'G',         G_cmd,             STOP,             none,                  neon,                             defaults },
+  { 'G',         G_cmd,             WAIT,             none,                  neon,                             defaults },
   { ':',         Reload_cmd,        EXEC,             none,                  neon,                             defaults },
 };
 
@@ -607,6 +620,21 @@ static const Menu killme_menu[] = {
   END_OF_MENU
 };
 
+static const char *polybar_cmd[] = { "nohup", "bash", "-c", "bar.sh", NULL};
+static const Command polybar = { 0, polybar_cmd, STOP_ON_ERR, none, blink, { "/home/roe/", NOCONFIRM, OUTS } };
+
+static const char *mpassport_cmd[] = { "sudo", "mount", "/dev/sda1", "/mnt/passport", NULL};
+static const Command mpassport = { 0, mpassport_cmd, STOP_ON_ERR, none, blink, defaults };
+
+static const char *umpassport_cmd[] = { "sudo", "umount", "/mnt/passport", NULL};
+static const Command umpassport = { 0, umpassport_cmd, STOP_ON_ERR, none, blink, defaults };
+
+static const Menu P_menu[] = {
+  { "polybar",         COMMAND, { .command = polybar } },
+  { "mount passport",         COMMAND, { .command = mpassport } },
+  { "umount passport",         COMMAND, { .command = umpassport } },
+  END_OF_MENU
+};
 
 /* menukey assignments */
 static const MenuKey menukeys[] = {
@@ -617,6 +645,7 @@ static const MenuKey menukeys[] = {
   {'g', git_menu },
   {'c', chdir_menu },
   {'A', killme_menu },
+  {'P', P_menu },
 };
 
 #endif

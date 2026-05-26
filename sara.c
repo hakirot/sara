@@ -112,7 +112,7 @@ int main(int argc, char* argv[]){
     } else if (result >= 1){
       should_print = true;
     }
-    usleep(20000); // chill
+    usleep(40000); // chill
   }
 
   refresh();

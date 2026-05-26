@@ -178,7 +178,7 @@ int __execute__(const Command * command){
 
   if(command->option != EXEC){
 
-    endwin();
+    endwin(); // TODO: We called this earlier
     clear();
     pid_t pid = fork();
     if (pid < 0) {
@@ -219,10 +219,10 @@ int __execute__(const Command * command){
         printf("Press enter to continue");
 
         size_t bufsize = 256;
-        char *buffer = (char *)malloc(bufsize * sizeof(char));
-        if( buffer == NULL) crit("Unable to allocate buffer");
-        getline(&buffer,&bufsize,stdin);
-        free(buffer);
+        char *buff = (char *)malloc(bufsize * sizeof(char));
+        if(buff == NULL) crit("Unable to allocate buff");
+        fgets(buff, 256, stdin);
+        free(buff);
       }
     }
 
@@ -240,7 +240,7 @@ int __execute__(const Command * command){
     if(FOLLOW) _write_exit_dir();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     perror("execvp");
-    crit("");
+    crit("execvp critical error :|");
   }
 
   if(RANGER_FLAG) _free_range(command);
@@ -857,15 +857,13 @@ void set_glyph_dimensions(){
   HD_LENGTH = mbstowcs(NULL, hd, 0);
 }
 
-
 void __interrupt__(int signum){
   INTERRUPT = 1;
-  animate(glitch_full);
-  refresh();
+  __execute__(FORCE_ECHO);
 }
 
 void _deflect_signals(){
-  struct sigaction signal_action;  
+  struct sigaction signal_action = { 0 };  
   signal_action.sa_handler = __interrupt__;
   sigemptyset(&signal_action.sa_mask);
   signal_action.sa_flags = 0;

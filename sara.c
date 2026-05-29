@@ -95,6 +95,11 @@ int main(int argc, char* argv[]){
 
     int result = __key__();
 
+    if(INTERRUPT){
+      INTERRUPT = false;
+      should_print = true;
+    }
+
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
 
@@ -195,7 +200,6 @@ void _pshd(){
   const char *sara_wd = "/.config/sara/dir";
   char pshd_file[256] = {'\0'};
   sprintf(pshd_file, "%s%s", env_home, sara_wd);
-
 
   FILE *file = fopen(pshd_file, "r");
 
@@ -334,12 +338,12 @@ void _pshd(){
         attron(A_STANDOUT);
         attron(A_BOLD);
       } else {
-        attron(COLOR_PAIR(pshd_c + 8));
+        attron(COLOR_PAIR(pshd_c));
+        attron(A_STANDOUT);
       }
       mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
       attroff(A_BOLD);
       attroff(A_STANDOUT);
-      attroff(COLOR_PAIR(pshd_c + 8));
 
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
 
@@ -395,12 +399,12 @@ void _pshd(){
             attron(COLOR_PAIR(pshd_c));
             attron(A_BOLD);
           } else {
-            attron(COLOR_PAIR(pshd_c + 8));
+            attron(COLOR_PAIR(pshd_c));
+            attron(A_STANDOUT);
           }
           mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
           attroff(A_BOLD);
           attroff(A_STANDOUT);
-          attroff(COLOR_PAIR(pshd_c + 8));
 
           attron(COLOR_PAIR(pshd_c));
           mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
@@ -454,7 +458,8 @@ void _pshd(){
                   attron(A_STANDOUT);
                   attron(A_BOLD);
                 } else {
-                  attron(COLOR_PAIR(pshd_c + 8));
+                  attron(COLOR_PAIR(pshd_c));
+                  attron(A_STANDOUT);
                 }
               } else {
                 attron(COLOR_PAIR(pshd_c));
@@ -476,7 +481,6 @@ void _pshd(){
               attroff(A_BOLD);
               attroff(A_STANDOUT);
               attroff(COLOR_PAIR(pshd_c));
-              attroff(COLOR_PAIR(pshd_c + 8));
 
               i++;
             }
@@ -546,7 +550,8 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
         attron(COLOR_PAIR(pshd_c));
         attron(A_STANDOUT);
       } else {
-        attron(COLOR_PAIR(pshd_c + 8));
+        attron(COLOR_PAIR(pshd_c));
+        attron(A_STANDOUT);
       }
     }
     for(int j = 0; j < len; j++){
@@ -555,7 +560,6 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     }
     if(selection == k) {
       attroff(COLOR_PAIR(pshd_c));
-      attroff(COLOR_PAIR(pshd_c + 8));
       attroff(A_STANDOUT);
       attroff(A_BOLD);
     }

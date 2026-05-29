@@ -210,7 +210,7 @@ int __execute__(const Command * command){
       }
 
       if(INTERRUPT){
-        INTERRUPT = false;
+        // INTERRUPT = false;
         return true;
       }
 
@@ -414,6 +414,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(bold_color_menu == true){
     attron(A_BOLD);
   }
+
   for(i; k < window_size; i++){
 
     if(i == selection && dim_y != 1 && dim_y != 3){
@@ -421,7 +422,8 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
         attron(A_STANDOUT);
         attron(COLOR_PAIR(menu_c));
       } else {
-        attron(COLOR_PAIR(menu_c + 8));
+        attron(COLOR_PAIR(menu_c));
+        attron(A_STANDOUT);
       }
     } else {
       attron(COLOR_PAIR(menu_c));
@@ -436,7 +438,6 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
     }
 
     attroff(A_STANDOUT);
-    attroff(COLOR_PAIR(menu_c + 8));
     attroff(COLOR_PAIR(menu_c));
     if(i == len - 1) break;
     k++;
@@ -652,6 +653,7 @@ void preflight_check() {
   // assert resize_x/y values are larger than tiny_mode_x/y
   // assert MenuBorder is the correct length
   // assert pshd_x < 258
+  // assert at least one key is `quit`
 }
 
 // TODO: implement

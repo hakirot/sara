@@ -411,14 +411,14 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(selection > len - window_size) i = len - window_size;
   else i = selection;
 
-  if(bold_color_menu == true){
+  if(menu_c_bold == true){
     attron(A_BOLD);
   }
 
   for(i; k < window_size; i++){
 
     if(i == selection && dim_y != 1 && dim_y != 3){
-      if(bold_color_menu == true) {
+      if(menu_c_bold == true) {
         attron(A_STANDOUT);
         attron(COLOR_PAIR(menu_c));
       } else {

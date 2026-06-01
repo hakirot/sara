@@ -18,89 +18,77 @@ static const animation_option start_animation = blink;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const int fg_c = magenta;         /* fg color */
-static const int bg_c = yellow;      /* bg color */
-static const int hd_c = black;     /* hd color */
+static const unsigned short fg_c    = green;     /* fg color */
+static const unsigned short bg_c    = black;     /* bg color */
+static const unsigned short hd_c    = black;     /* hd color */
+static const unsigned short pshd_c  = green;     /* pshd menu color */
+static const unsigned short menu_c  = green;     /* menu color */
 
-static const int use_bold_color_for_fg = false;
-static const int use_bold_color_for_bg = false;
-static const int use_bold_color_for_hd = false;
+static const unsigned short fg_c_bold   = false;
+static const unsigned short bg_c_bold   = false;
+static const unsigned short hd_c_bold   = false;
+static const unsigned short pshd_c_bold = false;
+static const unsigned short menu_c_bold = false;
 
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = false;
 static const int highlight_hd_in_small_mode = false;
 
 
-/* PSHD UI CONFIG */
-
-/* pshd window COLOR    */
-static const unsigned short pshd_c            = red;
-static const unsigned short bold_color_pshd   = false;
-
-/* pshd dimensions      */
-static const unsigned short pshd_y =          15;
-static const unsigned short pshd_x =          28;
-
-/* pshd position        */
-static const short pshd_offset_y              = -200;
-static const short pshd_offset_x              = 200;
-
-/* MENU UI CONFIG       */
-
-//static const wchar_t MenuBorder[] =         L"┌┐└┘─│";
+static const wchar_t MenuBorder[] =         L"┌┐└┘─│";
 //static const wchar_t MenuBorder[] =         L"╔╗╚╝═║";
-static const wchar_t MenuBorder[] =           L"╔╗╚╝─│";
+//static const wchar_t MenuBorder[] =           L"╔╗╚╝─│";
 
-/* pshd window color  */
-static const unsigned short menu_c            = cyan;
-static const unsigned short bold_color_menu   = false;
+/* menu dimensions      */
+static const unsigned short pshd_y = 100;
+static const unsigned short pshd_x = 28;
+static const unsigned short menu_y = 100;
+static const unsigned short menu_x = 16;
 
-/* pshd dimensions    */
-static const unsigned short menu_y            = 12;
-static const unsigned short menu_x            = 16;
+static const short menu_offset_y   = 200;
+static const short menu_offset_x   = 200;
+static const short pshd_offset_y   = 200;
+static const short pshd_offset_x   = 200;
 
-/* pshd position      */
-static const short menu_offset_y              = -200;
-static const short menu_offset_x              = 200;
 
 
 /* CUSTOM GLYPHS */ 
 
-static const char * bg[] = {
-  " ________            ________                ",
-  " \\   ____\\           \\   __  \\               ",
-  "  \\  \\_____           \\  \\_\\  \\              ",
-  "   \\_____  \\           \\   _  _\\             ",
-  "    _____\\  \\           \\  \\\\  \\             ",
-  "    \\________\\           \\__\\\\ _\\           v1 ",
-};
-
-static const char * fg[] = {
-  "           ________            ________      ",
-  "           \\   __  \\           \\   __  \\     ",
-  "            \\  \\_\\  \\           \\  \\_\\  \\    ",
-  "             \\   __  \\           \\   __  \\   ",
-  "              \\  \\ \\  \\           \\  \\ \\  \\  ",
-  "               \\__\\ \\__\\           \\__\\ \\__\\ ",
-};
-
-//static const char * bg[] = {
-//  "___  ___  ________  ___  ___   ___      ",
-//  "\\  \\ \\  \\ \\   __  \\ \\  \\ \\  \\  \\  \\    ",
-//  " \\  \\_\\  \\ \\  \\_\\  \\ \\  \\/  /__ \\  \\   ",
-//  "  \\   __  \\ \\   __  \\ \\   ___  \\ \\  \\  ",
-//  "   \\  \\ \\  \\ \\  \\ \\  \\ \\  \\  \\  \\ \\  \\ ",
-//  "    \\__\\ \\__\\ \\__\\ \\__\\ \\__\\  \\__\\ \\__\\",
-//};
+// static const char * bg[] = {
+//   " ________            ________                ",
+//   " \\   ____\\           \\   __  \\               ",
+//   "  \\  \\_____           \\  \\_\\  \\              ",
+//   "   \\_____  \\           \\   _  _\\             ",
+//   "    _____\\  \\           \\  \\\\  \\             ",
+//   "    \\________\\           \\__\\\\ _\\           v1 ",
+// };
 
 //static const char * fg[] = {
-//  "________  ________  __________     ",
-//  "\\   __  \\ \\   __  \\ \\___   ___\\   ",
-//  " \\  \\_\\  \\ \\  \\ \\  \\    \\  \\      ",
-//  "  \\   _  _\\ \\  \\ \\  \\    \\  \\    ",
-//  "   \\  \\\\  \\  \\  \\_\\  \\    \\  \\   ",
-//  "    \\__\\\\ _\\  \\_______\\    \\__\\  ",
+//  "           ________            ________      ",
+//  "           \\   __  \\           \\   __  \\     ",
+//  "            \\  \\_\\  \\           \\  \\_\\  \\    ",
+//  "             \\   __  \\           \\   __  \\   ",
+//  "              \\  \\ \\  \\           \\  \\ \\  \\  ",
+//  "               \\__\\ \\__\\           \\__\\ \\__\\ ",
 //};
+
+// static const char * fg[] = {
+//   "___  ___  ________  ___  ___   ___      ",
+//   "\\  \\ \\  \\ \\   __  \\ \\  \\ \\  \\  \\  \\    ",
+//   " \\  \\_\\  \\ \\  \\_\\  \\ \\  \\/  /__ \\  \\   ",
+//   "  \\   __  \\ \\   __  \\ \\   ___  \\ \\  \\  ",
+//   "   \\  \\ \\  \\ \\  \\ \\  \\ \\  \\  \\  \\ \\  \\ ",
+//   "    \\__\\ \\__\\ \\__\\ \\__\\ \\__\\  \\__\\ \\__\\",
+// };
+
+// static const char * bg[] = {
+//   "________  ________  __________     ",
+//   "\\   __  \\ \\   __  \\ \\___   ___\\   ",
+//   " \\  \\_\\  \\ \\  \\ \\  \\    \\  \\      ",
+//   "  \\   _  _\\ \\  \\ \\  \\    \\  \\    ",
+//   "   \\  \\\\  \\  \\  \\_\\  \\    \\  \\   ",
+//   "    \\__\\\\ _\\  \\_______\\    \\__\\  ",
+// };
 
 /* background glyph */
 // static const char * bg[] = {
@@ -192,39 +180,39 @@ static const char * fg[] = {
 //  "      \\|_________|                             ",
 //};
 
-//static const char * fg[] = {
-// "        /\\        ",
-// "       /  \\       ",
-// "      /    \\      ",
-// "     _\\     \\     ",
-// "    /        \\    ",
-// "   /          \\   ",
-// "  /     __   \\_\\  ",
-// " /     /  \\     \\ ",
-// "/__,--'    '--,__\\",
-//};
+static const char * fg[] = {
+ "        /\\        ",
+ "       /  \\       ",
+ "      /    \\      ",
+ "     _\\     \\     ",
+ "    /        \\    ",
+ "   /          \\   ",
+ "  /     __   \\_\\  ",
+ " /     /  \\     \\ ",
+ "/__,--'    '--,__\\",
+};
 
-//static const char * bg[] = {
-//  "                     -`                     ",
-//  "                    .o+`                    ",
-//  "                   `ooo/                    ",
-//  "                  `+oooo:                   ",
-//  "                 `+oo  oo:                  ",
-//  "                 -+o   oo+                  ",
-//  "               `/:- /   o                   ",
-//  "              `/++                          ",
-//  "             `/++ /                         ",
-//  "            `/++ /                          ",
-//  "           ./oo                             ",
-//  "          .oos                              ",
-//  "         -oss                               ",
-//  "        : ss    s/                          ",
-//  "       /oss   -/:                           ",
-//  "     `/oss   -/                             ",
-//  "    `+sso   -                               ",
-//  "   `++:.                                    ",
-//  "   .`                                       ",
-//};
+static const char * bg[] = {
+ "                     -`                     ",
+ "                    .o+`                    ",
+ "                   `ooo/                    ",
+ "                  `+oooo:                   ",
+ "                 `+oo  oo:                  ",
+ "                 -+o   oo+                  ",
+ "               `/:- /   o                   ",
+ "              `/++                          ",
+ "             `/++ /                         ",
+ "            `/++ /                          ",
+ "           ./oo                             ",
+ "          .oos                              ",
+ "         -oss                               ",
+ "        : ss    s/                          ",
+ "       /oss   -/:                           ",
+ "     `/oss   -/                             ",
+ "    `+sso   -                               ",
+ "   `++:.                                    ",
+ "   .`                                       ",
+};
 
 //static const char * fg[] = {
 // "     |-|           ",
@@ -263,9 +251,6 @@ static const char * fg[] = {
 //};
 
 
-
-
-
 /* foreground glyph */
 //static const char * fg[] = {
 //  "███████╗    █████╗    ██████╗     █████╗    ",
@@ -285,7 +270,7 @@ static const char * fg[] = {
 
 /* optional header */
 //static const char hd[] = "SPECIAL APPLICATION RANGING AREA";
-static const char hd[] = "© HoldForward"; // TODO make this work
+static const char hd[] = " ©SARA ";
 /* Set empty if desired */
 //static const char hd[] = {'\0'};
 
@@ -300,8 +285,8 @@ static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
 static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;
-static const int hd_offset_y = -3;
-static const int hd_offset_x = 11;
+static const int hd_offset_y = -5;
+static const int hd_offset_x = 3;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = 0;
@@ -386,7 +371,7 @@ static const Command commandkeys[] = {
   { 'w',         w_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 't',         t_cmd,             WAIT,      glitch_full,                  neon,   {"/home/hakirot/dox/.notes", NOCONFIRM, OUTS} },
 //{ 'n',   newlook_cmd,             EXEC,      glitch_full,                  neon,                             defaults },
-  { 'v',         v_cmd,             WAIT,      glitch_full,                  neon,                             defaults },
+  { 'v',         v_cmd,             WAIT,     neon_reverse,                  neon,                             defaults },
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
 //{ 'F',         F_cmd,             EXEC,             none,                  neon,                             confirms },
@@ -457,9 +442,13 @@ static const Menu connect_options[] = {
 static const char *boot_spawns_cmd[] = { "boot_spawns", NULL };
 static const Command boot_spawns = { 0, boot_spawns_cmd, EXEC, glitch_full, down_wipes, confirms };
 
+static const char *spawns_cmd[] = { "spawns", NULL };
+static const Command spawns = { 0, spawns_cmd, EXEC, glitch_full, down_wipes, confirms };
+
 static const Menu b_menu[] = {
   { "BLUETOOTH", SUBMENU, { .submenu = connect_options } },
   { "boot_spawns", COMMAND, { .command = boot_spawns } },
+  { "spawns", COMMAND, { .command = spawns } },
   END_OF_MENU
 };
 
@@ -479,6 +468,9 @@ static const Menu S_menu[] = {
 static const char *firefox_cmd[] = { "nohup", "firefox", NULL };
 static const Command firefox = { 0, firefox_cmd, NOWAIT, glitch, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
+static const char *qute_cmd[] = { "nohup", "qutebrowser", NULL };
+static const Command qute = { 0, qute_cmd, NOWAIT, glitch, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
+
 static const char *slippi_cmd[] = { "nohup", "slippi", NULL };
 static const Command slippi = { 0, slippi_cmd, NOWAIT, glitch_full, down_wipes, {NULL, NOCONFIRM, NO_OUT}  };
 
@@ -496,6 +488,7 @@ static const Command steam = { 0, steam_cmd, NOWAIT, glitch_full, glitch_full, {
 
 static const Menu F_menu[] = {
   { "FIREFOX", COMMAND, { .command = firefox } },
+  { "QUTE", COMMAND, { .command = qute } },
   { "SLIPPI", COMMAND, { .command = slippi } },
   { "DISCORD", COMMAND, { .command = discord } },
   { "ST", COMMAND, { .command = st } },
@@ -519,7 +512,7 @@ static const Command dysk = { 0, dysk_cmd, STOP, neon_reverse, neon, defaults  }
 static const char *ping_cmd[] = { "ping", "9.9.9.9",  NULL };
 static const Command ping = { 0, ping_cmd, WAIT, neon_reverse, neon, defaults  };
 
-static const Menu L_menu[] = {
+static const Menu D_menu[] = {
   { "journalctl -f", COMMAND, { .command = journalctl } },
   { "dmesg -w", COMMAND, { .command = dmesg } },
   { "btm", COMMAND, { .command = btm } },
@@ -616,19 +609,15 @@ static const Menu chdir_menu[] = {
   END_OF_MENU
 };
 
-static const Menu killme_menu[] = {
-  { "test",         COMMAND, { .command = home } },
-  END_OF_MENU
-};
 
 static const char *polybar_cmd[] = { "nohup", "bash", "-c", "bar.sh", NULL};
 static const Command polybar = { 0, polybar_cmd, STOP_ON_ERR, none, blink, { "/home/hakirot/", NOCONFIRM, OUTS } };
 
 static const char *mpassport_cmd[] = { "sudo", "mount", "/dev/sda1", "/mnt/passport", NULL};
-static const Command mpassport = { 0, mpassport_cmd, STOP_ON_ERR, none, blink, defaults };
+static const Command mpassport = { 0, mpassport_cmd, STOP, none, blink, defaults };
 
 static const char *umpassport_cmd[] = { "sudo", "umount", "/mnt/passport", NULL};
-static const Command umpassport = { 0, umpassport_cmd, STOP_ON_ERR, none, blink, defaults };
+static const Command umpassport = { 0, umpassport_cmd, STOP, none, blink, defaults };
 
 static const Menu P_menu[] = {
   { "polybar",         COMMAND, { .command = polybar } },
@@ -642,10 +631,9 @@ static const MenuKey menukeys[] = {
   {'b', b_menu },
   {'S', S_menu },
   {'F', F_menu },
-  {'D', L_menu },
+  {'D', D_menu },
   {'g', git_menu },
-  {'c', chdir_menu },
-  {'A', killme_menu },
+  {'d', chdir_menu },
   {'P', P_menu },
 };
 

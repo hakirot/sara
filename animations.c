@@ -111,8 +111,8 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
   }
 
   attron(COLOR_PAIR(c));
-  if(c == menu_c && bold_color_menu) attron(A_BOLD);
-  if(c == pshd_c && bold_color_pshd) attron(A_BOLD);
+  if(c == menu_c && menu_c_bold) attron(A_BOLD);
+  if(c == pshd_c && pshd_c_bold) attron(A_BOLD);
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);
@@ -197,8 +197,9 @@ void _print_confirm_window(char * command_str){
     mvadd_wch(ROW/2, r_stop, &cchar);
   }
 
-  attroff(COLOR_PAIR(menu_c));
-  attron(COLOR_PAIR(menu_c + 8));
+  // attroff(COLOR_PAIR(menu_c));
+  // attron(COLOR_PAIR(menu_c));
+  attron(A_STANDOUT);
 
   // TODO: skip nohup strings
   char * str = "Execute ";
@@ -221,7 +222,8 @@ void _print_confirm_window(char * command_str){
 
   mvaddch(ROW/2 - 2, COL/2 - len3/2 + len3, '?');
 
-  attroff(COLOR_PAIR(menu_c + 8));
+  attroff(COLOR_PAIR(menu_c));
+  attroff(A_STANDOUT);
   refresh();
 }
 
@@ -239,7 +241,9 @@ void _print_confirm_selection(int selection){
   char * no = "No";
 
   if(selection == true){
-    attron(COLOR_PAIR(menu_c + 8));
+    attron(COLOR_PAIR(menu_c));
+    attron(A_STANDOUT);
+
   } else {
     attron(COLOR_PAIR(menu_c));
   }
@@ -247,9 +251,11 @@ void _print_confirm_selection(int selection){
   for(int i = 0; i < 3; i++){
     mvaddch(ROW/2, r_stop - 4 + i, yes[i]);
   }
+  attroff(A_STANDOUT);
 
   if(selection == false){
-    attron(COLOR_PAIR(menu_c + 8));
+    attron(COLOR_PAIR(menu_c));
+    attron(A_STANDOUT);
   } else {
     attron(COLOR_PAIR(menu_c));
   }
@@ -258,8 +264,8 @@ void _print_confirm_selection(int selection){
     mvaddch(ROW/2, l_stop + 2 + i, no[i]);
   }
 
+  attroff(A_STANDOUT);
   attroff(COLOR_PAIR(menu_c));
-  attroff(COLOR_PAIR(menu_c + 8));
 }
 
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
@@ -294,7 +300,7 @@ void _glitch(Arg bigmode){
 
     if (WIN_SIZE == NORMAL) {
       attron(COLOR_PAIR(FOREGROUND));
-      if(use_bold_color_for_fg) attron(A_BOLD);
+      if(fg_c_bold) attron(A_BOLD);
       if (rng_backdrop == 0){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
                 (COL - FG_GLYPH_LENGTH)/2 - rng_shift,
@@ -308,7 +314,7 @@ void _glitch(Arg bigmode){
 
       if(bigmode.x == 1){
 
-        if(use_bold_color_for_bg) attron(A_BOLD);
+        if(bg_c_bold) attron(A_BOLD);
         attron(COLOR_PAIR(BACKGROUND));
         int rng_rowx = rand() % BG_GLYPH_HEIGHT;
         int rng_shift = (rand() % 2) - 1;               // RNG -1 and 1
@@ -321,7 +327,7 @@ void _glitch(Arg bigmode){
         attroff(A_BOLD);
       }
 
-      if(use_bold_color_for_fg) attron(A_BOLD);
+      if(fg_c_bold) attron(A_BOLD);
       attron(COLOR_PAIR(FOREGROUND));
       if (rng_backdrop == 0){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
@@ -457,7 +463,7 @@ void _shutter_slide(){
   int r_idx = COL - FG_GLYPH_LENGTH;
   int frame_travel_width = margin_width / 10;
   int j = 0;
-  if(use_bold_color_for_fg) attron(A_BOLD);
+  if(fg_c_bold) attron(A_BOLD);
   attron(COLOR_PAIR(FOREGROUND));
   while(j < num_frames){
     clear();
@@ -549,7 +555,7 @@ void _pixel_fill(){
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
           attron(COLOR_PAIR(FOREGROUND));
-          if(use_bold_color_for_fg) attron(A_BOLD);
+          if(fg_c_bold) attron(A_BOLD);
           mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
           attroff(COLOR_PAIR(FOREGROUND));
           attroff(A_BOLD);
@@ -649,7 +655,7 @@ void _tv_static(){
     if(result == 2) return;
 
     attron(COLOR_PAIR(FOREGROUND));
-    if(use_bold_color_for_fg) attron(A_BOLD);
+    if(fg_c_bold) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
       mbstate_t state;
@@ -683,7 +689,7 @@ void _tv_static(){
 
     if(WIN_SIZE == BIG){
       attron(COLOR_PAIR(BACKGROUND));
-      if(use_bold_color_for_bg) attron(A_BOLD);
+      if(bg_c_bold) attron(A_BOLD);
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
 
         mbstate_t state;
@@ -724,6 +730,11 @@ void _tv_static(){
 
 void _none(Arg printColorbar){
   clear();
+
+  // _print_menu_borders(BG_GLYPH_HEIGHT + 2, BG_GLYPH_LENGTH + 2, bg_offset_y, bg_offset_x, BACKGROUND); 
+  // _print_menu_borders(FG_GLYPH_HEIGHT + 2, FG_GLYPH_LENGTH + 2, fg_offset_y, fg_offset_x, FOREGROUND);
+  _print_menu_borders(3, FG_GLYPH_LENGTH + 2, 6, 0, BACKGROUND); 
+
   if(dynamic_resize && WIN_SIZE == NORMAL){
     _fg(fg);
     _hd();
@@ -755,7 +766,7 @@ void _bg() {
 }
 
 void _overlay(const char * glyph[], char fill){
-  if(use_bold_color_for_fg) attron(A_BOLD);
+  if(fg_c_bold) attron(A_BOLD);
   attron(COLOR_PAIR(FOREGROUND));
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     mbstate_t state;
@@ -793,7 +804,7 @@ void _overlay(const char * glyph[], char fill){
 
 void _overlay_bg(char ch){
   attron(COLOR_PAIR(BACKGROUND));
-  if(use_bold_color_for_bg) attron(A_BOLD);
+  if(bg_c_bold) attron(A_BOLD);
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     mbstate_t state;
     memset(&state, 0, sizeof(mbstate_t));
@@ -821,7 +832,7 @@ void _overlay_bg(char ch){
 
 void _fg(const char * glyph[]){
   attron(COLOR_PAIR(FOREGROUND));
-  if(use_bold_color_for_fg) attron(A_BOLD);
+  if(fg_c_bold) attron(A_BOLD);
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", glyph[i]);
   }
@@ -840,7 +851,7 @@ void _hd(){
 
     if((WIN_SIZE == BIG    && highlight_hd_in_full_mode)  ||
        (WIN_SIZE == NORMAL && highlight_hd_in_small_mode)) {
-      if(use_bold_color_for_hd){
+      if(hd_c_bold){
         attron(A_STANDOUT);
         attron(A_BOLD);
         attron(COLOR_PAIR(HEADER + 16)); // .. sometimes I even amaze myself
@@ -848,7 +859,7 @@ void _hd(){
         attron(COLOR_PAIR(HEADER + 8));
       }
     } else {
-      if(use_bold_color_for_hd) attron(A_BOLD);
+      if(hd_c_bold) attron(A_BOLD);
       attron(COLOR_PAIR(HEADER));
     }
 
@@ -894,7 +905,7 @@ void _down_wipes(){
   refresh();
   if (WIN_SIZE == NORMAL){
     attron(COLOR_PAIR(FOREGROUND));
-    if(use_bold_color_for_fg) attron(A_BOLD);
+    if(fg_c_bold) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
       int result = __key__();
@@ -909,7 +920,7 @@ void _down_wipes(){
 
   } else if (WIN_SIZE == BIG){
 
-    if(use_bold_color_for_bg) attron(A_BOLD);
+    if(bg_c_bold) attron(A_BOLD);
     attron(COLOR_PAIR(BACKGROUND));
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
@@ -922,7 +933,7 @@ void _down_wipes(){
     attroff(A_BOLD);
     attroff(COLOR_PAIR(BACKGROUND));
 
-    if(use_bold_color_for_fg) attron(A_BOLD);
+    if(fg_c_bold) attron(A_BOLD);
     attron(COLOR_PAIR(FOREGROUND));
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       mbstate_t state;
@@ -958,7 +969,7 @@ void _down_wipes(){
 
 void tinyprint() {
   attron(COLOR_PAIR(FOREGROUND));
-  if(use_bold_color_for_fg) attron(A_BOLD);
+  if(fg_c_bold) attron(A_BOLD);
   int len = strlen(tn);
   for(int i = 0; i < len; i++){
     mvaddch(ROW/2, COL/2 - len/2 + i, tn[i] );

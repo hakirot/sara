@@ -216,7 +216,7 @@ int __execute__(const Command * command){
 
       if ((command->option == STOP_ON_ERR && status != 0) ||
           STOP == command->option) {
-        printf("Press enter to continue");
+        printf("\x1b[33m" "Press enter to continue" "\x1b[0m");
 
         size_t bufsize = 256;
         char *buff = (char *)malloc(bufsize * sizeof(char));

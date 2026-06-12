@@ -25,7 +25,7 @@ static const unsigned short pshd_c  = green;     /* pshd menu color */
 static const unsigned short menu_c  = green;     /* menu color */
 
 static const unsigned short fg_c_bold   = false;
-static const unsigned short bg_c_bold   = false;
+static const unsigned short bg_c_bold   = true;
 static const unsigned short hd_c_bold   = false;
 static const unsigned short pshd_c_bold = false;
 static const unsigned short menu_c_bold = false;
@@ -45,10 +45,10 @@ static const unsigned short pshd_x = 28;
 static const unsigned short menu_y = 100;
 static const unsigned short menu_x = 16;
 
-static const short menu_offset_y   = 200;
-static const short menu_offset_x   = 200;
-static const short pshd_offset_y   = 200;
-static const short pshd_offset_x   = 200;
+static const short menu_offset_y   = -200;
+static const short menu_offset_x   = -200;
+static const short pshd_offset_y   = -200;
+static const short pshd_offset_x   = -200;
 
 
 
@@ -349,6 +349,7 @@ static const char *x_cmd[]            = { "xcolor",                             
 static const char *N_cmd[]            = { "fastfetch",                           NULL};
 static const char *G_cmd[]            = { "nodemon",                             NULL};
 static const char *Reload_cmd[]       = { "sara_reload",                         NULL};
+static const char *ls_cmd[]           = { "ls", "--color=tty",                   NULL};
 
 static const ExtraArgs defaults = {
   NULL,        /* Optionally change directory before executing command */
@@ -385,6 +386,7 @@ static const Command commandkeys[] = {
   { 'N',         N_cmd,             STOP,             none,                  neon,                             defaults },
   { 'G',         G_cmd,             WAIT,             none,                  neon,                             defaults },
   { ':',         Reload_cmd,        EXEC,             none,                  neon,                             defaults },
+  { 'l',         ls_cmd,            STOP,             none,                  neon,                             defaults },
 };
 
 
@@ -487,13 +489,13 @@ static const char *steam_cmd[] = { "nohup", "steam", NULL };
 static const Command steam = { 0, steam_cmd, NOWAIT, glitch_full, glitch_full, {NULL, NOCONFIRM, NO_OUT}  };
 
 static const Menu F_menu[] = {
-  { "FIREFOX", COMMAND, { .command = firefox } },
-  { "QUTE", COMMAND, { .command = qute } },
-  { "SLIPPI", COMMAND, { .command = slippi } },
-  { "DISCORD", COMMAND, { .command = discord } },
-  { "ST", COMMAND, { .command = st } },
-  { "KITTY", COMMAND, { .command = kitty } },
-  { "STEAM", COMMAND, { .command = steam } },
+  { "Firefox", COMMAND, { .command = firefox } },
+  { "Qute", COMMAND, { .command = qute } },
+  { "Slippi", COMMAND, { .command = slippi } },
+  { "Discord", COMMAND, { .command = discord } },
+  { "St", COMMAND, { .command = st } },
+  { "Kitty", COMMAND, { .command = kitty } },
+  { "Steam", COMMAND, { .command = steam } },
   END_OF_MENU
 };
 
@@ -539,6 +541,9 @@ static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };
 static const char *gp_cmd[] = { "git", "push", NULL };
 static const Command gp = { 0, gp_cmd, STOP, none, neon, defaults  };
 
+static const char *gph_cmd[] = { "git", "push", "heroku", "main", NULL };
+static const Command gph = { 0, gph_cmd, STOP, none, neon, defaults  };
+
 static const Menu git_menu[] = {
   { "s", COMMAND, { .command = gss } },
   { "Status", COMMAND, { .command = gs } },
@@ -546,6 +551,7 @@ static const Menu git_menu[] = {
   { "Add -A", COMMAND, { .command = gaa } },
   { "Commit", COMMAND, { .command = gc } },
   { "Push", COMMAND, { .command = gp } },
+  { "Push Heroku", COMMAND, { .command = gph } },
   END_OF_MENU
 };
 
@@ -621,8 +627,8 @@ static const Command umpassport = { 0, umpassport_cmd, STOP, none, blink, defaul
 
 static const Menu P_menu[] = {
   { "polybar",         COMMAND, { .command = polybar } },
-  { "mount passport",         COMMAND, { .command = mpassport } },
-  { "umount passport",         COMMAND, { .command = umpassport } },
+  { "mount passport",  COMMAND, { .command = mpassport } },
+  { "umount passport", COMMAND, { .command = umpassport } },
   END_OF_MENU
 };
 

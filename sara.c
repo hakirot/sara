@@ -191,6 +191,8 @@ int input_color(char * arg){
   }
 }
 
+
+// TODO error on directory doesnt exist
 void _pshd(){
 
   CACHE = ROW + COL;

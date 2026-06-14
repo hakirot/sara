@@ -18,17 +18,17 @@ static const animation_option start_animation = blink;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const unsigned short fg_c    = green;     /* fg color */
-static const unsigned short bg_c    = black;     /* bg color */
-static const unsigned short hd_c    = black;     /* hd color */
-static const unsigned short pshd_c  = green;     /* pshd menu color */
-static const unsigned short menu_c  = green;     /* menu color */
+static const unsigned short fg_c    = white;     /* fg color */
+static const unsigned short bg_c    = cyan;     /* bg color */
+static const unsigned short hd_c    = blue;     /* hd color */
+static const unsigned short pshd_c  = blue;     /* pshd menu color */
+static const unsigned short menu_c  = cyan;     /* menu color */
 
 static const unsigned short fg_c_bold   = false;
 static const unsigned short bg_c_bold   = true;
 static const unsigned short hd_c_bold   = false;
 static const unsigned short pshd_c_bold = false;
-static const unsigned short menu_c_bold = false;
+static const unsigned short menu_c_bold = true;
 
 /* header highlight options*/
 static const int highlight_hd_in_full_mode  = false;
@@ -339,7 +339,8 @@ static const char *v_cmd[]            = { "nvim",                               
 static const char *V_cmd[]            = { "xdo", "1",                            NULL};
 static const char *O_cmd[]            = { "xdo", "2",                            NULL};
 static const char *F_cmd[]            = { "xdo", "3",                            NULL};
-static const char *y_cmd[]            = { "yay",                                 NULL};
+//static const char *y_cmd[]            = { "yay",                                 NULL};
+static const char *y_cmd[]            = { "echo", "holding off for now ..",      NULL};
 static const char *m_cmd[]            = { "make",                                NULL};
 static const char *M_cmd[]            = { "rmpc",                                NULL};
 static const char *Q_cmd[]            = { "tmux", "kill-pane",                   NULL};
@@ -376,7 +377,7 @@ static const Command commandkeys[] = {
   { 'V',         V_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
   { 'O',         O_cmd,             WAIT,     neon_reverse,                  neon,                             confirms },
 //{ 'F',         F_cmd,             EXEC,             none,                  neon,                             confirms },
-  { 'y',         y_cmd,      STOP_ON_ERR,     neon_reverse,                  neon,                {NULL, CONFIRM, OUTS} },
+  { 'y',         y_cmd,             STOP,     neon_reverse,                  neon,                {NULL, CONFIRM, OUTS} },
   { 'm',         m_cmd,      STOP_ON_ERR,             none,    shutter_slide_neon,                             defaults },
   { 'M',         M_cmd,             WAIT,     neon_reverse,            pixel_fill,                             defaults },
   { 'Q',         Q_cmd,             EXEC,             none,                  none,                             defaults },
@@ -535,8 +536,11 @@ static const Command gaa = { 0, gaa_cmd, WAIT, none, neon, defaults  };
 static const char *gc_cmd[] = { "git", "commit", NULL };
 static const Command gc = { 0, gc_cmd, WAIT, glitch_full, neon, defaults  };
 
-static const char *gdv_cmd[] = { "/home/roe/skps/gdv", NULL };
+static const char *gdv_cmd[] = { "/home/roe/skps/gitops", "-d", NULL };
 static const Command gdv = { 0, gdv_cmd, EXEC, none, none, defaults  };
+
+static const char *glv_cmd[] = { "/home/roe/skps/gitops", "-l", NULL };
+static const Command glv = { 0, glv_cmd, EXEC, none, none, defaults  };
 
 static const char *gp_cmd[] = { "git", "push", NULL };
 static const Command gp = { 0, gp_cmd, STOP, none, neon, defaults  };
@@ -548,6 +552,7 @@ static const Menu git_menu[] = {
   { "s", COMMAND, { .command = gss } },
   { "Status", COMMAND, { .command = gs } },
   { "gdv", COMMAND, { .command = gdv } },
+  { "glv", COMMAND, { .command = glv } },
   { "Add -A", COMMAND, { .command = gaa } },
   { "Commit", COMMAND, { .command = gc } },
   { "Push", COMMAND, { .command = gp } },

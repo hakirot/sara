@@ -193,6 +193,7 @@ int input_color(char * arg){
 
 
 // TODO error on directory doesnt exist
+// TODO enter easy way to edit pshd
 void _pshd(){
 
   CACHE = ROW + COL;

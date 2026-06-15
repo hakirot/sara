@@ -18,7 +18,7 @@ static const animation_option start_animation = blink;
 static int FOLLOW = true;
 
 /* COLOR SETTINGS */
-static const unsigned short fg_c    = white;     /* fg color */
+static const unsigned short fg_c    = red;     /* fg color */
 static const unsigned short bg_c    = cyan;     /* bg color */
 static const unsigned short hd_c    = blue;     /* hd color */
 static const unsigned short pshd_c  = blue;     /* pshd menu color */
@@ -149,25 +149,25 @@ static const short pshd_offset_x   = -200;
 //  "             █       █       █ ",
 //};
 
-//static const char * bg[] = {
-//  "                                  *                   *  ",
-//  "                         ✦                     ,         ",
-//  "                                ,      *                 ",
-//  "                                                        ✦",
-//  "    .             ✦           ,           *    .         ",
-//  "        .             ✦             ✦                    ",
-//  "   *           .                          ✦              ",
-//  "           .   ✦        ,         *                      ",
-//  "          ,                                              ",
-//  "        .                                                ",
-//  "  ✦        ,              .                              ",
-//  "   *           .                                         ",
-//  "         .             .                                 ",
-//  "˚          ,      .                                      ",
-//  "          .                                              ",
-//  "   *            ✦                                        ",
-//  "        .                                                ",
-//};
+static const char * bg[] = {
+  "                                  *                   *  ",
+  "                         ✦                     ,         ",
+  "                                ,      *                 ",
+  "                                                        ✦",
+  "    .             ✦           ,           *    .         ",
+  "        .             ✦             ✦                    ",
+  "   *           .                          ✦              ",
+  "           .   ✦        ,         *                      ",
+  "          ,                                              ",
+  "        .                                                ",
+  "  ✦        ,              .                              ",
+  "   *           .                                         ",
+  "         .             .                                 ",
+  "˚          ,      .                                      ",
+  "          .                                              ",
+  "   *            ✦                                        ",
+  "        .                                                ",
+};
 
 //static const char * fg[] = {
 //  "    ________  ________  ________  ________     ",
@@ -192,27 +192,27 @@ static const char * fg[] = {
  "/__,--'    '--,__\\",
 };
 
-static const char * bg[] = {
- "                     -`                     ",
- "                    .o+`                    ",
- "                   `ooo/                    ",
- "                  `+oooo:                   ",
- "                 `+oo  oo:                  ",
- "                 -+o   oo+                  ",
- "               `/:- /   o                   ",
- "              `/++                          ",
- "             `/++ /                         ",
- "            `/++ /                          ",
- "           ./oo                             ",
- "          .oos                              ",
- "         -oss                               ",
- "        : ss    s/                          ",
- "       /oss   -/:                           ",
- "     `/oss   -/                             ",
- "    `+sso   -                               ",
- "   `++:.                                    ",
- "   .`                                       ",
-};
+// static const char * bg[] = {
+//  "                     -`                     ",
+//  "                    .o+`                    ",
+//  "                   `ooo/                    ",
+//  "                  `+oooo:                   ",
+//  "                 `+oo  oo:                  ",
+//  "                 -+o   oo+                  ",
+//  "               `/:- /   o                   ",
+//  "              `/++                          ",
+//  "             `/++ /                         ",
+//  "            `/++ /                          ",
+//  "           ./oo                             ",
+//  "          .oos                              ",
+//  "         -oss                               ",
+//  "        : ss    s/                          ",
+//  "       /oss   -/:                           ",
+//  "     `/oss   -/                             ",
+//  "    `+sso   -                               ",
+//  "   `++:.                                    ",
+//  "   .`                                       ",
+// };
 
 //static const char * fg[] = {
 // "     |-|           ",
@@ -283,7 +283,7 @@ static const char hd[] = " ©SARA ";
 */
 static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
-static const int fg_offset_y = 0;
+static const int fg_offset_y = -1;
 static const int fg_offset_x = 0;
 static const int hd_offset_y = -5;
 static const int hd_offset_x = 3;

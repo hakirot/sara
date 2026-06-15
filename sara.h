@@ -8,23 +8,15 @@
 
    . Active branches
      | main
-        - tackle-loose-todos 
 
    . sleep() and usleep() functions halt timings using clock()
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
    . sara -c
-   . DNS server
-   . More animations
-       > Sparkle
    . Fix WAIT_BUFFER inconsistency
    . mega_glitch()
-   . Break relevant functions into new files (utils, animations, pshd)
-   . input 'c' to show term colors and enter COMMAND MODE
    . Add -s --small options to force small size
    . More boot animations
    . mega_glitch()
-   . Use archsarazap
-   . Create input for alternate acronyms from headers (low priority)
 */
 
 #ifndef SARA_H

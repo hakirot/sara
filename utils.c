@@ -250,7 +250,7 @@ int __execute__(const Command * command){
 void __builtin__(char input){
 
   internal selection = quit;
-  for(int i = 0; i < commandkeys_len; i++){
+  for(int i = 0; i < builtinkeys_len; i++){
     if(builtinkeys[i].smashkey == input){
       selection = builtinkeys[i].option;
       break;

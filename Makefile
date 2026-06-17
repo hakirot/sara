@@ -23,9 +23,9 @@ sara: $(OBJ) config.h
 
 dist: clean
 	mkdir -p sara-$(VERSION)
-	cp -R FAQ TODO LICENSE Makefile README config.mk\
-	config.def  arg.h sara.h  $(SRC)\
-	sara-$(VERSION)
+	cp -R FAQ TODO LICENSE Makefile README.md config.def\
+		sara.h utils.h animations.h globals.h $(SRC)\
+		sara-$(VERSION)
 	tar -cf - sara-$(VERSION) | gzip > sara-$(VERSION).tar.gz
 	rm -rf sara-$(VERSION)
 

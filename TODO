@@ -1,4 +1,7 @@
 
-Features required for v1.0
+features for v1.0
   - preflight_check
   - quickedit pshd file
+
+features for v1.1
+  - single menu mode

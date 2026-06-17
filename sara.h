@@ -9,6 +9,10 @@
    . Active branches
      | main
 
+   . Features required for v1.0
+     - preflight_check
+     - quickedit pshd file
+
    . sleep() and usleep() functions halt timings using clock()
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
    . sara -c

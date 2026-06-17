@@ -733,7 +733,7 @@ void _none(Arg printColorbar){
 
   // _print_menu_borders(BG_GLYPH_HEIGHT + 2, BG_GLYPH_LENGTH + 2, bg_offset_y, bg_offset_x, BACKGROUND); 
   // _print_menu_borders(FG_GLYPH_HEIGHT + 2, FG_GLYPH_LENGTH + 2, fg_offset_y, fg_offset_x, FOREGROUND);
-  _print_menu_borders(3, FG_GLYPH_LENGTH + 2, 6, 0, BACKGROUND); 
+  // _print_menu_borders(3, FG_GLYPH_LENGTH + 2, 6, 0, BACKGROUND); 
 
   if(dynamic_resize && WIN_SIZE == NORMAL){
     _fg(fg);

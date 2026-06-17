@@ -48,4 +48,7 @@ int SHOW_COLORS = false;
 
 int INTERRUPT = false;
 
+const int GLITCH_FRAME_TIME = 3500;
+const float HOLD_CHAR_TIME = 0.00001;
+
 int KEY_LOCK = 0;

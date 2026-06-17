@@ -11,7 +11,7 @@
 #define UTILS_H
 
 #include <wchar.h>
-#include <globals.h>
+#include "globals.h"
 
 typedef struct {
   char i;

@@ -9,16 +9,17 @@
 #define NCURSES_WIDECHAR 1
 #define __key__(...) ___key___((key_arg){__VA_ARGS__});
 
-#include "sara.h"
-#include "animations.h"
-#include "globals.h"
-#include "config.h"
-#include "utils.h"
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <wait.h>
 #include <fcntl.h>
+
+#include "sara.h"
+#include "animations.h"
+#include "globals.h"
+#include "config.h"
+#include "utils.h"
 
 int main(int argc, char* argv[]){
 

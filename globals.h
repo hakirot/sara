@@ -185,4 +185,7 @@ static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};
 static const Command FORCE_ECHO_STRUCT = {0, FORCE_ECHO_COMMAND, WAIT,none,none, {NULL, NOCONFIRM, NO_OUT} };
 static const Command * FORCE_ECHO = &FORCE_ECHO_STRUCT;
 
+extern const int GLITCH_FRAME_TIME;
+extern const float HOLD_CHAR_TIME;
+
 #endif

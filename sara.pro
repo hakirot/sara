@@ -14,5 +14,5 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += animations.h command.h config.h globals.h glyphs.h sara.h utils.h
-SOURCES += animations.c command.c globals.c glyphs.c sara.c utils.c
+HEADERS += animations.h config.h globals.h sara.h utils.h
+SOURCES += animations.c globals.c sara.c utils.c

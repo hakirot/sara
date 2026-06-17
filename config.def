@@ -132,6 +132,7 @@ static const char *Reload_cmd[]       = { "/path/to/sara/project/directory/bash/
 static const char *ls_cmd[]           = { "ls", "--color=tty",                                 NULL};
 static const char *example_cmd[]      = { "echo", "hi im an example :)",                       NULL};
 static const char *make_cmd[]         = { "make",                                              NULL};
+static const char *ranger_cmd[]       = { "ranger",                              NULL};
 /* .. Add more mapped commands here */
 
 static const ExtraArgs defaults = {
@@ -147,11 +148,12 @@ static const ExtraArgs confirms = {
 };
 
 static const Command commandkeys[] = {
-/*  KEY          COMMAND            WAIT_OPTION    PRE_ANIMATION,    POST ANIMATION    EXTRA ARGS    */
-  { ':',         Reload_cmd,        EXEC,          none,             none,             defaults },
-  { 'l',         ls_cmd,            STOP,          none,             neon,             defaults },
-  { 'e',         example_cmd,       STOP,          none,             neon,             confirms },
-  { 'm',         make_cmd,          STOP,          none,             neon,             confirms },
+/*  KEY          COMMAND              WAIT_OPTION    PRE_ANIMATION,    POST ANIMATION    EXTRA ARGS    */
+  { ':',         Reload_cmd,          EXEC,          none,             none,             defaults },
+  { 'l',         ls_cmd,              STOP,          none,             neon,             defaults },
+  { 'e',         example_cmd,         STOP,          none,             neon,             confirms },
+  { 'm',         make_cmd,     STOP_ON_ERR,          none,             neon,             defaults },
+  { 'r',         ranger_cmd,          WAIT,          neon_reverse,     neon,             defaults },
   /* .. Map more keys to commands here */
 };
 

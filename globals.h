@@ -77,7 +77,7 @@ typedef enum {
 typedef enum {
   CONFIRM,
   NOCONFIRM,
-} confirm;
+} confirm_option;
 
 typedef enum {
   NO_OUT,
@@ -86,7 +86,7 @@ typedef enum {
 
 typedef struct {
   char* chdir;
-  confirm confirmtion;
+  confirm_option confirmation;
   out_option output_option;
 } ExtraArgs;
 

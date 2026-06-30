@@ -151,7 +151,7 @@ int _get_confirm(const Command * command){
 
 int __execute__(const Command * command){
 
-  if(command->extra_args.confirmtion == CONFIRM &&
+  if(command->extra_args.confirmation == CONFIRM &&
     _get_confirm(command) != true)
   {
     return false;

@@ -135,25 +135,27 @@ static const char *make_cmd[]         = { "make",                               
 static const char *ranger_cmd[]       = { "ranger",                              NULL};
 /* .. Add more mapped commands here */
 
-static const ExtraArgs defaults = {
+static const ExtraArgs default_args = {
   NULL,        /* Optionally change directory before executing command */
   NOCONFIRM,   /* Optionally confirm command with: CONFIRM             */
   OUTS,        /* Optionally suppress command output with NO_OUT       */
 };
 
-static const ExtraArgs confirms = {
+static const ExtraArgs confirm = {
   NULL,
   CONFIRM,
   OUTS,
 };
 
 static const Command commandkeys[] = {
+
 /*  KEY          COMMAND              WAIT_OPTION    PRE_ANIMATION,    POST ANIMATION    EXTRA ARGS    */
-  { ':',         Reload_cmd,          EXEC,          none,             none,             defaults },
-  { 'l',         ls_cmd,              STOP,          none,             neon,             defaults },
-  { 'e',         example_cmd,         STOP,          none,             neon,             confirms },
-  { 'm',         make_cmd,     STOP_ON_ERR,          none,             neon,             defaults },
-  { 'r',         ranger_cmd,          WAIT,          neon_reverse,     neon,             defaults },
+
+  { ':',         Reload_cmd,          EXEC,          none,             none,             default_args },
+  { 'l',         ls_cmd,              STOP,          none,             neon,             default_args },
+  { 'e',         example_cmd,         STOP,          none,             neon,             confirm },
+  { 'm',         make_cmd,     STOP_ON_ERR,          none,             neon,             default_args },
+  { 'r',         ranger_cmd,          WAIT,          neon_reverse,     neon,             default_args },
   /* .. Map more keys to commands here */
 };
 
@@ -176,9 +178,9 @@ static const char *echo_success_cmd[] = { "echo", "example success :D", NULL};  
 static const char *echo_failure_cmd[] = { "echo", "example failure :P", NULL};
 static const char *echo_example_cmd[] = { "echo", "example!",           NULL};
 
-static const Command echo_success = { 0, echo_success_cmd, STOP, neon_reverse, blink, defaults };
-static const Command echo_failure = { 0, echo_failure_cmd, STOP, neon_reverse, blink, defaults };
-static const Command echo_example = { 0, echo_example_cmd, STOP, neon_reverse, blink, defaults };
+static const Command echo_success = { 0, echo_success_cmd, STOP, neon_reverse, blink, defaults_args };
+static const Command echo_failure = { 0, echo_failure_cmd, STOP, neon_reverse, blink, defaults_args };
+static const Command echo_example = { 0, echo_example_cmd, STOP, neon_reverse, blink, defaults_args };
 
 static const Menu example_submenu[] = {
   { "echo success",         COMMAND, { .command = echo_success } },

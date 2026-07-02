@@ -3,6 +3,7 @@ features for v1.0
   - preflight_check
   - builtin function to display all user-mapped commands
   - builtin function to quickedit pshd file using $EDITOR
+  - make install
 
 features for v1.1
   - single menu mode [launch into a menu]

@@ -201,7 +201,7 @@ void _pshd(){
   ensure_config_dir();
 
   const char *env_home = getenv("HOME");
-  const char *sara_wd = "/.config/sara/dir";
+  const char *sara_wd = "/.config/sara/pshd";
   char pshd_file[256] = {'\0'};
   sprintf(pshd_file, "%s%s", env_home, sara_wd);
 

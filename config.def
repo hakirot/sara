@@ -14,7 +14,7 @@
 static const int run_preflight_check = false;
 static const animation_option start_animation = blink;
 
-/* Toggle if you're expecting last working directory in ~/.cache/sara/saraexit */
+/* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
 static int FOLLOW = true;
 
 /* COLORS */
@@ -61,7 +61,7 @@ static const char * bg[] = {
   "  \\  \\_____         \\  \\_\\  \\              ",
   "   \\_____  \\         \\   _  _\\             ",
   "    _____\\  \\         \\  \\\\  \\             ",
-  "    \\________\\         \\__\\\\ _\\           v1 ",
+  "    \\________\\         \\__\\\\ _\\           v0.9 ",
 };
 
 static const char * fg[] = {
@@ -128,11 +128,11 @@ static const int tiny_mode_x = 10;
 
 /* CUSTOM COMMAND CONFIG */
 
-static const char *Reload_cmd[]       = { "/path/to/sara/project/directory/bash/sara_reload",  NULL};  /* <-- Ensure all your commands end in NULL */
+static const char *example_cmd[]      = { "echo", "hi im an example :D",                       NULL};  /* <-- Ensure all your commands end in NULL */
+static const char *reload_cmd[]       = { "/path/to/sara/project/directory/bash/sara_reload",  NULL};
 static const char *ls_cmd[]           = { "ls", "--color=tty",                                 NULL};
-static const char *example_cmd[]      = { "echo", "hi im an example :)",                       NULL};
 static const char *make_cmd[]         = { "make",                                              NULL};
-static const char *ranger_cmd[]       = { "ranger",                              NULL};
+static const char *ranger_cmd[]       = { "ranger",                                            NULL};
 /* .. Add more mapped commands here */
 
 static const ExtraArgs default_args = {
@@ -147,14 +147,21 @@ static const ExtraArgs confirm = {
   OUTS,
 };
 
+static const ExtraArgs no_outs = {
+  NULL,
+  NOCONFIRM,
+  NO_OUT,
+};
+
+
 static const Command commandkeys[] = {
 
-/*  KEY          COMMAND              WAIT_OPTION    PRE_ANIMATION,    POST ANIMATION    EXTRA ARGS    */
+/*  KEY         COMMAND               WAIT_OPTION    PRE_ANIMATION,    POST ANIMATION    EXTRA ARGS    */
 
-  { ':',         Reload_cmd,          EXEC,          none,             none,             default_args },
-  { 'l',         ls_cmd,              STOP,          none,             neon,             default_args },
   { 'e',         example_cmd,         STOP,          none,             neon,             confirm },
-  { 'm',         make_cmd,     STOP_ON_ERR,          none,             neon,             default_args },
+  { ':',         reload_cmd,          EXEC,          none,             none,             default_args },
+  { 'l',         ls_cmd,              STOP,          none,             neon,             default_args },
+  { 'm',         make_cmd,            STOP_ON_ERR,   none,             neon,             default_args },
   { 'r',         ranger_cmd,          WAIT,          neon_reverse,     neon,             default_args },
   /* .. Map more keys to commands here */
 };
@@ -178,9 +185,9 @@ static const char *echo_success_cmd[] = { "echo", "example success :D", NULL};  
 static const char *echo_failure_cmd[] = { "echo", "example failure :P", NULL};
 static const char *echo_example_cmd[] = { "echo", "example!",           NULL};
 
-static const Command echo_success = { 0, echo_success_cmd, STOP, neon_reverse, blink, defaults_args };
-static const Command echo_failure = { 0, echo_failure_cmd, STOP, neon_reverse, blink, defaults_args };
-static const Command echo_example = { 0, echo_example_cmd, STOP, neon_reverse, blink, defaults_args };
+static const Command echo_success = { 0, echo_success_cmd, STOP, neon_reverse, blink, default_args };
+static const Command echo_failure = { 0, echo_failure_cmd, STOP, neon_reverse, blink, default_args };
+static const Command echo_example = { 0, echo_example_cmd, STOP, neon_reverse, blink, default_args };
 
 static const Menu example_submenu[] = {
   { "echo success",         COMMAND, { .command = echo_success } },
@@ -196,7 +203,8 @@ static const Menu example_menu[] = {
 
 /* menukey assignments */
 static const MenuKey menukeys[] = {
-  {'E', example_menu },
+  {'F', example_menu },
+  /* Map keys to more menues here */
 };
 
 #endif

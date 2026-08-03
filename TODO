@@ -5,6 +5,7 @@ features for v1.0
   - builtin function to quickedit pshd file using $EDITOR
   - make install
 
-features for v1.1
+features for v1.1+
   - single menu mode [launch into a menu]
   - full command list option
+  - ability to pass args to commands

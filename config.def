@@ -11,7 +11,7 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-static const int run_preflight_check = false;
+static const int run_preflight_check = false;            /* not implemented */
 static const animation_option start_animation = blink;
 
 /* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
@@ -46,10 +46,10 @@ static const unsigned short pshd_x = 28;
 static const unsigned short menu_y = 100;
 static const unsigned short menu_x = 26;
 
-static const short menu_offset_y   = -200;
-static const short menu_offset_x   = -200;
-static const short pshd_offset_y   = -200;
-static const short pshd_offset_x   = -200;
+static const short menu_offset_y   = 0;
+static const short menu_offset_x   = 0;
+static const short pshd_offset_y   = 0;
+static const short pshd_offset_x   = 0;
 
 
 
@@ -181,9 +181,9 @@ static const Builtin builtinkeys[] = {
 
 /* MENU CONFIG */
 
-static const char *echo_success_cmd[] = { "echo", "example success :D", NULL};  /* <-- Ensure all your commands end in NULL */
-static const char *echo_failure_cmd[] = { "echo", "example failure :P", NULL};
-static const char *echo_example_cmd[] = { "echo", "example!",           NULL};
+static const char *echo_success_cmd[] = { "echo", "example success :D", NULL };  /* <-- Ensure all your commands end in NULL */
+static const char *echo_failure_cmd[] = { "echo", "example failure :P", NULL };
+static const char *echo_example_cmd[] = { "echo", "example!",           NULL };
 
 static const Command echo_success = { 0, echo_success_cmd, STOP, neon_reverse, blink, default_args };
 static const Command echo_failure = { 0, echo_failure_cmd, STOP, neon_reverse, blink, default_args };

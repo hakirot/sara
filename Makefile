@@ -28,9 +28,10 @@ dist: clean
 		sara-$(VERSION)
 	tar -cf - sara-$(VERSION) | gzip > sara-$(VERSION).tar.gz
 	rm -rf sara-$(VERSION)
+	sha256sum sara-$(VERSION).tar.gz > SHA256SUM
 
 clean:
-	rm -f sara $(OBJ) sara-$(VERSION).tar.gz
+	rm -f sara $(OBJ) sara-$(VERSION).tar.gz SHA256SUM
 
 animations.o: animations.c animations.h \
 		globals.h \

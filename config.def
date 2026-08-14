@@ -75,7 +75,7 @@ static const char * fg[] = {
 
 
 /* OPTIONAL HEADER */
-static const char hd[] = " ©SARA ";
+static const char hd[] = "©HakiPaks";
 
 /* Optionally set empty if desired */
 //static const char hd[] = {'\0'};
@@ -91,7 +91,7 @@ static const int bg_offset_x = 0;
 static const int fg_offset_y = 1;
 static const int fg_offset_x = 0;
 static const int hd_offset_y = -3;
-static const int hd_offset_x = 20;
+static const int hd_offset_x = 21;
 
 /* header position when small window mode */
 static const int hd_offset_y_min = 0;
@@ -129,7 +129,7 @@ static const int tiny_mode_x = 10;
 /* CUSTOM COMMAND CONFIG */
 
 static const char *example_cmd[]      = { "echo", "hi im an example :D",                       NULL};  /* <-- Ensure all your commands end in NULL */
-static const char *reload_cmd[]       = { "/path/to/sara/project/directory/bash/sara_reload",  NULL};
+static const char *reload_cmd[]       = { "/path/to/sara/project/directory/sara",              NULL};
 static const char *ls_cmd[]           = { "ls", "--color=tty",                                 NULL};
 static const char *make_cmd[]         = { "make",                                              NULL};
 static const char *ranger_cmd[]       = { "ranger",                                            NULL};
@@ -173,7 +173,7 @@ static const Builtin builtinkeys[] = {
   { 'H', rave },
   { 'p', pshd },
   { 'q', quit },
-//{ 'C', check },
+//{ 'C', check },     /* not implemented /*
   { 'C', colors },
   /* Optionally add/remove more/less builtin functions */
 };

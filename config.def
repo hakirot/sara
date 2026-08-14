@@ -204,7 +204,7 @@ static const Menu example_menu[] = {
 /* menukey assignments */
 static const MenuKey menukeys[] = {
   {'F', example_menu },
-  /* Map keys to more menues here */
+  /* Map keys to more menus here */
 };
 
 #endif

@@ -11,3 +11,6 @@ features for v1.1+
   - single menu mode [launch into a menu]
   - full command list option
   - ability to pass args to commands
+
+features for v2.0.0
+  - remove END_OF_MENU requirement by implementing custom vector type

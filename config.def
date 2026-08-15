@@ -93,14 +93,14 @@ static const int fg_offset_x = 0;
 static const int hd_offset_y = -3;
 static const int hd_offset_x = 21;
 
-/* header position when small window mode */
-static const int hd_offset_y_min = 0;
-static const int hd_offset_x_min = 0;
-
 /* When the screen is smaller than these specified constraints, bg will not be printed when dynamic_resize = true */
 static const int dynamic_resize = true;
 static const int resize_x = 10;
 static const int resize_y = 9;
+
+/* header position when small window mode */
+static const int hd_offset_y_min = 0;
+static const int hd_offset_x_min = 0;
 
 /* Set tiny_mode when at specified constraints */
 static const int tiny_mode = true;

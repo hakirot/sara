@@ -156,7 +156,7 @@ static const ExtraArgs no_outs = {
 
 static const Command commandkeys[] = {
 
-/*  KEY         COMMAND               WAIT_OPTION    PRE_ANIMATION     POST ANIMATION    EXTRA ARGS    */
+/*  KEY         COMMAND               WAIT_OPTION    PRE_ANIMATION     POST_ ANIMATION   EXTRA ARGS    */
 
   { 'e',         example_cmd,         STOP,          none,             neon,             confirm },
   { ':',         reload_cmd,          EXEC,          none,             none,             default_args },

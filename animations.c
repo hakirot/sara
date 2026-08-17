@@ -463,11 +463,11 @@ void _shutter_slide(){
   int r_idx = COL - FG_GLYPH_LENGTH;
   int frame_travel_width = margin_width / 10;
   int j = 0;
+  _colorbar();
   if(fg_c_bold) attron(A_BOLD);
   attron(COLOR_PAIR(FOREGROUND));
   while(j < num_frames){
     clear();
-    _colorbar();
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       if (i % 2 == 0){
         mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, l_idx + (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);
@@ -882,7 +882,7 @@ void _hd(){
       size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
       setcchar(&cchar, &wc, 0, 0, NULL);
-      mvadd_wch(ROW/2 - offset_y, COL/2 + offset_x + iter_col, &cchar);
+      mvadd_wch(ROW/2 + offset_y, COL/2 + offset_x + iter_col, &cchar);
 
       iter_row += len;
       iter_col++;

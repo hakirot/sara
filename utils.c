@@ -374,7 +374,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
       selection = len/2;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
-        animate(none);
+        _clear_menu(dim_y+2, dim_x+2, offset_y, offset_x);
         _menuselect(menu[selection].next.submenu, dim_y, dim_x);
       } else if(menu[selection].type == COMMAND){
         int result = __execute__(&menu[selection].next.command);

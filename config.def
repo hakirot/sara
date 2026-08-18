@@ -90,7 +90,7 @@ static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
 static const int fg_offset_y = 1;
 static const int fg_offset_x = 0;
-static const int hd_offset_y = -3;
+static const int hd_offset_y = 3;
 static const int hd_offset_x = 21;
 
 /* When the screen is smaller than these specified constraints, bg will not be printed when dynamic_resize = true */

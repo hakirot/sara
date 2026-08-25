@@ -859,7 +859,11 @@ void _hd(){
         attron(COLOR_PAIR(HEADER + 8));
       }
     } else {
-      if(hd_c_bold) attron(A_BOLD);
+      if(hd_c_bold == true) {
+        attron(A_BOLD);
+      } else {
+        attroff(A_BOLD);
+      }
       attron(COLOR_PAIR(HEADER));
     }
 

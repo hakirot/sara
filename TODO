@@ -1,8 +1,9 @@
-Bugs
+Known Bugs
   - Show color no worky when small
+  - hd_c not enabled when small
 
 features for v1.0.0
-  - preflight_check (run only once per compile)
+  - preflight_check (run only once per recompile)
   - builtin function to display all user-mapped commands
   - builtin function to quickedit pshd file using $EDITOR
   - make install
@@ -11,11 +12,12 @@ features for v1.1+
   - optional single menu mode [launch into a menu]
   - full command list option
   - ability to pass args to commands
+  - Scale menu sizes to longest menu entry
 
-features for v2.0.0
-  - remove END_OF_MENU requirement by implementing custom vector type
+feature req for 2.0.0
+  - remove END_OF_MENU requirement by introducing vector structures
 
-Bugs Fixed since last release
+Bugs Fixed since 0.9.1
   - Prevent artifacts of parent menus from showing in submenus of smaller size
-  - shutter_slide isn't using fg_c
-  - hd[] hd_offset_y was repositioning hd in the wrong direction
+  - shutter_slide wasn't using fg_c
+  - hd_offset_y was positioning hd[] in the wrong direction

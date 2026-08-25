@@ -1,6 +1,6 @@
 
 # SARA
 
-A terminal workflow companion
+A terminal application launcher
 
 hakipaks.org/sara/getting-started

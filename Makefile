@@ -17,6 +17,7 @@ all: sara config.h
 
 config.h:
 	cp config.def config.h
+	sed -i "s|PATH_ME_PLS|${PWD}/sara|g" config.h
 
 sara: $(OBJ) config.h
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJ) $(OBJCOMP) $(LIBS)

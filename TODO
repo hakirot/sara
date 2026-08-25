@@ -2,7 +2,7 @@ Known Bugs
   - Show color no worky when small
 
 features for v1.0.0
-  - preflight_check (run only once per recompile)
+  - preflight_check (and config options)
   - builtin function to display all user-mapped commands
   - builtin function to quickedit pshd file using $EDITOR
   - make install
@@ -21,3 +21,7 @@ Bugs Fixed since 0.9.1
   - Prevent artifacts of parent menus from showing in submenus of smaller size
   - shutter_slide wasn't using fg_c
   - hd_offset_y was positioning hd[] in the wrong direction
+
+New Features
+  Makefile now paths reload_cmd when generating config.h
+

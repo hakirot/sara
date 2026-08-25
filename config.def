@@ -129,7 +129,7 @@ static const int tiny_mode_x = 10;
 /* CUSTOM COMMAND CONFIG */
 
 static const char *example_cmd[]      = { "echo", "hi im an example :D",                       NULL};  /* <-- Ensure all your commands end in NULL */
-static const char *reload_cmd[]       = { "/path/to/sara/project/directory/sara",              NULL};
+static const char *reload_cmd[]       = { "PATH_ME_PLS",                      NULL};
 static const char *ls_cmd[]           = { "ls", "--color=tty",                                 NULL};
 static const char *make_cmd[]         = { "make",                                              NULL};
 static const char *ranger_cmd[]       = { "ranger",                                            NULL};

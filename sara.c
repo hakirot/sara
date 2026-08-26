@@ -550,18 +550,17 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
 
     if(k == selection) {
-      if(pshd_c_bold){
-        attron(COLOR_PAIR(pshd_c));
-        attron(A_STANDOUT);
-      } else {
-        attron(COLOR_PAIR(pshd_c));
+      attron(COLOR_PAIR(pshd_c));
+      if(dim_y > 3) {
         attron(A_STANDOUT);
       }
     }
+
     for(int j = 0; j < len; j++){
       mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
       if((j + 8) > dim_x) break;
     }
+
     if(selection == k) {
       attroff(COLOR_PAIR(pshd_c));
       attroff(A_STANDOUT);

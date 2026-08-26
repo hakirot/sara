@@ -1,4 +1,5 @@
-Known Bugs
+Bugs/Issues
+  - Screen clears when pshd_y is <3
   - Show color no worky when small
 
 features for v1.0.0
@@ -12,16 +13,18 @@ features for v1.1+
   - full command list option
   - ability to pass args to commands
   - Scale menu sizes to longest menu entry
+  - consume config function
 
 feature req for 2.0.0
   - remove END_OF_MENU requirement by introducing vector structures
 
 Bugs Fixed since 0.9.1
+  - pshd selection is highlighted when pshd = 3
   - hd[] showing bold color in small mode when hd_c_bold is false
   - Prevent artifacts of parent menus from showing in submenus of smaller size
   - shutter_slide wasn't using fg_c
   - hd_offset_y was positioning hd[] in the wrong direction
 
 New Features
-  Makefile now paths reload_cmd when generating config.h
+  Makefile autoloads reload_cmd to pwd when generating config.h
 

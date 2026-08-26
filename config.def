@@ -11,7 +11,7 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-static const int run_preflight_check = false;            /* not implemented */
+static const int run_preflight_check = false;            /* implemented in 0.9.2 */
 static const animation_option start_animation = blink;
 
 /* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
@@ -75,17 +75,13 @@ static const char * fg[] = {
 
 
 /* OPTIONAL HEADER */
-static const char hd[] = "©HakiPaks";
 
-/* Optionally set empty if desired */
-//static const char hd[] = {'\0'};
+/* Optionally set empty */
+static const char hd[] = {'\0'};
+//static const char hd[] = "©HakiPaks";
 
 
-/* ASCII COVER ART POSITIONS */
-/* 
-   - Glyphs are printed relative to screen center
-   - Positive x values move art DOWNWARD (negative x moves upward)
-*/
+/* POSITION */
 static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
 static const int fg_offset_y = 1;
@@ -93,12 +89,12 @@ static const int fg_offset_x = 0;
 static const int hd_offset_y = 3;
 static const int hd_offset_x = 21;
 
-/* When the screen is smaller than these specified constraints, bg will not be printed when dynamic_resize = true */
+/* resize options */
 static const int dynamic_resize = true;
 static const int resize_x = 10;
 static const int resize_y = 9;
 
-/* header position when small window mode */
+/* header position when small window */
 static const int hd_offset_y_min = 0;
 static const int hd_offset_x_min = 0;
 

@@ -488,14 +488,14 @@ int _deduce_offset_x(int dim_x, int requested_offset_x){
 }
 
 void load_command_config(){
-  memset(global_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(global_chars,      '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(commandkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
   memset(builtinkeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
-  memset(menukeys_chars, '\0', KEY_ARRAY_SIZE * sizeof(char));
+  memset(menukeys_chars,    '\0', KEY_ARRAY_SIZE * sizeof(char));
 
   commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
   builtinkeys_len = sizeof(builtinkeys)/sizeof(builtinkeys[0]);
-  menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
+  menukeys_len    = sizeof(menukeys)/sizeof(menukeys[0]);
 
   int global_idx = 0;
   for(int i = 0; i < commandkeys_len; i++){

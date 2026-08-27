@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
 
   CACHE = check_size();
   LAST_INPUT_TIME = clock();
-  int should_print = true;
+  int signal_reprint = true;
 
   while(1){
 
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]){
 
     if(INTERRUPT){
       INTERRUPT = false;
-      should_print = true;
+      signal_reprint = true;
     }
 
     getmaxyx(stdscr, ROW, COL);
@@ -112,11 +112,11 @@ int main(int argc, char* argv[]){
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
-    if (result == 0 && should_print == true && HOLD_CHAR == '\0'){
+    if (result == 0 && signal_reprint == true && HOLD_CHAR == '\0'){
       animate(none);
-      should_print = false;
+      signal_reprint = false;
     } else if (result >= 1){
-      should_print = true;
+      signal_reprint = true;
     }
     usleep(40000); // chill
   }

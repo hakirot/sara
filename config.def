@@ -176,7 +176,6 @@ static const Builtin builtinkeys[] = {
 
 
 /* MENU CONFIG */
-
 static const char *echo_success_cmd[] = { "echo", "example success :D", NULL };  /* <-- Ensure all your commands end in NULL */
 static const char *echo_failure_cmd[] = { "echo", "example failure :P", NULL };
 static const char *echo_example_cmd[] = { "echo", "example!",           NULL };
@@ -197,7 +196,7 @@ static const Menu example_menu[] = {
   END_OF_MENU
 };
 
-/* menukey assignments */
+/* Assign key to launch menu */
 static const MenuKey menukeys[] = {
   {'F', example_menu },
   /* Map keys to more menus here */

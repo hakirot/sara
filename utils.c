@@ -326,7 +326,9 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     len++;
   }
 
-  if(len < dim_y - 2 || (len < menu_y - 2 && len < ROW - 2)){
+  if(len < dim_y - 2 || 
+    (len < menu_y - 2 && len < ROW - 2))
+  {
     dim_y = len+2;
   }
 

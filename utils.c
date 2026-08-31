@@ -332,6 +332,10 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     dim_y = len+2;
   }
 
+  if(ROW < dim_y){
+    dim_y = ROW;
+  }
+
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
   int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 
@@ -815,7 +819,6 @@ void _show_colors(){
   }
   attroff(A_BOLD);
   refresh();
-//getchar();
 }
 
 void _check(){

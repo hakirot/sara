@@ -755,9 +755,10 @@ void _none(Arg printColorbar){
     attroff(A_BOLD);
     attroff(A_STANDOUT);
 
-    if(SHOW_COLORS){
-      _show_colors();
-    }
+  }
+
+  if(SHOW_COLORS){
+    _show_colors();
   }
 }
 

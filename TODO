@@ -1,5 +1,4 @@
 Bugs/Issues
-  - Screen clears when pshd_y is <3
   - Show color no worky when small
   - Menu is off screen when dim_y = 1
 
@@ -21,6 +20,7 @@ feature req for 2.0.0
 
 --- 0.9.2 Release Notes ---
 Bugs Fixed since 0.9.1
+  - Screen no longer clears when pshd_y is < 3 (no menu border)
   - pshd no longer highlighted when pshd = 3
   - hd[] no longer showing bold color in small mode when hd_c_bold is false
   - Parent menu artifacts now disappear when entering submenus

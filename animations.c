@@ -106,7 +106,7 @@ void _blink(){
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c){
 
   if(dim_y < 3){
-    clear();
+    //clear();
     return;
   }
 

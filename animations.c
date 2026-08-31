@@ -241,11 +241,11 @@ void _print_confirm_selection(int selection){
   char * no = "No";
 
   if(selection == true){
-    attron(COLOR_PAIR(menu_c));
+    attron(COLOR_PAIR(white));
     attron(A_STANDOUT);
 
   } else {
-    attron(COLOR_PAIR(menu_c));
+    attron(COLOR_PAIR(white));
   }
 
   for(int i = 0; i < 3; i++){
@@ -254,10 +254,10 @@ void _print_confirm_selection(int selection){
   attroff(A_STANDOUT);
 
   if(selection == false){
-    attron(COLOR_PAIR(menu_c));
+    attron(COLOR_PAIR(white));
     attron(A_STANDOUT);
   } else {
-    attron(COLOR_PAIR(menu_c));
+    attron(COLOR_PAIR(white));
   }
 
   for(int i = 0; i < 2; i++){
@@ -265,7 +265,7 @@ void _print_confirm_selection(int selection){
   }
 
   attroff(A_STANDOUT);
-  attroff(COLOR_PAIR(menu_c));
+  attroff(COLOR_PAIR(white));
 }
 
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){

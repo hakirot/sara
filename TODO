@@ -1,6 +1,7 @@
 Bugs/Issues
   - Screen clears when pshd_y is <3
   - Show color no worky when small
+  - Menu is off screen when dim_y = 1
 
 features for v1.0.0
   - preflight_check (and config options)
@@ -18,13 +19,14 @@ features for v1.1+
 feature req for 2.0.0
   - remove END_OF_MENU requirement by introducing vector structures
 
+--- 0.9.2 Release Notes ---
 Bugs Fixed since 0.9.1
-  - pshd selection is highlighted when pshd = 3
-  - hd[] showing bold color in small mode when hd_c_bold is false
-  - Prevent artifacts of parent menus from showing in submenus of smaller size
-  - shutter_slide wasn't using fg_c
-  - hd_offset_y was positioning hd[] in the wrong direction
+  - pshd no longer highlighted when pshd = 3
+  - hd[] no longer showing bold color in small mode when hd_c_bold is false
+  - Parent menu artifacts now disappear when entering submenus
+  - shutter_slide now uses fg_c
+  - hd_offset_y positions hd[] in the correct direction
 
-New Features
-  Makefile autoloads reload_cmd to pwd when generating config.h
+New Quirks
+  Makefile autoloads reload_cmd to PWD when generating config.h
 

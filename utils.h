@@ -55,6 +55,7 @@ void _write_exit_dir();
 void _deflect_signals();
 void __interrupt__(int signum);
 void _path_run();
-void _path_menu();
+void _run_menu();
+void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer);
 
 #endif

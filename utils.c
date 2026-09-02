@@ -28,6 +28,7 @@
 #include "config.h"
 #include "sara.h"
 #include "animations.h"
+#include "limits.h"
 
 int ___key___(key_arg arg){
   char arg_out = arg.i ? arg.i : 0;
@@ -166,7 +167,7 @@ int __execute__(const Command * command){
 
   animate(command->pre_animation);
   endwin();
-  system("clear");
+  //system("clear");
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
     command->option != EXEC)
@@ -235,7 +236,7 @@ int __execute__(const Command * command){
     }
 
     endwin();
-    system("clear");
+    //system("clear");
     if(FOLLOW) _write_exit_dir();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     perror("execvp");
@@ -849,7 +850,7 @@ void _quit(){
   refresh();
   move(0, 0);
   endwin();
-  system("clear"); /* huh? */
+  //system("clear");
   exit(0);
 }
 
@@ -907,8 +908,8 @@ void _path_run(){
       d = opendir(token);
       if (d){
         while ((dir = readdir(d)) != NULL) {
-          /* TODO - filter broken symlinks */
-          /* TODO - filter non-executables */
+          /* TODO - filter for broken symlinks */
+          /* TODO - filter for non-executables */
           char output_str[128];
           sprintf(output_str, "%s%s", dir->d_name, "\n");
           fputs(output_str, fp);
@@ -933,9 +934,111 @@ void _path_run(){
     system(sys_sort_cmd);
     remove(run_file);
   }
-  _path_menu();
+  _run_menu();
 }
 
-void _path_menu(){
+void _run_menu(){
+
+  int dim_y = 0;
+  int dim_x = 0;
+
+  if(run_y < 3){
+    if(run_y < ROW){
+      dim_y = 3;
+    } else {
+      dim_y = ROW;
+    }
+  } else if(ROW < run_y){
+    dim_y = ROW;    
+  } else {
+    dim_y = run_y;
+  }
+
+  if(run_x < 3){
+    dim_x = 3;
+  } else if(COL < run_x){
+    dim_x = COL;
+  } else {
+    dim_x = run_x;
+  }
+
+  int offset_y = _deduce_offset_y(dim_y, run_offset_y);
+  int offset_x = _deduce_offset_x(dim_x, run_offset_x);
+
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+
+  char filter_buffer[128] = {"\0"};
+  int idx = 0;
+  char input;
+
+  if(run_c_bold) {
+    attron(A_STANDOUT);
+    attron(COLOR_PAIR(run_c));
+    attron(A_BOLD);
+  } else {
+    attron(COLOR_PAIR(run_c));
+    attron(A_STANDOUT);
+  }
+
+  mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "RUN");
+  attroff(COLOR_PAIR(run_c));
+  attroff(A_STANDOUT);
+  attroff(A_BOLD);
+  mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + offset_x, ' ');
+
+  while(1){
+    input = getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
+
+      filter_buffer[idx] = input;
+      idx++;
+
+      if(idx == 256) break;
+
+      attron(COLOR_PAIR(run_c));
+      if(run_c_bold) attron(A_BOLD);
+      mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x, (char)input);
+      mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
+      attroff(COLOR_PAIR(pshd_c));
+      attroff(A_BOLD);
+      //_populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer);
+      refresh();
+    } else if (input == '\n') {
+      break;
+    } else if (input == 27){
+      // Escape
+      break;
+    } else if (input > 0) {
+      // Backspace
+      if(idx == 0){
+        break;
+      }
+      filter_buffer[idx] = '\0';
+      idx--;
+
+      attron(COLOR_PAIR(run_c));
+      if(run_c_bold) attron(A_BOLD);
+      wchar_t wc = MenuBorder[4];
+      cchar_t cchar;
+      setcchar(&cchar, &wc, 0, 0, NULL);
+      mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+      attroff(COLOR_PAIR(run_c));
+      attroff(A_BOLD);
+      mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
+      refresh();
+    }
+    usleep(1000);
+  }
+
+//selection
+//filter
+//if(strstr()){
+//  printline
+//}
+  animate(none);
+  return;
+}
+
+void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer){
   return;
 }

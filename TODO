@@ -33,3 +33,4 @@ New Quirks
   Makefile autoloads reload_cmd to PWD when generating config.h
 
 Features
+  - dmenu_run

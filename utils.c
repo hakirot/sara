@@ -850,7 +850,7 @@ void _quit(){
   refresh();
   move(0, 0);
   endwin();
-  system("clear");
+  system("clear"); /* huh? */
   exit(0);
 }
 
@@ -893,20 +893,23 @@ void _dmenu_run(){
 
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
-  sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
   FILE * fp;
   if (access(run_file, F_OK) != 0){
     //crit(strerror(errno));
     fp = fopen(run_file, "a");
     char * env_path = getenv("PATH");
-    char * token = strtok(env_path, ":");
-    char executable[128];
+    char path[1028] = "\0";
+    strncpy(path, env_path, 1028);
+    char * token = strtok(path, ":");
     while(token != NULL){
       DIR *d;
       struct dirent *dir;
       d = opendir(token);
       if (d){
         while ((dir = readdir(d)) != NULL) {
+          /* TODO - filter broken symlinks */
+          /* TODO - filter non-executables */
           char output_str[128];
           sprintf(output_str, "%s%s", dir->d_name, "\n");
           fputs(output_str, fp);
@@ -920,6 +923,15 @@ void _dmenu_run(){
       }
       token = strtok(NULL, ":");
     }
+
     fclose(fp);
+    char sys_sort_cmd[256] = "\0";
+
+    char run_file_sorted[256] = {'\0'};
+    sprintf(run_file_sorted, "%s%s", env_home, "/.cache/sara/sara_run");
+    sprintf(sys_sort_cmd, "%s%s%s%s", "sort ", run_file, " > ", run_file_sorted);
+
+    system(sys_sort_cmd);
+    remove(run_file);
   }
 }

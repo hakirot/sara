@@ -23,7 +23,6 @@
 #include <string.h>
 #include <fcntl.h>
 #include <signal.h>
-
 #include "utils.h"
 #include "globals.h"
 #include "config.h"
@@ -269,8 +268,8 @@ void __builtin__(char input){
     _randomize_colors();
   } else if (selection == check){
     _check();
-  } else if (selection == dmenu_run){
-    _dmenu_run();
+  } else if (selection == path_run){
+    _path_run();
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -887,7 +886,7 @@ void _deflect_signals(){
   sigaction(SIGINT, &signal_action, NULL);
 }
 
-void _dmenu_run(){
+void _path_run(){
 
   ensure_cache_dir();
 
@@ -934,4 +933,9 @@ void _dmenu_run(){
     system(sys_sort_cmd);
     remove(run_file);
   }
+  _path_menu();
+}
+
+void _path_menu(){
+  return;
 }

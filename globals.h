@@ -107,7 +107,7 @@ typedef enum {
   rave,
   check,         // TODO: implement show all config (run preflight_check)
   colors,
-  dmenu_run,
+  path_run,
 } internal;
 
 typedef enum {

@@ -54,6 +54,7 @@ void _quit();
 void _write_exit_dir();
 void _deflect_signals();
 void __interrupt__(int signum);
-void _dmenu_run();
+void _path_run();
+void _path_menu();
 
 #endif

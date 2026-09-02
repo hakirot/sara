@@ -1,24 +1,24 @@
 bugs/issues
+  - clear -
 
-
-features for v1.0.0
-  - preflight_check (and config options)
+v1.0.0 features
+  - preflight_check (and preflight config options)
   - builtin function to display all user-mapped commands
   - builtin function to quickedit pshd file using $EDITOR
   - make install
 
-features for v1.1+
+Backlog
   - optional single menu mode [launch into a menu]
   - full command list option
   - ability to pass args to commands
   - Scale menu sizes to longest menu entry
   - consume config function
-
-feature req for 2.0.0
   - remove END_OF_MENU requirement by introducing vector structures
     - alternatively a config parser
 
+
 --- 0.9.2 Release Notes ---
+
 Bugs Fixed since 0.9.1
   - Menu is off center when menu_y < 3 (no menu border)
   - Show color worky when resized
@@ -32,3 +32,4 @@ Bugs Fixed since 0.9.1
 New Quirks
   Makefile autoloads reload_cmd to PWD when generating config.h
 
+Features

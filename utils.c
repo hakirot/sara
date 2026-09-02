@@ -897,11 +897,29 @@ void _dmenu_run(){
   FILE * fp;
   if (access(run_file, F_OK) != 0){
     //crit(strerror(errno));
-    fp = fopen(run_file, "w");
+    fp = fopen(run_file, "a");
     char * env_path = getenv("PATH");
+    char * token = strtok(env_path, ":");
+    char executable[128];
     while(token != NULL){
-      char * token = strtok(env_path, ":");
-      crit(token);
+      DIR *d;
+      struct dirent *dir;
+      d = opendir(token);
+      if (d){
+        while ((dir = readdir(d)) != NULL) {
+          char output_str[128];
+          sprintf(output_str, "%s%s", dir->d_name, "\n");
+          fputs(output_str, fp);
+        }
+      } else {
+        char error_str[64];
+        sprintf(error_str, "%s%s",
+            "ERROR: Could not open $PATH directory: ",
+            token);
+        crit(error_str);
+      }
+      token = strtok(NULL, ":");
     }
+    fclose(fp);
   }
 }

@@ -269,6 +269,8 @@ void __builtin__(char input){
     _randomize_colors();
   } else if (selection == check){
     _check();
+  } else if (selection == dmenu_run){
+    _dmenu_run();
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -687,7 +689,11 @@ int is_char_in_search(wchar_t wc, const wchar_t * search_str) {
     return 0; // not found
 }
 
-void ensure_cache_dir(){
+/* 0 if no-op */
+/* 1 if created cache_file */
+/* CRIT if ERR */
+int ensure_cache_dir(){
+  int EXIT_VAL = 0;
   const char *env_home = getenv("HOME");
   const char *sara_wd = "/.cache/sara";
   char cache_dir[256] = {'\0'};
@@ -705,8 +711,11 @@ void ensure_cache_dir(){
       char error_str[256] = {'\0'};
       sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
       crit(error_str);
+      EXIT_VAL = 2; /* CRIT */
     }
+    EXIT_VAL = 1;
   }
+  return EXIT_VAL;
 }
 
 void ensure_config_dir(){
@@ -876,4 +885,23 @@ void _deflect_signals(){
   signal_action.sa_flags = 0;
 
   sigaction(SIGINT, &signal_action, NULL);
+}
+
+void _dmenu_run(){
+
+  ensure_cache_dir();
+
+  char run_file[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
+  FILE * fp;
+  if (access(run_file, F_OK) != 0){
+    //crit(strerror(errno));
+    fp = fopen(run_file, "w");
+    char * env_path = getenv("PATH");
+    while(token != NULL){
+      char * token = strtok(env_path, ":");
+      crit(token);
+    }
+  }
 }

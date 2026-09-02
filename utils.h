@@ -39,7 +39,7 @@ void crit(char * err);
 int  is_char_in_search(wchar_t wc, const wchar_t * search_str);
 void launch_window();
 void get_helped();
-void ensure_cache_dir();
+int ensure_cache_dir();
 void ensure_config_dir();
 void ensure_path_perm(char * file_path, char perm);
 int  roll(int num_sides);
@@ -54,5 +54,6 @@ void _quit();
 void _write_exit_dir();
 void _deflect_signals();
 void __interrupt__(int signum);
+void _dmenu_run();
 
 #endif

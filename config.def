@@ -18,17 +18,19 @@ static const animation_option start_animation = blink;
 static int FOLLOW = true;
 
 /* COLORS */
-static const unsigned short fg_c    = red;      /* fg color */
-static const unsigned short bg_c    = cyan;     /* bg color */
-static const unsigned short hd_c    = blue;     /* hd color */
-static const unsigned short pshd_c  = blue;     /* pshd menu color */
-static const unsigned short menu_c  = cyan;     /* menu color */
+static const unsigned short fg_c        = red;      /* fg color */
+static const unsigned short bg_c        = cyan;     /* bg color */
+static const unsigned short hd_c        = blue;     /* hd color */
+static const unsigned short pshd_c      = blue;     /* pshd menu color */
+static const unsigned short menu_c      = cyan;     /* menu color */
+static const unsigned short run_c       = yellow;       /* menu color */
 
 static const unsigned short fg_c_bold   = false;
 static const unsigned short bg_c_bold   = true;
 static const unsigned short hd_c_bold   = false;
 static const unsigned short pshd_c_bold = false;
 static const unsigned short menu_c_bold = true;
+static const unsigned short run_c_bold  = false;       /* menu color */
 
 /* HEADER HIGHLIGHTS */
 static const int highlight_hd_in_full_mode  = false;
@@ -38,19 +40,32 @@ static const int highlight_hd_in_small_mode = false;
 /* MENU BORDERS */
 static const wchar_t MenuBorder[] =         L"┌┐└┘─│";
 //static const wchar_t MenuBorder[] =         L"╔╗╚╝═║";
-//static const wchar_t MenuBorder[] =           L"╔╗╚╝─│";
+//static const wchar_t MenuBorder[] =         L"╔╗╚╝─│";
 
-/* MENU DIMENSIONS/POSITIONS */
-static const unsigned short pshd_y = 100;
-static const unsigned short pshd_x = 28;
-static const unsigned short menu_y = 100;
-static const unsigned short menu_x = 26;
 
-static const short menu_offset_y   = 0;
-static const short menu_offset_x   = 0;
-static const short pshd_offset_y   = 0;
-static const short pshd_offset_x   = 0;
+/* pshd dimensions */
+static const unsigned short        pshd_y = 100;
+static const unsigned short        pshd_x = 28;
 
+/* pshd positions */
+static const short          pshd_offset_y = 0;
+static const short          pshd_offset_x = 0;
+
+/* menu dimensions */
+static const unsigned short        menu_y = 100;
+static const unsigned short        menu_x = 26;
+
+/* menu positions */
+static const short          menu_offset_y = 0;
+static const short          menu_offset_x = 0;
+
+/* path_run dimensions */
+static const unsigned short         run_y = 9;
+static const unsigned short         run_x = 36;
+
+/* path_run positions */
+static const short           run_offset_y = 0;
+static const short           run_offset_x = 0;
 
 
 /* CUSTOM GLYPHS */ 
@@ -81,15 +96,19 @@ static const char hd[] = {'\0'};
 //static const char hd[] = "©HakiPaks";
 
 
-/* POSITION */
+/* bg position */
 static const int bg_offset_y = 0;
 static const int bg_offset_x = 0;
+
+/* fg position */
 static const int fg_offset_y = 1;
 static const int fg_offset_x = 0;
+
+/* hd position */
 static const int hd_offset_y = 3;
 static const int hd_offset_x = 21;
 
-/* resize options */
+/* dynamic resize options */
 static const int dynamic_resize = true;
 static const int resize_x = 10;
 static const int resize_y = 9;
@@ -98,7 +117,7 @@ static const int resize_y = 9;
 static const int hd_offset_y_min = 0;
 static const int hd_offset_x_min = 0;
 
-/* Set tiny_mode when at specified constraints */
+/* tiny_mode options */
 static const int tiny_mode = true;
 static const char tn[] = "SARA";
 static const int tiny_mode_y = 3;
@@ -171,6 +190,7 @@ static const Builtin builtinkeys[] = {
   { 'q', quit },
 //{ 'C', check },     /* not implemented /*
   { 'C', colors },
+  { ',', path_run },
   /* Optionally add/remove more/less builtin functions */
 };
 

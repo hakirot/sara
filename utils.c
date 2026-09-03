@@ -577,6 +577,7 @@ void _free_range(const Command * command){
   for(int i = 0; i < rows; i++){
     free(kill_me[i]);
   }
+  free((char**)command->cmd);
   free((void*)command);
 
   char cache_file[256] = {'\0'};
@@ -1007,6 +1008,7 @@ void _run_menu(){
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
     } else if (input == '\n') {
+      _run_exec(selection);
       break;
     } else if (input == 27){
       // Escape
@@ -1031,6 +1033,8 @@ void _run_menu(){
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
     }
+
+    // TODO resize check
     usleep(1000);
   }
 
@@ -1057,6 +1061,7 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
   if(run_c_bold) attron(A_BOLD);
 
   while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+    line[strcspn(line, "\n")] = 0;
     if(strncmp(filter_buffer, line, strlen(filter_buffer)) == 0){
       int len = strlen(line);
       if(i == 0){
@@ -1094,4 +1099,28 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
   attroff(A_BOLD);
   fclose(file);
   return;
+}
+
+void _run_exec(char * selection){
+  Command * command       = (Command*)malloc(sizeof(Command));
+  memset(command, 0, sizeof(Command));
+
+  char** cmd = malloc(2 * sizeof(char *));
+  cmd[0] = strdup(selection);
+  cmd[1] = NULL;
+
+  ExtraArgs extra_args = {NULL, NOCONFIRM, OUTS};
+  command->smashkey       = 0;
+  command->extra_args     = extra_args;
+  command->option         = WAIT;
+  command->pre_animation  = none;
+  command->post_animation = pixel_fill;
+  command->cmd            = cmd;
+
+  __execute__(command);
+
+  char** free_me = (char**)command->cmd;
+  free(free_me[0]);
+  free((char**)command->cmd);
+  free((void*)command);
 }

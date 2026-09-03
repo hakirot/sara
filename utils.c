@@ -1007,6 +1007,12 @@ void _run_menu(){
 
   _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
   while(1){
+
+    getmaxyx(stdscr, ROW, COL);
+    if (CACHE != ROW + COL){
+      return;
+    }
+
     input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
 

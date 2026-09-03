@@ -1,5 +1,5 @@
 bugs/issues
-  - clear -
+  - submenu dims are inherited from parent dims
 
 v1.0.0 features
   - preflight_check (and preflight config options)

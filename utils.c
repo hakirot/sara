@@ -383,6 +383,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _clear_menu(dim_y+2, dim_x+2, offset_y, offset_x);
+        // TODO Why restrict submenus to parent menu dims
         _menuselect(menu[selection].next.submenu, dim_y, dim_x);
       } else if(menu[selection].type == COMMAND){
         int result = __execute__(&menu[selection].next.command);
@@ -1116,6 +1117,10 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
     }
   }
 
+  if(i == 0){
+    memset(selection, '\0', 128 * sizeof(char));
+  }
+
   attroff(COLOR_PAIR(run_c));
   attroff(A_STANDOUT);
   attroff(A_BOLD);
@@ -1124,6 +1129,12 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
 }
 
 void _run_exec(char * selection){
+
+  if(strlen(selection) == 0) {
+    animate(glitch_full);
+    return;
+  }
+
   Command * command       = (Command*)malloc(sizeof(Command));
   memset(command, 0, sizeof(Command));
 
@@ -1134,7 +1145,7 @@ void _run_exec(char * selection){
   ExtraArgs extra_args = {NULL, NOCONFIRM, OUTS};
   command->smashkey       = 0;
   command->extra_args     = extra_args;
-  command->option         = WAIT;
+  command->option         = STOP;
   command->pre_animation  = none;
   command->post_animation = pixel_fill;
   command->cmd            = cmd;

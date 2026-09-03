@@ -23,12 +23,12 @@
 #include <string.h>
 #include <fcntl.h>
 #include <signal.h>
+#include "limits.h"
 #include "utils.h"
 #include "globals.h"
 #include "config.h"
 #include "sara.h"
 #include "animations.h"
-#include "limits.h"
 
 int ___key___(key_arg arg){
   char arg_out = arg.i ? arg.i : 0;
@@ -909,9 +909,25 @@ void _path_run(){
       d = opendir(token);
       if (d){
         while ((dir = readdir(d)) != NULL) {
-          /* TODO - filter for broken symlinks */
-          /* TODO - filter for non-executables */
-          /* TODO - filter for '.' and '..' */
+          if(strncmp(".", dir->d_name, 1) == 0){
+            continue;
+          }
+
+          char link_path[256];
+          sprintf(link_path, "%s/%s", token, dir->d_name);
+          struct stat link_path_stat;
+          int stat_result = stat(link_path, &link_path_stat);
+          if (dir->d_type == DT_LNK){
+            if (stat_result == -1) {
+              continue;
+            }
+          } else if (stat_result == 0){
+            if (!(link_path_stat.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH))) {
+              continue;
+            } else if (!S_ISREG(link_path_stat.st_mode)) {
+              continue;
+            }
+          }
           char output_str[128];
           sprintf(output_str, "%s%s", dir->d_name, "\n");
           fputs(output_str, fp);
@@ -931,7 +947,7 @@ void _path_run(){
 
     char run_file_sorted[256] = {'\0'};
     sprintf(run_file_sorted, "%s%s", env_home, "/.cache/sara/sara_run");
-    sprintf(sys_sort_cmd, "%s%s%s%s", "sort ", run_file, " > ", run_file_sorted);
+    sprintf(sys_sort_cmd, "%s%s%s%s%s%s", "sort ", run_file, " | ", "uniq", " > ", run_file_sorted);
 
     system(sys_sort_cmd);
     remove(run_file);

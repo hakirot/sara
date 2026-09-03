@@ -910,6 +910,7 @@ void _path_run(){
         while ((dir = readdir(d)) != NULL) {
           /* TODO - filter for broken symlinks */
           /* TODO - filter for non-executables */
+          /* TODO - filter for '.' and '..' */
           char output_str[128];
           sprintf(output_str, "%s%s", dir->d_name, "\n");
           fputs(output_str, fp);
@@ -968,6 +969,7 @@ void _run_menu(){
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
 
   char filter_buffer[128] = {"\0"};
+  char selection[128] = {"\0"};
   int idx = 0;
   char input;
 
@@ -986,6 +988,7 @@ void _run_menu(){
   attroff(A_BOLD);
   mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + offset_x, ' ');
 
+  _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
   while(1){
     input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
@@ -1001,7 +1004,7 @@ void _run_menu(){
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
       attroff(COLOR_PAIR(pshd_c));
       attroff(A_BOLD);
-      //_populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer);
+      _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
     } else if (input == '\n') {
       break;
@@ -1013,8 +1016,8 @@ void _run_menu(){
       if(idx == 0){
         break;
       }
-      filter_buffer[idx] = '\0';
       idx--;
+      filter_buffer[idx] = '\0';
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) attron(A_BOLD);
@@ -1025,20 +1028,70 @@ void _run_menu(){
       attroff(COLOR_PAIR(run_c));
       attroff(A_BOLD);
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
+      _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
     }
     usleep(1000);
   }
 
-//selection
-//filter
-//if(strstr()){
-//  printline
-//}
   animate(none);
   return;
 }
 
-void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer){
+void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection){
+
+  _clear_menu(dim_y, dim_x, offset_y, offset_x);
+  char sara_run_file[256] = {'\0'};
+  char * env_home = getenv("HOME");
+
+  sprintf(sara_run_file, "%s%s", env_home, "/.cache/sara/sara_run");
+  FILE *file = fopen(sara_run_file, "r");
+  if(file == NULL){
+    crit(strerror(errno));
+  }
+
+  char line[256] = {'\0'};
+  int i = 0;
+
+  attron(COLOR_PAIR(run_c));
+  if(run_c_bold) attron(A_BOLD);
+
+  while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+    if(strncmp(filter_buffer, line, strlen(filter_buffer)) == 0){
+      int len = strlen(line);
+      if(i == 0){
+        strncpy(selection, line, 128);
+        attron(A_STANDOUT);
+        for(int j = 0; j < len; j++){
+          mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+          if((j) > dim_x - 2) break;
+        }
+        attroff(A_STANDOUT);
+      } else {
+        for(int j = 0; j < len; j++){
+          mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+          if((j) > dim_x - 2) break;
+        }
+      }
+      i++;
+      attroff(run_c);
+    } else if (strlen(filter_buffer) == 0){
+      char err[128];
+      sprintf(err, "%d", strlen(filter_buffer));
+      crit(err);
+      int len = strlen(line);
+      for(int j = 0; j < len; j++){
+        mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+        if((j) > dim_x - 2) break;
+      }
+      i++;
+      if (i == dim_y) break;
+    }
+  }
+
+  attroff(COLOR_PAIR(run_c));
+  attroff(A_STANDOUT);
+  attroff(A_BOLD);
+  fclose(file);
   return;
 }

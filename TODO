@@ -33,4 +33,11 @@ New Quirks
   Makefile autoloads reload_cmd to PWD when generating config.h
 
 Features
-  - dmenu_run
+  - New builtin: RUN (default config, press ',') Mimics dmenu_run
+      New config options:
+        run_c
+        run_c_bold
+        run_y
+        run_x
+        run_offset_y
+        run_offset_

@@ -178,8 +178,6 @@ int __execute__(const Command * command){
 
   if(command->option != EXEC){
 
-    endwin(); // TODO: We called this earlier
-    clear();
     pid_t pid = fork();
     if (pid < 0) {
       perror("fork");
@@ -235,7 +233,6 @@ int __execute__(const Command * command){
       close(fd);
     }
 
-    endwin();
     //system("clear");
     if(FOLLOW) _write_exit_dir();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
@@ -559,7 +556,7 @@ Command * ranger_command(const Command * command){
 
   const char *extras[] = { "--choosedir", cache_file, NULL};
   for (int i = 0; i < 2; i++) {
-    new_cmd[rows + i] = strdup(extras[i]); // segfault
+    new_cmd[rows + i] = strdup(extras[i]);
   }
 
   new_cmd[new_rows] = NULL;
@@ -1144,7 +1141,7 @@ void _run_exec(char * selection){
   cmd[0] = strdup(selection);
   cmd[1] = NULL;
 
-  ExtraArgs extra_args = {NULL, NOCONFIRM, OUTS};
+  ExtraArgs extra_args    = {NULL, NOCONFIRM, OUTS};
   command->smashkey       = 0;
   command->extra_args     = extra_args;
   command->option         = STOP;
@@ -1156,6 +1153,7 @@ void _run_exec(char * selection){
 
   char** free_me = (char**)command->cmd;
   free(free_me[0]);
+  free(free_me[1]);
   free((char**)command->cmd);
   free((void*)command);
 }

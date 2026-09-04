@@ -1,5 +1,7 @@
 bugs/issues
   - submenu dims are inherited from parent dims
+  - END_OF_MENU sentinel object should be able to be stripped immediately with
+    better implementation
 
 v1.0.0 features
   - preflight_check (and preflight config options)

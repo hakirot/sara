@@ -1031,7 +1031,9 @@ void _run_menu(){
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
     } else if (input == '\n') {
+      KEY_LOCK = 1;
       _run_exec(selection);
+      KEY_LOCK = 0;
       break;
     } else if (input == 27){
       // Escape

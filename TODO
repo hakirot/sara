@@ -32,9 +32,13 @@ Bugs Fixed since 0.9.1
   - hd_offset_y positions hd[] in the correct direction
 
 New Quirks
-  Makefile autoloads reload_cmd to PWD when generating config.h
+  - Makefile autoloads reload_cmd to $PWD/sara when generating config.h
+  - New command line option -C runs preflight check and exits. Added step in
+    Makefile to run this option after compiling to immediately observe any
+    errors
 
 Features
+  - New builtin: preflight_check: helps validate your compiled config
   - New builtin: RUN (default config, press ',') Mimics dmenu_run
       New config options:
         run_c

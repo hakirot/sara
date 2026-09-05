@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
   set_glyph_dimensions(); // TODO: get away from "*glyph*"
   launch_window();
   _deflect_signals();
-  if(run_preflight_check) preflight_check();
+  // add command line arg option -C to run this _preflight_check();
 
   CACHE = check_size();
   LAST_INPUT_TIME = clock();

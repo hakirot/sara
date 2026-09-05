@@ -11,7 +11,6 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-static const int run_preflight_check = false;            /* implemented in 0.9.2 */
 static const animation_option start_animation = blink;
 
 /* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */

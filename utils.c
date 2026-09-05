@@ -264,10 +264,10 @@ void __builtin__(char input){
     _invert_colors();
   } else if (selection == randomize_colors){
     _randomize_colors();
-  } else if (selection == check){
-    _check();
   } else if (selection == path_run){
     _path_run();
+  } else if (selection == preflight_check){
+    _preflight_check();
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -614,8 +614,7 @@ void _chdir(char * target_dir){
   }
 }
 
-// TODO: PREFLIGHT CHECK
-void preflight_check() {
+void _preflight_check() {
 
   int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
   int builtinkeys_len = sizeof(builtinkeys)/sizeof(builtinkeys[0]);
@@ -645,17 +644,39 @@ void preflight_check() {
 
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     if((mbstowcs(NULL, bg[i], 0)) != (ulong)BG_GLYPH_LENGTH){
-      crit("bad bg dimensions");
+      int len = mbstowcs(NULL, bg[i], 0);
+      if(len > BG_GLYPH_LENGTH){
+        char err[128];
+        sprintf(err, "%s%d%s%d%s", "error: bg[]: line ", i, " too long. Should be ", BG_GLYPH_LENGTH, "characters");
+        crit(err);
+      } else {
+        char err[128];
+        sprintf(err, "%s%d%s%d%s", "error: bg[]: line ", i, " too short. Should be ", BG_GLYPH_LENGTH, " characters");
+        crit(err);
+      }
     }
   }
 
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     if((mbstowcs(NULL, fg[i], 0)) != (ulong)FG_GLYPH_LENGTH){
-      crit("bad fg dimensions");
+      int len = mbstowcs(NULL, bg[i], 0);
+      if(len > FG_GLYPH_LENGTH){
+        char err[128];
+        sprintf(err, "%s%d%s%d%s", "error: fg[]: line ", i, " too long. Should be ", FG_GLYPH_LENGTH, "characters");
+        crit(err);
+      } else {
+        char err[128];
+        sprintf(err, "%s%d%s%d%s", "error: fg[]: line ", i, " too short. Should be ", FG_GLYPH_LENGTH, " characters");
+        crit(err);
+      }
     }
   }
 
   // assert all command menus terminate with commands
+  for(int i = 0; i < menukeys_len; i++){
+
+  }
+
   // assert all commands are installed
   // assert --choosedir flag not present in any ranger command
   // assert any chdir arg directories exist
@@ -675,7 +696,7 @@ void warn(char * err) {
 
 void crit(char * err) {
   endwin();
-  printf("%s\n", err);
+  printf("\x1b[31m%s\n\x1b[0m", err);
   exit(1);
 }
 
@@ -828,11 +849,6 @@ void _show_colors(){
   }
   attroff(A_BOLD);
   refresh();
-}
-
-void _check(){
-
-  return;
 }
 
 void _invert_colors(){

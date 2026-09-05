@@ -99,13 +99,14 @@ typedef struct {
   ExtraArgs extra_args;
 } Command;
 
+// TODO: implement show all config (run preflight_check)
 typedef enum {
   pshd,
   quit,
   randomize_colors,
   invert_colors,
   rave,
-  check,         // TODO: implement show all config (run preflight_check)
+  preflight_check,
   colors,
   path_run,
 } internal;

@@ -32,7 +32,7 @@ Command * ranger_command(const Command * command);
 void _free_range(const Command * command);
 void _chdir(char * target_dir);
 int _confirm();
-void preflight_check();
+void _preflight_check();
 void load_command_config();
 void warn(char * err);
 void crit(char * err);

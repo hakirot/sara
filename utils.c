@@ -1105,7 +1105,7 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
       attroff(run_c);
     } else if (strlen(filter_buffer) == 0){
       char err[128];
-      sprintf(err, "%d", strlen(filter_buffer));
+      sprintf(err, "%lu", strlen(filter_buffer));
       crit(err);
       int len = strlen(line);
       for(int j = 0; j < len; j++){

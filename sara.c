@@ -83,7 +83,7 @@ int main(int argc, char* argv[]){
 
   special_chars();
   load_command_config();
-  set_glyph_dimensions(); // TODO: get away from "*glyph*"
+  set_glyph_dimensions();
   launch_window();
   _deflect_signals();
   // add command line arg option -C to run this _preflight_check();

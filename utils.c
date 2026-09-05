@@ -674,7 +674,15 @@ void _preflight_check() {
 
   // assert all command menus terminate with commands
   for(int i = 0; i < menukeys_len; i++){
-
+    const Menu * menu_ptr = menukeys[i].submenu;
+    while(1){
+      if(menu_ptr->type == SUBMENU){
+        // do this again
+      } else {
+        // validate command
+      }
+      if(strcmp("END_OF_MENU", menu_ptr->name) == 0) break;
+    }
   }
 
   // assert all commands are installed
@@ -686,12 +694,14 @@ void _preflight_check() {
   // assert MenuBorder is the correct length
   // assert pshd_x < 258
   // assert at least one key is `quit`
+
+  // some indication that preflight_check passed
 }
 
 // TODO: implement
-void warn(char * err) {
-  clear();
-  mvprintw(ROW/2, COL/2, "%s", err);
+void warn(char * warning) {
+  //_log(warning); // log
+  mvprintw(0, 0, "%s", warning);
 }
 
 void crit(char * err) {
@@ -903,9 +913,7 @@ void _deflect_signals(){
   sigaction(SIGINT, &signal_action, NULL);
 }
 
-void _path_run(){
-
-  ensure_cache_dir();
+void generate_path_run_file(){
 
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
@@ -967,6 +975,13 @@ void _path_run(){
     system(sys_sort_cmd);
     remove(run_file);
   }
+}
+
+void _path_run(){
+
+  ensure_cache_dir();
+  generate_path_run_file();
+
   _run_menu();
 }
 

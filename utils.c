@@ -647,11 +647,11 @@ void _preflight_check() {
       int len = mbstowcs(NULL, bg[i], 0);
       if(len > BG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: bg[]: line ", i, " too long. Should be ", BG_GLYPH_LENGTH, "characters");
+        sprintf(err, "%s%d%s%d%s", "error: bg[]: fg[", i, "] too long. Should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
         crit(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: bg[]: line ", i, " too short. Should be ", BG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "error: bg[]: fg[", i, "] too short. Should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
         crit(err);
       }
     }
@@ -659,14 +659,14 @@ void _preflight_check() {
 
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     if((mbstowcs(NULL, fg[i], 0)) != (ulong)FG_GLYPH_LENGTH){
-      int len = mbstowcs(NULL, bg[i], 0);
+      int len = mbstowcs(NULL, fg[i], 0);
       if(len > FG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: fg[]: line ", i, " too long. Should be ", FG_GLYPH_LENGTH, "characters");
+        sprintf(err, "%s%d%s%d%s", "error: fg[]: fg[", i, "] too long. Should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
         crit(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: fg[]: line ", i, " too short. Should be ", FG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "error: fg[]: fg[", i, "] too short. Should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
         crit(err);
       }
     }

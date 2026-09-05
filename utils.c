@@ -575,6 +575,7 @@ void _free_range(const Command * command){
   for(int i = 0; i < rows; i++){
     free(kill_me[i]);
   }
+  free(kill_me[rows]);
   free((char**)command->cmd);
   free((void*)command);
 

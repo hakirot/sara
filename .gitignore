@@ -8,3 +8,4 @@ sara-*.tar.gz
 config.h
 valgrind.log
 *.tar.gz.sig
+SHA256SUM

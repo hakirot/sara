@@ -672,7 +672,7 @@ void _preflight_check() {
     }
   }
 
-  // assert all command menus terminate with commands
+  // assert all commands are installed
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
   sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
@@ -681,24 +681,10 @@ void _preflight_check() {
 
   for(int i = 0; i < menukeys_len; i++){
     const Menu * menu_ptr = menukeys[i].submenu;
-    while(strcmp("END_OF_MENU", menu_ptr->name) != 0){
-      if(menu_ptr->type == SUBMENU){
-        // do this again
-      } else {
-        const Command * binary_command = &menu_ptr->next.command;
-        const char * binary = ((char**)binary_command->cmd)[0];
-        int ret_val = _is_binary_in_path(binary);
-        if(ret_val == 1){
-          char warning[128];
-          sprintf(warning, "%s", "nope");
-          warn(warning);
-        }
-      }
-      menu_ptr++;
-    }
+    _check_menu(menu_ptr);
   }
 
-  // assert all commands are installed
+  // assert all command menus terminate with commands
   // assert --choosedir flag not present in any ranger command
   // assert any chdir arg directories exist
   // assert MenuBorder length is 6
@@ -711,28 +697,70 @@ void _preflight_check() {
   // some indication that preflight_check passed
 } 
 
-int _is_binary_in_path(const char * binary) {
-
-  int len = strlen(binary);
-  char run_file[256] = {'\0'};
-  char * env_home = getenv("HOME");
-  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
-  FILE * fp = fopen(run_file, "r");
-  char line[256];
-  while((fgets(line, 256, fp)) != NULL) {
-    if(strncmp(binary, line, len) == 0){
-      fclose(fp);
-      return 0;
+void _check_menu(const Menu * menu_ptr){
+  while(strncmp("END_OF_MENU", menu_ptr->name, strlen("END_OF_MENU")) != 0){
+    if(menu_ptr->type == SUBMENU){
+      const Menu * submenu_ptr = menu_ptr->next.submenu;
+      _check_menu(submenu_ptr);
+    } else {
+      const Command * binary_command = &menu_ptr->next.command;
+      const char * binary = ((char**)binary_command->cmd)[0];
+      int ret_val = _is_binary_in_path(binary);
+      if(ret_val == 1){
+        char warning[128];
+        sprintf(warning, "%s%s%s", "Warning: ", binary, " either not in $PATH or an executable file");
+        warn(warning);
+      }
     }
+    menu_ptr++;
   }
-  fclose(fp);
-  return 1;
 }
 
-// TODO: implement
+int _is_binary_in_path(const char * binary) {
+
+  if(binary[0] == '/'){
+    if (access(binary, F_OK) != 0){
+      return 1;
+    }
+    return 0;
+  } else if(strncmp(binary, "NO_COMMAND", strlen("NO_COMMAND")) == 0){
+    return 0;
+  } else {
+    int len = strlen(binary);
+    char run_file[256] = {'\0'};
+    char * env_home = getenv("HOME");
+    sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
+    FILE * fp = fopen(run_file, "r");
+    char line[256] = {'\0'};
+
+    if(fp == NULL){
+      crit("hwat");
+    }
+
+    while(fgets(line, sizeof(line), fp)) {
+      line[strcspn(line, "\n")] = 0;
+      if(strncmp(binary, line, len) == 0){
+        fclose(fp);
+        return 0;
+      }
+    }
+    fclose(fp);
+    return 1;
+  }
+}
+
 void warn(char * warning) {
-  //_log(warning); // log
-  mvprintw(0, 0, "%s", warning);
+  endwin();
+  printf("\x1b[31m%s\n\x1b[0m", warning);
+  printf("\x1b[33m" "Press enter to continue" "\x1b[0m");
+
+  size_t bufsize = 256;
+  char *buff = (char *)malloc(bufsize * sizeof(char));
+  if(buff == NULL) crit("Unable to allocate buff");
+  fgets(buff, 256, stdin);
+  free(buff);
+  refresh();
+  animate(neon);
 }
 
 void crit(char * err) {

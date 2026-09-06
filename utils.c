@@ -1218,14 +1218,14 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
         strncpy(selection, line, 128);
         attron(A_STANDOUT);
         for(int j = 0; j < len; j++){
+          if((j) == dim_x - 2) break;
           mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
-          if((j) > dim_x - 2) break;
         }
         attroff(A_STANDOUT);
       } else {
         for(int j = 0; j < len; j++){
+          if((j) == dim_x - 2) break;
           mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
-          if((j) > dim_x - 2) break;
         }
       }
       i++;
@@ -1236,8 +1236,8 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
       crit(err);
       int len = strlen(line);
       for(int j = 0; j < len; j++){
+        if((j) == dim_x - 2) break;
         mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
-        if((j) > dim_x - 2) break;
       }
       i++;
       if (i == dim_y) break;

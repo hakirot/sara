@@ -1194,6 +1194,12 @@ void _run_menu(){
 
 void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection){
 
+  int border_buffer = 2;
+  if(dim_y < 3){
+    border_buffer = 0;
+    offset_y = -1;
+  }
+
   _clear_menu(dim_y, dim_x, offset_y, offset_x);
   char sara_run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
@@ -1210,7 +1216,7 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
   attron(COLOR_PAIR(run_c));
   if(run_c_bold) attron(A_BOLD);
 
-  while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
+  while((fgets(line, sizeof(line), file) && (i < (dim_y - border_buffer)))){
     line[strcspn(line, "\n")] = 0;
     if(strncmp(filter_buffer, line, strlen(filter_buffer)) == 0){
       int len = strlen(line);

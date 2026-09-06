@@ -733,8 +733,6 @@ void _preflight_check() {
     sprintf(err, "%s", "\nMy dear keeb commando, \nYou must map a 'quit' in builtinkeys[] ..\n\nI will not allow you to damn yourself\n");
     crit(err);
   }
-
-  animate(shutter_slide_neon);
 } 
 
 void _check_menu(const Menu * menu_ptr){

@@ -57,13 +57,11 @@ int main(int argc, char* argv[]){
     }
   }
 
-  // double WAIT_BUFFER = 0.10000;
   srand((unsigned)time(0));
 
   int opt;
-  while ((opt = getopt(argc, argv, "cMFfbhrH")) != -1){
+  while ((opt = getopt(argc, argv, "rHFC")) != -1){
     switch (opt) {
-      // case 'c': WAIT_BUFFER = 0.00005; break;
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
@@ -78,6 +76,7 @@ int main(int argc, char* argv[]){
         break;
       case 'H': HOLOGRAPHIC = 1; break;
       case 'F': FOLLOW = 1; break;
+      case 'C': _preflight_check(); break;
     }
   }
 
@@ -86,7 +85,6 @@ int main(int argc, char* argv[]){
   set_glyph_dimensions();
   launch_window();
   _deflect_signals();
-  // add command line arg option -C to run this _preflight_check();
 
   CACHE = check_size();
   LAST_INPUT_TIME = clock();

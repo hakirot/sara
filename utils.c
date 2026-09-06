@@ -636,8 +636,8 @@ void _preflight_check() {
     for(int j = idx + 1; j < global_chars_len; j++){
       if(global_chars[idx] == global_chars[j]){
         char err[64];
-        sprintf(err, "Error: '%c' key is configured more than once\n", global_chars[idx]);
-        crit(err);
+        sprintf(err, "Warning: '%c' key is configured more than once, secondary mappings will be ignored\n", global_chars[idx]);
+        warn(err);
       }
     }
   }
@@ -679,22 +679,39 @@ void _preflight_check() {
   remove(run_file);
   generate_path_run_file();
 
+  const Menu * menu_ptr = NULL;
   for(int i = 0; i < menukeys_len; i++){
-    const Menu * menu_ptr = menukeys[i].submenu;
+    menu_ptr = menukeys[i].submenu;
     _check_menu(menu_ptr);
+  }
+
+  const Command * command_ptr = NULL;
+  const char * binary = NULL;
+  for(int i = 0; i < commandkeys_len; i++){
+    command_ptr = &commandkeys[i];
+    binary = ((char**)command_ptr->cmd)[0];
+    if(_is_binary_in_path(binary) == 1){
+      char warning[256];
+      sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
+      warn(warning);
+    }
   }
 
   // assert all command menus terminate with commands
   // assert --choosedir flag not present in any ranger command
   // assert any chdir arg directories exist
+
   // assert MenuBorder length is 6
-  // assert menu_y > 1
+  int menu_border_len = wcslen(MenuBorder);
+  if(menu_border_len != 6){
+    char warning[256];
+    sprintf(warning, "%s", "Warning: MenuBorder should contain 6 characters");
+    warn(warning);
+  }
+
   // assert resize_x/y values are larger than tiny_mode_x/y
-  // assert MenuBorder is the correct length
-  // assert pshd_x < 258
   // assert at least one key is `quit`
 
-  // some indication that preflight_check passed
   animate(shutter_slide_neon);
 } 
 
@@ -709,7 +726,7 @@ void _check_menu(const Menu * menu_ptr){
       int ret_val = _is_binary_in_path(binary);
       if(ret_val == 1){
         char warning[128];
-        sprintf(warning, "%s%s%s", "Warning: ", binary, " either not in $PATH or an executable file");
+        sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
         warn(warning);
       }
     }

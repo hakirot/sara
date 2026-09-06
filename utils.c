@@ -731,7 +731,7 @@ void _preflight_check() {
     sprintf(err, "%s", "Warning: builtinkeys[]: no mapping for 'quit'");
     warn(err);
   }
-  exit(0);
+  _quit();
 } 
 
 void _check_menu(const Menu * menu_ptr){
@@ -913,12 +913,14 @@ void launch_window(){
 
 void get_helped() {
   printf("Usage: %s [OPTIONS]\n", "sara");
-  printf("  --help, -h    Get helped\n");
-  printf("  -H            Holographic background\n");
-  printf("  -f [color]    set FOREGROUND color\n");
-  printf("  -b [color]    set BACKGROUND color\n");
-  printf("  -F [follow]   On exit, write PWD to file\n");
-  printf("  -r            Generate a random color profile. Not compatible with -f or -b options\n");
+  printf("For general configuration, visit hakipaks.org/sara\n");
+  printf("  --help, -h      Get helped\n");
+  printf("  -v, --version   Get version\n");
+  printf("  -H              Holographic background\n");
+  printf("  -f [color]      set FOREGROUND color\n");
+  printf("  -b [color]      set BACKGROUND color\n");
+  printf("  -F [follow]     On exit, write PWD to file\n");
+  printf("  -r              Generate a random color profile. Not compatible with -f or -b options\n");
   exit(0);
 }
 
@@ -1282,4 +1284,9 @@ void _run_exec(char * selection){
   free(free_me[1]);
   free((char**)command->cmd);
   free((void*)command);
+}
+
+void version(){
+  printf("%s %s \n", PROGRAM_NAME, PROGRAM_VERSION);
+  _quit();
 }

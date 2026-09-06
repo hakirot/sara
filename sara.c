@@ -26,6 +26,8 @@ int main(int argc, char* argv[]){
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
       get_helped();
+    } else if (strcmp(argv[i], "--version") == 0) {
+      version();
     }
   }
 
@@ -60,7 +62,7 @@ int main(int argc, char* argv[]){
   srand((unsigned)time(0));
 
   int opt;
-  while ((opt = getopt(argc, argv, "rHFC")) != -1){
+  while ((opt = getopt(argc, argv, "vVrHFC")) != -1){
     switch (opt) {
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
@@ -77,6 +79,8 @@ int main(int argc, char* argv[]){
       case 'H': HOLOGRAPHIC = 1; break;
       case 'F': FOLLOW = 1; break;
       case 'C': _preflight_check(); break;
+      case 'v': version(); break;
+      case 'V': version(); break;
     }
   }
 

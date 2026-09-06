@@ -673,15 +673,28 @@ void _preflight_check() {
   }
 
   // assert all command menus terminate with commands
+  char run_file[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
+  remove(run_file);
+  generate_path_run_file();
+
   for(int i = 0; i < menukeys_len; i++){
     const Menu * menu_ptr = menukeys[i].submenu;
-    while(1){
+    while(strcmp("END_OF_MENU", menu_ptr->name) != 0){
       if(menu_ptr->type == SUBMENU){
         // do this again
       } else {
-        // validate command
+        const Command * binary_command = &menu_ptr->next.command;
+        const char * binary = ((char**)binary_command->cmd)[0];
+        int ret_val = _is_binary_in_path(binary);
+        if(ret_val == 1){
+          char warning[128];
+          sprintf(warning, "%s", "nope");
+          warn(warning);
+        }
       }
-      if(strcmp("END_OF_MENU", menu_ptr->name) == 0) break;
+      menu_ptr++;
     }
   }
 
@@ -696,6 +709,24 @@ void _preflight_check() {
   // assert at least one key is `quit`
 
   // some indication that preflight_check passed
+} 
+
+int _is_binary_in_path(const char * binary) {
+
+  int len = strlen(binary);
+  char run_file[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
+  FILE * fp = fopen(run_file, "r");
+  char line[256];
+  while((fgets(line, 256, fp)) != NULL) {
+    if(strncmp(binary, line, len) == 0){
+      fclose(fp);
+      return 0;
+    }
+  }
+  fclose(fp);
+  return 1;
 }
 
 // TODO: implement
@@ -978,10 +1009,8 @@ void generate_path_run_file(){
 }
 
 void _path_run(){
-
   ensure_cache_dir();
   generate_path_run_file();
-
   _run_menu();
 }
 

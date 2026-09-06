@@ -58,5 +58,7 @@ void _path_run();
 void _run_menu();
 void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection);
 void _run_exec(char * selection);
+void generate_path_run_file();
+int _is_binary_in_path(const char * binary);
 
 #endif

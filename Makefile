@@ -21,6 +21,7 @@ config.h:
 
 sara: $(OBJ) config.h
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJ) $(OBJCOMP) $(LIBS)
+#./sara -C
 
 dist: clean
 	mkdir -p sara-$(VERSION)

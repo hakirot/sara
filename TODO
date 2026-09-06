@@ -1,10 +1,7 @@
 bugs/issues
   - submenu dims are inherited from parent dims
-  - END_OF_MENU sentinel object should be able to be stripped immediately with
-    better implementation
 
 v1.0.0 features
-  - preflight_check (and preflight config options)
   - builtin function to display all user-mapped commands
   - builtin function to quickedit pshd file using $EDITOR
   - make install
@@ -35,8 +32,7 @@ New Quirks
   - Makefile autoloads reload_cmd to $PWD/sara when generating config.h
 
 Features
-  - New builtin: preflight_check: helps validate your compiled config
-  - New command line option -C runs preflight check and exits.
+  - New command line option -C detects any issues with config.h and prints warnings
   - New builtin: RUN (default config, press ',') Mimics dmenu_run
       New config options:
         run_c

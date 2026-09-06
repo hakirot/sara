@@ -266,8 +266,6 @@ void __builtin__(char input){
     _randomize_colors();
   } else if (selection == path_run){
     _path_run();
-  } else if (selection == preflight_check){
-    _preflight_check();
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -635,7 +633,7 @@ void _preflight_check() {
   for(int idx = 0; idx < global_chars_len; idx++){
     for(int j = idx + 1; j < global_chars_len; j++){
       if(global_chars[idx] == global_chars[j]){
-        char err[64];
+        char err[128];
         sprintf(err, "Warning: '%c' key is configured more than once, secondary mappings will be ignored\n", global_chars[idx]);
         warn(err);
       }
@@ -729,10 +727,11 @@ void _preflight_check() {
     }
   }
   if(quit_check == 0){
-    char err[128];
-    sprintf(err, "%s", "\nMy dear keeb commando, \nYou must map a 'quit' in builtinkeys[] ..\n\nI will not allow you to damn yourself\n");
-    crit(err);
+    char err[256];
+    sprintf(err, "%s", "Warning: builtinkeys[]: no mapping for 'quit'");
+    warn(err);
   }
+  exit(0);
 } 
 
 void _check_menu(const Menu * menu_ptr){

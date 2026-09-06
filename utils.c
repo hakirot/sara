@@ -695,6 +695,7 @@ void _preflight_check() {
   // assert at least one key is `quit`
 
   // some indication that preflight_check passed
+  animate(shutter_slide_neon);
 } 
 
 void _check_menu(const Menu * menu_ptr){
@@ -760,7 +761,7 @@ void warn(char * warning) {
   fgets(buff, 256, stdin);
   free(buff);
   refresh();
-  animate(neon);
+  animate(glitch_full);
 }
 
 void crit(char * err) {

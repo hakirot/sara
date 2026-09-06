@@ -697,10 +697,6 @@ void _preflight_check() {
     }
   }
 
-  // assert all command menus terminate with commands
-  // assert --choosedir flag not present in any ranger command
-  // assert any chdir arg directories exist
-
   // assert MenuBorder length is 6
   int menu_border_len = wcslen(MenuBorder);
   if(menu_border_len != 6){
@@ -710,7 +706,33 @@ void _preflight_check() {
   }
 
   // assert resize_x/y values are larger than tiny_mode_x/y
+  if(tiny_mode == true && dynamic_resize == true){
+    if (resize_x < tiny_mode_x) {
+      char err[128];
+      sprintf(err, "%s", "Error: resize_x shan't be less than tiny_mode_x");
+      crit(err);
+    }
+    if (resize_y < tiny_mode_y) {
+      char err[128];
+      sprintf(err, "%s", "Error: resize_y shan't be less than tiny_mode_y");
+      crit(err);
+    }
+  }
+
   // assert at least one key is `quit`
+  int quit_check = 0;
+  const Builtin * builtin_ptr = NULL;
+  for(int i = 0; i < builtinkeys_len; i++){
+    builtin_ptr = &builtinkeys[i];
+    if(builtin_ptr->option == quit){
+      quit_check = 1;
+    }
+  }
+  if(quit_check == 0){
+    char err[128];
+    sprintf(err, "%s", "\nMy dear keeb commando, \nYou must map a 'quit' in builtinkeys[] ..\n\nI will not allow you to damn yourself\n");
+    crit(err);
+  }
 
   animate(shutter_slide_neon);
 } 

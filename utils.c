@@ -913,7 +913,7 @@ void launch_window(){
 
 void get_helped() {
   printf("Usage: %s [OPTIONS]\n", "sara");
-  printf("For general configuration, visit hakipaks.org/sara\n");
+  printf("For documentation, visit \x1b[31mhakipaks.org/sara\x1b[0m\n");
   printf("  --help, -h      Get helped\n");
   printf("  -v, --version   Get version\n");
   printf("  -H              Holographic background\n");
@@ -1111,6 +1111,12 @@ void _run_menu(){
 
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
 
+  if (dim_y == 2){
+    offset_y = 0;
+  } else if(dim_y < 3){
+    offset_y = -1;
+  }
+
   char filter_buffer[128] = {"\0"};
   char selection[128] = {"\0"};
   int idx = 0;
@@ -1173,10 +1179,12 @@ void _run_menu(){
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) attron(A_BOLD);
-      wchar_t wc = MenuBorder[4];
-      cchar_t cchar;
-      setcchar(&cchar, &wc, 0, 0, NULL);
-      mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+      if (dim_y != 2){
+        wchar_t wc = MenuBorder[4];
+        cchar_t cchar;
+        setcchar(&cchar, &wc, 0, 0, NULL);
+        mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+      }
       attroff(COLOR_PAIR(run_c));
       attroff(A_BOLD);
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
@@ -1197,10 +1205,19 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
   int border_buffer = 2;
   if(dim_y < 3){
     border_buffer = 0;
-    offset_y = -1;
   }
 
-  _clear_menu(dim_y, dim_x, offset_y, offset_x);
+  if(dim_y != 2){
+    _clear_menu(dim_y, dim_x, offset_y, offset_x);
+  } else {
+    wchar_t wc = L' ';
+    cchar_t cchar;
+    setcchar(&cchar, &wc, 0, 0, NULL);
+    for(int j = 1; j < dim_x - 1; j++){
+      mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + j + offset_x, &cchar);
+    }
+  }
+
   char sara_run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
 

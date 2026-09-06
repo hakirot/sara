@@ -1,6 +1,6 @@
 # Makefile #
 
-VERSION = 0.9.1
+VERSION = 0.9.2
 
 SRC = sara.c animations.c globals.c utils.c
 OBJ = $(SRC:.c=.o)
@@ -31,9 +31,10 @@ dist: clean
 	tar -cf - sara-$(VERSION) | gzip > sara-$(VERSION).tar.gz
 	rm -rf sara-$(VERSION)
 	sha256sum sara-$(VERSION).tar.gz > SHA256SUM
+	gpg --detach-sign sara-$(VERSION).tar.gz
 
 clean:
-	rm -f sara $(OBJ) sara-$(VERSION).tar.gz SHA256SUM
+	rm -f sara $(OBJ) sara-$(VERSION).tar.gz sara-$(VERSION).tar.gz.sig SHA256SUM
 
 animations.o: animations.c animations.h \
 		globals.h \

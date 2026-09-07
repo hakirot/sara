@@ -1497,7 +1497,13 @@ int _execute_run_args(char * selection, char * args_buffer){
 
   command->smashkey       = 0;
   command->extra_args     = extra_args;
-  command->option         = STOP;
+
+  if(ampersand){
+    command->option         = NOWAIT;
+  } else {
+    command->option         = STOP;
+  }
+
   command->pre_animation  = none;
   command->post_animation = start_animation;
   command->cmd            = cmd;

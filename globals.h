@@ -10,6 +10,7 @@
 #define GLOBALS_H
 
 #include <time.h>
+#include <sys/time.h>
 #include <ncurses.h>
 
 #define black           1
@@ -169,9 +170,13 @@ extern char commandkeys_chars[];
 extern char builtinkeys_chars[];
 extern char menukeys_chars[];
 
+
 extern int commandkeys_len;
 extern int builtinkeys_len;
 extern int menukeys_len;
+
+extern char SLAP_STR[256];
+extern struct timeval slap_time;
 
 extern int SHOW_COLORS;
 

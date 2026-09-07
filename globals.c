@@ -7,9 +7,10 @@
 --   ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝.c--
                                                                      */
 
+#include <sys/time.h>
+#include "time.h"
 #include "globals.h"
 #include "config.h"
-#include <time.h>
 
 int FOREGROUND = fg_c;
 int BACKGROUND = bg_c;
@@ -50,5 +51,7 @@ int INTERRUPT = false;
 
 const int GLITCH_FRAME_TIME = 3500;
 const float HOLD_CHAR_TIME = 0.00001;
+char SLAP_STR[256];
+struct timeval slap_time = {0};
 
 int KEY_LOCK = 0;

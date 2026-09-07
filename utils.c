@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <dirent.h>
 #include <wait.h>
 #include <string.h>
@@ -584,7 +585,8 @@ void _free_range(const Command * command){
   fp = fopen(cache_file, "r");
   if(!fp){
     refresh();
-    crit("error reading pwd cache file"); // TODO slap
+    slap("error reading pwd cache file");
+    return;
   }
 
   char target_chdir[256] = {'\0'};
@@ -599,14 +601,14 @@ void _free_range(const Command * command){
 
   chdir(target_chdir);
   if (setenv("PWD", target_chdir, 1) != 0) {
-    crit("setenv error");
+    slap("setenv error");
   }
 }
 
 void _chdir(char * target_dir){
   chdir(target_dir);
   if (setenv("PWD", target_dir, 1) != 0) {  
-    crit("setenv error");
+    slap("setenv error");
   }
 }
 
@@ -788,6 +790,28 @@ int _is_binary_in_path(const char * binary) {
 void warn(char * warning) {
   endwin();
   printf("\x1b[31m%s\n\x1b[0m", warning);
+}
+
+void slap(char * slap_msg) {
+  mvprintw(0, 0, "%s", slap_msg);
+  memset(SLAP_STR, 0, 256 * sizeof(char));
+  strncpy(SLAP_STR, slap_msg, 256);
+  gettimeofday(&slap_time, NULL);
+}
+
+int _slap_timer() {
+  struct timeval t2;
+  double elapsed_time;
+  gettimeofday(&t2, NULL);
+
+  elapsed_time = (t2.tv_sec - slap_time.tv_sec) * 1000.0;
+
+  if(elapsed_time > 1000){
+    memset(SLAP_STR, 0, 256 * sizeof(char));
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 void crit(char * err) {
@@ -1154,18 +1178,21 @@ void _run_menu(){
       refresh();
     } else if (input == '\n') {
       KEY_LOCK = 1;
-      _run_exec(selection);
-      animate(start_animation);
+      if(_run_exec(selection) == 0){
+        animate(start_animation);
+      } else {
+        animate(glitch_full);
+      }
       KEY_LOCK = 0;
       break;
     } else if (input == 32){
       if(strlen(selection) != 0) {
-        _run_args(selection);
+        int ret_val = _run_args(selection);
 //      int ret = _run_args(selection);
 //      if(ret == 1) continue; // shit
-        animate(start_animation);
-      } else {
-        animate(glitch_full);
+        if (ret_val == 0){
+          animate(start_animation);
+        }
       }
       break;
     } else if (input == 27){
@@ -1284,11 +1311,10 @@ void _populate_run_body(int dim_y,
   return;
 }
 
-void _run_exec(char * selection){
+int _run_exec(char * selection){
 
   if(strlen(selection) == 0) {
-    animate(glitch_full);
-    return;
+    return 1;
   }
 
   Command * command       = (Command*)malloc(sizeof(Command));
@@ -1313,6 +1339,8 @@ void _run_exec(char * selection){
   free(free_me[1]);
   free((char**)command->cmd);
   free((void*)command);
+
+  return 0;
 }
 
 int _run_args(char * selection){
@@ -1417,13 +1445,13 @@ int _execute_run_args(char * selection, char * args_buffer){
   }
 
   if(count > 1) {
-    crit("too many '&'"); // slap
+    slap("too many '&'"); // slap
     return 1;
   } else if(count == 1 && execute_str[execute_len - 1] != '&'){
-    crit("bad '&' position"); // slap
+    slap("bad '&' position"); // slap
     return 1;
   } else if(count == 1 && execute_str[execute_len - 2] != ' '){
-    crit("typo?"); // slap
+    slap("typo?"); // slap
     return 1;
   }
 

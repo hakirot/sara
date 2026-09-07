@@ -108,7 +108,10 @@ int main(int argc, char* argv[]){
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
 
-    // _blink();
+    if(_slap_timer() == 1) {
+      signal_reprint = true;
+    }
+
     if(HOLOGRAPHIC == 1 && WIN_SIZE == BIG){
       BACKGROUND++;
       if (BACKGROUND > 7) BACKGROUND = 2;

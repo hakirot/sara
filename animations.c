@@ -756,6 +756,10 @@ void _none(Arg printColorbar){
   if(SHOW_COLORS){
     _show_colors();
   }
+
+  if(SLAP_STR[0] != 0){
+    mvprintw(0, 0, "%s", SLAP_STR);
+  }
 }
 
 void _bg() {

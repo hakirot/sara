@@ -1439,6 +1439,10 @@ int _execute_run_args(char * selection, char * args_buffer){
   strncpy(token_str, execute_str, 256);
   count = 0;
   char * token = strtok(token_str, " ");
+
+  int nohup_flag = 0;
+  if(strncmp(token, "nohup", 5) == 0) nohup_flag = 1;
+
   while(token != NULL){
     count++;
     token = strtok(NULL, " ");
@@ -1448,15 +1452,57 @@ int _execute_run_args(char * selection, char * args_buffer){
   //sprintf(err, "%s %d", execute_str, count);
   //crit(err);
 
-  char** cmd = malloc((count - ampersand) * sizeof(char *));
-  token = strtok(execute_str, " ");
-  cmd[0] = strdup(token);
-  for(int i = 1; i < count - ampersand; i++){
+  if(nohup_flag && ampersand) count--;
+  char** cmd = malloc((count + 1) * sizeof(char *));
+
+  if(ampersand == 1 && nohup_flag == 0){
+    cmd[0] = strdup("nohup");
+    token = strtok(execute_str, " ");
+    cmd[1] = strdup(token);
+  } else if (ampersand == 1 && nohup_flag == 1) {
+    token = strtok(execute_str, " ");
+    cmd[0] = strdup(token);
+    token = strtok(NULL, " ");
+    cmd[1] = strdup(token);
+  } else {
+    token = strtok(execute_str, " ");
+    cmd[0] = strdup(token);
+  }
+
+  for(int i = 1 + ampersand; i < count; i++){
     token = strtok(NULL, " ");
     cmd[i] = strdup(token);
   }
 
+  cmd[count] = NULL;
+
+  for(int i = 0; i < count + 1; i++){
+    printf("%s ", cmd[i]);
+  }
+
+  char err[128];
+  sprintf(err, " %d", count);
+  crit(err);
+
   Command * command = (Command*)malloc(sizeof(Command));
+  memset(command, 0, sizeof(Command));
+
+  ExtraArgs extra_args;
+
+  command->smashkey       = 0;
+  command->extra_args     = extra_args;
+  command->option         = STOP;
+  command->pre_animation  = none;
+  command->post_animation = pixel_fill;
+  command->cmd            = cmd;
+
+  __execute__(command);
+
+  char** free_me = (char**)command->cmd;
+  free(free_me[0]);
+  free(free_me[1]);
+  free((char**)command->cmd);
+  free((void*)command);
 
   return 0;
 }

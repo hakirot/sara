@@ -1162,6 +1162,7 @@ void _run_menu(){
     } else if (input == '\n') {
       KEY_LOCK = 1;
       _run_exec(selection);
+      animate(start_animation);
       KEY_LOCK = 0;
       break;
     } else if (input == 32){

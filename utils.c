@@ -619,12 +619,12 @@ void _preflight_check() {
 
   if(total > 128){
     char err[256];
-    sprintf(err, "ERROR: Configured Key Limit exceeded\nKey Limit is %d\n commandkeys: %d\n builtinkeys: %d\n menukeys: %d\n",
+    sprintf(err, "Warning: Configured Key Limit exceeded\nKey Limit is %d\n commandkeys: %d\n builtinkeys: %d\n menukeys: %d\n",
       KEY_ARRAY_SIZE,
       commandkeys_len,
       builtinkeys_len,
       menukeys_len);
-    crit("Key limit exceeded");
+    warn(err);
   }
 
   int global_chars_len = strlen(global_chars);
@@ -639,31 +639,32 @@ void _preflight_check() {
   }
 
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-    if((mbstowcs(NULL, bg[i], 0)) != (ulong)BG_GLYPH_LENGTH){
+    int len = mbstowcs(NULL, bg[i], 0);
+    if(len != BG_GLYPH_LENGTH){
       int len = mbstowcs(NULL, bg[i], 0);
       if(len > BG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: bg[]: fg[", i, "] too long. Should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
-        crit(err);
+        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too long, should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
+        warn(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: bg[]: fg[", i, "] too short. Should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
-        crit(err);
+        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too short, should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
+        warn(err);
       }
     }
   }
 
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    if((mbstowcs(NULL, fg[i], 0)) != (ulong)FG_GLYPH_LENGTH){
-      int len = mbstowcs(NULL, fg[i], 0);
+    int len = mbstowcs(NULL, fg[i], 0);
+    if(len != FG_GLYPH_LENGTH){
       if(len > FG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: fg[]: fg[", i, "] too long. Should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
-        crit(err);
+        sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too long, should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
+        warn(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "error: fg[]: fg[", i, "] too short. Should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
-        crit(err);
+        sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too short, should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
+        warn(err);
       }
     }
   }
@@ -705,13 +706,13 @@ void _preflight_check() {
   if(tiny_mode == true && dynamic_resize == true){
     if (resize_x < tiny_mode_x) {
       char err[128];
-      sprintf(err, "%s", "Error: resize_x shan't be less than tiny_mode_x");
-      crit(err);
+      sprintf(err, "%s", "Warning: resize_x shan't be less than tiny_mode_x");
+      warn(err);
     }
     if (resize_y < tiny_mode_y) {
       char err[128];
-      sprintf(err, "%s", "Error: resize_y shan't be less than tiny_mode_y");
-      crit(err);
+      sprintf(err, "%s", "Warning: resize_y shan't be less than tiny_mode_y");
+      warn(err);
     }
   }
 
@@ -787,15 +788,6 @@ int _is_binary_in_path(const char * binary) {
 void warn(char * warning) {
   endwin();
   printf("\x1b[31m%s\n\x1b[0m", warning);
-  printf("\x1b[33m" "Press enter to continue" "\x1b[0m");
-
-  size_t bufsize = 256;
-  char *buff = (char *)malloc(bufsize * sizeof(char));
-  if(buff == NULL) crit("Unable to allocate buff");
-  fgets(buff, 256, stdin);
-  free(buff);
-  refresh();
-  animate(glitch_full);
 }
 
 void crit(char * err) {
@@ -919,6 +911,7 @@ void get_helped() {
   printf("  -b [color]      set BACKGROUND color\n");
   printf("  -F [follow]     On exit, write PWD to file\n");
   printf("  -r              Generate a random color profile. Not compatible with -f or -b options\n");
+  printf("  -C              Print possible issues with config.h");
   exit(0);
 }
 
@@ -1375,7 +1368,7 @@ int _run_args(char * selection){
 void _run_args_refresh(char * selection, char * args_buffer){
 
   int dim_y = 3;
-  int dim_x = run_x;
+  int dim_x = run_x; if(COLS < dim_x) dim_x = COLS;
   int offset_y = 0;
   int offset_x = 0;
 
@@ -1397,7 +1390,10 @@ void _run_args_refresh(char * selection, char * args_buffer){
   }
 
   mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + args_buffer_len, &cursor_c);
+
+  attroff(COLOR_PAIR(run_c));
   return;
+
 }
 
 int _execute_run_args(char * selection, char * args_buffer){
@@ -1408,7 +1404,7 @@ int _execute_run_args(char * selection, char * args_buffer){
   int buffer_remainer = 256 - selection_len;
   if(buffer_remainer - 1 < (int)strlen(args_buffer)) return 1;
   strncat(execute_str, " ", buffer_remainer);
-  strncat(execute_str, args_buffer, buffer_remainer);
+  strncat(execute_str, args_buffer, buffer_remainer - 1);
 
   int execute_len = (int)strlen(execute_str);
   int search_idx = 0;
@@ -1421,13 +1417,13 @@ int _execute_run_args(char * selection, char * args_buffer){
   }
 
   if(count > 1) {
-    crit("too many '&'");
+    crit("too many '&'"); // slap
     return 1;
   } else if(count == 1 && execute_str[execute_len - 1] != '&'){
-    crit("bad '&' position");
+    crit("bad '&' position"); // slap
     return 1;
   } else if(count == 1 && execute_str[execute_len - 2] != ' '){
-    crit("typo?");
+    crit("typo?"); // slap
     return 1;
   }
 

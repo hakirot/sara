@@ -25,7 +25,7 @@ static const unsigned short bg_c        = cyan;     /* bg color */
 static const unsigned short hd_c        = blue;     /* hd color */
 static const unsigned short pshd_c      = blue;     /* pshd menu color */
 static const unsigned short menu_c      = cyan;     /* menu color */
-static const unsigned short run_c       = yellow;       /* menu color */
+static const unsigned short run_c       = yellow;   /* path_run color */
 
 static const unsigned short fg_c_bold   = false;
 static const unsigned short bg_c_bold   = true;

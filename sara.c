@@ -62,6 +62,7 @@ int main(int argc, char* argv[]){
   srand((unsigned)time(0));
 
   int opt;
+  bool preflight_check = false;
   while ((opt = getopt(argc, argv, "vVrHFC")) != -1){
     switch (opt) {
       case 'r':
@@ -78,7 +79,7 @@ int main(int argc, char* argv[]){
         break;
       case 'H': HOLOGRAPHIC = 1; break;
       case 'F': FOLLOW = 1; break;
-      case 'C': _preflight_check(); break;
+      case 'C': preflight_check = true; break;
       case 'v': version(); break;
       case 'V': version(); break;
     }
@@ -87,6 +88,7 @@ int main(int argc, char* argv[]){
   special_chars();
   load_command_config();
   set_glyph_dimensions();
+  if(preflight_check) _preflight_check();
   launch_window();
   _deflect_signals();
 

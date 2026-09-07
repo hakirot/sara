@@ -18,7 +18,7 @@ Backlog
 
 --- 0.9.2 Release Notes ---
 
-Bugs Fixed since 0.9.1
+Bugs Fixed:
   - Menu is off center when menu_y < 3 (no menu border)
   - Show color worky when resized
   - Screen no longer clears when pshd_y is < 3 (no menu border)
@@ -28,11 +28,11 @@ Bugs Fixed since 0.9.1
   - shutter_slide now uses fg_c
   - hd_offset_y positions hd[] in the correct direction
 
-New Quirks
-  - Makefile autoloads reload_cmd to $PWD/sara when generating config.h
+New Quirks:
+  - Makefile writes reload_cmd to $PWD/sara when generating config.h
 
 Features
-  - New command line option -C detects any issues with config.h and prints warnings
+  - New command line option -C detects rudimentary issues with config.h
   - New builtin: path_run (default config, press ',') Mimics dmenu_run
       New associated config options:
         run_c

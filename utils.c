@@ -806,7 +806,7 @@ int _slap_timer() {
 
   elapsed_time = (t2.tv_sec - slap_time.tv_sec) * 1000.0;
 
-  if(elapsed_time > 1000){
+  if(elapsed_time > 1750){
     memset(SLAP_STR, 0, 256 * sizeof(char));
     return 1;
   } else {

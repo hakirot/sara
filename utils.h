@@ -50,7 +50,7 @@ void _invert_colors();
 void _randomize_colors();
 void _show_colors();
 void _check();
-void _quit();
+void _quit(int exit_code);
 void _write_exit_dir();
 void _deflect_signals();
 void __interrupt__(int signum);

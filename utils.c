@@ -184,8 +184,6 @@ int __execute__(const Command * command){
       exit(EXIT_FAILURE);
 
     } else if (pid == 0) {
-      // print_clear_terminal();
-      // if(command->option == WAIT_NO_OUT){
       if(command->extra_args.output_option == NO_OUT){
         int fd = open("/dev/null", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         dup2(fd, 1);
@@ -255,7 +253,7 @@ void __builtin__(char input){
   }
 
   if(selection == quit){
-    _quit();
+    _quit(0);
   } else if (selection == pshd){
     _pshd();
   } else if (selection == rave){
@@ -731,7 +729,7 @@ void _preflight_check() {
     sprintf(err, "%s", "Warning: builtinkeys[]: no mapping for 'quit'");
     warn(err);
   }
-  _quit();
+  _quit(0);
 } 
 
 void _check_menu(const Menu * menu_ptr){
@@ -803,7 +801,7 @@ void warn(char * warning) {
 void crit(char * err) {
   endwin();
   printf("\x1b[31m%s\n\x1b[0m", err);
-  exit(1);
+  _quit(1);
 }
 
 int is_char_in_search(wchar_t wc, const wchar_t * search_str) {
@@ -967,7 +965,7 @@ void _invert_colors(){
   animate(none);
 }
 
-void _quit(){
+void _quit(int exit_code){
   if (FOLLOW) _write_exit_dir();
 
   clear();
@@ -975,7 +973,7 @@ void _quit(){
   move(0, 0);
   endwin();
   //system("clear");
-  exit(0);
+  exit(exit_code);
 }
 
 void _write_exit_dir(){
@@ -1311,7 +1309,7 @@ void _run_exec(char * selection){
   command->extra_args     = extra_args;
   command->option         = STOP;
   command->pre_animation  = none;
-  command->post_animation = pixel_fill;
+  command->post_animation = start_animation;
   command->cmd            = cmd;
 
   __execute__(command);
@@ -1476,31 +1474,40 @@ int _execute_run_args(char * selection, char * args_buffer){
 
   cmd[count] = NULL;
 
-  for(int i = 0; i < count + 1; i++){
-    printf("%s ", cmd[i]);
-  }
+  //for(int i = 0; i < count + 1; i++){
+  //  printf("%s ", cmd[i]);
+  //}
 
-  char err[128];
-  sprintf(err, " %d", count);
-  crit(err);
+  //char err[128];
+  //sprintf(err, " %d", count);
+  //crit(err);
 
   Command * command = (Command*)malloc(sizeof(Command));
   memset(command, 0, sizeof(Command));
 
   ExtraArgs extra_args;
+  extra_args.chdir = NULL;
+  extra_args.confirmation = NOCONFIRM;
+
+  if(ampersand){
+    extra_args.output_option = NO_OUT;
+  } else {
+    extra_args.output_option = OUTS;
+  }
 
   command->smashkey       = 0;
   command->extra_args     = extra_args;
   command->option         = STOP;
   command->pre_animation  = none;
-  command->post_animation = pixel_fill;
+  command->post_animation = start_animation;
   command->cmd            = cmd;
 
   __execute__(command);
 
   char** free_me = (char**)command->cmd;
-  free(free_me[0]);
-  free(free_me[1]);
+  for(int i = 0; i < count + 1; i++){
+    free(free_me[i]);
+  }
   free((char**)command->cmd);
   free((void*)command);
 
@@ -1509,5 +1516,5 @@ int _execute_run_args(char * selection, char * args_buffer){
 
 void version(){
   printf("%s %s \n", PROGRAM_NAME, PROGRAM_VERSION);
-  _quit();
+  _quit(0);
 }

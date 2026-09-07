@@ -63,5 +63,6 @@ int _is_binary_in_path(const char * binary);
 void _check_menu(const Menu * menu_ptr);
 void version();
 int _run_args(char * selection);
+void _execute_run_args();
 
 #endif

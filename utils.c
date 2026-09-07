@@ -1345,8 +1345,13 @@ int _run_args(char * selection){
       buffer_idx++;
       _run_args_refresh(selection, args_buffer);
     } else if (input == '\n') {
-      _execute_run_args(selection, args_buffer);
+      int ret_val = _execute_run_args(selection, args_buffer);
+      if(ret_val == 1){
+        animate(glitch_full);
+        return 1;
+      }
       return 0;
+
     } else if (input == 27){
       // escape
       return 0;
@@ -1396,23 +1401,39 @@ void _run_args_refresh(char * selection, char * args_buffer){
   return;
 }
 
-void _execute_run_args(char * selection, char * args_buffer){
+int _execute_run_args(char * selection, char * args_buffer){
 
   char execute_str[256] = {0};
   int selection_len = strlen(selection);
-
   strncpy(execute_str, selection, selection_len);
-
   int buffer_remainer = 256 - selection_len;
-  if(buffer_remainer - 1 < (int)strlen(args_buffer)) return;
-
+  if(buffer_remainer - 1 < (int)strlen(args_buffer)) return 1;
   strncat(execute_str, " ", buffer_remainer);
   strncat(execute_str, args_buffer, buffer_remainer);
 
-  execute_str[selection_len] = 32;
+  int execute_len = (int)strlen(execute_str);
+  int search_idx = 0;
+  int count = 0;
+  while (search_idx < execute_len){
+    if(execute_str[search_idx] == '&'){
+      count++;
+    }
+    search_idx++;
+  }
+
+  if(count > 1) {
+    crit("too many '&'");
+    return 1;
+  } else if(count == 1 && execute_str[execute_len - 1] != '&'){
+    crit("bad '&' position");
+    return 1;
+  } else if(count == 1 && execute_str[execute_len - 2] != ' '){
+    crit("typo?");
+    return 1;
+  }
 
   crit(execute_str);
-  return;
+  return 0;
 }
 
 void version(){

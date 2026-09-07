@@ -913,7 +913,7 @@ void launch_window(){
 
 void get_helped() {
   printf("Usage: %s [OPTIONS]\n", "sara");
-  printf("For documentation, visit \x1b[31mhakipaks.org/sara\x1b[0m\n");
+  printf("Visit \x1b[31mhakipaks.org/sara\x1b[0m for docs\n");
   printf("  --help, -h      Get helped\n");
   printf("  -v, --version   Get version\n");
   printf("  -H              Holographic background\n");
@@ -1146,7 +1146,7 @@ void _run_menu(){
     }
 
     input = getch();
-    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
+    if (input != ERR && input != '\n' && input != EOF && input > 32 && input < 127) {
 
       filter_buffer[idx] = input;
       idx++;
@@ -1165,6 +1165,13 @@ void _run_menu(){
       KEY_LOCK = 1;
       _run_exec(selection);
       KEY_LOCK = 0;
+      break;
+    } else if (input == 32){
+      if(strlen(selection) != 0) {
+        _run_args(selection);
+      } else {
+        animate(glitch_full);
+      }
       break;
     } else if (input == 27){
       // Escape
@@ -1192,7 +1199,6 @@ void _run_menu(){
       refresh();
     }
 
-    // TODO resize check
     usleep(1000);
   }
 
@@ -1200,8 +1206,13 @@ void _run_menu(){
   return;
 }
 
-void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection){
-
+void _populate_run_body(int dim_y,
+                        int dim_x,
+                        int offset_y,
+                        int offset_x,
+                        char * filter_buffer,
+                        char * selection)
+{
   int border_buffer = 2;
   if(dim_y < 3){
     border_buffer = 0;
@@ -1307,6 +1318,18 @@ void _run_exec(char * selection){
   free(free_me[1]);
   free((char**)command->cmd);
   free((void*)command);
+}
+
+int _run_args(char * selection){
+
+  clear();
+  int dim_y = 3;
+  int dim_x = run_x;
+  int offset_y = 0;
+  int offset_x = 0;
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+  getchar();
+  return 0;
 }
 
 void version(){

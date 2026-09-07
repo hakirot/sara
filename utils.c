@@ -1432,7 +1432,32 @@ int _execute_run_args(char * selection, char * args_buffer){
     return 1;
   }
 
-  crit(execute_str);
+  int ampersand = 0;
+  if(count == 1) ampersand = 1;
+
+  char token_str[256] = {0};
+  strncpy(token_str, execute_str, 256);
+  count = 0;
+  char * token = strtok(token_str, " ");
+  while(token != NULL){
+    count++;
+    token = strtok(NULL, " ");
+  }
+
+  //char err[128];
+  //sprintf(err, "%s %d", execute_str, count);
+  //crit(err);
+
+  char** cmd = malloc((count - ampersand) * sizeof(char *));
+  token = strtok(execute_str, " ");
+  cmd[0] = strdup(token);
+  for(int i = 1; i < count - ampersand; i++){
+    token = strtok(NULL, " ");
+    cmd[i] = strdup(token);
+  }
+
+  Command * command = (Command*)malloc(sizeof(Command));
+
   return 0;
 }
 

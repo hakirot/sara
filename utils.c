@@ -1169,6 +1169,8 @@ void _run_menu(){
     } else if (input == 32){
       if(strlen(selection) != 0) {
         _run_args(selection);
+//      int ret = _run_args(selection);
+//      if(ret == 1) continue; // shit
         animate(start_animation);
       } else {
         animate(glitch_full);
@@ -1324,26 +1326,13 @@ void _run_exec(char * selection){
 int _run_args(char * selection){
 
   clear();
-  wchar_t cursor_w = L'\u2588';
-  cchar_t cursor_c;
-  setcchar(&cursor_c, &cursor_w, 0, 0, NULL);
-  int dim_y = 3;
-  int dim_x = run_x;
-  int offset_y = 0;
-  int offset_x = 0;
-  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
 
-  attron(COLOR_PAIR(run_c));
-  mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 2, '>');
-  int selection_len = (int)strlen(selection);
-  for(int i = 0; i < selection_len; i++){
-    mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 4 + i, selection[i]);
-  }
-  mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len, &cursor_c);
-
-  char input = {'\0'};
   char args_buffer[256] = {'\0'};
   int buffer_idx = 0;
+
+  char input = {'\0'};
+  _run_args_refresh(selection, args_buffer, buffer_idx);
+
   while(1){
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL){
@@ -1354,8 +1343,10 @@ int _run_args(char * selection){
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
       args_buffer[buffer_idx] = input;
       buffer_idx++;
+      _run_args_refresh(selection, args_buffer, buffer_idx);
     } else if (input == '\n') {
       _execute_run_args();
+      return 0;
     } else if (input == 27){
       // escape
       return 0;
@@ -1366,15 +1357,43 @@ int _run_args(char * selection){
         return 1;
       }
       args_buffer[buffer_idx] = 0;
+      _run_args_refresh(selection, args_buffer, buffer_idx);
     }
 
     usleep(1000);
   }
 
   refresh();
-  getchar();
   attroff(COLOR_PAIR(run_c));
   return 0;
+}
+
+void _run_args_refresh(char * selection, char * args_buffer, int buffer_idx){
+
+  int dim_y = 3;
+  int dim_x = run_x;
+  int offset_y = 0;
+  int offset_x = 0;
+
+  wchar_t cursor_w = L'\u2588';
+  cchar_t cursor_c;
+  setcchar(&cursor_c, &cursor_w, 0, 0, NULL);
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+  attron(COLOR_PAIR(run_c));
+  mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 2, '>');
+  int selection_len = (int)strlen(selection);
+  int args_buffer_len = (int)strlen(args_buffer);
+
+  for(int i = 0; i < selection_len; i++){
+    mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 4 + i, selection[i]);
+  }
+
+  for(int i = 0; i < args_buffer_len; i++){
+    mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + i, args_buffer[i]);
+  }
+
+  mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + args_buffer_len, &cursor_c);
+  return;
 }
 
 void _execute_run_args(){

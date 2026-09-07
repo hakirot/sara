@@ -64,5 +64,6 @@ void _check_menu(const Menu * menu_ptr);
 void version();
 int _run_args(char * selection);
 void _execute_run_args();
+void _run_args_refresh(char * selection, char * args_buffer, int buffer_idx);
 
 #endif

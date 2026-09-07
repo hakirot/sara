@@ -33,11 +33,12 @@ New Quirks
 
 Features
   - New command line option -C detects any issues with config.h and prints warnings
-  - New builtin: RUN (default config, press ',') Mimics dmenu_run
-      New config options:
+  - New builtin: path_run (default config, press ',') Mimics dmenu_run
+      New associated config options:
         run_c
         run_c_bold
         run_y
         run_x
         run_offset_y
         run_offset_x
+      Pressing [SPACE] in path_run mode will prompt for command args

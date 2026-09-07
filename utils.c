@@ -584,7 +584,7 @@ void _free_range(const Command * command){
   fp = fopen(cache_file, "r");
   if(!fp){
     refresh();
-    crit("error reading pwd cache file");
+    crit("error reading pwd cache file"); // TODO slap
   }
 
   char target_chdir[256] = {'\0'};

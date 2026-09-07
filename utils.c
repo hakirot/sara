@@ -1331,7 +1331,7 @@ int _run_args(char * selection){
   int buffer_idx = 0;
 
   char input = {'\0'};
-  _run_args_refresh(selection, args_buffer, buffer_idx);
+  _run_args_refresh(selection, args_buffer);
 
   while(1){
     getmaxyx(stdscr, ROW, COL);
@@ -1343,9 +1343,9 @@ int _run_args(char * selection){
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
       args_buffer[buffer_idx] = input;
       buffer_idx++;
-      _run_args_refresh(selection, args_buffer, buffer_idx);
+      _run_args_refresh(selection, args_buffer);
     } else if (input == '\n') {
-      _execute_run_args();
+      _execute_run_args(selection, args_buffer);
       return 0;
     } else if (input == 27){
       // escape
@@ -1357,7 +1357,7 @@ int _run_args(char * selection){
         return 1;
       }
       args_buffer[buffer_idx] = 0;
-      _run_args_refresh(selection, args_buffer, buffer_idx);
+      _run_args_refresh(selection, args_buffer);
     }
 
     usleep(1000);
@@ -1368,7 +1368,7 @@ int _run_args(char * selection){
   return 0;
 }
 
-void _run_args_refresh(char * selection, char * args_buffer, int buffer_idx){
+void _run_args_refresh(char * selection, char * args_buffer){
 
   int dim_y = 3;
   int dim_x = run_x;
@@ -1396,7 +1396,22 @@ void _run_args_refresh(char * selection, char * args_buffer, int buffer_idx){
   return;
 }
 
-void _execute_run_args(){
+void _execute_run_args(char * selection, char * args_buffer){
+
+  char execute_str[256] = {0};
+  int selection_len = strlen(selection);
+
+  strncpy(execute_str, selection, selection_len);
+
+  int buffer_remainer = 256 - selection_len;
+  if(buffer_remainer - 1 < (int)strlen(args_buffer)) return;
+
+  strncat(execute_str, " ", buffer_remainer);
+  strncat(execute_str, args_buffer, buffer_remainer);
+
+  execute_str[selection_len] = 32;
+
+  crit(execute_str);
   return;
 }
 

@@ -646,11 +646,11 @@ void _preflight_check() {
       int len = mbstowcs(NULL, bg[i], 0);
       if(len > BG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too long, should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too long, should match fg[0] length at ", BG_GLYPH_LENGTH, " characters");
         warn(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too short, should match fg[0] at ", BG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too short, should match fg[0] length at ", BG_GLYPH_LENGTH, " characters");
         warn(err);
       }
     }
@@ -661,11 +661,11 @@ void _preflight_check() {
     if(len != FG_GLYPH_LENGTH){
       if(len > FG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too long, should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too long, should match fg[0] length at ", FG_GLYPH_LENGTH, " characters");
         warn(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too short, should match fg[0] at ", FG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too short, should match fg[0] length at ", FG_GLYPH_LENGTH, " characters");
         warn(err);
       }
     }
@@ -732,7 +732,7 @@ void _preflight_check() {
     sprintf(err, "%s", "Warning: builtinkeys[]: no mapping for 'quit'");
     warn(err);
   }
-  _quit(0);
+  _quit(1);
 } 
 
 void _check_menu(const Menu * menu_ptr){

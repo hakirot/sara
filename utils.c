@@ -1567,9 +1567,9 @@ int _execute_run_args(char * selection, char * args_buffer){
   command->extra_args     = extra_args;
 
   if(ampersand){
-    command->option         = NOWAIT;
+    command->option       = NOWAIT;
   } else {
-    command->option         = STOP;
+    command->option       = STOP;
   }
 
   command->pre_animation  = none;

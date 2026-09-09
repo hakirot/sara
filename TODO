@@ -41,4 +41,6 @@ Features
         run_x
         run_offset_y
         run_offset_x
-      Pressing [SPACE] in path_run mode will prompt for command args
+      Pressing [SPACE] in path_run mode will prompt for command args, appending
+      your command with '&' is equivalent to prepending the command with 'nohup'
+      and running with the NO_OUT extra_args option

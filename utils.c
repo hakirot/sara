@@ -417,9 +417,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(selection > len - window_size) i = len - window_size;
   else i = selection;
 
-  if(menu_c_bold == true){
-    attron(A_BOLD);
-  }
+  if(menu_c_bold == true) attron(A_BOLD);
 
   for(i; k < window_size; i++){
 
@@ -1427,6 +1425,7 @@ void _run_args_refresh(char * selection, char * args_buffer){
   setcchar(&cursor_c, &cursor_w, 0, 0, NULL);
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
   attron(COLOR_PAIR(run_c));
+  if(run_c_bold == true) attron(A_BOLD);
   mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 2, '>');
   int selection_len = (int)strlen(selection);
   int args_buffer_len = (int)strlen(args_buffer);
@@ -1456,7 +1455,6 @@ void _run_args_refresh(char * selection, char * args_buffer){
       overflow_buffer[4 + selection_len + i] = args_buffer[i];
     }
 
-    mvprintw(0,0,"%d", buffer_size);
     mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + dim_x - 2, &cursor_c);
     for(int i = 0; i < dim_x - 3; i++){
       mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + dim_x - 3 - i, overflow_buffer[buffer_size - 1 - i]);

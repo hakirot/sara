@@ -113,6 +113,7 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
   attron(COLOR_PAIR(c));
   if(c == menu_c && menu_c_bold) attron(A_BOLD);
   if(c == pshd_c && pshd_c_bold) attron(A_BOLD);
+  if(c == run_c && run_c_bold) attron(A_BOLD);
   wchar_t wc = MenuBorder[0];
   cchar_t cchar;
   setcchar(&cchar, &wc, 0, 0, NULL);

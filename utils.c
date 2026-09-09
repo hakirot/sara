@@ -1381,6 +1381,10 @@ int _run_args(char * selection){
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
       args_buffer[buffer_idx] = input;
       buffer_idx++;
+      if(buffer_idx > 255) {
+        animate(glitch_full);
+        return 1;
+      }
       _run_args_refresh(selection, args_buffer);
     } else if (input == '\n') {
       int ret_val = _execute_run_args(selection, args_buffer);
@@ -1414,7 +1418,7 @@ int _run_args(char * selection){
 void _run_args_refresh(char * selection, char * args_buffer){
 
   int dim_y = 3;
-  int dim_x = run_x; if(COLS < dim_x) dim_x = COLS;
+  int dim_x = run_x; if(run_x < 3) dim_x = 3; if(COLS < dim_x) dim_x = COLS;
   int offset_y = 0;
   int offset_x = 0;
 
@@ -1427,15 +1431,38 @@ void _run_args_refresh(char * selection, char * args_buffer){
   int selection_len = (int)strlen(selection);
   int args_buffer_len = (int)strlen(args_buffer);
 
-  for(int i = 0; i < selection_len; i++){
-    mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 4 + i, selection[i]);
-  }
+  if(args_buffer_len + selection_len < dim_x - 6){
+    for(int i = 0; i < selection_len; i++){
+      mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 4 + i, selection[i]);
+    }
+    for(int i = 0; i < args_buffer_len; i++){
+      mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + i, args_buffer[i]);
+    }
+    mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + args_buffer_len, &cursor_c);
+  } else {
 
-  for(int i = 0; i < args_buffer_len; i++){
-    mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + i, args_buffer[i]);
-  }
+    int buffer_size = selection_len + args_buffer_len + 4;
 
-  mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + 5 + selection_len + args_buffer_len, &cursor_c);
+    char * overflow_buffer = (char*)malloc(buffer_size * sizeof(char));
+    memset(overflow_buffer, '\0', buffer_size);
+    overflow_buffer[0] = ' ';
+    overflow_buffer[1] = '>';
+    overflow_buffer[2] = ' ';
+    for(int i = 0; i < selection_len; i++){
+      overflow_buffer[3 + i] = selection[i];
+    }
+    overflow_buffer[3 + selection_len] = ' ';
+    for(int i = 0; i < args_buffer_len; i++){
+      overflow_buffer[4 + selection_len + i] = args_buffer[i];
+    }
+
+    mvprintw(0,0,"%d", buffer_size);
+    mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + dim_x - 2, &cursor_c);
+    for(int i = 0; i < dim_x - 3; i++){
+      mvaddch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + dim_x - 3 - i, overflow_buffer[buffer_size - 1 - i]);
+    }
+    free(overflow_buffer);
+  }
 
   attroff(COLOR_PAIR(run_c));
   return;

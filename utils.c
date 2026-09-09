@@ -614,6 +614,7 @@ void _chdir(char * target_dir){
 
 void _preflight_check() {
 
+  int warning_flag = 0;
   int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
   int builtinkeys_len = sizeof(builtinkeys)/sizeof(builtinkeys[0]);
   int menukeys_len = sizeof(menukeys)/sizeof(menukeys[0]);
@@ -626,6 +627,7 @@ void _preflight_check() {
       commandkeys_len,
       builtinkeys_len,
       menukeys_len);
+    warning_flag = 1;
     warn(err);
   }
 
@@ -635,6 +637,7 @@ void _preflight_check() {
       if(global_chars[idx] == global_chars[j]){
         char err[128];
         sprintf(err, "Warning: '%c' key is configured more than once, secondary mappings will be ignored\n", global_chars[idx]);
+        warning_flag = 1;
         warn(err);
       }
     }
@@ -647,10 +650,12 @@ void _preflight_check() {
       if(len > BG_GLYPH_LENGTH){
         char err[128];
         sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too long, should match fg[0] length at ", BG_GLYPH_LENGTH, " characters");
+        warning_flag = 1;
         warn(err);
       } else {
         char err[128];
         sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too short, should match fg[0] length at ", BG_GLYPH_LENGTH, " characters");
+        warning_flag = 1;
         warn(err);
       }
     }
@@ -662,10 +667,12 @@ void _preflight_check() {
       if(len > FG_GLYPH_LENGTH){
         char err[128];
         sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too long, should match fg[0] length at ", FG_GLYPH_LENGTH, " characters");
+        warning_flag = 1;
         warn(err);
       } else {
         char err[128];
         sprintf(err, "%s%d%s%d%s", "Warning: fg[]: fg[", i, "] too short, should match fg[0] length at ", FG_GLYPH_LENGTH, " characters");
+        warning_flag = 1;
         warn(err);
       }
     }
@@ -681,7 +688,7 @@ void _preflight_check() {
   const Menu * menu_ptr = NULL;
   for(int i = 0; i < menukeys_len; i++){
     menu_ptr = menukeys[i].submenu;
-    _check_menu(menu_ptr);
+    if(_check_menu(menu_ptr)) warning_flag = 1;
   }
 
   const Command * command_ptr = NULL;
@@ -692,6 +699,7 @@ void _preflight_check() {
     if(_is_binary_in_path(binary) == 1){
       char warning[256];
       sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
+      warning_flag = 1;
       warn(warning);
     }
   }
@@ -701,6 +709,7 @@ void _preflight_check() {
   if(menu_border_len != 6){
     char warning[256];
     sprintf(warning, "%s", "Warning: MenuBorder should contain 6 characters");
+    warning_flag = 1;
     warn(warning);
   }
 
@@ -709,11 +718,13 @@ void _preflight_check() {
     if (resize_x < tiny_mode_x) {
       char err[128];
       sprintf(err, "%s", "Warning: resize_x shan't be less than tiny_mode_x");
+      warning_flag = 1;
       warn(err);
     }
     if (resize_y < tiny_mode_y) {
       char err[128];
       sprintf(err, "%s", "Warning: resize_y shan't be less than tiny_mode_y");
+      warning_flag = 1;
       warn(err);
     }
   }
@@ -725,21 +736,24 @@ void _preflight_check() {
     builtin_ptr = &builtinkeys[i];
     if(builtin_ptr->option == quit){
       quit_check = 1;
+      break;
     }
   }
   if(quit_check == 0){
     char err[256];
     sprintf(err, "%s", "Warning: builtinkeys[]: no mapping for 'quit'");
+    warning_flag = 1;
     warn(err);
   }
-  _quit(1);
+  _quit(warning_flag);
 } 
 
-void _check_menu(const Menu * menu_ptr){
+int _check_menu(const Menu * menu_ptr){
+  int warning_flag = 0;
   while(strncmp("END_OF_MENU", menu_ptr->name, strlen("END_OF_MENU")) != 0){
     if(menu_ptr->type == SUBMENU){
       const Menu * submenu_ptr = menu_ptr->next.submenu;
-      _check_menu(submenu_ptr);
+      if(_check_menu(submenu_ptr)) warning_flag = 1;
     } else {
       const Command * binary_command = &menu_ptr->next.command;
       const char * binary = ((char**)binary_command->cmd)[0];
@@ -747,11 +761,13 @@ void _check_menu(const Menu * menu_ptr){
       if(ret_val == 1){
         char warning[128];
         sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
+        warning_flag = 1;
         warn(warning);
       }
     }
     menu_ptr++;
   }
+  return warning_flag;
 }
 
 int _is_binary_in_path(const char * binary) {

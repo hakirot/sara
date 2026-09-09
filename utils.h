@@ -62,7 +62,7 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
 int _run_exec(char * selection);
 void generate_path_run_file();
 int _is_binary_in_path(const char * binary);
-void _check_menu(const Menu * menu_ptr);
+int _check_menu(const Menu * menu_ptr);
 void version();
 int _run_args(char * selection);
 int _execute_run_args(char * selection, char * args_buffer);

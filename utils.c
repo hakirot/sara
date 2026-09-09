@@ -1347,6 +1347,8 @@ int _run_args(char * selection){
 
   clear();
 
+  animate(none);
+
   char args_buffer[256] = {'\0'};
   int buffer_idx = 0;
 

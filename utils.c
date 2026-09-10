@@ -647,12 +647,12 @@ void _preflight_check() {
       int len = mbstowcs(NULL, bg[i], 0);
       if(len > BG_GLYPH_LENGTH){
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too long, should match fg[0] length at ", BG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: bg[", i, "] too long, should match bg[0] length at ", BG_GLYPH_LENGTH, " characters");
         warning_flag = 1;
         warn(err);
       } else {
         char err[128];
-        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: fg[", i, "] too short, should match fg[0] length at ", BG_GLYPH_LENGTH, " characters");
+        sprintf(err, "%s%d%s%d%s", "Warning: bg[]: bg[", i, "] too short, should match bg[0] length at ", BG_GLYPH_LENGTH, " characters");
         warning_flag = 1;
         warn(err);
       }

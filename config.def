@@ -192,7 +192,6 @@ static const Builtin builtinkeys[] = {
   { 'H', rave },
   { 'p', pshd },
   { 'q', quit },
-//{ '0', preflight_check },
   { 'C', colors },
   { ',', path_run },
 };

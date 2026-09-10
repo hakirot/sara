@@ -1,4 +1,5 @@
 bugs/issues
+  - backspace in run_c draws border when buffer is outside run_x
   - submenu dims are inherited from parent dims
 
 v1.0.0 features

@@ -20,18 +20,18 @@ static const animation_option start_animation = blink;
 static int FOLLOW = true;
 
 /* COLORS */
-static const unsigned short fg_c        = red;      /* fg color */
-static const unsigned short bg_c        = cyan;     /* bg color */
-static const unsigned short hd_c        = blue;     /* hd color */
+static const unsigned short fg_c        = green;    /* fg color */
+static const unsigned short bg_c        = yellow;   /* bg color */
+static const unsigned short hd_c        = black;    /* hd color */
 static const unsigned short pshd_c      = blue;     /* pshd menu color */
 static const unsigned short menu_c      = cyan;     /* menu color */
 static const unsigned short run_c       = yellow;   /* path_run color */
 
 static const unsigned short fg_c_bold   = false;
-static const unsigned short bg_c_bold   = true;
-static const unsigned short hd_c_bold   = false;
+static const unsigned short bg_c_bold   = false;
+static const unsigned short hd_c_bold   = true;
 static const unsigned short pshd_c_bold = false;
-static const unsigned short menu_c_bold = true;
+static const unsigned short menu_c_bold = false;
 static const unsigned short run_c_bold  = false;
 
 /* HEADER HIGHLIGHTS */
@@ -72,43 +72,36 @@ static const short           run_offset_x = 0;
 
 /* CUSTOM GLYPHS */ 
 
-static const char * bg[] = {
-  " ________          ________                ",
-  " \\   ____\\         \\   __  \\               ",
-  "  \\  \\_____         \\  \\_\\  \\              ",
-  "   \\_____  \\         \\   _  _\\             ",
-  "    _____\\  \\         \\  \\\\  \\             ",
-  "    \\________\\         \\__\\\\ _\\           v0.9.2 ",
-};
-
 static const char * fg[] = {
-  "           ________          ________      ",
-  "           \\   __  \\         \\   __  \\     ",
-  "            \\  \\_\\  \\         \\  \\_\\  \\    ",
-  "             \\   __  \\         \\   __  \\   ",
-  "              \\  \\ \\  \\         \\  \\ \\  \\  ",
-  "               \\__\\ \\__\\         \\__\\ \\__\\ ",
+  "   ________  ________  ________  ________ ",
+  "  ╱        ╲╱        ╲╱        ╲╱        ╲",
+  " ╱        _╱   .     ╱   .     ╱   .     ╱",
+  "╱-        ╱         ╱        _╱         ╱ ",
+  "╲________╱╲___╱____╱╲____╱___╱╲___╱____╱  ",
 };
 
+static const char * bg[] = {
+  "special application ranging area",
+};
 
 /* OPTIONAL HEADER */
 
 /* Optionally set empty */
-static const char hd[] = {'\0'};
-//static const char hd[] = "©HakiPaks";
+//static const char hd[] = {'\0'};
+static const char hd[] = "v0.9.2 ©HakiPaks";
 
-
-/* bg position */
-static const int bg_offset_y = 0;
-static const int bg_offset_x = 0;
 
 /* fg position */
-static const int fg_offset_y = 1;
+static const int fg_offset_y = 0;
 static const int fg_offset_x = 0;
 
+/* bg position */
+static const int bg_offset_y = 3;
+static const int bg_offset_x = 2;
+
 /* hd position */
-static const int hd_offset_y = 3;
-static const int hd_offset_x = 21;
+static const int hd_offset_y = 4;
+static const int hd_offset_x = 2;
 
 /* This setting will skip printing bg[] when
    window size reaches the resize constraints */

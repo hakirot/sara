@@ -13,7 +13,6 @@
 #include "globals.h"
 #include "config.h"
 #include "utils.h"
-//#include "sara.h"
 #include <ncurses.h>
 #include <unistd.h>
 #include <stdlib.h>

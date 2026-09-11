@@ -5,12 +5,9 @@ VERSION = 0.9.2
 SRC = sara.c animations.c globals.c utils.c
 OBJ = $(SRC:.c=.o)
 
-#CFLAGS        = -pipe -O2 -flto -fno-fat-lto-objects -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CFLAGS        = -pipe -O2 -flto -fno-fat-lto-objects -D_REENTRANT -fPIC $(DEFINES)
-
+CC			= gcc
 LINK    = gcc
-LFLAGS  = -Wl,-O1 -pipe -O2 -flto=16 -fno-fat-lto-objects -fuse-linker-plugin -fPIC -lncursesw -DNCURSES_WIDECHAR=1
-LIBS    = -lGL -lpthread   
+LFLAGS  = -lncursesw -DNCURSES_WIDECHAR=1
 TARGET  = sara
 
 all: sara config.h
@@ -20,12 +17,12 @@ config.h:
 	sed -i "s|PATH_ME_PLS|${PWD}/sara|g" config.h
 
 sara: $(OBJ) config.h
-	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJ) $(OBJCOMP) $(LIBS)
+	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJ)
 	./sara -C
 
 dist: clean
 	mkdir -p sara-$(VERSION)
-	cp -R FAQ TODO LICENSE Makefile README.md config.def\
+	cp -R FAQ TODO LICENSE Makefile README.md config.def \
 		sara.h utils.h animations.h globals.h $(SRC)\
 		sara-$(VERSION)
 	tar -cf - sara-$(VERSION) | gzip > sara-$(VERSION).tar.gz
@@ -36,27 +33,15 @@ dist: clean
 clean:
 	rm -f sara $(OBJ) sara-$(VERSION).tar.gz sara-$(VERSION).tar.gz.sig SHA256SUM
 
-animations.o: animations.c animations.h \
-		globals.h \
-		config.h \
-		utils.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o animations.o animations.c
+animations.o: config.h animations.c animations.h
+	$(CC) -c -o animations.o animations.c
 
-globals.o: globals.c globals.h \
-		config.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o globals.o globals.c
+globals.o: config.h globals.c globals.h
+	$(CC) -c -o globals.o globals.c
 
-sara.o: sara.c sara.h \
-		globals.h \
-		animations.h \
-		config.h \
-		utils.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o sara.o sara.c
+sara.o: config.h sara.c sara.h
+	$(CC) -c -o sara.o sara.c
 
-utils.o: utils.c utils.h \
-		globals.h \
-		config.h \
-		sara.h \
-		animations.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o utils.o utils.c
+utils.o: config.h utils.c utils.h
+	$(CC) -c -o utils.o utils.c
 

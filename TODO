@@ -8,6 +8,9 @@ v1.0.0 features
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
   - make install?
 
+-- 0.9.3 Patch notes --
+  - -f and -b args no longer prints an erroneous error
+
 Backlog
   - optional single menu mode [launch into a menu]
   - full command list option

@@ -63,18 +63,14 @@ int main(int argc, char* argv[]){
 
   int opt;
   bool preflight_check = false;
-  while ((opt = getopt(argc, argv, "vVrHFC")) != -1){
+  while ((opt = getopt(argc, argv, "fbvVrHFC")) != -1){
     switch (opt) {
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
+        HEADER = (rand() % 7) + 1;    // RNG 1 and 7
         while(FOREGROUND == BACKGROUND){
           FOREGROUND = rand() % 7 + 2;
-        }
-        if (FOREGROUND > 8 || FOREGROUND < 2 || BACKGROUND > 7 || BACKGROUND < 1){
-          crit("rand error");
-        } else if (FOREGROUND == BACKGROUND) {
-          crit("F == B");
         }
         break;
       case 'H': HOLOGRAPHIC = 1; break;

@@ -944,7 +944,7 @@ void get_helped() {
   printf("Visit \x1b[31mhakipaks.org/sara\x1b[0m for docs\n");
   printf("  --help, -h      Get helped\n");
   printf("  -v, --version   Get version\n");
-  printf("  -H              Holographic background\n");
+  printf("  -H              HOLO mode\n");
   printf("  -f [color]      set FOREGROUND color\n");
   printf("  -b [color]      set BACKGROUND color\n");
   printf("  -F [follow]     On exit, write PWD to file\n");

@@ -110,7 +110,11 @@ int main(int argc, char* argv[]){
 
     if(HOLOGRAPHIC == 1 && WIN_SIZE == BIG){
       BACKGROUND++;
+      FOREGROUND++;
+      HEADER++;
       if (BACKGROUND > 7) BACKGROUND = 2;
+      if (FOREGROUND > 7) FOREGROUND = 2;
+      if (HEADER > 7) HEADER = 2;
       animate(none);
     }
 

@@ -9,14 +9,14 @@
 #define NCURSES_WIDECHAR 1
 #define __key__(...) ___key___((key_arg){__VA_ARGS__});
 
+//#include <ncurses.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 #include "animations.h"
 #include "globals.h"
 #include "config.h"
 #include "utils.h"
-#include <ncurses.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
 
 void animate(animation_option option){
 

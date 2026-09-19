@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <wait.h>
 #include <fcntl.h>
+#include <errno.h>
 
 #include "sara.h"
 #include "animations.h"
@@ -200,8 +201,7 @@ int input_color(char * arg){
 }
 
 
-// TODO error on directory doesnt exist
-// TODO enter easy way to edit pshd
+// TODO quickedit pshd
 void _pshd(){
 
   CACHE = ROW + COL;
@@ -320,11 +320,14 @@ void _pshd(){
         i++;
       }
 
-      chdir(line);
+      int result = chdir(line);
 
-      if (setenv("PWD", line, 1) != 0) {
-        crit("setenv error");
+      if(result != 0) {
+        slap(strerror(errno));
+      } else {
+        setenv("PWD", line, 1);
       }
+
       fclose(file);
       animate(blink);
       return;
@@ -455,7 +458,13 @@ void _pshd(){
                 selection = k;
                 if(chdir_at_seletion){
 
-                  chdir(line);
+                  int result = chdir(line);
+
+                  if(result != 0) {
+                    slap(strerror(errno));
+                  } else {
+                    setenv("PWD", line, 1);
+                  }
 
                   if (setenv("PWD", line, 1) != 0) {
                     crit("setenv error");

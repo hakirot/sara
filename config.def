@@ -1,5 +1,5 @@
 #define PROGRAM_NAME "SARA"
-#define PROGRAM_VERSION "0.9.2"
+#define PROGRAM_VERSION "0.9.3"
 
 #ifndef CONFIG_H
 #define CONFIG_H
@@ -88,7 +88,7 @@ static const char * bg[] = {
 
 /* Optionally set empty */
 //static const char hd[] = {'\0'};
-static const char hd[] = "v0.9.2 ©HakiPaks";
+static const char hd[] = "v0.9.3 ©HakiPaks";
 
 
 /* fg position */

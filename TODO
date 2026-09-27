@@ -9,7 +9,8 @@ v1.0.0 features
   - make install?
 
 -- 0.9.3 Patch notes --
-  - -f and -b args no longer prints an erroneous error
+  - args -f and -b no longer print an erroneous error
+  - fix a segfault for fresh linux installs lacking the $HOME/.cache directory
 
 Backlog
   - optional single menu mode [launch into a menu]

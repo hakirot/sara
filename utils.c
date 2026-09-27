@@ -677,9 +677,10 @@ void _preflight_check() {
   }
 
   // assert all commands are installed
+  ensure_cache_dir();
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
-  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
   remove(run_file);
   generate_path_run_file();
 
@@ -1044,10 +1045,9 @@ void generate_path_run_file(){
 
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
-  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
   FILE * fp;
   if (access(run_file, F_OK) != 0){
-    //crit(strerror(errno));
     fp = fopen(run_file, "a");
     char * env_path = getenv("PATH");
     char path[1028] = "\0";

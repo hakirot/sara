@@ -1045,7 +1045,7 @@ void generate_path_run_file(){
 
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
-  sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
+  sprintf(run_file, "%s%s", env_home, "/.cache/sara/.sara_run");
   FILE * fp;
   if (access(run_file, F_OK) != 0){
     fp = fopen(run_file, "a");

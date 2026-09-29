@@ -8,10 +8,6 @@ v1.0.0 features
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
   - make install?
 
--- 0.9.3 Patch notes --
-  - args -f and -b no longer print an erroneous error
-  - fix a segfault for fresh linux installs lacking the $HOME/.cache directory
-
 Backlog
   - optional single menu mode [launch into a menu]
   - full command list option

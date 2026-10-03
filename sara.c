@@ -92,10 +92,10 @@ int main(int argc, char* argv[]){
   CACHE = check_size();
   LAST_INPUT_TIME = clock();
   int signal_reprint = true;
-
+  int result = 0;
   while(1){
 
-    int result = __key__();
+    result = __key__();
 
     if(INTERRUPT){
       INTERRUPT = false;
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]){
     getmaxyx(stdscr, ROW, COL);
     CACHE = check_size();
 
-    if(_slap_timer() == 1) {
+    if(strlen(SLAP_STR) > 0 && _slap_timer() == 1 ) {
       signal_reprint = true;
     }
 

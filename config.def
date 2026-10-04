@@ -40,9 +40,10 @@ static const int highlight_hd_in_small_mode = false;
 
 
 /* MENU BORDERS */
-static const wchar_t MenuBorder[] =         L"┌┐└┘─│";
-//static const wchar_t MenuBorder[] =         L"╔╗╚╝═║";
-//static const wchar_t MenuBorder[] =         L"╔╗╚╝─│";
+static const wchar_t MenuBorder[] =   L"╭╮╰╯─│";
+//static const wchar_t MenuBorder[] =   L"╒╕╘╛─│";
+//static const wchar_t MenuBorder[] =   L"┌┐└┘─│";
+//static const wchar_t MenuBorder[] =   L"╔╗╚╝═║";
 
 
 /* pshd dimensions */

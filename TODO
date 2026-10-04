@@ -3,7 +3,7 @@ bugs/issues
   - Remove NO_COMMAND in favor of just passing NULL
   - submenu dims are inherited needlessly from parent dims
 
-v1.0.0 features
+future feats
   - builtin function to display all user-mapped commands
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
   - make install?

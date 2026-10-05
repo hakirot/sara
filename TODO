@@ -1,12 +1,14 @@
 bugs/issues
   - backspace in run_c draws border when buffer is outside run_x
-  - Remove NO_COMMAND in favor of just passing NULL
   - submenu dims are inherited needlessly from parent dims
 
-future feats
+v1.0.0 features
   - builtin function to display all user-mapped commands
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
   - make install?
+
+-- 0.9.4 Patch notes --
+  - Removed NO_COMMAND in favor of just passing NULL for empty commands
 
 Backlog
   - optional single menu mode [launch into a menu]

@@ -164,7 +164,7 @@ int __execute__(const Command * command){
     _chdir(command->extra_args.chdir);
   }
 
-  if(strcmp(((char**)command->cmd)[0], "NO_COMMAND") == 0) return true;
+  if(((char**)command->cmd)[0] == NULL) return true;
 
   animate(command->pre_animation);
   endwin();
@@ -695,7 +695,7 @@ void _preflight_check() {
   for(int i = 0; i < commandkeys_len; i++){
     command_ptr = &commandkeys[i];
     binary = ((char**)command_ptr->cmd)[0];
-    if(_is_binary_in_path(binary) == 1){
+    if(binary != NULL && _is_binary_in_path(binary) == 1){
       char warning[256];
       sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
       warning_flag = 1;
@@ -756,8 +756,7 @@ int _check_menu(const Menu * menu_ptr){
     } else {
       const Command * binary_command = &menu_ptr->next.command;
       const char * binary = ((char**)binary_command->cmd)[0];
-      int ret_val = _is_binary_in_path(binary);
-      if(ret_val == 1){
+      if(binary != NULL && _is_binary_in_path(binary) == 1){
         char warning[128];
         sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
         warning_flag = 1;
@@ -776,7 +775,7 @@ int _is_binary_in_path(const char * binary) {
       return 1;
     }
     return 0;
-  } else if(strncmp(binary, "NO_COMMAND", strlen("NO_COMMAND")) == 0){
+  } else if(binary == NULL){
     return 0;
   } else {
     int len = strlen(binary);

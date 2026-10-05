@@ -164,6 +164,7 @@ int __execute__(const Command * command){
     _chdir(command->extra_args.chdir);
   }
 
+  if(command->cmd == NULL) return true;
   if(((char**)command->cmd)[0] == NULL) return true;
 
   animate(command->pre_animation);
@@ -755,7 +756,8 @@ int _check_menu(const Menu * menu_ptr){
       if(_check_menu(submenu_ptr)) warning_flag = 1;
     } else {
       const Command * binary_command = &menu_ptr->next.command;
-      const char * binary = ((char**)binary_command->cmd)[0];
+      const char * binary = NULL;
+      if(binary_command->cmd != NULL) binary = ((char**)binary_command->cmd)[0];
       if(binary != NULL && _is_binary_in_path(binary) == 1){
         char warning[128];
         sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");

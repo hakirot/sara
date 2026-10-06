@@ -8,7 +8,8 @@ v1.0.0 features
   - make install?
 
 -- 0.9.4 Patch notes --
-  - Removed NO_COMMAND in favor of just passing NULL for empty commands
+  - show pwd builtin function added
+  - Removed NO_COMMAND, just use NULL for empty commands
 
 Backlog
   - optional single menu mode [launch into a menu]

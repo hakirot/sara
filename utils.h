@@ -64,8 +64,8 @@ void generate_path_run_file();
 int _is_binary_in_path(const char * binary);
 int _check_menu(const Menu * menu_ptr);
 void version();
-int _run_args(char * selection);
+int _run_args(int offset_y, int offset_x, char * selection);
 int _execute_run_args(char * selection, char * args_buffer);
-void _run_args_refresh(char * selection, char * args_buffer);
+void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_buffer);
 
 #endif

@@ -266,6 +266,8 @@ void __builtin__(char input){
     _randomize_colors();
   } else if (selection == path_run){
     _path_run();
+  } else if (selection == pwd){
+    _get_pwd();
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -275,6 +277,10 @@ void __builtin__(char input){
     _show_colors();
   }
 
+}
+
+void _get_pwd(){
+  slap(getenv("PWD"));
 }
 
 void __topmenu__(char input){

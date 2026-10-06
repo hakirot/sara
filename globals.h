@@ -108,6 +108,7 @@ typedef enum {
   rave,
   colors,
   path_run,
+  pwd,
 } internal;
 
 typedef enum {

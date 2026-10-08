@@ -12,6 +12,7 @@ v1.0.0 features
   - Removed NO_COMMAND, just use NULL for empty commands
 
 Backlog
+  - Add [modifier] + [enter] to change behaviors of launched commands
   - optional single menu mode [launch into a menu]
   - full command list option
   - ability to pass args to commands

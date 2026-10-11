@@ -49,7 +49,6 @@ int ___key___(key_arg arg){
 int key(char optional_input){
 
   char input;
-
   int valid_input = 0;
   if(optional_input){
     input = optional_input;

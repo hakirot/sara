@@ -21,6 +21,7 @@
 #include "globals.h"
 #include "config.h"
 #include "utils.h"
+#include "viz.h"
 
 int main(int argc, char* argv[]){
 
@@ -116,7 +117,7 @@ int main(int argc, char* argv[]){
       if (BACKGROUND > 7) BACKGROUND = 2;
       if (FOREGROUND > 7) FOREGROUND = 2;
       if (HEADER > 7) HEADER = 2;
-      animate(none);
+      signal_reprint = true;
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded

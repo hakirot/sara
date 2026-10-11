@@ -2,7 +2,7 @@
 
 VERSION = 0.9.3
 
-SRC = sara.c animations.c globals.c utils.c
+SRC = sara.c animations.c globals.c utils.c viz.c
 OBJ = $(SRC:.c=.o)
 
 CC			= gcc
@@ -38,6 +38,9 @@ animations.o: config.h animations.c animations.h
 
 globals.o: config.h globals.c globals.h
 	$(CC) -c -o globals.o globals.c
+
+viz.o: config.h viz.c viz.h
+	$(CC) -c -o viz.o viz.c
 
 sara.o: config.h sara.c sara.h
 	$(CC) -c -o sara.o sara.c

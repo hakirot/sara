@@ -156,41 +156,28 @@ extern int HOLOGRAPHIC;
 extern int ROW;
 extern int COL;
 extern int CACHE;
-
-extern clock_t LAST_INPUT_TIME;
-extern screen_size WIN_SIZE;
-extern clock_t WAIT_START;
-
-//extern const animation_option start_animation;
-extern char HOLD_CHAR;
-
-extern int GLITCH_TIME;
-
+extern int commandkeys_len;
+extern int builtinkeys_len;
+extern int menukeys_len;
 extern char global_chars[];
 extern char commandkeys_chars[];
 extern char builtinkeys_chars[];
 extern char menukeys_chars[];
-
-
-extern int commandkeys_len;
-extern int builtinkeys_len;
-extern int menukeys_len;
-
 extern char SLAP_STR[256];
 extern struct timeval slap_time;
-
 extern int SHOW_COLORS;
-
 extern int KEY_LOCK;
-
 extern int INTERRUPT;
+extern char HOLD_CHAR;
+extern int GLITCH_TIME;
+extern clock_t LAST_INPUT_TIME;
+extern screen_size WIN_SIZE;
+extern clock_t WAIT_START;
 
 static const Menu END_OF_MENU = {"END_OF_MENU", COMMAND, {.command={0,"eww_dont_look_at_me",WAIT,none,none,{0} }}};
-
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};
 static const Command FORCE_ECHO_STRUCT = {0, FORCE_ECHO_COMMAND, WAIT,none,none, {NULL, NOCONFIRM, NO_OUT} };
 static const Command * FORCE_ECHO = &FORCE_ECHO_STRUCT;
-
 extern const int GLITCH_FRAME_TIME;
 extern const float HOLD_CHAR_TIME;
 

@@ -69,7 +69,7 @@ int main(int argc, char* argv[]){
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
         FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
-        HEADER = (rand() % 7) + 1;    // RNG 1 and 7
+        HEADER = (rand() % 7) + 1;        // RNG 1 and 7
         while(FOREGROUND == BACKGROUND){
           FOREGROUND = rand() % 7 + 2;
         }
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]){
       if (BACKGROUND > 7) BACKGROUND = 2;
       if (FOREGROUND > 7) FOREGROUND = 2;
       if (HEADER > 7) HEADER = 2;
-      animate(none);
+      signal_reprint = true;
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
@@ -573,7 +573,7 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     }
 
     for(int j = 0; j < len; j++){
-      mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y,COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
+      mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
       if((j + 8) > dim_x) break;
     }
 

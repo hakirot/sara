@@ -1,8 +1,12 @@
 bugs/issues
   - backspace in run_c draws border when buffer is outside run_x
   - submenu dims are inherited needlessly from parent dims
+  - catch unknown args
+  - hd[] not printing in the same relative column on all widths
+  - often reprints once before getting new size on resize
 
-v1.0.0 features
+planned features
+  - Add a method to change STOP for WAIT from path_run
   - builtin function to display all user-mapped commands
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
   - make install?
@@ -12,6 +16,9 @@ v1.0.0 features
   - Removed NO_COMMAND, just use NULL for empty commands
 
 Backlog
+  - job control
+  - path_run local items
+  - Display path_run output
   - Add [modifier] + [enter] to change behaviors of launched commands
   - optional single menu mode [launch into a menu]
   - full command list option

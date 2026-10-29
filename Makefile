@@ -7,7 +7,6 @@ OBJ = $(SRC:.c=.o)
 
 CC			= gcc
 LINK    = gcc
-LFLAGS  = -lncursesw -DNCURSES_WIDECHAR=1
 TARGET  = sara
 
 all: sara config.h
@@ -17,7 +16,7 @@ config.h:
 	sed -i "s|PATH_ME_PLS|${PWD}/sara|g" config.h
 
 sara: $(OBJ) config.h
-	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJ)
+	$(LINK) -DNCURSES_WIDECHAR -o $(TARGET) $(OBJ) -lncursesw
 	./sara -C
 
 dist: clean

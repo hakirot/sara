@@ -162,7 +162,9 @@ static const char *example_cmd[]      = { "echo", "hi im an example :D",        
 static const char *reload_cmd[]       = { "PATH_ME_PLS",                      NULL};
 static const char *ls_cmd[]           = { "ls", "--color=tty",                                 NULL};
 static const char *make_cmd[]         = { "make",                                              NULL};
-static const char *ranger_cmd[]       = { "ranger",                                            NULL};
+
+//static const char *ranger_cmd[]       = { "ranger",                                            NULL};
+
 /* .. Add more mapped commands here */
 
 
@@ -174,7 +176,7 @@ static const Command commandkeys[] = {
   { ':',         reload_cmd,          EXEC,          none,             none,             default_args },
   { 'l',         ls_cmd,              STOP,          none,             neon,             default_args },
   { 'm',         make_cmd,            STOP_ON_ERR,   none,             neon,             default_args },
-  { 'r',         ranger_cmd,          WAIT,          neon_reverse,     neon,             default_args },
+//{ 'r',         ranger_cmd,          WAIT,          neon_reverse,     neon,             default_args },
   /* .. Map more keys to commands here */
 };
 

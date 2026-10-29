@@ -861,11 +861,30 @@ int is_char_in_search(wchar_t wc, const wchar_t * search_str) {
 int ensure_cache_dir(){
   int EXIT_VAL = 0;
   const char *env_home = getenv("HOME");
+  const char *cache_wd = "/.cache";
   const char *sara_wd = "/.cache/sara";
   char cache_dir[256] = {'\0'};
-  sprintf(cache_dir, "%s%s", env_home, sara_wd);
 
+  sprintf(cache_dir, "%s%s", env_home, cache_wd);
   DIR* dir = opendir(cache_dir);
+  if (dir) {
+    closedir(dir);
+  } else if (ENOENT == errno) {
+    char dir_name[256] = {'\0'};
+    sprintf(dir_name, "%s%s", env_home, "/.cache");
+    int status = mkdir(dir_name, 0755);
+
+    if (status != 0) {
+      char error_str[256] = {'\0'};
+      sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
+      crit(error_str);
+      EXIT_VAL = 2; /* CRIT */
+    }
+    EXIT_VAL = 1;
+  }
+
+  sprintf(cache_dir, "%s%s", env_home, sara_wd);
+  dir = opendir(cache_dir);
   if (dir) {
     closedir(dir);
   } else if (ENOENT == errno) {
@@ -1110,8 +1129,8 @@ void generate_path_run_file(){
     sprintf(sys_sort_cmd, "%s%s%s%s%s%s", "sort ", run_file, " | ", "uniq", " > ", run_file_sorted);
 
     system(sys_sort_cmd);
-    remove(run_file);
   }
+  remove(run_file);
 }
 
 void _path_run(){

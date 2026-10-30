@@ -11,6 +11,7 @@ planned features
   - make install?
 
 -- 0.9.4 Patch notes --
+  - add block cursor for path_run
   - backspace in run_c draws border when buffer is outside run_x
   - Replaced END_OF_MENU sentinel for NULL
   - Fix makefile for debian users

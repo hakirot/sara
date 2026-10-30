@@ -1,6 +1,4 @@
 bugs/issues
-  - submenu dims are inherited needlessly from parent dims
-  - catch unknown args
   - hd[] not printing in the same relative column on all widths
   - often reprints once before getting new size on resize
 
@@ -11,6 +9,7 @@ planned features
   - make install?
 
 -- 0.9.4 Patch notes --
+  - submenu dims no longer inherited parent menu
   - main arg bug fixes
   - added block cursor for path_run UI
   - backspace in run_c draws border correctly when buffer is outside run_x

@@ -316,10 +316,33 @@ void __topmenu__(char input){
     dim_x = menu_x;
   }
 
-  _menuselect(menukey->submenu, dim_y, dim_x);
+  _menuselect(menukey->submenu);
 }
 
-void _menuselect(const Menu * menu, int dim_y, int dim_x){
+void _menuselect(const Menu * menu){
+
+  int dim_y = 0;
+  int dim_x = 0;
+
+  if(menu_y < 3){
+    if(menu_y < ROW){
+      dim_y = 3;
+    } else {
+      dim_y = ROW;
+    }
+  } else if(ROW < menu_y){
+    dim_y = ROW;    
+  } else {
+    dim_y = menu_y;
+  }
+
+  if(menu_x < 3){
+    dim_x = 3;
+  } else if(COL < menu_x){
+    dim_x = COL;
+  } else {
+    dim_x = menu_x;
+  }
 
   Menu * ptr = (Menu *)menu;
   int len = 0;
@@ -385,7 +408,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
       if(menu[selection].type == SUBMENU){
         _clear_menu(dim_y+2, dim_x+2, offset_y, offset_x);
         // TODO Why restrict submenus to parent menu dims
-        _menuselect(menu[selection].next.submenu, dim_y, dim_x);
+        _menuselect(menu[selection].next.submenu);
       } else if(menu[selection].type == COMMAND){
         int result = __execute__(&menu[selection].next.command);
         if(result == true){

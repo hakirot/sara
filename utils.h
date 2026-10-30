@@ -23,7 +23,7 @@ void  __command__(char input);
 int   __execute__(const Command * command);
 void  __builtin__(char input);
 void  __topmenu__(char input);
-void  _menuselect(const Menu * menu, int dim_y, int dim_x);
+void  _menuselect(const Menu * menu);
 void  _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x, int offset_y, int offset_x);
 int   _deduce_offset_y(int dim_y, int requested_offset_y);
 int   _deduce_offset_x(int dim_x, int requested_offset_x);

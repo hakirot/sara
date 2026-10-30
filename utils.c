@@ -970,10 +970,10 @@ void launch_window(){
 //refresh();                // clear screen
 }
 
-void get_helped() {
+void get_helped(int exit_code) {
   printf("Usage: %s [OPTIONS]\n", "sara");
-  printf("Visit \x1b[31mhakipaks.org/sara\x1b[0m for docs\n");
-  printf("  --help, -h      Get helped\n");
+  printf("Visit \x1b[31mhakipaks.org/sara/getting-started\x1b[0m for docs\n");
+  printf("  -h, --help      Get helped\n");
   printf("  -v, --version   Get version\n");
   printf("  -H              HOLO mode\n");
   printf("  -f [color]      set FOREGROUND color\n");
@@ -981,7 +981,7 @@ void get_helped() {
   printf("  -F [follow]     On exit, write PWD to file\n");
   printf("  -r              Generate a random color profile. Not compatible with -f or -b options\n");
   printf("  -C              Print possible issues with config.h");
-  exit(0);
+  exit(exit_code);
 }
 
 int roll(int sides){

@@ -39,7 +39,7 @@ int   _slap_timer();
 void  crit(char * err);
 int   is_char_in_search(wchar_t wc, const wchar_t * search_str);
 void  launch_window();
-void  get_helped();
+void  get_helped(int exit_code);
 int   ensure_cache_dir();
 void  ensure_config_dir();
 void  ensure_path_perm(char * file_path, char perm);

@@ -26,46 +26,15 @@
 int main(int argc, char* argv[]){
 
   for (int i = 1; i < argc; i++) {
-    if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
-      get_helped();
-    } else if (strcmp(argv[i], "--version") == 0) {
-      version();
-    }
-  }
-
-  for (int i = 0; i < argc; i++) {
-    if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--foreground") == 0){
-      if(i + 1 < argc){
-        FOREGROUND = input_color(argv[i + 1]);
-        if (FOREGROUND == -1){
-          char errstr[256] = {'\0'};
-          sprintf(errstr, "Bad arg: '%s'", argv[i + 1]);
-          crit(errstr);
-        }
-      } else {
-        get_helped();
-        crit("bad arg\n");
-      }
-    } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--background") == 0){
-      if(i + 1 < argc){
-        BACKGROUND = input_color(argv[i + 1]);
-        if (BACKGROUND == -1){
-          char errstr[256] = {'\0'};
-          sprintf(errstr, "Bad arg: '%s'", argv[i + 1]);
-          crit(errstr);
-        }
-      } else {
-        get_helped();
-        crit("bad arg\n");
-      }
-    }
+    if (strcmp(argv[i], "--help") == 0) get_helped(0);
+    else if (strcmp(argv[i], "--version") == 0) version();
   }
 
   srand((unsigned)time(0));
 
   int opt;
   bool preflight_check = false;
-  while ((opt = getopt(argc, argv, "fbvVrHFC")) != -1){
+  while ((opt = getopt(argc, argv, "f:b:vVhrHFC")) != -1){
     switch (opt) {
       case 'r':
         BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
@@ -80,6 +49,10 @@ int main(int argc, char* argv[]){
       case 'C': preflight_check = true; break;
       case 'v': version(); break;
       case 'V': version(); break;
+      case 'f': FOREGROUND = input_color(optarg); break;
+      case 'b': BACKGROUND = input_color(optarg); break;
+      case 'h': get_helped(0); break;
+      default: exit(1);
     }
   }
 
@@ -198,8 +171,11 @@ int input_color(char * arg){
   } else if (strcmp(arg, "white") == 0) {
       return 8;
   } else {
-      return -1;
+      char err[128];
+      sprintf(err, "%s %s", "Bad Arg:", arg);
+      get_helped(1);
   }
+  return -1;
 }
 
 

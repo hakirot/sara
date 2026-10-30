@@ -1,6 +1,4 @@
 bugs/issues
-  - hd[] not printing in the same relative column on all widths
-  - often reprints once before getting new size on resize
 
 planned features
   - Add a method to change STOP for WAIT from path_run

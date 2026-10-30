@@ -94,6 +94,7 @@ int main(int argc, char* argv[]){
   LAST_INPUT_TIME = clock();
   int signal_reprint = true;
   int result = 0;
+
   while(1){
 
     result = __key__();

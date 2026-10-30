@@ -204,13 +204,13 @@ static const Command echo_example = { 0, echo_example_cmd, STOP, neon_reverse, b
 static const Menu example_submenu[] = {
   { "echo success",         COMMAND, { .command = echo_success } },
   { "echo failure",         COMMAND, { .command = echo_failure } },
-  END_OF_MENU /* <-- Ensure all your menus end with END_OF_MENU */
+  NULL /* <-- Ensure all your menus end with NULL */
 };
 
 static const Menu example_menu[] = {
   { "A submenu",         SUBMENU, { .submenu = example_submenu } },
   { "Example Command",   COMMAND, { .command = echo_example } },
-  END_OF_MENU
+  NULL
 };
 
 /* Assign key to launch menu */

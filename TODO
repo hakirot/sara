@@ -1,5 +1,4 @@
 bugs/issues
-  - backspace in run_c draws border when buffer is outside run_x
   - submenu dims are inherited needlessly from parent dims
   - catch unknown args
   - hd[] not printing in the same relative column on all widths
@@ -12,8 +11,11 @@ planned features
   - make install?
 
 -- 0.9.4 Patch notes --
+  - backspace in run_c draws border when buffer is outside run_x
+  - Replaced END_OF_MENU sentinel for NULL
+  - Fix makefile for debian users
   - show pwd builtin function added
-  - Removed NO_COMMAND, just use NULL for empty commands
+  - Removed NO_COMMAND, using NULL for optional empty commands
 
 Backlog
   - job control

@@ -324,7 +324,7 @@ void _menuselect(const Menu * menu, int dim_y, int dim_x){
   Menu * ptr = (Menu *)menu;
   int len = 0;
   while(1){
-    if(strcmp("END_OF_MENU", ptr->name) == 0) break;
+    if(ptr == NULL || ptr->name == NULL) break;
     ptr++;
     len++;
   }
@@ -758,7 +758,7 @@ void _preflight_check() {
 
 int _check_menu(const Menu * menu_ptr){
   int warning_flag = 0;
-  while(strncmp("END_OF_MENU", menu_ptr->name, strlen("END_OF_MENU")) != 0){
+  while(menu_ptr != NULL && menu_ptr->name != NULL){
     if(menu_ptr->type == SUBMENU){
       const Menu * submenu_ptr = menu_ptr->next.submenu;
       if(_check_menu(submenu_ptr)) warning_flag = 1;
@@ -766,6 +766,7 @@ int _check_menu(const Menu * menu_ptr){
       const Command * binary_command = &menu_ptr->next.command;
       const char * binary = NULL;
       if(binary_command->cmd != NULL) binary = ((char**)binary_command->cmd)[0];
+
       if(binary != NULL && _is_binary_in_path(binary) == 1){
         char warning[128];
         sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
@@ -1249,11 +1250,19 @@ void _run_menu(){
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) attron(A_BOLD);
-      if (dim_y != 2){
+
+      if (dim_y != 2 && idx + 6 < dim_x){
         wchar_t wc = MenuBorder[4];
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
         mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+      } else if (dim_y != 2 && idx + 6 == dim_x){
+        wchar_t wc = MenuBorder[1];
+        cchar_t cchar;
+        setcchar(&cchar, &wc, 0, 0, NULL);
+        mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+      } else if (idx + 4 > dim_x){
+        mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, ' ');
       }
       attroff(COLOR_PAIR(run_c));
       attroff(A_BOLD);

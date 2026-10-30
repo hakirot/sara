@@ -137,8 +137,6 @@ typedef struct {
   const Menu * submenu;
 } MenuKey;
 
-extern const Menu * RegisteredMenus[];
-
 extern int BG_GLYPH_HEIGHT;
 extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;
@@ -184,8 +182,6 @@ extern int SHOW_COLORS;
 extern int KEY_LOCK;
 
 extern int INTERRUPT;
-
-static const Menu END_OF_MENU = {"END_OF_MENU", COMMAND, {.command={0,"eww_dont_look_at_me",WAIT,none,none,{0} }}};
 
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};
 static const Command FORCE_ECHO_STRUCT = {0, FORCE_ECHO_COMMAND, WAIT,none,none, {NULL, NOCONFIRM, NO_OUT} };

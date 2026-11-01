@@ -1,6 +1,6 @@
 # Makefile #
 
-VERSION = 0.9.3
+VERSION = 0.9.4
 
 SRC = sara.c animations.c globals.c utils.c
 OBJ = $(SRC:.c=.o)

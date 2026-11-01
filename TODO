@@ -7,6 +7,7 @@ planned features
   - make install?
 
 -- 0.9.4 Patch notes --
+  - path run (args) UI fixes
   - submenu dims no longer inherited parent menu
   - main arg bug fixes
   - added block cursor for path_run UI

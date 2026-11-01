@@ -1424,10 +1424,6 @@ int _run_exec(char * selection){
 
 int _run_args(int offset_y, int offset_x, char * selection){
 
-  clear();
-
-  animate(none);
-
   char args_buffer[256] = {'\0'};
   int buffer_idx = 0;
 
@@ -1480,18 +1476,20 @@ int _run_args(int offset_y, int offset_x, char * selection){
 
 void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_buffer){
 
+  if(ROW > 1) animate(none);
+  if(ROW == 1) clear();
   int dim_y = 3;
   int dim_x = run_x; if(run_x < 3) dim_x = 3; if(COLS < dim_x) dim_x = COLS;
 
   offset_y -= run_y/2;
-  if(run_y > ROW){
-    offset_y = 1 - ROW/2;
-  }
+  if(run_y > ROW) offset_y = 1 - ROW/2;
+  if(ROW == 1) offset_y = 0;
+  if(ROW == 2) offset_y = -1;
 
   wchar_t cursor_w = L'\u2588';
   cchar_t cursor_c;
   setcchar(&cursor_c, &cursor_w, 0, 0, NULL);
-  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+  if(ROW > 1) _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
   attron(COLOR_PAIR(run_c));
   if(run_c_bold == true) attron(A_BOLD);
   mvaddch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, '>');

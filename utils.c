@@ -1180,6 +1180,7 @@ void generate_path_run_file(){
           sprintf(output_str, "%s%s", dir->d_name, "\n");
           fputs(output_str, fp);
         }
+        closedir(d);
       } else {
         char error_str[64];
         sprintf(error_str, "%s%s",

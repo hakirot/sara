@@ -4,6 +4,7 @@ VERSION = 0.9.4
 
 SRC = sara.c animations.c globals.c utils.c
 OBJ = $(SRC:.c=.o)
+FLAGS =	-fsanitize=address -fno-omit-frame-pointer -g
 
 CC			= gcc
 LINK    = gcc
@@ -16,7 +17,7 @@ config.h:
 	sed -i "s|PATH_ME_PLS|${PWD}/sara|g" config.h
 
 sara: $(OBJ) config.h
-	$(LINK) -DNCURSES_WIDECHAR -o $(TARGET) $(OBJ) -lncursesw
+	$(LINK) $(FLAGS) -DNCURSES_WIDECHAR -o $(TARGET) $(OBJ) -lncursesw
 	./sara -C
 
 dist: clean
@@ -33,14 +34,14 @@ clean:
 	rm -f sara $(OBJ) sara-$(VERSION).tar.gz sara-$(VERSION).tar.gz.sig SHA256SUM
 
 animations.o: config.h animations.c animations.h
-	$(CC) -c -o animations.o animations.c
+	$(CC) $(FLAGS) -c -o animations.o animations.c
 
 globals.o: config.h globals.c globals.h
-	$(CC) -c -o globals.o globals.c
+	$(CC) $(FLAGS) -c -o globals.o globals.c
 
 sara.o: config.h sara.c sara.h
-	$(CC) -c -o sara.o sara.c
+	$(CC) $(FLAGS) -c -o sara.o sara.c
 
 utils.o: config.h utils.c utils.h
-	$(CC) -c -o utils.o utils.c
+	$(CC) $(FLAGS) -c -o utils.o utils.c
 

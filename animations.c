@@ -775,8 +775,10 @@ void _overlay(const char * glyph[], char fill){
     int iter_col = 0;
 
     while (*iter_row) {
-      wchar_t wc;
-      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+      wchar_t wc[2] = { L'\0', L'\0' };
+      size_t len = mbrtowc(&wc[0], iter_row, MB_CUR_MAX, &state);
+
+      if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
 
       if (*iter_row == ' '){
         iter_row += len;
@@ -790,7 +792,7 @@ void _overlay(const char * glyph[], char fill){
         iter_col++;
       } else {
         cchar_t cchar;
-        setcchar(&cchar, &wc, 0, 0, NULL);
+        setcchar(&cchar, wc, 0, 0, NULL);
         mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, &cchar);
         iter_row += len;
         iter_col++;
@@ -811,14 +813,16 @@ void _overlay_bg(char ch){
     const char *iter_row = bg[i];
     int iter_col = 0;
     while (*iter_row) {
-      wchar_t wc;
-      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+      wchar_t wc[2] = { L'\0', L'\0' };
+      size_t len = mbrtowc(&wc[0], iter_row, MB_CUR_MAX, &state);
+
+      if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
 
       if(*iter_row != ' ' && ch != 0){
         mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, ch);
-      } else if(*iter_row != ' '){
+      } else if(wc != ' '){
         cchar_t cchar;
-        setcchar(&cchar, &wc, 0, 0, NULL);
+        setcchar(&cchar, wc, 0, 0, NULL);
         mvadd_wch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, &cchar);
       }
 
@@ -882,10 +886,10 @@ void _hd(){
     const char *iter_row = hd;
     int iter_col = 0;
     while (*iter_row) {
-      wchar_t wc;
-      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+      wchar_t wc[2] = { L'\0', L'\0' };
+      size_t len = mbrtowc(&wc[0], iter_row, MB_CUR_MAX, &state);
 
-      setcchar(&cchar, &wc, 0, 0, NULL);
+      setcchar(&cchar, wc, 0, 0, NULL);
       mvadd_wch(ROW/2 + offset_y, COL/2 + offset_x + iter_col, &cchar);
 
       iter_row += len;
@@ -997,7 +1001,7 @@ void _glint(fx mode) {
 
   int j = 0;
   int roll_result;
-  wchar_t wc;
+  wchar_t wc[2] = { L'\0', L'\0' };
 
   if(mode == glint_f || mode == glint_a){
     attron(COLOR_PAIR(FOREGROUND));
@@ -1011,7 +1015,7 @@ void _glint(fx mode) {
       while (*iter_row) {
 
         int idx = _state->fg_state[i][j];
-        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+        size_t len = mbrtowc(&wc[0], iter_row, MB_CUR_MAX, &state);
         roll_result = roll(2);
 
         if (idx == 1 && roll_result == 2){
@@ -1020,7 +1024,7 @@ void _glint(fx mode) {
         } else if (idx == 2 && roll_result == 2){
           _state->fg_state[i][j] = 1;
           cchar_t cchar;
-          setcchar(&cchar, &wc, 0, 0, NULL);
+          setcchar(&cchar, wc, 0, 0, NULL);
           mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
         }
 
@@ -1043,7 +1047,7 @@ void _glint(fx mode) {
       j = 0;
       while (*iter_row) {
 
-        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+        size_t len = mbrtowc(&wc[0], iter_row, MB_CUR_MAX, &state);
 
         roll_result = roll(2);
 
@@ -1055,7 +1059,7 @@ void _glint(fx mode) {
         } else if (idx == 2 && roll_result == 2){
           _state->bg_state[i][j] = 1;
           cchar_t cchar;
-          setcchar(&cchar, &wc, 0, 0, NULL);
+          setcchar(&cchar, wc, 0, 0, NULL);
           mvadd_wch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, &cchar);
         }
 

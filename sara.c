@@ -56,6 +56,7 @@ int main(int argc, char* argv[]){
   load_command_config();
   set_glyph_dimensions();
   _init_state();
+  reset_glyph_state();
   if(preflight_check) _preflight_check();
   launch_window();
   _deflect_signals();

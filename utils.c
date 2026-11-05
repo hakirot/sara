@@ -1076,11 +1076,6 @@ void _quit(int exit_code){
 
   free(_state->fg_state); _state->fg_state = NULL;
   free(_state->bg_state); _state->bg_state = NULL;
-
-//char err[128];
-//sprintf(err, "%p", _state->fg_state);
-//printf("\x1b[31m%s\n\x1b[0m", err);
-
   free(_state);
 
   exit(exit_code);
@@ -1717,6 +1712,53 @@ void _init_state(){
 
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     _state->bg_state[i] = (char*)malloc(BG_GLYPH_LENGTH * sizeof(char));
+  }
+}
+
+void reset_glyph_state(){
+
+  if(WIN_SIZE == t_full){
+    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = bg[i];
+      int iter_col = 0;
+      while (*iter_row) {
+
+        wchar_t wc;
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+        if(*iter_row == ' '){
+          _state->bg_state[i][iter_col] = 0;
+        } else {
+          _state->bg_state[i][iter_col] = 1;
+        }
+
+        iter_row += len;
+        iter_col++;
+      }
+    }
+  }
+
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = fg[i];
+    int iter_col = 0;
+    while (*iter_row) {
+
+      wchar_t wc;
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+
+      if(*iter_row == ' '){
+        _state->fg_state[i][iter_col] = 0;
+      } else {
+        _state->fg_state[i][iter_col] = 1;
+      }
+
+      iter_row += len;
+      iter_col++;
+    }
   }
 }
 

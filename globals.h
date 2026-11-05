@@ -156,7 +156,7 @@ typedef struct {
   char slap_str[256];
   struct timeval slap_time;
   int key_lock;
-} State;
+} state;
 
 typedef struct Menu Menu;
 

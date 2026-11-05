@@ -24,14 +24,10 @@
 
 int main(int argc, char* argv[]){
 
-  for (int i = 1; i < argc; i++) {
-    if (strcmp(argv[i], "--help") == 0) get_helped(0);
-    else if (strcmp(argv[i], "--version") == 0) version();
-  }
-
   srand((unsigned)time(0));
 
-  State state;
+  _basic_args(argc, argv);
+  state * _state = _init_state();
 
   int opt;
   bool preflight_check = false;

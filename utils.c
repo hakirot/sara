@@ -1658,6 +1658,19 @@ int _execute_run_args(char * selection, char * args_buffer){
   return 0;
 }
 
+void  _basic_args(int argc, char* argv[]){
+  for (int i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "--help") == 0) get_helped(0);
+    else if (strcmp(argv[i], "--version") == 0) version();
+  }
+}
+
+state * _init_state(){
+  state * _state = (state *)malloc(sizeof(state));
+//char *buff = (char *)malloc(bufsize * sizeof(char));
+  return _state;
+}
+
 void version(){
   printf("%s %s \n", PROGRAM_NAME, PROGRAM_VERSION);
   _quit(0);

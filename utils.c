@@ -273,19 +273,19 @@ void __builtin__(char input){
   } else if (selection == pwd){
     _get_pwd();
   } else if (selection == glint_fg){
-    if (_state->fx > 0) {
+    if (_state->fx == glint_fg) {
       _state->fx = 0;
       reset_glyph_state();
     }
     else  _state->fx = glint_f;
   } else if (selection == glint_bg){
-    if (_state->fx > 0) {
+    if (_state->fx == glint_bg) {
       _state->fx = 0;
       reset_glyph_state();
     }
     else  _state->fx = glint_b;
   } else if (selection == glint_full){
-    if (_state->fx > 0) {
+    if (_state->fx == glint_full) {
       _state->fx = 0;
       reset_glyph_state();
     }

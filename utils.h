@@ -69,8 +69,7 @@ int   _is_binary_in_path(const char * binary);
 Command * ranger_command(const Command * command);
 int   _run_args(int offset_y, int offset_x, char * selection);
 int   _execute_run_args(char * selection, char * args_buffer);
-void  _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection);
 void  _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_buffer);
-
+void  _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection);
 
 #endif

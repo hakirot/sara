@@ -65,7 +65,6 @@ typedef enum {
   print_b,
   print_f,
   blink,
-  glint_frame,
 } animation;
 
 typedef enum {
@@ -110,7 +109,9 @@ typedef enum {
   colors,
   path_run,
   pwd,
-  glint,
+  glint_fg,
+  glint_bg,
+  glint_full,
 } internal;
 
 typedef enum {
@@ -166,7 +167,7 @@ typedef struct {
   float hold_char_time;
   char slap_str[256];
   int key_lock;
-  int glint;
+  int fx;
   int reprint;
   char ** fg_state;
   char ** bg_state;

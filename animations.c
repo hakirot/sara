@@ -37,7 +37,6 @@ void animate(animation option){
   if (option == print_f)             _fg(fg);
   if (option == print_b)             _bg();
   if (option == blink)               _blink();
-  if (option == glint_frame)         _glint();
 }
 
 void _blink(){
@@ -994,45 +993,46 @@ void _colorbar(){
   }
 }
 
-void _glint() {
-
+void _glint(Arg mode) {
 
   int j = 0;
   int roll_result;
   wchar_t wc;
 
-  attron(COLOR_PAIR(FOREGROUND));
-  if(fg_c_bold) attron(A_BOLD);
-  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+  if(mode.x == glint_f || mode.x == glint_a){
+    attron(COLOR_PAIR(FOREGROUND));
+    if(fg_c_bold) attron(A_BOLD);
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
-    mbstate_t state;
-    memset(&state, 0, sizeof(mbstate_t));
-    const char *iter_row = fg[i];
-    j = 0;
-    while (*iter_row) {
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = fg[i];
+      j = 0;
+      while (*iter_row) {
 
-      int idx = fg_arr[i][j];
-      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
-      roll_result = roll(2);
+        int idx = _state->fg_state[i][j];
+        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+        roll_result = roll(2);
 
-      if (idx == 1 && roll_result == 2){
-        fg_arr[i][j] = 2;
-        mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, ' ');
-      } else if (idx == 2 && roll_result == 2){
-        fg_arr[i][j] = 1;
-        cchar_t cchar;
-        setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
+        if (idx == 1 && roll_result == 2){
+          _state->fg_state[i][j] = 2;
+          mvaddch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, ' ');
+        } else if (idx == 2 && roll_result == 2){
+          _state->fg_state[i][j] = 1;
+          cchar_t cchar;
+          setcchar(&cchar, &wc, 0, 0, NULL);
+          mvadd_wch(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
+        }
+
+        iter_row += len;
+        j++;
       }
-
-      iter_row += len;
-      j++;
     }
+    attroff(A_BOLD);
+    attroff(COLOR_PAIR(FOREGROUND));
   }
-  attroff(A_BOLD);
-  attroff(COLOR_PAIR(FOREGROUND));
 
-  if(WIN_SIZE == t_full){
+  if(mode.x == glint_b || mode.x == glint_a && WIN_SIZE == t_full){
     attron(COLOR_PAIR(BACKGROUND));
     if(bg_c_bold) attron(A_BOLD);
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
@@ -1047,13 +1047,13 @@ void _glint() {
 
         roll_result = roll(2);
 
-        int idx = bg_arr[i][j];
+        int idx = _state->bg_state[i][j];
 
         if (idx == 1 && roll_result == 2){
-          bg_arr[i][j] = 2;
+          _state->bg_state[i][j] = 2;
           mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, ' ');
         } else if (idx == 2 && roll_result == 2){
-          bg_arr[i][j] = 1;
+          _state->bg_state[i][j] = 1;
           cchar_t cchar;
           setcchar(&cchar, &wc, 0, 0, NULL);
           mvadd_wch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, &cchar);
@@ -1067,5 +1067,15 @@ void _glint() {
     attroff(COLOR_PAIR(FOREGROUND));
   }
   refresh();
+}
+
+void _effect(int fx){
+  if(fx == glint_f){
+     _glint((Arg){.x = glint_f});
+  } else if(fx == glint_b){
+     _glint((Arg){.x = glint_b});
+  } else if(fx == glint_a){
+     _glint((Arg){.x = glint_a});
+  }
 }
 

@@ -272,10 +272,24 @@ void __builtin__(char input){
     _path_run();
   } else if (selection == pwd){
     _get_pwd();
-  } else if (selection == glint){
-    if (_state->glint == true) 
-          _state->glint = false;
-    else  _state->glint = true;
+  } else if (selection == glint_fg){
+    if (_state->fx > 0) {
+      _state->fx = 0;
+      reset_glyph_state();
+    }
+    else  _state->fx = glint_f;
+  } else if (selection == glint_bg){
+    if (_state->fx > 0) {
+      _state->fx = 0;
+      reset_glyph_state();
+    }
+    else  _state->fx = glint_b;
+  } else if (selection == glint_full){
+    if (_state->fx > 0) {
+      _state->fx = 0;
+      reset_glyph_state();
+    }
+    else  _state->fx = glint_a;
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -1701,7 +1715,7 @@ void _init_state(){
   memset(_state->slap_str, 0, 256);      // not implemented
   _state->key_lock          = 0;         // not implemented
   _state->reprint           = false;     // not implemented
-  _state->glint             = false;     // not implemented
+  _state->fx                = false;     // * implemented *
 
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
@@ -1717,26 +1731,24 @@ void _init_state(){
 
 void reset_glyph_state(){
 
-  if(WIN_SIZE == t_full){
-    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-      mbstate_t state;
-      memset(&state, 0, sizeof(mbstate_t));
-      const char *iter_row = bg[i];
-      int iter_col = 0;
-      while (*iter_row) {
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = bg[i];
+    int iter_col = 0;
+    while (*iter_row) {
 
-        wchar_t wc;
-        size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
+      wchar_t wc;
+      size_t len = mbrtowc(&wc, iter_row, MB_CUR_MAX, &state);
 
-        if(*iter_row == ' '){
-          _state->bg_state[i][iter_col] = 0;
-        } else {
-          _state->bg_state[i][iter_col] = 1;
-        }
-
-        iter_row += len;
-        iter_col++;
+      if(*iter_row == ' '){
+        _state->bg_state[i][iter_col] = 0;
+      } else {
+        _state->bg_state[i][iter_col] = 1;
       }
+
+      iter_row += len;
+      iter_col++;
     }
   }
 

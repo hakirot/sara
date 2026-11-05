@@ -11,11 +11,16 @@
 #ifndef ANIMATIONS_H
 #define ANIMATIONS_H
 
+#define glint_f   1
+#define glint_b   2
+#define glint_a   3
+
 void animate(animation option);
 void _none(Arg printColorbar);
 void _glitch(Arg bigmode);
 void _shutter_slide();
 void _neon_reverse();
+void _effect(int fx);
 void _down_wipes();
 void _pixel_fill();
 void _tv_static();
@@ -23,9 +28,9 @@ void _neon();
 void _bg();
 void _hd();
 void _blink();
-void _glint();
 void _colorbar();
 void tinyprint();
+void _glint(Arg mode);
 void _overlay_bg(char ch);
 void _fg(const char * glyph[]);
 void _print_confirm_selection(int selection);

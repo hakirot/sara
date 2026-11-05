@@ -6,9 +6,6 @@
 --  ███████║██║  ██║██║  ██║██║  ██║  --
 --  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝.h--
 
-   . Active branches
-     | main
-
    . sleep() and usleep() functions halt timings using clock()
        https://stackoverflow.com/questions/22661300/calculate-execution-time-when-sleep-is-used
 */

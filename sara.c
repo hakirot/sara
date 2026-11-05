@@ -26,34 +26,14 @@ int main(int argc, char* argv[]){
 
   srand((unsigned)time(0));
 
-  _basic_args(argc, argv);
 
-  int opt;
-  bool preflight_check = false;
-  while ((opt = getopt(argc, argv, "f:b:vVhrHFC")) != -1){
-    switch (opt) {
-      case 'r':
-        _so_random();
-        break;
-      case 'H': HOLOGRAPHIC = 1; break;
-      case 'F': FOLLOW = 1; break;
-      case 'C': preflight_check = true; break;
-      case 'v': version(); break;
-      case 'V': version(); break;
-      case 'f': FOREGROUND = input_color(optarg); break;
-      case 'b': BACKGROUND = input_color(optarg); break;
-      case 'h': get_helped(0); break;
-      default: exit(1);
-    }
-  }
-
-  if(rand_c) _so_random();
   special_chars();
   load_command_config();
   set_glyph_dimensions();
   _init_state();
   reset_glyph_state();
-  if(preflight_check) _preflight_check();
+  _args(argc, argv);
+  if(_state->preflight_check) _preflight_check();
   launch_window();
   _deflect_signals();
 
@@ -79,12 +59,12 @@ int main(int argc, char* argv[]){
     }
 
     if(HOLOGRAPHIC == 1 && WIN_SIZE == t_full){
-      BACKGROUND++;
-      FOREGROUND++;
-      HEADER++;
-      if (BACKGROUND > 7) BACKGROUND = 2;
-      if (FOREGROUND > 7) FOREGROUND = 2;
-      if (HEADER > 7) HEADER = 2;
+      _state->bg_c++;
+      _state->fg_c++;
+      _state->hd_c++;
+      if (_state->bg_c > 7) _state->bg_c = 2;
+      if (_state->fg_c > 7) _state->fg_c = 2;
+      if (_state->hd_c > 7) _state->hd_c = 2;
       signal_reprint = true;
     }
 

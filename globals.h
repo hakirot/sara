@@ -202,9 +202,6 @@ extern int FG_GLYPH_HEIGHT;
 extern int FG_GLYPH_LENGTH;
 extern int HD_LENGTH;
 
-extern int FOREGROUND;
-extern int BACKGROUND;
-extern int HEADER;
 extern int HOLOGRAPHIC;
 
 extern int ROW;

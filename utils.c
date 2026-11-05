@@ -1053,11 +1053,11 @@ void _toggle_rave(){
 }
 
 void _randomize_colors(){
-  BACKGROUND = rand() % 7 + 1;    // RNG 1 and 7
-  FOREGROUND = rand() % 7 + 2;    // RNG 2 and 8
-  HEADER = rand() % 7 + 2;    // RNG 2 and 8
-  while(FOREGROUND == BACKGROUND){
-    FOREGROUND = rand() % 7 + 2;
+  _state->bg_c = rand() % 7 + 1;    // RNG 1 and 7
+  _state->fg_c = rand() % 7 + 2;    // RNG 2 and 8
+  _state->hd_c = rand() % 7 + 2;    // RNG 2 and 8
+  while(_state->fg_c == _state->bg_c){
+    _state->fg_c = rand() % 7 + 2;
   }
   animate(none);
 }
@@ -1076,10 +1076,10 @@ void _show_colors(){
 }
 
 void _invert_colors(){
-  int temp = BACKGROUND;
-  BACKGROUND = FOREGROUND;
-  FOREGROUND = HEADER;
-  HEADER =  temp;
+  int temp = _state->bg_c;
+  _state->bg_c = _state->fg_c;
+  _state->fg_c = _state->hd_c;
+  _state->hd_c =  temp;
   animate(none);
 }
 
@@ -1700,10 +1700,28 @@ int _execute_run_args(char * selection, char * args_buffer){
   return 0;
 }
 
-void  _basic_args(int argc, char* argv[]){
+void _args(int argc, char* argv[]){
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0) get_helped(0);
     else if (strcmp(argv[i], "--version") == 0) version();
+  }
+
+  int opt;
+  while ((opt = getopt(argc, argv, "f:b:vVhrHFC")) != -1){
+    switch (opt) {
+      case 'r':
+        _so_random();
+        break;
+      case 'H': HOLOGRAPHIC = 1; break;
+      case 'F': FOLLOW = 1; break;
+      case 'C': _state->preflight_check = true; break;
+      case 'v': version(); break;
+      case 'V': version(); break;
+      case 'f': _state->fg_c = input_color(optarg); break;
+      case 'b': _state->bg_c = input_color(optarg); break;
+      case 'h': get_helped(0); break;
+      default: exit(1);
+    }
   }
 }
 
@@ -1719,15 +1737,15 @@ void _init_state(){
   _state->t_cols            = 1;         // not implemented
   _state->t_cache           = 0;         // not implemented
   _state->win_size          = t_full;    // not implemented
-  _state->fg_c              = fg_c;      // not implemented
-  _state->bg_c              = bg_c;      // not implemented
-  _state->hd_c              = hd_c;      // not implemented
+  _state->fg_c              = fg_c;      /* implemented */
+  _state->bg_c              = bg_c;      /* implemented */
+  _state->hd_c              = hd_c;      /* implemented */
   _state->glitch_frame_time = 3500;      // not implemented
   _state->hold_char_time    = 0.00001;;  // not implemented
   memset(_state->slap_str, 0, 256);      // not implemented
   _state->key_lock          = 0;         // not implemented
   _state->reprint           = false;     // not implemented
-  _state->fx                = start_fx;     // * implemented *
+  _state->fx                = start_fx;  /* implemented */
 
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
@@ -1739,6 +1757,8 @@ void _init_state(){
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     _state->bg_state[i] = (char*)malloc(BG_GLYPH_LENGTH * sizeof(char));
   }
+
+  if(rand_c) _so_random();
 }
 
 void reset_glyph_state(){
@@ -1787,11 +1807,11 @@ void reset_glyph_state(){
 }
 
 void _so_random(){
-  BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
-  FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
-  HEADER = (rand() % 7) + 1;        // RNG 1 and 7
-  while(FOREGROUND == BACKGROUND){
-    FOREGROUND = rand() % 7 + 2;
+  _state->bg_c = (rand() % 7) + 1;    // RNG 1 and 7
+  _state->fg_c = (rand() % 7) + 2;    // RNG 2 and 8
+  _state->hd_c = (rand() % 7) + 1;        // RNG 1 and 7
+  while(_state->fg_c == _state->bg_c){
+    _state->fg_c = rand() % 7 + 2;
   }
 }
 

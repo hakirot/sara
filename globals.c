@@ -12,10 +12,6 @@
 #include "globals.h"
 #include "config.h"
 
-int FOREGROUND = fg_c;
-int BACKGROUND = bg_c;
-int HEADER     = hd_c;
-
 int ROW = 0;
 int COL = 0;
 int CACHE = 10;

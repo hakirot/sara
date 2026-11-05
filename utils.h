@@ -63,7 +63,7 @@ void  set_glyph_dimensions();
 void  __interrupt__(int signum);
 void  generate_path_run_file();
 int   _run_exec(char * selection);
-int   _check_menu(const Menu * menu_ptr);
+int   _check_menu(const Menu * menu_ptr, clock_t start_time);
 void  _basic_args(int argc, char* argv[]);
 int   _is_binary_in_path(const char * binary);
 Command * ranger_command(const Command * command);

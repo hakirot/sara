@@ -272,20 +272,20 @@ void __builtin__(char input){
     _path_run();
   } else if (selection == pwd){
     _get_pwd();
-  } else if (selection == glint_fg){
-    if (_state->fx == glint_fg) {
+  } else if (selection == fx_glint_fg){
+    if (_state->fx == glint_f) {
       _state->fx = 0;
       reset_glyph_state();
     }
     else  _state->fx = glint_f;
-  } else if (selection == glint_bg){
-    if (_state->fx == glint_bg) {
+  } else if (selection == fx_glint_bg){
+    if (_state->fx == glint_b) {
       _state->fx = 0;
       reset_glyph_state();
     }
     else  _state->fx = glint_b;
-  } else if (selection == glint_full){
-    if (_state->fx == glint_full) {
+  } else if (selection == fx_glint_full){
+    if (_state->fx == glint_a) {
       _state->fx = 0;
       reset_glyph_state();
     }
@@ -664,6 +664,8 @@ void _chdir(char * target_dir){
 
 void _preflight_check() {
 
+  clock_t preflight_start = clock();;
+
   int warning_flag = 0;
   int commandkeys_len = sizeof(commandkeys)/sizeof(commandkeys[0]);
   int builtinkeys_len = sizeof(builtinkeys)/sizeof(builtinkeys[0]);
@@ -739,7 +741,7 @@ void _preflight_check() {
   const Menu * menu_ptr = NULL;
   for(int i = 0; i < menukeys_len; i++){
     menu_ptr = menukeys[i].submenu;
-    if(_check_menu(menu_ptr)) warning_flag = 1;
+    if(_check_menu(menu_ptr, preflight_start)) warning_flag = 1;
   }
 
   const Command * command_ptr = NULL;
@@ -801,12 +803,12 @@ void _preflight_check() {
   _quit(warning_flag);
 } 
 
-int _check_menu(const Menu * menu_ptr){
+int _check_menu(const Menu * menu_ptr, clock_t start_time){
   int warning_flag = 0;
   while(menu_ptr != NULL && menu_ptr->name != NULL){
     if(menu_ptr->type == SUBMENU){
       const Menu * submenu_ptr = menu_ptr->next.submenu;
-      if(_check_menu(submenu_ptr)) warning_flag = 1;
+      if(_check_menu(submenu_ptr, start_time)) warning_flag = 1;
     } else {
       const Command * binary_command = &menu_ptr->next.command;
       const char * binary = NULL;
@@ -818,6 +820,15 @@ int _check_menu(const Menu * menu_ptr){
         warning_flag = 1;
         warn(warning);
       }
+    }
+
+    clock_t elapsed = clock() - start_time;
+    int msec = elapsed * 1000 / CLOCKS_PER_SEC;
+    if(msec > 500){
+      char warning[256];
+      sprintf(warning, "%s", "Warning: A menu is likeyly not NULL terminated");
+      warning_flag = 1;
+      warn(warning);
     }
     menu_ptr++;
   }
@@ -1715,7 +1726,7 @@ void _init_state(){
   memset(_state->slap_str, 0, 256);      // not implemented
   _state->key_lock          = 0;         // not implemented
   _state->reprint           = false;     // not implemented
-  _state->fx                = false;     // * implemented *
+  _state->fx                = start_fx;     // * implemented *
 
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));

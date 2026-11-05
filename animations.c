@@ -993,13 +993,13 @@ void _colorbar(){
   }
 }
 
-void _glint(Arg mode) {
+void _glint(fx mode) {
 
   int j = 0;
   int roll_result;
   wchar_t wc;
 
-  if(mode.x == glint_f || mode.x == glint_a){
+  if(mode == glint_f || mode == glint_a){
     attron(COLOR_PAIR(FOREGROUND));
     if(fg_c_bold) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -1032,7 +1032,7 @@ void _glint(Arg mode) {
     attroff(COLOR_PAIR(FOREGROUND));
   }
 
-  if(mode.x == glint_b || mode.x == glint_a && WIN_SIZE == t_full){
+  if(mode == glint_b || mode == glint_a && WIN_SIZE == t_full){
     attron(COLOR_PAIR(BACKGROUND));
     if(bg_c_bold) attron(A_BOLD);
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
@@ -1069,13 +1069,13 @@ void _glint(Arg mode) {
   refresh();
 }
 
-void _effect(int fx){
+void _affect(int fx){
   if(fx == glint_f){
-     _glint((Arg){.x = glint_f});
+     _glint(glint_f);
   } else if(fx == glint_b){
-     _glint((Arg){.x = glint_b});
+     _glint(glint_b);
   } else if(fx == glint_a){
-     _glint((Arg){.x = glint_a});
+     _glint(glint_a);
   }
 }
 

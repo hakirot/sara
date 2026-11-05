@@ -92,8 +92,8 @@ int main(int argc, char* argv[]){
       signal_reprint = true;
     }
 
-    if(_state->fx) {
-      _effect(_state->fx);
+    if(_state->fx != nofx) {
+      _affect(_state->fx);
     }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded

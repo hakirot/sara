@@ -68,6 +68,13 @@ typedef enum {
 } animation;
 
 typedef enum {
+  nofx,
+  glint_f,
+  glint_b,
+  glint_a,
+} fx;
+
+typedef enum {
   WAIT,
   NOWAIT,
   STOP,
@@ -109,9 +116,9 @@ typedef enum {
   colors,
   path_run,
   pwd,
-  glint_fg,
-  glint_bg,
-  glint_full,
+  fx_glint_fg,
+  fx_glint_bg,
+  fx_glint_full,
 } internal;
 
 typedef enum {
@@ -167,7 +174,7 @@ typedef struct {
   float hold_char_time;
   char slap_str[256];
   int key_lock;
-  int fx;
+  fx fx;
   int reprint;
   char ** fg_state;
   char ** bg_state;

@@ -89,7 +89,7 @@ static const char * bg[] = {
 
 /* Optionally set empty */
 //static const char hd[] = {'\0'};
-static const char hd[] = "v0.9.3 ©HakiPaks";
+static const char hd[] = "v0.9.4 ©HakiPaks";
 
 
 /* fg position */

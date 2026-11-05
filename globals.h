@@ -121,6 +121,43 @@ typedef struct {
   internal option;
 } Builtin;
 
+typedef struct {
+  int bg_glyph_height;
+  int fg_glyph_height;
+  int bg_glyph_length;
+  int fg_glyph_length;
+  int hd_length;
+
+  char global_chars       [KEY_ARRAY_SIZE];
+  char commandkeys_chars  [KEY_ARRAY_SIZE];
+  char builtinkeys_chars  [KEY_ARRAY_SIZE];
+  char menukeys_chars     [KEY_ARRAY_SIZE];
+
+  int commandkeys_len;
+  int builtinkeys_len;
+  int menukeys_len;
+} Config;
+
+typedef struct {
+  int show_colors;
+  int interrupt;
+  bool preflight_check;
+  clock_t last_input_time;
+  clock_t wait_start;
+  int t_rows;
+  int t_cols;
+  int t_cache;
+  screen_size win_size;
+  int foreground;
+  int background;
+  int header    ;
+  const int glitch_frame_time;
+  const float hold_char_time;
+  char slap_str[256];
+  struct timeval slap_time;
+  int key_lock;
+} State;
+
 typedef struct Menu Menu;
 
 struct Menu{
@@ -161,14 +198,12 @@ extern clock_t WAIT_START;
 
 //extern const animation_option start_animation;
 extern char HOLD_CHAR;
-
 extern int GLITCH_TIME;
 
 extern char global_chars[];
 extern char commandkeys_chars[];
 extern char builtinkeys_chars[];
 extern char menukeys_chars[];
-
 
 extern int commandkeys_len;
 extern int builtinkeys_len;
@@ -178,9 +213,7 @@ extern char SLAP_STR[256];
 extern struct timeval slap_time;
 
 extern int SHOW_COLORS;
-
 extern int KEY_LOCK;
-
 extern int INTERRUPT;
 
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};

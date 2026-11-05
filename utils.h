@@ -17,8 +17,8 @@ typedef struct {
   char i;
 } key_arg ;
 
-int   ___key___(key_arg arg);
 int   key(char optional_input);
+int   __key(key_arg arg);
 void  __command__(char input);
 int   __execute__(const Command * command);
 void  __builtin__(char input);
@@ -56,11 +56,11 @@ void  _write_exit_dir();
 void  _deflect_signals();
 void  __interrupt__(int signum);
 void  _path_run();
-void  _run_menu();
-void  _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection);
-int   _run_exec(char * selection);
 void  generate_path_run_file();
 int   _is_binary_in_path(const char * binary);
+void  _run_menu();
+int   _run_exec(char * selection);
+void  _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection);
 int   _check_menu(const Menu * menu_ptr);
 void  version();
 int   _run_args(int offset_y, int offset_x, char * selection);

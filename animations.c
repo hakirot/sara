@@ -7,9 +7,8 @@
 --  ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝.c--
                                                                                        */
 #define NCURSES_WIDECHAR 1
-#define __key__(...) ___key___((key_arg){__VA_ARGS__});
+#define _key(...) __key((key_arg){__VA_ARGS__});
 
-//#include <ncurses.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +31,7 @@ void animate(animation_option option){
   if (option == neon)                _neon();
   if (option == neon_reverse)        _neon_reverse();
   if (option == shutter_slide)       _shutter_slide();
-  if (option == shutter_slide_neon){ _shutter_slide(); _neon();}
+  if (option == shutter_slide_neon){ _shutter_slide(); _neon(); }
   if (option == pixel_fill)          _pixel_fill();
   if (option == tv_static)           _tv_static();
   if (option == print_f)             _fg(fg);
@@ -94,7 +93,7 @@ void _blink(){
       third_frame = 1;
     }
 
-    int result = __key__();
+    int result = _key();
     if(result == 2) return;
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
@@ -343,7 +342,7 @@ void _glitch(Arg bigmode){
       attroff(A_BOLD);
     }
 
-    int result = __key__();
+    int result = _key();
     if(result == 2) return;
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
     refresh();
@@ -403,7 +402,7 @@ void _neon(){
       third_frame = 1;
     }
 
-    int result = __key__();
+    int result = _key();
     if(result == 2) return;
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
@@ -448,7 +447,7 @@ void _neon_reverse(){
       second_frame = 1;
     }
 
-    int result = __key__();
+    int result = _key();
     if(result == 2) return;
     if (HOLD_CHAR != '\0') mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
   }
@@ -576,7 +575,7 @@ void _pixel_fill(){
     }
 
     refresh();
-    int result = __key__();
+    int result = _key();
     if(result == 2) return;
     if (HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
 
@@ -651,7 +650,7 @@ void _tv_static(){
 
     getmaxyx(stdscr, ROW, COL);
     if (CACHE != ROW + COL) return;
-    int result = __key__();
+    int result = _key();
     if(result == 2) return;
 
     attron(COLOR_PAIR(FOREGROUND));
@@ -913,7 +912,7 @@ void _down_wipes(){
     if(fg_c_bold) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
       mvprintw(ROW/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (COL-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
-      int result = __key__();
+      int result = _key();
       if(result == 2) return;
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
@@ -932,7 +931,7 @@ void _down_wipes(){
       if(HOLD_CHAR) mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
       refresh();
       usleep(wipe_time);
-      int result = __key__();
+      int result = _key();
       if(result == 2) return;
     }
     attroff(A_BOLD);
@@ -964,7 +963,7 @@ void _down_wipes(){
       }
       refresh();
       usleep(wipe_time);
-      int result = __key__();
+      int result = _key();
       if(result == 2) return;
     }
   }

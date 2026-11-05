@@ -31,22 +31,19 @@ int FG_GLYPH_LENGTH;
 int HD_LENGTH;
 
 char HOLD_CHAR;
-
 int HOLOGRAPHIC = 0;
-
 int GLITCH_TIME = 52;
 
-char global_chars[KEY_ARRAY_SIZE];
+char      global_chars[KEY_ARRAY_SIZE];
 char commandkeys_chars[KEY_ARRAY_SIZE];
 char builtinkeys_chars[KEY_ARRAY_SIZE];
-char menukeys_chars[KEY_ARRAY_SIZE];
+char    menukeys_chars[KEY_ARRAY_SIZE];
 
 int commandkeys_len;
 int builtinkeys_len;
 int menukeys_len;
 
 int SHOW_COLORS = false;
-
 int INTERRUPT = false;
 
 const int GLITCH_FRAME_TIME = 3500;

@@ -8,20 +8,19 @@
                                            */
 
 #define NCURSES_WIDECHAR 1
-#define __key__(...) ___key___((key_arg){__VA_ARGS__});
+#define _key(...) __key((key_arg){__VA_ARGS__});
 
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <wait.h>
 #include <fcntl.h>
 #include <errno.h>
-
+#include <wait.h>
 #include "sara.h"
-#include "animations.h"
-#include "globals.h"
-#include "config.h"
 #include "utils.h"
+#include "config.h"
+#include "globals.h"
+#include "animations.h"
 
 int main(int argc, char* argv[]){
 
@@ -31,6 +30,8 @@ int main(int argc, char* argv[]){
   }
 
   srand((unsigned)time(0));
+
+  State state;
 
   int opt;
   bool preflight_check = false;
@@ -70,7 +71,7 @@ int main(int argc, char* argv[]){
 
   while(1){
 
-    result = __key__();
+    result = _key();
 
     if(INTERRUPT){
       INTERRUPT = false;
@@ -93,6 +94,8 @@ int main(int argc, char* argv[]){
       if (HEADER > 7) HEADER = 2;
       signal_reprint = true;
     }
+
+//  if(state->glint) glint();
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
     if (result == 0 && signal_reprint == true && HOLD_CHAR == '\0'){
@@ -126,7 +129,7 @@ int check_size(){
 
       // 2 milliseconds
       usleep(2000);
-      __key__();
+      _key();
 
       getmaxyx(stdscr,ROW,COL);
       CACHE = ROW + COL;
@@ -493,7 +496,7 @@ void _pshd(){
         usleep(1000);
       }
     } else if (input != -1){
-      int result = __key__(input);
+      int result = _key(input);
       if(result > 0) {
         fclose(file);
         return;

@@ -8,7 +8,7 @@
                                                */
 
 #define NCURSES_WIDECHAR 1
-#define __key__(...) ___key___((key_arg){__VA_ARGS__});
+#define _key(...) __key((key_arg){__VA_ARGS__});
 
 #include <wchar.h>
 #include <stdio.h>
@@ -31,7 +31,8 @@
 #include "sara.h"
 #include "animations.h"
 
-int ___key___(key_arg arg){
+int __key(key_arg arg){
+
   char arg_out = arg.i ? arg.i : 0;
 
   if (arg_out != 0){
@@ -47,14 +48,17 @@ int ___key___(key_arg arg){
 }
 
 int key(char optional_input){
+//int key(char input){
 
-  char input;
+  char input; //
 
-  int valid_input = 0;
-  if(optional_input){
-    input = optional_input;
-  } else {
-    input = getch();
+//if(!input) input = getch
+
+  int valid_input = 0; //
+  if(optional_input){ //
+    input = optional_input; //
+  } else { //
+    input = getch(); //
   }
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
@@ -420,7 +424,7 @@ void _menuselect(const Menu * menu){
       }
       return;
     } else if (input != -1){
-      int result = __key__(input);
+      int result = _key(input);
       if(result > 0) {
         return;
       }
@@ -775,7 +779,7 @@ void _preflight_check() {
     warn(err);
   }
 
-  if(warning_flag == 0) printf("\x1b[32m" "Precheck passed" "\x1b[0m\n");
+//if(warning_flag == 0) printf("\x1b[32m" "Precheck passed" "\x1b[0m\n");
   _quit(warning_flag);
 } 
 

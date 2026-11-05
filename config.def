@@ -15,7 +15,7 @@
                                                                          */
 
 static const animation start_animation = none;
-static const fx               start_fx = glint_a;
+static const fx               start_fx = nofx;
 
 /* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
 static int FOLLOW = true;

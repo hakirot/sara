@@ -122,6 +122,9 @@ typedef struct {
 } Builtin;
 
 typedef struct {
+
+  struct timeval slap_time;
+
   int bg_glyph_height;
   int fg_glyph_height;
   int bg_glyph_length;
@@ -136,27 +139,31 @@ typedef struct {
   int commandkeys_len;
   int builtinkeys_len;
   int menukeys_len;
-} Config;
+
+} config;
+
 
 typedef struct {
+
+  int t_rows;
+  int t_cols;
+  int t_cache;
+
+  int fg_c;
+  int bg_c;
+  int hd_c;
+
   int show_colors;
   int interrupt;
   bool preflight_check;
   clock_t last_input_time;
-  clock_t wait_start;
-  int t_rows;
-  int t_cols;
-  int t_cache;
   screen_size win_size;
-  int fg_c;
-  int bg_c;
-  int hd_c;
-  const int glitch_frame_time;
-  const float hold_char_time;
+  int glitch_frame_time;
+  float hold_char_time;
   char slap_str[256];
-  struct timeval slap_time;
   int key_lock;
   int reprint;
+
 } state;
 
 typedef struct Menu Menu;
@@ -180,9 +187,6 @@ extern int BG_GLYPH_LENGTH;
 extern int FG_GLYPH_HEIGHT;
 extern int FG_GLYPH_LENGTH;
 extern int HD_LENGTH;
-
-extern int option_window_height;
-extern int option_window_length;
 
 extern int FOREGROUND;
 extern int BACKGROUND;

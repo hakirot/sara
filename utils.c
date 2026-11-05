@@ -1669,23 +1669,22 @@ state * _init_state(){
 
   state * _state = (state *)malloc(sizeof(state));
 
-  _state->show_colors     = false;          // not implemented
-  _state->interrupt       = false;          // not implemented
-  _state->preflight_check = false;          // not implemented
-  _state->last_input_time = clock();          // not implemented
-  _state->t_rows          = 1;          // not implemented
-  _state->t_cols          = 1;          // not implemented
-  _state->t_cache         = 0;          // not implemented
-  _state->win_size        = t_full;          // not implemented
-  _state->fg_c;          // not implemented
-  _state->bg_c;          // not implemented
-  _state->hd_c;          // not implemented
-  _state->glitch_frame_time;          // not implemented
-  _state->hold_char_time;          // not implemented
-  _state->slap_str[256];          // not implemented
-  _state->slap_time;          // not implemented
-  _state->key_lock;          // not implemented
-  _state->reprint;          // not implemented
+  _state->show_colors       = false;     // not implemented
+  _state->interrupt         = false;     // not implemented
+  _state->preflight_check   = false;     // not implemented
+  _state->last_input_time   = clock();   // not implemented
+  _state->t_rows            = 1;         // not implemented
+  _state->t_cols            = 1;         // not implemented
+  _state->t_cache           = 0;         // not implemented
+  _state->win_size          = t_full;    // not implemented
+  _state->fg_c              = fg_c;      // not implemented
+  _state->bg_c              = bg_c;      // not implemented
+  _state->hd_c              = hd_c;      // not implemented
+  _state->glitch_frame_time = 3500;      // not implemented
+  _state->hold_char_time    = 0.00001;;  // not implemented
+  memset(_state->slap_str, 0, 256);      // not implemented
+  _state->key_lock          = 0;         // not implemented
+  _state->reprint           = false;     // not implemented
 
   return _state;
 }

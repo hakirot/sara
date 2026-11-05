@@ -1285,9 +1285,9 @@ void _run_menu(){
       if(run_c_bold) attron(A_BOLD);
       mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x, (char)input);
 
-      wchar_t cursor_w = L'\u2588';
+      wchar_t cursor_w[2] = { L'\u2588', L'\0' };
       cchar_t cchar;
-      setcchar(&cchar, &cursor_w, 0, 0, NULL);
+      setcchar(&cchar, cursor_w, 0, 0, NULL);
       mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
       attroff(COLOR_PAIR(pshd_c));
       attroff(A_BOLD);

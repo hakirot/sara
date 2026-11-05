@@ -112,32 +112,32 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
   if(c == menu_c && menu_c_bold) attron(A_BOLD);
   if(c == pshd_c && pshd_c_bold) attron(A_BOLD);
   if(c == run_c && run_c_bold) attron(A_BOLD);
-  wchar_t wc = MenuBorder[0];
+  wchar_t wc[2] = { MenuBorder[0], L'\0' };
   cchar_t cchar;
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  setcchar(&cchar, wc, 0, 0, NULL);
   mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, &cchar);
 
-  wc = MenuBorder[1];
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  wc[0] = MenuBorder[1];
+  setcchar(&cchar, wc, 0, 0, NULL);
   mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
 
-  wc = MenuBorder[2];
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  wc[0] = MenuBorder[2];
+  setcchar(&cchar, wc, 0, 0, NULL);
   mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + offset_y, COL/2 - dim_x/2 + offset_x, &cchar);
 
-  wc = MenuBorder[3];
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  wc[0] = MenuBorder[3];
+  setcchar(&cchar, wc, 0, 0, NULL);
   mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
 
-  wc = MenuBorder[4];
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  wc[0] = MenuBorder[4];
+  setcchar(&cchar, wc, 0, 0, NULL);
   for(int i = 1; i < dim_x - 1; i++){
     mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + i + offset_x, &cchar);
     mvadd_wch(ROW/2 - dim_y/2 + dim_y - 1 + offset_y, COL/2 - dim_x/2 + i + offset_x, &cchar);
   }
 
-  wc = MenuBorder[5];
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  wc[0] = MenuBorder[5];
+  setcchar(&cchar, wc, 0, 0, NULL);
   for(int i = 1; i < dim_y - 1; i++){
     mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + offset_x, &cchar);
     mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
@@ -274,9 +274,9 @@ void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
     return;
   }
 
-  wchar_t wc = L' ';
+  wchar_t wc[2] = { L' ', L'\0' };
   cchar_t cchar;
-  setcchar(&cchar, &wc, 0, 0, NULL);
+  setcchar(&cchar, wc, 0, 0, NULL);
   for(int i = 1; i < dim_y - 1; i++){
     for(int j = 1; j < dim_x - 1; j++){
       mvadd_wch(ROW/2 - dim_y/2 + i + offset_y, COL/2 - dim_x/2 + j + offset_x, &cchar);
@@ -820,7 +820,7 @@ void _overlay_bg(char ch){
 
       if(*iter_row != ' ' && ch != 0){
         mvaddch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, ch);
-      } else if(wc != ' '){
+      } else if(wc[0] != ' '){
         cchar_t cchar;
         setcchar(&cchar, wc, 0, 0, NULL);
         mvadd_wch(ROW/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (COL-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, &cchar);

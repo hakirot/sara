@@ -27,7 +27,6 @@ int main(int argc, char* argv[]){
   srand((unsigned)time(0));
 
   _basic_args(argc, argv);
-  state * _state = _init_state();
 
   int opt;
   bool preflight_check = false;
@@ -56,6 +55,7 @@ int main(int argc, char* argv[]){
   special_chars();
   load_command_config();
   set_glyph_dimensions();
+  _init_state();
   if(preflight_check) _preflight_check();
   launch_window();
   _deflect_signals();
@@ -91,7 +91,9 @@ int main(int argc, char* argv[]){
       signal_reprint = true;
     }
 
-//  if(state->glint) glint();
+    if(_state->glint == true) {
+      animate(glint_frame);
+    }
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
     if (result == 0 && signal_reprint == true && HOLD_CHAR == '\0'){

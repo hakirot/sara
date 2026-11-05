@@ -272,6 +272,10 @@ void __builtin__(char input){
     _path_run();
   } else if (selection == pwd){
     _get_pwd();
+  } else if (selection == glint){
+    if (_state->glint == true) 
+          _state->glint = false;
+    else  _state->glint = true;
   } else if (selection == colors){
     if(SHOW_COLORS == false){
       SHOW_COLORS = true;
@@ -1061,7 +1065,24 @@ void _quit(int exit_code){
   refresh();
   move(0, 0);
   endwin();
-  //system("clear");
+
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    free(_state->fg_state[i]); _state->fg_state[i] = NULL;
+  }
+
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    free(_state->bg_state[i]); _state->bg_state[i] = NULL;
+  }
+
+  free(_state->fg_state); _state->fg_state = NULL;
+  free(_state->bg_state); _state->bg_state = NULL;
+
+//char err[128];
+//sprintf(err, "%p", _state->fg_state);
+//printf("\x1b[31m%s\n\x1b[0m", err);
+
+  free(_state);
+
   exit(exit_code);
 }
 
@@ -1665,9 +1686,9 @@ void  _basic_args(int argc, char* argv[]){
   }
 }
 
-state * _init_state(){
+void _init_state(){
 
-  state * _state = (state *)malloc(sizeof(state));
+  _state = (state *)malloc(sizeof(state));
 
   _state->show_colors       = false;     // not implemented
   _state->interrupt         = false;     // not implemented
@@ -1685,8 +1706,18 @@ state * _init_state(){
   memset(_state->slap_str, 0, 256);      // not implemented
   _state->key_lock          = 0;         // not implemented
   _state->reprint           = false;     // not implemented
+  _state->glint             = false;     // not implemented
 
-  return _state;
+  _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
+  _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
+
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    _state->fg_state[i] = (char*)malloc(FG_GLYPH_LENGTH * sizeof(char));
+  }
+
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    _state->bg_state[i] = (char*)malloc(BG_GLYPH_LENGTH * sizeof(char));
+  }
 }
 
 void version(){

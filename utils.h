@@ -69,6 +69,6 @@ void  _run_args_refresh(int offset_y, int offset_x, char *selection, char * args
 void  _get_pwd();
 void  _basic_args(int argc, char* argv[]);
 Command * ranger_command(const Command * command);
-state * _init_state();
+void _init_state();
 
 #endif

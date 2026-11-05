@@ -65,6 +65,7 @@ typedef enum {
   print_b,
   print_f,
   blink,
+  glint_frame,
 } animation;
 
 typedef enum {
@@ -109,6 +110,7 @@ typedef enum {
   colors,
   path_run,
   pwd,
+  glint,
 } internal;
 
 typedef enum {
@@ -145,6 +147,8 @@ typedef struct {
 
 typedef struct {
 
+  int input;
+
   int t_rows;
   int t_cols;
   int t_cache;
@@ -162,8 +166,10 @@ typedef struct {
   float hold_char_time;
   char slap_str[256];
   int key_lock;
+  int glint;
   int reprint;
-
+  char ** fg_state;
+  char ** bg_state;
 } state;
 
 typedef struct Menu Menu;
@@ -200,7 +206,6 @@ extern int CACHE;
 extern clock_t LAST_INPUT_TIME;
 extern screen_size WIN_SIZE;
 
-//extern const animation_option start_animation;
 extern char HOLD_CHAR;
 extern int GLITCH_TIME;
 
@@ -226,5 +231,7 @@ static const Command * FORCE_ECHO = &FORCE_ECHO_STRUCT;
 
 extern const int GLITCH_FRAME_TIME;
 extern const float HOLD_CHAR_TIME;
+
+extern state * _state;
 
 #endif

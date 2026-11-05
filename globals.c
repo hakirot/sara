@@ -50,4 +50,6 @@ const float HOLD_CHAR_TIME = 0.00001;
 char SLAP_STR[256];
 struct timeval slap_time = {0};
 
+state * _state = NULL;
+
 int KEY_LOCK = 0;

@@ -33,12 +33,7 @@ int main(int argc, char* argv[]){
   while ((opt = getopt(argc, argv, "f:b:vVhrHFC")) != -1){
     switch (opt) {
       case 'r':
-        BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
-        FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
-        HEADER = (rand() % 7) + 1;        // RNG 1 and 7
-        while(FOREGROUND == BACKGROUND){
-          FOREGROUND = rand() % 7 + 2;
-        }
+        _so_random();
         break;
       case 'H': HOLOGRAPHIC = 1; break;
       case 'F': FOLLOW = 1; break;
@@ -52,6 +47,7 @@ int main(int argc, char* argv[]){
     }
   }
 
+  if(rand_c) _so_random();
   special_chars();
   load_command_config();
   set_glyph_dimensions();
@@ -92,9 +88,7 @@ int main(int argc, char* argv[]){
       signal_reprint = true;
     }
 
-    if(_state->fx != nofx) {
-      _affect(_state->fx);
-    }
+    if(_state->fx != nofx) _affect(_state->fx);
 
     // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
     if (result == 0 && signal_reprint == true && HOLD_CHAR == '\0'){

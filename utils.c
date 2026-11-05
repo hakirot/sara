@@ -1785,6 +1785,15 @@ void reset_glyph_state(){
   }
 }
 
+void _so_random(){
+  BACKGROUND = (rand() % 7) + 1;    // RNG 1 and 7
+  FOREGROUND = (rand() % 7) + 2;    // RNG 2 and 8
+  HEADER = (rand() % 7) + 1;        // RNG 1 and 7
+  while(FOREGROUND == BACKGROUND){
+    FOREGROUND = rand() % 7 + 2;
+  }
+}
+
 void version(){
   printf("%s %s \n", PROGRAM_NAME, PROGRAM_VERSION);
   _quit(0);

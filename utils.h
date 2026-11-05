@@ -42,6 +42,7 @@ void  slap(char * err);
 void  crit(char * err);
 void  launch_window();
 int   _slap_timer();
+void  _so_random();
 void  _run_menu();
 int   _confirm();
 void  version();

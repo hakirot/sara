@@ -65,7 +65,7 @@ typedef enum {
   print_b,
   print_f,
   blink,
-} animation_option;
+} animation;
 
 typedef enum {
   WAIT,
@@ -95,8 +95,8 @@ typedef struct {
   char smashkey;
   const void * cmd;
   wait_option option;
-  animation_option pre_animation;
-  animation_option post_animation;
+  animation pre_animation;
+  animation post_animation;
   ExtraArgs extra_args;
 } Command;
 

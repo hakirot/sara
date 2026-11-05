@@ -11,7 +11,7 @@
 #ifndef ANIMATIONS_H
 #define ANIMATIONS_H
 
-void animate(animation_option option);
+void animate(animation option);
 void _none(Arg printColorbar);
 void _down_wipes();
 void _glitch(Arg bigmode);

@@ -17,7 +17,7 @@
 #include "config.h"
 #include "utils.h"
 
-void animate(animation_option option){
+void animate(animation option){
 
   if(WIN_SIZE == SMALL){
     tinyprint();

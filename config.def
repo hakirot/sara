@@ -14,7 +14,7 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-static const animation_option start_animation = blink;
+static const animation start_animation = blink;
 
 /* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
 static int FOLLOW = true;

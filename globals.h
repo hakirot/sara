@@ -41,9 +41,9 @@
 #define KEY_ARRAY_SIZE  128
 
 typedef enum {
-  SMALL,
-  NORMAL,
-  BIG
+  t_tiny,
+  t_small,
+  t_full
 } screen_size;
 
 typedef union {
@@ -148,14 +148,15 @@ typedef struct {
   int t_cols;
   int t_cache;
   screen_size win_size;
-  int foreground;
-  int background;
-  int header    ;
+  int fg_c;
+  int bg_c;
+  int hd_c;
   const int glitch_frame_time;
   const float hold_char_time;
   char slap_str[256];
   struct timeval slap_time;
   int key_lock;
+  int reprint;
 } state;
 
 typedef struct Menu Menu;
@@ -194,7 +195,6 @@ extern int CACHE;
 
 extern clock_t LAST_INPUT_TIME;
 extern screen_size WIN_SIZE;
-extern clock_t WAIT_START;
 
 //extern const animation_option start_animation;
 extern char HOLD_CHAR;

@@ -80,7 +80,7 @@ int key(char optional_input){
 
       valid_input = 2;
 
-    } else if(WIN_SIZE != SMALL){
+    } else if(WIN_SIZE != t_tiny){
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;
       mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
@@ -91,7 +91,7 @@ int key(char optional_input){
   double time_since_input = (double)(clock() - LAST_INPUT_TIME)
                             / CLOCKS_PER_SEC;
 
-  if(time_since_input > HOLD_CHAR_TIME && WIN_SIZE != SMALL){
+  if(time_since_input > HOLD_CHAR_TIME && WIN_SIZE != t_tiny){
     HOLD_CHAR = '\0';
   }
 
@@ -1666,8 +1666,27 @@ void  _basic_args(int argc, char* argv[]){
 }
 
 state * _init_state(){
+
   state * _state = (state *)malloc(sizeof(state));
-//char *buff = (char *)malloc(bufsize * sizeof(char));
+
+  _state->show_colors     = false;          // not implemented
+  _state->interrupt       = false;          // not implemented
+  _state->preflight_check = false;          // not implemented
+  _state->last_input_time = clock();          // not implemented
+  _state->t_rows          = 1;          // not implemented
+  _state->t_cols          = 1;          // not implemented
+  _state->t_cache         = 0;          // not implemented
+  _state->win_size        = t_full;          // not implemented
+  _state->fg_c;          // not implemented
+  _state->bg_c;          // not implemented
+  _state->hd_c;          // not implemented
+  _state->glitch_frame_time;          // not implemented
+  _state->hold_char_time;          // not implemented
+  _state->slap_str[256];          // not implemented
+  _state->slap_time;          // not implemented
+  _state->key_lock;          // not implemented
+  _state->reprint;          // not implemented
+
   return _state;
 }
 

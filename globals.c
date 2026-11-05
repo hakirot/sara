@@ -22,7 +22,6 @@ int CACHE = 10;
 
 clock_t LAST_INPUT_TIME;
 screen_size WIN_SIZE;
-clock_t WAIT_START;
 
 int BG_GLYPH_HEIGHT;
 int FG_GLYPH_HEIGHT;

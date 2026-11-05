@@ -19,7 +19,7 @@
 
 void animate(animation option){
 
-  if(WIN_SIZE == SMALL){
+  if(WIN_SIZE == t_tiny){
     tinyprint();
     return;
   }
@@ -59,10 +59,10 @@ void _blink(){
 
     if(elapsed_time > 0.05 && first_frame == 0){
       ch = '.';
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _overlay(fg, ch);
       }
-      if (WIN_SIZE == BIG) {
+      if (WIN_SIZE == t_full) {
         _overlay_bg(ch);
         _overlay(fg, ch);
       }
@@ -72,7 +72,7 @@ void _blink(){
 
     if(elapsed_time > 0.1 && second_frame == 0){
       ch = '_';
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _overlay(fg, ch);
       } else {
         _overlay_bg(ch);
@@ -84,7 +84,7 @@ void _blink(){
 
     ch = '-';
     if(elapsed_time > 0.2 && third_frame == 0){
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _overlay(fg, ch);
       } else {
         _overlay_bg(ch);
@@ -297,7 +297,7 @@ void _glitch(Arg bigmode){
     rng_shift = (rand() % 3) - 1;                       // RNG -1 and 1
     rng_backdrop = rand() % rng_backdrop_rng;           // RNG 0 and 2
 
-    if (WIN_SIZE == NORMAL) {
+    if (WIN_SIZE == t_small) {
       attron(COLOR_PAIR(FOREGROUND));
       if(fg_c_bold) attron(A_BOLD);
       if (rng_backdrop == 0){
@@ -309,7 +309,7 @@ void _glitch(Arg bigmode){
       attroff(COLOR_PAIR(FOREGROUND));
     }
 
-    if (WIN_SIZE == BIG) {
+    if (WIN_SIZE == t_full) {
 
       if(bigmode.x == 1){
 
@@ -374,7 +374,7 @@ void _neon(){
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.05 && first_frame == 0){
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _overlay(fg, '_');
       } else {
           _overlay_bg(0);
@@ -385,7 +385,7 @@ void _neon(){
     }
 
     if(elapsed_time > 0.1 && second_frame == 0){
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _fg(fg);
       } else {
         _overlay(fg, '_');
@@ -394,7 +394,7 @@ void _neon(){
     }
 
     if(elapsed_time > 0.2 && third_frame == 0){
-      if (WIN_SIZE == NORMAL && hd[0] != 0){
+      if (WIN_SIZE == t_small && hd[0] != 0){
         _hd();
       } else {
         _overlay(fg, 0);
@@ -427,7 +427,7 @@ void _neon_reverse(){
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
 
     if(elapsed_time > 0.00 && first_frame == 0){
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _overlay(fg, '_');
       } else {
         _bg();
@@ -439,7 +439,7 @@ void _neon_reverse(){
     if(elapsed_time > 0.1 && second_frame == 0){
       clear();
       _colorbar();
-      if (WIN_SIZE == NORMAL){
+      if (WIN_SIZE == t_small){
         _overlay(fg, '_');
       } else {
         _bg();
@@ -495,7 +495,7 @@ void _pixel_fill(){
 
   clear();
   refresh();
-  if(WIN_SIZE == BIG) _bg();
+  if(WIN_SIZE == t_full) _bg();
 
   // 0 == !'█'
   // 1 == '█'
@@ -596,7 +596,7 @@ void _tv_static(){
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
   int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
 
-  if(WIN_SIZE == BIG){
+  if(WIN_SIZE == t_full){
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
       mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
@@ -686,7 +686,7 @@ void _tv_static(){
     attroff(A_BOLD);
     attroff(COLOR_PAIR(FOREGROUND));
 
-    if(WIN_SIZE == BIG){
+    if(WIN_SIZE == t_full){
       attron(COLOR_PAIR(BACKGROUND));
       if(bg_c_bold) attron(A_BOLD);
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
@@ -730,10 +730,10 @@ void _tv_static(){
 void _none(Arg printColorbar){
   clear();
 
-  if(dynamic_resize && WIN_SIZE == NORMAL){
+  if(dynamic_resize && WIN_SIZE == t_small){
     _fg(fg);
     _hd();
-  } else if (WIN_SIZE == BIG){
+  } else if (WIN_SIZE == t_full){
     _bg();
     _overlay(fg, 0);
     _hd();
@@ -849,8 +849,8 @@ void _hd(){
     int offset_y = 0;
     int offset_x = 0;
 
-    if((WIN_SIZE == BIG    && highlight_hd_in_full_mode)  ||
-       (WIN_SIZE == NORMAL && highlight_hd_in_small_mode)) {
+    if((WIN_SIZE == t_full    && highlight_hd_in_full_mode)  ||
+       (WIN_SIZE == t_small && highlight_hd_in_small_mode)) {
       if(hd_c_bold){
         attron(A_STANDOUT);
         attron(A_BOLD);
@@ -867,7 +867,7 @@ void _hd(){
       attron(COLOR_PAIR(HEADER));
     }
 
-    if(WIN_SIZE == BIG){
+    if(WIN_SIZE == t_full){
       offset_y = hd_offset_y;
       offset_x = hd_offset_x;
     } else {
@@ -907,7 +907,7 @@ void _down_wipes(){
 
   clear();
   refresh();
-  if (WIN_SIZE == NORMAL){
+  if (WIN_SIZE == t_small){
     attron(COLOR_PAIR(FOREGROUND));
     if(fg_c_bold) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -922,7 +922,7 @@ void _down_wipes(){
     attroff(COLOR_PAIR(FOREGROUND));
     _hd();
 
-  } else if (WIN_SIZE == BIG){
+  } else if (WIN_SIZE == t_full){
 
     if(bg_c_bold) attron(A_BOLD);
     attron(COLOR_PAIR(BACKGROUND));
@@ -983,7 +983,7 @@ void tinyprint() {
 }
 
 void _colorbar(){
-  if (WIN_SIZE == BIG) {
+  if (WIN_SIZE == t_full) {
     for(int i = 1; i < 9; i++){
       attron(COLOR_PAIR(i));
       mvaddwstr(ROW - 1, (COL-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █

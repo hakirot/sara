@@ -81,7 +81,7 @@ int main(int argc, char* argv[]){
       signal_reprint = true;
     }
 
-    if(HOLOGRAPHIC == 1 && WIN_SIZE == BIG){
+    if(HOLOGRAPHIC == 1 && WIN_SIZE == t_full){
       BACKGROUND++;
       FOREGROUND++;
       HEADER++;
@@ -117,8 +117,8 @@ int check_size(){
     clear();
 
     // small win size jail
-    while (get_win_size() == SMALL){
-      WIN_SIZE = SMALL;
+    while (get_win_size() == t_tiny){
+      WIN_SIZE = t_tiny;
       clear();
       tinyprint();
       refresh();
@@ -131,10 +131,10 @@ int check_size(){
       CACHE = ROW + COL;
     }
 
-    if ((get_win_size() == BIG) || dynamic_resize == false){
-      WIN_SIZE = BIG;
+    if ((get_win_size() == t_full) || dynamic_resize == false){
+      WIN_SIZE = t_full;
     } else {
-      WIN_SIZE = NORMAL;
+      WIN_SIZE = t_small;
     }
     animate(start_animation);
   }
@@ -144,11 +144,11 @@ int check_size(){
 
 screen_size get_win_size(){
     if (ROW > resize_y && COL > resize_x){
-      return BIG;
+      return t_full;
     } else if (COL < tiny_mode_x || ROW < tiny_mode_y){
-      return SMALL;
+      return t_tiny;
     } else {
-      return NORMAL;
+      return t_small;
     }
 }
 

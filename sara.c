@@ -38,7 +38,6 @@ int main(int argc, char* argv[]){
   _deflect_signals();
 
   _state->t_cache = check_size();
-  int signal_reprint = true;
   int result = 0;
 
   while(1){
@@ -47,14 +46,14 @@ int main(int argc, char* argv[]){
 
     if(_state->interrupt){
       _state->interrupt = false;
-      signal_reprint = true;
+      _state->reprint = true;
     }
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     _state->t_cache = check_size();
 
     if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) {
-      signal_reprint = true;
+      _state->reprint = true;
     }
 
     if(HOLOGRAPHIC == 1 && _state->win_size == t_full){
@@ -64,17 +63,17 @@ int main(int argc, char* argv[]){
       if (_state->bg_c > 7) _state->bg_c = 2;
       if (_state->fg_c > 7) _state->fg_c = 2;
       if (_state->hd_c > 7) _state->hd_c = 2;
-      signal_reprint = true;
+      _state->reprint = true;
     }
 
     if(_state->fx != nofx) _affect(_state->fx);
 
     // print only once after the _state->hold_char flips back to EOF and _state->hold_char_time is exceeded
-    if (result == 0 && signal_reprint == true && _state->hold_char == '\0'){
+    if (result == 0 && _state->reprint == true && _state->hold_char == '\0'){
       animate(none);
-      signal_reprint = false;
+      _state->reprint = false;
     } else if (result >= 1){
-      signal_reprint = true;
+      _state->reprint = true;
     }
     usleep(40000); // chill
   }

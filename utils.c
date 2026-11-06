@@ -47,19 +47,10 @@ int __key(key_arg arg){
   return key(arg_out);
 }
 
-int key(char optional_input){
-//int key(char input){
+int key(char input){
 
-  char input; //
-
-//if(!input) input = getch
-
-  int valid_input = 0; //
-  if(optional_input){ //
-    input = optional_input; //
-  } else { //
-    input = getch(); //
-  }
+  if(!input) input = getch();
+  int valid_input = 0;
 
   if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) {
     valid_input = 1;
@@ -1669,11 +1660,8 @@ int _execute_run_args(char * selection, char * args_buffer){
   extra_args.chdir = NULL;
   extra_args.confirmation = NOCONFIRM;
 
-  if(ampersand){
-    extra_args.output_option = NO_OUT;
-  } else {
-    extra_args.output_option = OUTS;
-  }
+  if(ampersand) extra_args.output_option = NO_OUT;
+  else extra_args.output_option = OUTS;
 
   command->smashkey       = 0;
   command->extra_args     = extra_args;
@@ -1740,12 +1728,13 @@ void _init_state(){
   _state->fg_c              = fg_c;      /* implemented */
   _state->bg_c              = bg_c;      /* implemented */
   _state->hd_c              = hd_c;      /* implemented */
+  if(rand_c) _so_random();
   _state->glitch_frame_time = 3500;      /* implemented */
   _state->hold_char_time    = 0.00001;   /* implemented */
   _state->hold_char         = '\0';      /* implemented */
-  memset(_state->slap_str, 0, 256);      // not implemented
-  _state->key_lock          = 0;         /* not implemented */
-  _state->reprint           = false;     // not implemented
+  memset(_state->slap_str, 0, 256);
+  _state->key_lock          = 0;         /* implemented */
+  _state->reprint           = true;      /* implemented */
   _state->fx                = start_fx;  /* implemented */
 
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
@@ -1758,8 +1747,6 @@ void _init_state(){
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     _state->bg_state[i] = (char*)malloc(BG_GLYPH_LENGTH * sizeof(char));
   }
-
-  if(rand_c) _so_random();
 }
 
 void reset_glyph_state(){

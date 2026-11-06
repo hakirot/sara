@@ -171,38 +171,16 @@ void _pshd(){
     return;
   }
 
-  int count = 0;
+  int entries = 0;
   char line[256] = {'\0'};
   while(fgets(line, sizeof(line), file)){
-    count++;
+    entries++;
   }
 
   rewind(file);
 
-  unsigned short dim_x = 0;
-  unsigned short dim_y = 0;
-
-  // default we have space
-  if(_state->t_rows >= count+2 && pshd_y-2 >= count){
-    dim_y = count+2;
-
-  // screen is smaller than requested
-  } else if(_state->t_rows < pshd_y) {
-    dim_y = _state->t_rows;
-
-  // 
-  } else if (count <= pshd_y - 2) {
-    dim_y = count + 2;
-  } else {
-    dim_y = pshd_y;
-  }
-
-  if(_state->t_cols < pshd_x){
-    dim_x = _state->t_cols;
-  } else {
-    dim_x = pshd_x;
-  }
-
+  int dim_y = _deduce_dim_y(pshd_y, entries);
+  int dim_x = _deduce_dim_x(pshd_x);
   int offset_y = _deduce_offset_y(dim_y, pshd_offset_y);
   int offset_x = _deduce_offset_x(dim_x, pshd_offset_x);
 
@@ -234,9 +212,9 @@ void _pshd(){
     if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
       reprint = true;
       if (input == 'j'){
-        selection = (selection + 1) % count;
+        selection = (selection + 1) % entries;
       } else {
-        selection = (selection + (count - 1)) % count;
+        selection = (selection + (entries - 1)) % entries;
       }
     } else if (input == 'q' || input == 27){
       fclose(file);
@@ -245,11 +223,11 @@ void _pshd(){
     } else if (input == 4){
       // ctrl+d
       selection += (dim_y-2)/2;
-      if(selection >= count) selection = count-1;
+      if(selection >= entries) selection = entries-1;
       reprint = true;
     } else if (input == 6){
       selection += (dim_y-2);
-      if(selection >= count) selection = count-1;
+      if(selection >= entries) selection = entries-1;
       reprint = true;
     } else if (input == 21){
       //ctrl+u
@@ -261,13 +239,13 @@ void _pshd(){
       if(selection < 0) selection = 0;
       reprint = true;
     } else if (input == 'G' || input == 'L'){
-      selection = count-1;
+      selection = entries-1;
       reprint = true;
     } else if (input == 'g' || input == 'H'){
       selection = 0;
       reprint = true;
     } else if (input == 'M'){
-      selection = count/2;
+      selection = entries/2;
       reprint = true;
     } else if (input == '\n'){
       int i = 0;
@@ -295,7 +273,7 @@ void _pshd(){
         input_digits_idx++;
         selection = atoi(input_digits);
 
-        if(selection > count){
+        if(selection > entries){
           selection = 0;
           memset(&input_digits, 0, 16);
           input_digits_idx = 0;
@@ -500,7 +478,7 @@ void _pshd(){
         _affect(_state->fx);
         _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
       }
-      _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, count);
+      _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, entries);
       reprint = false;
     }
     usleep(2000);

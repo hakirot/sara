@@ -346,6 +346,7 @@ void _menuselect(const Menu * menu){
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
   int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 
+
   int selection = 0;
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
   while(1){
@@ -512,26 +513,22 @@ int _deduce_dim_x(int requested_dim_x){
   return dim_x;
 }
 
-int _deduce_offset_y(int dim_y, int requested_offset_y){
+int _deduce_offset_y(int dim_y, int req){
 
-  // lower
-  if((_state->t_rows/2 + dim_y + requested_offset_y) > _state->t_rows){
-    int ret_val = _state->t_rows/2 - dim_y/2;
-    if(ret_val + dim_y < _state->t_rows) {
-      ret_val++;
-    }
-    while((_state->t_rows/2 - dim_y/2 + ret_val + dim_y) > _state->t_rows) {
-      ret_val--;
-    }
-    return ret_val;
+  int lower_bound = _state->t_rows/2 - dim_y/2 + dim_y + req;
+
+  char err[128];
+  sprintf(err, "lower_bound: %d rows: %d", lower_bound, _state->t_rows);
+  slap(err);
+
+  if(lower_bound < _state->t_rows) return req;
+
+  while(lower_bound > _state->t_rows){
+    lower_bound--;
+    req--;
   }
 
-  if((_state->t_rows/2 + requested_offset_y - dim_y/2) < 0){
-    int ret_val = -(_state->t_rows/2 - dim_y/2);
-    return ret_val;
-  }
-
-  return requested_offset_y;
+  return req;
 }
 
 int _deduce_offset_x(int dim_x, int requested_offset_x){

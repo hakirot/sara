@@ -204,12 +204,7 @@ extern int HD_LENGTH;
 
 extern int HOLOGRAPHIC;
 
-extern int ROW;
-extern int COL;
-extern int CACHE;
-
 extern clock_t LAST_INPUT_TIME;
-extern screen_size WIN_SIZE;
 
 extern char HOLD_CHAR;
 extern int GLITCH_TIME;
@@ -227,7 +222,6 @@ extern char SLAP_STR[256];
 extern struct timeval slap_time;
 
 extern int SHOW_COLORS;
-extern int KEY_LOCK;
 extern int INTERRUPT;
 
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};

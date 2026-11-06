@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
   launch_window();
   _deflect_signals();
 
-  CACHE = check_size();
+  _state->t_cache = check_size();
   LAST_INPUT_TIME = clock();
   int signal_reprint = true;
   int result = 0;
@@ -51,14 +51,14 @@ int main(int argc, char* argv[]){
       signal_reprint = true;
     }
 
-    getmaxyx(stdscr, ROW, COL);
-    CACHE = check_size();
+    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    _state->t_cache = check_size();
 
     if(strlen(SLAP_STR) > 0 && _slap_timer() == 1 ) {
       signal_reprint = true;
     }
 
-    if(HOLOGRAPHIC == 1 && WIN_SIZE == t_full){
+    if(HOLOGRAPHIC == 1 && _state->win_size == t_full){
       _state->bg_c++;
       _state->fg_c++;
       _state->hd_c++;
@@ -89,13 +89,13 @@ int main(int argc, char* argv[]){
 // Check screen size, return updated sum of dimensions
 int check_size(){
 
-  if (CACHE != ROW + COL){
+  if (_state->t_cache != _state->t_rows + _state->t_cols){
 
     clear();
 
     // small win size jail
     while (get_win_size() == t_tiny){
-      WIN_SIZE = t_tiny;
+      _state->win_size = t_tiny;
       clear();
       tinyprint();
       refresh();
@@ -104,25 +104,25 @@ int check_size(){
       usleep(2000);
       _key();
 
-      getmaxyx(stdscr,ROW,COL);
-      CACHE = ROW + COL;
+      getmaxyx(stdscr,_state->t_rows,_state->t_cols);
+      _state->t_cache = _state->t_rows + _state->t_cols;
     }
 
     if ((get_win_size() == t_full) || dynamic_resize == false){
-      WIN_SIZE = t_full;
+      _state->win_size = t_full;
     } else {
-      WIN_SIZE = t_small;
+      _state->win_size = t_small;
     }
     animate(start_animation);
   }
 
-  return ROW + COL;
+  return _state->t_rows + _state->t_cols;
 }
 
 screen_size get_win_size(){
-    if (ROW > resize_y && COL > resize_x){
+    if (_state->t_rows > resize_y && _state->t_cols > resize_x){
       return t_full;
-    } else if (COL < tiny_mode_x || ROW < tiny_mode_y){
+    } else if (_state->t_cols < tiny_mode_x || _state->t_rows < tiny_mode_y){
       return t_tiny;
     } else {
       return t_small;
@@ -158,7 +158,7 @@ int input_color(char * arg){
 // TODO quickedit pshd
 void _pshd(){
 
-  CACHE = ROW + COL;
+  _state->t_cache = _state->t_rows + _state->t_cols;
   ensure_config_dir();
 
   const char *env_home = getenv("HOME");
@@ -184,18 +184,18 @@ void _pshd(){
   unsigned short dim_x = 0;
   unsigned short dim_y = 0;
 
-  if(ROW >= count+2 && pshd_y-2 > count){
+  if(_state->t_rows >= count+2 && pshd_y-2 > count){
     dim_y = count+2;
-  } else if(ROW < pshd_y) {
-    dim_y = ROW;
+  } else if(_state->t_rows < pshd_y) {
+    dim_y = _state->t_rows;
   } else if (count <= pshd_y - 2) {
     dim_y = count + 2;
   } else {
     dim_y = pshd_y;
   }
 
-  if(COL < pshd_x){
-    dim_x = COL;
+  if(_state->t_cols < pshd_x){
+    dim_x = _state->t_cols;
   } else {
     dim_x = pshd_x;
   }
@@ -214,15 +214,15 @@ void _pshd(){
   int selection = 0;
   int reprint = true;
 
-  if (dim_y < 3 || ROW < 3) {
+  if (dim_y < 3 || _state->t_rows < 3) {
     dim_y = 3;
     offset_y = 0;
   }
 
   while(1){
 
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL){
+    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    if (_state->t_cache != _state->t_rows + _state->t_cols){
       fclose(file);
       return;
     }
@@ -309,11 +309,11 @@ void _pshd(){
         attron(COLOR_PAIR(pshd_c));
         attron(A_STANDOUT);
       }
-      mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
+      mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "FILTER");
       attroff(A_BOLD);
       attroff(A_STANDOUT);
 
-      mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
+      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6, ' ');
 
       refresh();
       char search_buffer[256] = {'\0'};
@@ -324,8 +324,8 @@ void _pshd(){
         //attron(pshd_c);
         input = getch();
 
-        getmaxyx(stdscr, ROW, COL);
-        if (CACHE != ROW + COL){
+        getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+        if (_state->t_cache != _state->t_rows + _state->t_cols){
           fclose(file);
           return;
         }
@@ -337,8 +337,8 @@ void _pshd(){
 
           attron(COLOR_PAIR(pshd_c));
           if(pshd_c_bold) attron(A_BOLD);
-          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
-          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  6 + char_idx + offset_x + 1, ' ');
+          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
+          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + char_idx + offset_x + 1, ' ');
           attroff(COLOR_PAIR(pshd_c));
           attroff(A_BOLD);
 
@@ -370,13 +370,13 @@ void _pshd(){
             attron(COLOR_PAIR(pshd_c));
             attron(A_STANDOUT);
           }
-          mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "FILTER");
+          mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "FILTER");
           attroff(A_BOLD);
           attroff(A_STANDOUT);
 
           attron(COLOR_PAIR(pshd_c));
-          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
-          mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x + 6, ' ');
+          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
+          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6, ' ');
           attroff(COLOR_PAIR(pshd_c));
 
           char_idx--;
@@ -385,7 +385,7 @@ void _pshd(){
           if(pshd_c_bold) {
             attron(A_BOLD);
           } 
-          mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
+          mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
           attroff(A_BOLD);
           attroff(A_STANDOUT);
           attroff(COLOR_PAIR(pshd_c));
@@ -405,7 +405,7 @@ void _pshd(){
 
               attron(COLOR_PAIR(pshd_c));
               if(pshd_c_bold) attron(A_BOLD);
-              mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
+              mvprintw(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 2 + offset_x, "%d", k);
               attroff(COLOR_PAIR(pshd_c));
 
               if(i == 0) {
@@ -449,7 +449,7 @@ void _pshd(){
 
               int len = strlen(line);
               for(int j = 0; j < len; j++){
-                mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
+                mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
                 if((j + 8) > dim_x) break;
               }
               attroff(A_BOLD);
@@ -517,7 +517,7 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     if(pshd_c_bold) attron(A_BOLD);
 
     int len = strlen(line);
-    mvprintw(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, "%d", k);
+    mvprintw(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 2 + offset_x, "%d", k);
 
     if(k == selection) {
       attron(COLOR_PAIR(pshd_c));
@@ -527,7 +527,7 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     }
 
     for(int j = 0; j < len; j++){
-      mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
       if((j + 8) > dim_x) break;
     }
 

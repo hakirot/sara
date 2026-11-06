@@ -12,12 +12,7 @@
 #include "globals.h"
 #include "config.h"
 
-int ROW = 0;
-int COL = 0;
-int CACHE = 10;
-
 clock_t LAST_INPUT_TIME;
-screen_size WIN_SIZE;
 
 int BG_GLYPH_HEIGHT;
 int FG_GLYPH_HEIGHT;
@@ -47,5 +42,3 @@ char SLAP_STR[256];
 struct timeval slap_time = {0};
 
 state * _state = NULL;
-
-int KEY_LOCK = 0;

@@ -37,7 +37,7 @@ int __key(key_arg arg){
 
   if (arg_out != 0){
     if(strchr(global_chars, arg_out)){
-      KEY_LOCK = 0;
+      _state->key_lock = 0;
       animate(none);
     } else {
       return 0;
@@ -70,20 +70,20 @@ int key(char optional_input){
       } else if(strchr(builtinkeys_chars, input)){
         __builtin__(input);
       } else if(strchr(menukeys_chars, input)){
-        if(KEY_LOCK == 1) return valid_input;
-        KEY_LOCK = 1;
+        if(_state->key_lock == 1) return valid_input;
+        _state->key_lock = 1;
         __topmenu__(input);
-        KEY_LOCK = 0;
+        _state->key_lock = 0;
       } else {
         crit("Something broke :[");
       }
 
       valid_input = 2;
 
-    } else if(WIN_SIZE != t_tiny){
+    } else if(_state->win_size != t_tiny){
       LAST_INPUT_TIME = clock();
       HOLD_CHAR = input;
-      mvprintw(ROW/2, COL/2, "%c", HOLD_CHAR);
+      mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
       refresh();
     }
   }
@@ -91,7 +91,7 @@ int key(char optional_input){
   double time_since_input = (double)(clock() - LAST_INPUT_TIME)
                             / CLOCKS_PER_SEC;
 
-  if(time_since_input > HOLD_CHAR_TIME && WIN_SIZE != t_tiny){
+  if(time_since_input > HOLD_CHAR_TIME && _state->win_size != t_tiny){
     HOLD_CHAR = '\0';
   }
 
@@ -100,8 +100,8 @@ int key(char optional_input){
 
 void __command__(char input){
 
-  if(KEY_LOCK == 1) return;
-  KEY_LOCK = 1;
+  if(_state->key_lock == 1) return;
+  _state->key_lock = 1;
 
   const Command* command = NULL;
   for(int i = 0; i < commandkeys_len; i++){
@@ -113,11 +113,11 @@ void __command__(char input){
 
   __execute__(command);
 
-  KEY_LOCK = 0;
+  _state->key_lock = 0;
 
   refresh();
-  getmaxyx(stdscr, ROW, COL);
-  if(CACHE != ROW + COL) {
+  getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+  if(_state->t_cache != _state->t_rows + _state->t_cols) {
     return;
   }
 
@@ -130,8 +130,8 @@ int _get_confirm(const Command * command){
   _print_confirm_window(((char **)command->cmd)[0]);
   _print_confirm_selection(selection);
   while(1){
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL) break;
+    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    if (_state->t_cache != _state->t_rows + _state->t_cols) break;
 
     int input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 103 && input < 109) {
@@ -319,21 +319,21 @@ void __topmenu__(char input){
   int dim_x = 0;
 
   if(menu_y < 3){
-    if(menu_y < ROW){
+    if(menu_y < _state->t_rows){
       dim_y = 3;
     } else {
-      dim_y = ROW;
+      dim_y = _state->t_rows;
     }
-  } else if(ROW < menu_y){
-    dim_y = ROW;    
+  } else if(_state->t_rows < menu_y){
+    dim_y = _state->t_rows;    
   } else {
     dim_y = menu_y;
   }
 
   if(menu_x < 3){
     dim_x = 3;
-  } else if(COL < menu_x){
-    dim_x = COL;
+  } else if(_state->t_cols < menu_x){
+    dim_x = _state->t_cols;
   } else {
     dim_x = menu_x;
   }
@@ -347,21 +347,21 @@ void _menuselect(const Menu * menu){
   int dim_x = 0;
 
   if(menu_y < 3){
-    if(menu_y < ROW){
+    if(menu_y < _state->t_rows){
       dim_y = 3;
     } else {
-      dim_y = ROW;
+      dim_y = _state->t_rows;
     }
-  } else if(ROW < menu_y){
-    dim_y = ROW;    
+  } else if(_state->t_rows < menu_y){
+    dim_y = _state->t_rows;    
   } else {
     dim_y = menu_y;
   }
 
   if(menu_x < 3){
     dim_x = 3;
-  } else if(COL < menu_x){
-    dim_x = COL;
+  } else if(_state->t_cols < menu_x){
+    dim_x = _state->t_cols;
   } else {
     dim_x = menu_x;
   }
@@ -375,13 +375,13 @@ void _menuselect(const Menu * menu){
   }
 
   if(len < dim_y - 2 || 
-    (len < menu_y - 2 && len < ROW - 2))
+    (len < menu_y - 2 && len < _state->t_rows - 2))
   {
     dim_y = len+2;
   }
 
-  if(ROW < dim_y){
-    dim_y = ROW;
+  if(_state->t_rows < dim_y){
+    dim_y = _state->t_rows;
   }
 
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
@@ -392,8 +392,8 @@ void _menuselect(const Menu * menu){
   int selection = 0;
   while(1){
 
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL) break;
+    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    if (_state->t_cache != _state->t_rows + _state->t_cols) break;
 
     // make this block a function
     int input = getch();
@@ -434,7 +434,7 @@ void _menuselect(const Menu * menu){
       } else if(menu[selection].type == COMMAND){
         int result = __execute__(&menu[selection].next.command);
         if(result == true){
-          KEY_LOCK = 0;
+          _state->key_lock = 0;
           animate(menu[selection].next.command.post_animation);
         } else {
           animate(none);
@@ -460,7 +460,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(len < window_size) window_size = len;
 
   if(dim_y < 3) {
-    window_size = ROW;
+    window_size = _state->t_rows;
     offset_y = -1;
   }
 
@@ -490,7 +490,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
       str_len = dim_x - 2;
     }
     for(int j = 0; j < str_len; j++){
-      mvaddch(ROW/2 - dim_y/2 + 1 + k + offset_y, COL/2 - dim_x/2 + 1 + j + offset_x, menu[i].name[j]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + k + offset_y, _state->t_cols/2 - dim_x/2 + 1 + j + offset_x, menu[i].name[j]);
     }
 
     attroff(A_STANDOUT);
@@ -504,19 +504,19 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
 int _deduce_offset_y(int dim_y, int requested_offset_y){
 
   // lower
-  if((ROW/2 + dim_y + requested_offset_y) > ROW){
-    int ret_val = ROW/2 - dim_y/2;
-    if(ret_val + dim_y < ROW) {
+  if((_state->t_rows/2 + dim_y + requested_offset_y) > _state->t_rows){
+    int ret_val = _state->t_rows/2 - dim_y/2;
+    if(ret_val + dim_y < _state->t_rows) {
       ret_val++;
     }
-    while((ROW/2 - dim_y/2 + ret_val + dim_y) > ROW) {
+    while((_state->t_rows/2 - dim_y/2 + ret_val + dim_y) > _state->t_rows) {
       ret_val--;
     }
     return ret_val;
   }
 
-  if((ROW/2 + requested_offset_y - dim_y/2) < 0){
-    int ret_val = -(ROW/2 - dim_y/2);
+  if((_state->t_rows/2 + requested_offset_y - dim_y/2) < 0){
+    int ret_val = -(_state->t_rows/2 - dim_y/2);
     return ret_val;
   }
 
@@ -525,15 +525,15 @@ int _deduce_offset_y(int dim_y, int requested_offset_y){
 
 int _deduce_offset_x(int dim_x, int requested_offset_x){
 
-  if((COL/2 - dim_x/2 + dim_x - 1 + requested_offset_x) >= COL){
-    int ret_val = COL/2 - dim_x/2;
-    if((COL/2 - dim_x/2 + dim_x - 1 + ret_val) < COL) ret_val++;
-    if((COL/2 - dim_x/2 + dim_x - 1 + ret_val) >= COL) ret_val--;
+  if((_state->t_cols/2 - dim_x/2 + dim_x - 1 + requested_offset_x) >= _state->t_cols){
+    int ret_val = _state->t_cols/2 - dim_x/2;
+    if((_state->t_cols/2 - dim_x/2 + dim_x - 1 + ret_val) < _state->t_cols) ret_val++;
+    if((_state->t_cols/2 - dim_x/2 + dim_x - 1 + ret_val) >= _state->t_cols) ret_val--;
     return ret_val;
   }
 
-  if((COL/2 - dim_x/2 + requested_offset_x) < 0){
-    int ret_val = -(COL/2 - dim_x/2);
+  if((_state->t_cols/2 - dim_x/2 + requested_offset_x) < 0){
+    int ret_val = -(_state->t_cols/2 - dim_x/2);
     return ret_val;
   }
 
@@ -1066,7 +1066,7 @@ void _show_colors(){
   for(int j = 0; j < 2; j++){
     for(int i = 1; i < 9; i++){
       attron(COLOR_PAIR(i));
-      mvaddwstr(ROW - 2 + j, (COL-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      mvaddwstr(_state->t_rows - 2 + j, (_state->t_cols-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
       attroff(COLOR_PAIR(i));
     }
     attron(A_BOLD);
@@ -1215,21 +1215,21 @@ void _run_menu(){
   int dim_x = 0;
 
   if(run_y < 3){
-    if(run_y < ROW){
+    if(run_y < _state->t_rows){
       dim_y = 3;
     } else {
-      dim_y = ROW;
+      dim_y = _state->t_rows;
     }
-  } else if(ROW < run_y){
-    dim_y = ROW;    
+  } else if(_state->t_rows < run_y){
+    dim_y = _state->t_rows;    
   } else {
     dim_y = run_y;
   }
 
   if(run_x < 3){
     dim_x = 3;
-  } else if(COL < run_x){
-    dim_x = COL;
+  } else if(_state->t_cols < run_x){
+    dim_x = _state->t_cols;
   } else {
     dim_x = run_x;
   }
@@ -1259,17 +1259,17 @@ void _run_menu(){
     attron(A_STANDOUT);
   }
 
-  mvprintw(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 + offset_x, "RUN");
+  mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "RUN");
   attroff(COLOR_PAIR(run_c));
   attroff(A_STANDOUT);
   attroff(A_BOLD);
-  mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + offset_x, ' ');
+  mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + offset_x, ' ');
 
   _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
   while(1){
 
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL){
+    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    if (_state->t_cache != _state->t_rows + _state->t_cols){
       return;
     }
 
@@ -1283,24 +1283,24 @@ void _run_menu(){
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) attron(A_BOLD);
-      mvaddch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x, (char)input);
+      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x, (char)input);
 
       wchar_t cursor_w[2] = { L'\u2588', L'\0' };
       cchar_t cchar;
       setcchar(&cchar, cursor_w, 0, 0, NULL);
-      mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
+      mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
       attroff(COLOR_PAIR(pshd_c));
       attroff(A_BOLD);
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
     } else if (input == '\n') {
-      KEY_LOCK = 1;
+      _state->key_lock = 1;
       if(_run_exec(selection) == 0){
         animate(start_animation);
       } else {
         animate(glitch_full);
       }
-      KEY_LOCK = 0;
+      _state->key_lock = 0;
       break;
     } else if (input == 32){
       if(strlen(selection) != 0) {
@@ -1328,18 +1328,18 @@ void _run_menu(){
         wchar_t wc = MenuBorder[4];
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+        mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
       } else if (dim_y != 2 && idx + 6 == dim_x){
         wchar_t wc = MenuBorder[1];
         cchar_t cchar;
         setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
+        mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
       }
 
       wchar_t cursor_w = L'\u2588';
       cchar_t cchar;
       setcchar(&cchar, &cursor_w, 0, 0, NULL);
-      mvadd_wch(ROW/2 - dim_y/2 + offset_y, COL/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
+      mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
       attroff(COLOR_PAIR(run_c));
       attroff(A_BOLD);
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
@@ -1372,7 +1372,7 @@ void _populate_run_body(int dim_y,
     cchar_t cchar;
     setcchar(&cchar, &wc, 0, 0, NULL);
     for(int j = 1; j < dim_x - 1; j++){
-      mvadd_wch(ROW/2 - dim_y/2 + 1, COL/2 - dim_x/2 + j + offset_x, &cchar);
+      mvadd_wch(_state->t_rows/2 - dim_y/2 + 1, _state->t_cols/2 - dim_x/2 + j + offset_x, &cchar);
     }
   }
 
@@ -1400,13 +1400,13 @@ void _populate_run_body(int dim_y,
         attron(A_STANDOUT);
         for(int j = 0; j < len; j++){
           if((j) == dim_x - 2) break;
-          mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+          mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + offset_x, line[j]);
         }
         attroff(A_STANDOUT);
       } else {
         for(int j = 0; j < len; j++){
           if((j) == dim_x - 2) break;
-          mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+          mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + offset_x, line[j]);
         }
       }
       i++;
@@ -1418,7 +1418,7 @@ void _populate_run_body(int dim_y,
       int len = strlen(line);
       for(int j = 0; j < len; j++){
         if((j) == dim_x - 2) break;
-        mvaddch(ROW/2 - dim_y/2 + i + 1 + offset_y, COL/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+        mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + offset_x, line[j]);
       }
       i++;
       if (i == dim_y) break;
@@ -1477,8 +1477,8 @@ int _run_args(int offset_y, int offset_x, char * selection){
   _run_args_refresh(offset_y, offset_x, selection, args_buffer);
 
   while(1){
-    getmaxyx(stdscr, ROW, COL);
-    if (CACHE != ROW + COL){
+    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    if (_state->t_cache != _state->t_rows + _state->t_cols){
       return 0;
     }
 
@@ -1522,34 +1522,34 @@ int _run_args(int offset_y, int offset_x, char * selection){
 
 void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_buffer){
 
-  if(ROW > 1) animate(none);
-  if(ROW == 1) clear();
+  if(_state->t_rows > 1) animate(none);
+  if(_state->t_rows == 1) clear();
   int dim_y = 3;
-  int dim_x = run_x; if(run_x < 3) dim_x = 3; if(COLS < dim_x) dim_x = COLS;
+  int dim_x = run_x; if(run_x < 3) dim_x = 3; if(_state->t_cols < dim_x) dim_x = _state->t_cols;
 
   offset_y -= run_y/2;
-  if(run_y > ROW) offset_y = 1 - ROW/2;
-  if(ROW == 1) offset_y = 0;
-  if(ROW == 2) offset_y = -1;
+  if(run_y > _state->t_rows) offset_y = 1 - _state->t_rows/2;
+  if(_state->t_rows == 1) offset_y = 0;
+  if(_state->t_rows == 2) offset_y = -1;
 
   wchar_t cursor_w = L'\u2588';
   cchar_t cursor_c;
   setcchar(&cursor_c, &cursor_w, 0, 0, NULL);
-  if(ROW > 1) _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+  if(_state->t_rows > 1) _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
   attron(COLOR_PAIR(run_c));
   if(run_c_bold == true) attron(A_BOLD);
-  mvaddch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + 2 + offset_x, '>');
+  mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 2 + offset_x, '>');
   int selection_len = (int)strlen(selection);
   int args_buffer_len = (int)strlen(args_buffer);
 
   if(args_buffer_len + selection_len < dim_x - 6){
     for(int i = 0; i < selection_len; i++){
-      mvaddch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + 4 + i + offset_x, selection[i]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 4 + i + offset_x, selection[i]);
     }
     for(int i = 0; i < args_buffer_len; i++){
-      mvaddch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + 5 + selection_len + i + offset_x, args_buffer[i]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 5 + selection_len + i + offset_x, args_buffer[i]);
     }
-    mvadd_wch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + 5 + selection_len + args_buffer_len + offset_x, &cursor_c);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 5 + selection_len + args_buffer_len + offset_x, &cursor_c);
   } else {
 
     int buffer_size = selection_len + args_buffer_len + 4;
@@ -1567,9 +1567,9 @@ void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_
       overflow_buffer[4 + selection_len + i] = args_buffer[i];
     }
 
-    mvadd_wch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + dim_x - 2 + offset_x, &cursor_c);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 2 + offset_x, &cursor_c);
     for(int i = 0; i < dim_x - 3; i++){
-      mvaddch(ROW/2 - dim_y/2 + 1 + offset_y, COL/2 - dim_x/2 + dim_x - 3 - i + offset_x, overflow_buffer[buffer_size - 1 - i]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 3 - i + offset_x, overflow_buffer[buffer_size - 1 - i]);
     }
     free(overflow_buffer);
   }
@@ -1731,19 +1731,19 @@ void _init_state(){
 
   _state->show_colors       = false;     // not implemented
   _state->interrupt         = false;     // not implemented
-  _state->preflight_check   = false;     // not implemented
+  _state->preflight_check   = false;     /* implemented */
   _state->last_input_time   = clock();   // not implemented
-  _state->t_rows            = 1;         // not implemented
-  _state->t_cols            = 1;         // not implemented
-  _state->t_cache           = 0;         // not implemented
-  _state->win_size          = t_full;    // not implemented
+  _state->t_rows            = 1;         /* implemented */
+  _state->t_cols            = 1;         /* implemented */
+  _state->t_cache           = 10;        /* implemented */
+  _state->win_size          = t_full;    /* implemented */
   _state->fg_c              = fg_c;      /* implemented */
   _state->bg_c              = bg_c;      /* implemented */
   _state->hd_c              = hd_c;      /* implemented */
   _state->glitch_frame_time = 3500;      // not implemented
   _state->hold_char_time    = 0.00001;;  // not implemented
   memset(_state->slap_str, 0, 256);      // not implemented
-  _state->key_lock          = 0;         // not implemented
+  _state->key_lock          = 0;         /* not implemented */
   _state->reprint           = false;     // not implemented
   _state->fx                = start_fx;  /* implemented */
 

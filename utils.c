@@ -1339,6 +1339,7 @@ void _run_menu(){
       if(idx == 0){
         break;
       }
+      if(dim_y == 2) mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
       idx--;
       filter_buffer[idx] = '\0';
       refresh_ui++;

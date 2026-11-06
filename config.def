@@ -16,9 +16,7 @@
 
 static const animation start_animation = none;
 static const fx               start_fx = nofx;
-
-/* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
-static int FOLLOW = true;
+static const unsigned short   rand_c   = true;          /* random colors */
 
 /* COLORS */
 static const unsigned short fg_c        = green;    /* fg color */
@@ -35,9 +33,6 @@ static const unsigned short hd_c_bold   = true;
 static const unsigned short pshd_c_bold = false;
 static const unsigned short menu_c_bold = false;
 static const unsigned short run_c_bold  = false;
-
-/* optional random colors */
-static const unsigned short rand_c = true;
 
 /* HEADER HIGHLIGHTS */
 static const int highlight_hd_in_full_mode  = false;
@@ -223,5 +218,8 @@ static const MenuKey menukeys[] = {
   {'F', example_menu },
   /* Map keys to more menus here */
 };
+
+/* Toggle if you jump directories when sara exits by reading ~/.cache/sara/saraexit */
+static int FOLLOW = true;
 
 #endif

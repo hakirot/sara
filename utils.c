@@ -1018,6 +1018,7 @@ void launch_window(){
   nodelay(stdscr, TRUE);
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
   curs_set(FALSE);          // No cursor
+  set_escdelay(0);
 //clear();
 //refresh();                // clear screen
 }

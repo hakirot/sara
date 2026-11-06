@@ -75,7 +75,7 @@ int main(int argc, char* argv[]){
     } else if (result >= 1){
       _state->reprint = true;
     }
-    usleep(40000); // chill
+    usleep(20000); // chill
   }
 
   refresh();
@@ -318,8 +318,17 @@ void _pshd(){
       int char_idx = 0;
       int chdir_at_seletion = false;
 
-      while(1){
-        //attron(pshd_c);
+      int refresh_filter_body = true;
+      int refresh_filter_ui = true;
+      wchar_t block[2] = { L'\u2588', L'\0' };
+      while(1){ // FIND
+
+        if(_state->fx != nofx) {
+          _affect(_state->fx);
+          refresh_filter_ui   = true;
+          refresh_filter_body = true;
+        }
+
         input = getch();
 
         getmaxyx(stdscr, _state->t_rows, _state->t_cols);
@@ -333,20 +342,15 @@ void _pshd(){
           search_buffer[char_idx] = (char)input;
           char_idx++;
 
-          attron(COLOR_PAIR(pshd_c));
-          if(pshd_c_bold) attron(A_BOLD);
-          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + char_idx + offset_x, (char)input);
-          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + char_idx + offset_x + 1, ' ');
-          attroff(COLOR_PAIR(pshd_c));
-          attroff(A_BOLD);
-
-          refresh();
-          reprint = true;
+          refresh_filter_ui   = true;
+          refresh_filter_body = true;
 
         } else if (input == '\n'){
-          reprint = true;
+          refresh_filter_body = true;
           chdir_at_seletion = true;
         } else if (input == 27){
+
+          // escape
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
           attron(COLOR_PAIR(pshd_c));
           if(pshd_c_bold) attron(A_BOLD);
@@ -354,11 +358,21 @@ void _pshd(){
           break;
         } else if (input > 0) {
           // Backspaces
+
           if(char_idx == 0){
             _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
-            reprint = true;
+            refresh_filter_body = true;
             break;
           }
+          char_idx--;
+          search_buffer[char_idx] = '\0';
+          if(char_idx < 0) char_idx = 0;
+
+          refresh_filter_ui   = true;
+          refresh_filter_body = true;
+        }
+
+        if(refresh_filter_ui == true ){
           _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
           if(pshd_c_bold) {
             attron(A_STANDOUT);
@@ -372,28 +386,28 @@ void _pshd(){
           attroff(A_BOLD);
           attroff(A_STANDOUT);
 
-          attron(COLOR_PAIR(pshd_c));
+          attron(COLOR_PAIR(white));
+          cchar_t cchar;
+          setcchar(&cchar, block, 0, 0, NULL);
           mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
           mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6, ' ');
-          attroff(COLOR_PAIR(pshd_c));
+          attroff(COLOR_PAIR(white));
 
-          char_idx--;
-          search_buffer[char_idx] = '\0';
           attron(COLOR_PAIR(pshd_c));
-          if(pshd_c_bold) {
-            attron(A_BOLD);
-          } 
-          mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + 7 + offset_x, "%s", search_buffer);
-          attroff(A_BOLD);
-          attroff(A_STANDOUT);
+          if(pshd_c_bold) attron(A_BOLD);
+          int i = 0;
+          for(i = 0; i < (int)strlen(search_buffer); i++){
+            mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + i + offset_x + 1, search_buffer[i]);
+          }
+          mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + i + offset_x + 1, &cchar);
           attroff(COLOR_PAIR(pshd_c));
-          if(char_idx < 0) char_idx = 0;
+          attroff(A_BOLD);
 
+          refresh_filter_ui = false;
           refresh();
-          reprint = true;
         }
 
-        if(reprint == true){
+        if(refresh_filter_body == true ){
           int i = 0;
           int k = 0;
           while((fgets(line, sizeof(line), file) && (i < (dim_y -  2)))){
@@ -459,12 +473,13 @@ void _pshd(){
             k++;
           }
 
-          reprint = false;
+          refresh();
+          refresh_filter_body = false;
           rewind(file);
 
         }
 
-        usleep(1000);
+        usleep(20000);
       }
     } else if (input != -1){
       int result = _key(input);
@@ -474,8 +489,12 @@ void _pshd(){
       }
     }
 
-    if(reprint){
+    if(reprint || _state->fx != nofx){
       _clear_menu(dim_y, dim_x, offset_y, offset_x);
+      if(_state->fx != nofx) {
+        _affect(_state->fx);
+        _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
+      }
       _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, count);
       reprint = false;
     }

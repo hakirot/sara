@@ -439,12 +439,13 @@ void _menuselect(const Menu * menu){
     }
 
     _print_menu_selection(menu, selection, len, dim_y, dim_x, offset_y, offset_x);
-    usleep(2000);
+    usleep(20000);
   }
 }
 
 void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x, int offset_y, int offset_x){
 
+  if(_state->fx != nofx) _affect(_state->fx);
   _clear_menu(dim_y, dim_x, offset_y, offset_x);
   int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
@@ -1343,17 +1344,9 @@ void _run_menu(){
   return;
 }
 
-void _populate_run_body(int dim_y,
-                        int dim_x,
-                        int offset_y,
-                        int offset_x,
-                        char * filter_buffer,
-                        char * selection)
-{
+void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char * filter_buffer, char * selection) {
   int border_buffer = 2;
-  if(dim_y < 3){
-    border_buffer = 0;
-  }
+  if(dim_y < 3) border_buffer = 0;
 
   if(dim_y != 2){
     _clear_menu(dim_y, dim_x, offset_y, offset_x);

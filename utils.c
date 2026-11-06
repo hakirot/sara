@@ -517,10 +517,6 @@ int _deduce_offset_y(int dim_y, int req){
 
   int lower_bound = _state->t_rows/2 - dim_y/2 + dim_y + req;
 
-  char err[128];
-  sprintf(err, "lower_bound: %d rows: %d", lower_bound, _state->t_rows);
-  slap(err);
-
   if(lower_bound < _state->t_rows) return req;
 
   while(lower_bound > _state->t_rows){
@@ -1362,7 +1358,7 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
   if(dim_y != 2){
     _clear_menu(dim_y, dim_x, offset_y, offset_x);
   } else {
-    wchar_t wc[2] = { L'\0', L'\0' };
+    wchar_t wc[2] = { L' ', L'\0' };
     cchar_t cchar;
     setcchar(&cchar, wc, 0, 0, NULL);
     for(int j = 1; j < dim_x - 1; j++){

@@ -333,45 +333,33 @@ void __topmenu__(char input){
 
 void _menuselect(const Menu * menu){
 
-  int dim_y = _deduce_dim_y(menu_y);
-  int dim_x = _deduce_dim_x(menu_x);
-
   Menu * ptr = (Menu *)menu;
-  int len = 0;
+  int entries = 0;
   while(1){
     if(ptr == NULL || ptr->name == NULL) break;
     ptr++;
-    len++;
+    entries++;
   }
 
-  if(len < dim_y - 2 || 
-    (len < menu_y - 2 && len < _state->t_rows - 2))
-  {
-    dim_y = len+2;
-  }
-
-  if(_state->t_rows < dim_y){
-    dim_y = _state->t_rows;
-  }
-
+  int dim_y = _deduce_dim_y(menu_y, entries);
+  int dim_x = _deduce_dim_x(menu_x);
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
   int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 
-  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
-
   int selection = 0;
+  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
   while(1){
 
-    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
-    if (_state->t_cache != _state->t_rows + _state->t_cols) break;
+    _get_dims();
+    if (_resized()) break;
 
     // make this block a function
     int input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 105 && input < 108) {
       if (input == 'j'){
-        selection = (selection + 1) % len;
+        selection = (selection + 1) % entries;
       } else {
-        selection = (selection + (len - 1)) % len;
+        selection = (selection + (entries - 1)) % entries;
       }
     } else if (input == 'q' || input == 27){
       animate(none);
@@ -379,10 +367,10 @@ void _menuselect(const Menu * menu){
     } else if (input == 4){
       // ctrl+d
       selection += (dim_y-2)/2;
-      if(selection >= len) selection = len-1;
+      if(selection >= entries) selection = entries-1;
     } else if (input == 6){
       selection += (dim_y-2);
-      if(selection >= len) selection = len-1;
+      if(selection >= entries) selection = entries-1;
     } else if (input == 21){
       //ctrl+u
       selection -= (dim_y-2)/2;
@@ -391,11 +379,11 @@ void _menuselect(const Menu * menu){
       selection -= (dim_y-2);
       if(selection < 0) selection = 0;
     } else if (input == 'G' || input == 'L'){
-      selection = len-1;
+      selection = entries-1;
     } else if (input == 'g' || input == 'H'){
       selection = 0;
     } else if(input == 'M'){
-      selection = len/2;
+      selection = entries/2;
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _clear_menu(dim_y+2, dim_x+2, offset_y, offset_x);
@@ -418,7 +406,7 @@ void _menuselect(const Menu * menu){
       }
     }
 
-    _print_menu_selection(menu, selection, len, dim_y, dim_x, offset_y, offset_x);
+    _print_menu_selection(menu, selection, entries, dim_y, dim_x, offset_y, offset_x);
     usleep(20000);
   }
 }
@@ -479,7 +467,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   refresh();
 }
 
-int _deduce_dim_y(int requested_dim_y){
+int _deduce_dim_y(int requested_dim_y, int entries){
 
   int dim_y = 0;
 
@@ -494,6 +482,16 @@ int _deduce_dim_y(int requested_dim_y){
     dim_y = _state->t_rows;    
   } else {
     dim_y = menu_y;
+  }
+
+  if(entries < dim_y - 2 || 
+    (entries < menu_y - 2 && entries < _state->t_rows - 2))
+  {
+    dim_y = entries+2;
+  }
+
+  if(_state->t_rows < dim_y){
+    dim_y = _state->t_rows;
   }
 
   return dim_y;
@@ -1815,4 +1813,13 @@ void _so_random(){
 void version(){
   printf("%s %s \n", PROGRAM_NAME, PROGRAM_VERSION);
   _quit(0);
+}
+
+int _get_dims(){
+  getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+}
+
+int  _resized(){
+  if(_state->t_cache != _state->t_rows + _state->t_cols) return 1;
+  else return 0;
 }

@@ -1335,7 +1335,7 @@ void _run_menu(){
       refresh_ui++;
     }
 
-    usleep(20000);
+    usleep(10000);
   }
 
   animate(none);
@@ -1450,7 +1450,7 @@ int _run_exec(char * selection){
 }
 
 int _run_args(int offset_y, int offset_x, char * selection){
-  clear();
+  animate(none);
 
   char args_buffer[256] = {'\0'};
   int buffer_idx = 0;
@@ -1506,7 +1506,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
       refresh_ui = true;
     }
 
-    usleep(20000);
+    usleep(10000);
   }
 
   refresh();

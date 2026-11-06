@@ -333,28 +333,8 @@ void __topmenu__(char input){
 
 void _menuselect(const Menu * menu){
 
-  int dim_y = 0;
-  int dim_x = 0;
-
-  if(menu_y < 3){
-    if(menu_y < _state->t_rows){
-      dim_y = 3;
-    } else {
-      dim_y = _state->t_rows;
-    }
-  } else if(_state->t_rows < menu_y){
-    dim_y = _state->t_rows;    
-  } else {
-    dim_y = menu_y;
-  }
-
-  if(menu_x < 3){
-    dim_x = 3;
-  } else if(_state->t_cols < menu_x){
-    dim_x = _state->t_cols;
-  } else {
-    dim_x = menu_x;
-  }
+  int dim_y = _deduce_dim_y(menu_y);
+  int dim_x = _deduce_dim_x(menu_x);
 
   Menu * ptr = (Menu *)menu;
   int len = 0;
@@ -445,6 +425,8 @@ void _menuselect(const Menu * menu){
 
 void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x, int offset_y, int offset_x){
 
+  if(_state->win_size == t_tiny) clear();
+
   if(_state->fx != nofx){
     _affect(_state->fx);
     _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
@@ -495,6 +477,41 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   }
   attroff(A_BOLD);
   refresh();
+}
+
+int _deduce_dim_y(int requested_dim_y){
+
+  int dim_y = 0;
+
+  // base case
+  if(menu_y < 3){
+    if(menu_y < _state->t_rows){
+      dim_y = 3;
+    } else {
+      dim_y = _state->t_rows;
+    }
+  } else if(_state->t_rows < menu_y){
+    dim_y = _state->t_rows;    
+  } else {
+    dim_y = menu_y;
+  }
+
+  return dim_y;
+}
+
+int _deduce_dim_x(int requested_dim_x){
+
+  int dim_x = 0;
+
+  if(menu_x < 3){
+    dim_x = 3;
+  } else if(_state->t_cols < menu_x){
+    dim_x = _state->t_cols;
+  } else {
+    dim_x = menu_x;
+  }
+  
+  return dim_x;
 }
 
 int _deduce_offset_y(int dim_y, int requested_offset_y){
@@ -984,6 +1001,7 @@ void special_chars(){
 
 void launch_window(){
   initscr();                // Initialize screen
+  set_escdelay(25);
   start_color();            // Must be called right after initscr()
   use_default_colors();
   init_pair(black, COLOR_BLACK, -1); // Foreground black, no background
@@ -1018,7 +1036,6 @@ void launch_window(){
   nodelay(stdscr, TRUE);
   keypad(stdscr, TRUE);     // Enable reading of F1/2, arrow keys, etc
   curs_set(FALSE);          // No cursor
-  set_escdelay(0);
 //clear();
 //refresh();                // clear screen
 }

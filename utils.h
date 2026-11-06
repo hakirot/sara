@@ -57,6 +57,8 @@ void  _chdir(char * target_dir);
 int   _run_exec(char * selection);
 void  _args(int argc, char* argv[]);
 void  _menuselect(const Menu * menu);
+int   _deduce_dim_y(int requested_dim_y);
+int   _deduce_dim_x(int requested_dim_x);
 void  _free_range(const Command * command);
 int   __execute__(const Command * command);
 int   _get_confirm(const Command * command);

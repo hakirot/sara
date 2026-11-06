@@ -182,10 +182,15 @@ void _pshd(){
   unsigned short dim_x = 0;
   unsigned short dim_y = 0;
 
-  if(_state->t_rows >= count+2 && pshd_y-2 > count){
+  // default we have space
+  if(_state->t_rows >= count+2 && pshd_y-2 >= count){
     dim_y = count+2;
+
+  // screen is smaller than requested
   } else if(_state->t_rows < pshd_y) {
     dim_y = _state->t_rows;
+
+  // 
   } else if (count <= pshd_y - 2) {
     dim_y = count + 2;
   } else {

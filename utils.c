@@ -445,8 +445,12 @@ void _menuselect(const Menu * menu){
 
 void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y, int dim_x, int offset_y, int offset_x){
 
-  if(_state->fx != nofx) _affect(_state->fx);
-  _clear_menu(dim_y, dim_x, offset_y, offset_x);
+  if(_state->fx != nofx){
+    _affect(_state->fx);
+    _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
+  } else {
+    _clear_menu(dim_y, dim_x, offset_y, offset_x);
+  }
   int window_size = dim_y - 2;
   if(len < window_size) window_size = len;
 
@@ -490,6 +494,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
     k++;
   }
   attroff(A_BOLD);
+  refresh();
 }
 
 int _deduce_offset_y(int dim_y, int requested_offset_y){
@@ -1240,41 +1245,42 @@ void _run_menu(){
   char selection[128] = {"\0"};
   int idx = 0;
   char input;
-
-  if(run_c_bold) {
-    attron(A_STANDOUT);
-    attron(COLOR_PAIR(run_c));
-    attron(A_BOLD);
-  } else {
-    attron(COLOR_PAIR(run_c));
-    attron(A_STANDOUT);
-  }
-
-  mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "RUN");
-  attroff(COLOR_PAIR(run_c));
-  attroff(A_STANDOUT);
-  attroff(A_BOLD);
-  mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + offset_x, ' ');
-
   _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
+
+  int refresh_ui = true;
   while(1){
+
+    if(_state->fx != nofx){
+      _affect(_state->fx);
+      refresh_ui = true;
+    }
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     if (_state->t_cache != _state->t_rows + _state->t_cols){
       return;
     }
 
-    input = getch();
-    if (input != ERR && input != '\n' && input != EOF && input > 32 && input < 127) {
+    if(refresh_ui) {
+      _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
 
-      filter_buffer[idx] = input;
-      idx++;
-
-      if(idx == 256) break;
+      attron(COLOR_PAIR(run_c));
+      if(run_c_bold) {
+        attron(A_STANDOUT);
+        attron(A_BOLD);
+      } else {
+        attron(COLOR_PAIR(run_c));
+        attron(A_STANDOUT);
+      }
+      mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "RUN");
+      attroff(A_STANDOUT);
+      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + offset_x, ' ');
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) attron(A_BOLD);
-      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x, (char)input);
+
+      for(int i = 0; i < (int)strlen(filter_buffer); i++){
+        mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  4 + i + offset_x , filter_buffer[i]);
+      }
 
       wchar_t cursor_w[2] = { L'\u2588', L'\0' };
       cchar_t cchar;
@@ -1284,6 +1290,20 @@ void _run_menu(){
       attroff(A_BOLD);
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
       refresh();
+      refresh_ui = false;
+    }
+
+    // this aparantly fucking refreshes like ahem fuck you just get the
+    // input you shitty ass fuck can't you see what I'm trying to do here?
+    input = getch();
+
+    if (input != ERR && input != '\n' && input != EOF && input > 32 && input < 127) {
+
+      filter_buffer[idx] = input;
+      idx++;
+      if(idx == 256) break;
+      refresh_ui++;
+
     } else if (input == '\n') {
       _state->key_lock = 1;
       if(_run_exec(selection) == 0){
@@ -1294,6 +1314,7 @@ void _run_menu(){
       _state->key_lock = 0;
       break;
     } else if (input == 32){
+      // space
       if(strlen(selection) != 0) {
         int ret_val = _run_args(offset_y, offset_x, selection);
         if (ret_val == 0){
@@ -1311,33 +1332,10 @@ void _run_menu(){
       }
       idx--;
       filter_buffer[idx] = '\0';
-
-      attron(COLOR_PAIR(run_c));
-      if(run_c_bold) attron(A_BOLD);
-
-      if (dim_y != 2 && idx + 6 < dim_x){
-        wchar_t wc = MenuBorder[4];
-        cchar_t cchar;
-        setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
-      } else if (dim_y != 2 && idx + 6 == dim_x){
-        wchar_t wc = MenuBorder[1];
-        cchar_t cchar;
-        setcchar(&cchar, &wc, 0, 0, NULL);
-        mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 2, &cchar);
-      }
-
-      wchar_t cursor_w = L'\u2588';
-      cchar_t cchar;
-      setcchar(&cchar, &cursor_w, 0, 0, NULL);
-      mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
-      attroff(COLOR_PAIR(run_c));
-      attroff(A_BOLD);
-      _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
-      refresh();
+      refresh_ui++;
     }
 
-    usleep(1000);
+    usleep(20000);
   }
 
   animate(none);
@@ -1351,9 +1349,9 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
   if(dim_y != 2){
     _clear_menu(dim_y, dim_x, offset_y, offset_x);
   } else {
-    wchar_t wc = L' ';
+    wchar_t wc[2] = { L'\0', L'\0' };
     cchar_t cchar;
-    setcchar(&cchar, &wc, 0, 0, NULL);
+    setcchar(&cchar, wc, 0, 0, NULL);
     for(int j = 1; j < dim_x - 1; j++){
       mvadd_wch(_state->t_rows/2 - dim_y/2 + 1, _state->t_cols/2 - dim_x/2 + j + offset_x, &cchar);
     }
@@ -1452,17 +1450,30 @@ int _run_exec(char * selection){
 }
 
 int _run_args(int offset_y, int offset_x, char * selection){
+  clear();
 
   char args_buffer[256] = {'\0'};
   int buffer_idx = 0;
 
   char input = {'\0'};
-  _run_args_refresh(offset_y, offset_x, selection, args_buffer);
 
+  int refresh_ui = true;
   while(1){
+
+    if(_state->fx != nofx){
+      _affect(_state->fx);
+      refresh_ui = true;
+    }
+
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     if (_state->t_cache != _state->t_rows + _state->t_cols){
       return 0;
+    }
+
+    if (refresh_ui == true) {
+      _run_args_refresh(offset_y, offset_x, selection, args_buffer);
+      refresh();
+      refresh_ui = false;
     }
 
     input = getch();
@@ -1473,7 +1484,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
         animate(glitch_full);
         return 1;
       }
-      _run_args_refresh(offset_y, offset_x, selection, args_buffer);
+      refresh_ui = true;
     } else if (input == '\n') {
       int ret_val = _execute_run_args(selection, args_buffer);
       if(ret_val == 1){
@@ -1492,10 +1503,10 @@ int _run_args(int offset_y, int offset_x, char * selection){
         return 1;
       }
       args_buffer[buffer_idx] = 0;
-      _run_args_refresh(offset_y, offset_x, selection, args_buffer);
+      refresh_ui = true;
     }
 
-    usleep(1000);
+    usleep(20000);
   }
 
   refresh();
@@ -1505,7 +1516,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
 
 void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_buffer){
 
-  if(_state->t_rows > 1) animate(none);
+  if(_state->t_rows > 1 && _state->fx == nofx) animate(none);
   if(_state->t_rows == 1) clear();
   int dim_y = 3;
   int dim_x = run_x; if(run_x < 3) dim_x = 3; if(_state->t_cols < dim_x) dim_x = _state->t_cols;

@@ -146,7 +146,7 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
   attroff(COLOR_PAIR(c));
 
   _clear_menu(dim_y, dim_x, offset_y, offset_x);
-  refresh();
+//refresh();
 }
 
 void _print_confirm_window(char * command_str){
@@ -1016,8 +1016,8 @@ void _glint(fx mode) {
 
         int idx = _state->fg_state[i][j];
         size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
-        roll_result = roll(2);
 
+        roll_result = roll(2);
         if (idx == 1 && roll_result == 2){
           _state->fg_state[i][j] = 2;
           mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, ' ');
@@ -1046,13 +1046,11 @@ void _glint(fx mode) {
       const char *iter_row = bg[i];
       j = 0;
       while (*iter_row) {
-
         size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
-
-        roll_result = roll(2);
 
         int idx = _state->bg_state[i][j];
 
+        roll_result = roll(2);
         if (idx == 1 && roll_result == 2){
           _state->bg_state[i][j] = 2;
           mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, ' ');
@@ -1070,7 +1068,9 @@ void _glint(fx mode) {
     attroff(A_BOLD);
     attroff(COLOR_PAIR(_state->fg_c));
   }
-  refresh();
+
+  // no refresh() for _affect() functions
+
 }
 
 void _affect(int fx){

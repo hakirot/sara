@@ -30,9 +30,6 @@ int commandkeys_len;
 int builtinkeys_len;
 int menukeys_len;
 
-int SHOW_COLORS = false;
-int INTERRUPT = false;
-
 const int GLITCH_FRAME_TIME = 3500;
 const float HOLD_CHAR_TIME = 0.00001;
 char SLAP_STR[256];

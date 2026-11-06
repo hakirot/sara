@@ -45,8 +45,8 @@ int main(int argc, char* argv[]){
 
     result = _key();
 
-    if(INTERRUPT){
-      INTERRUPT = false;
+    if(_state->interrupt){
+      _state->interrupt = false;
       signal_reprint = true;
     }
 

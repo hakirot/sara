@@ -752,7 +752,7 @@ void _none(Arg printColorbar){
 
   }
 
-  if(SHOW_COLORS){
+  if(_state->show_colors){
     _show_colors();
   }
 

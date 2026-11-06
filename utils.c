@@ -211,8 +211,8 @@ int __execute__(const Command * command){
         }
       }
 
-      if(INTERRUPT){
-        // INTERRUPT = false;
+      if(_state->interrupt){
+        // _state->interrupt = false;
         return true;
       }
 
@@ -291,10 +291,10 @@ void __builtin__(char input){
     }
     else  _state->fx = glint_a;
   } else if (selection == colors){
-    if(SHOW_COLORS == false){
-      SHOW_COLORS = true;
+    if(_state->show_colors == false){
+      _state->show_colors = true;
     } else {
-      SHOW_COLORS = false;
+      _state->show_colors = false;
     }
     _show_colors();
   }
@@ -1126,7 +1126,7 @@ void set_glyph_dimensions(){
 }
 
 void __interrupt__(int signum){
-  INTERRUPT = 1;
+  _state->interrupt = 1;
   __execute__(FORCE_ECHO);
 }
 
@@ -1729,8 +1729,8 @@ void _init_state(){
 
   _state = (state *)malloc(sizeof(state));
 
-  _state->show_colors       = false;     // not implemented
-  _state->interrupt         = false;     // not implemented
+  _state->show_colors       = false;     /* implemented */
+  _state->interrupt         = false;     /* implemented */
   _state->preflight_check   = false;     /* implemented */
   _state->last_input_time   = clock();   /* implemented */
   _state->t_rows            = 1;         /* implemented */

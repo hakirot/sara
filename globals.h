@@ -219,9 +219,6 @@ extern int menukeys_len;
 extern char SLAP_STR[256];
 extern struct timeval slap_time;
 
-extern int SHOW_COLORS;
-extern int INTERRUPT;
-
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};
 static const Command FORCE_ECHO_STRUCT = {0, FORCE_ECHO_COMMAND, WAIT,none,none, {NULL, NOCONFIRM, NO_OUT} };
 static const Command * FORCE_ECHO = &FORCE_ECHO_STRUCT;

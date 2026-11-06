@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     _state->t_cache = check_size();
 
-    if(strlen(SLAP_STR) > 0 && _slap_timer() == 1 ) {
+    if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) {
       signal_reprint = true;
     }
 
@@ -69,8 +69,8 @@ int main(int argc, char* argv[]){
 
     if(_state->fx != nofx) _affect(_state->fx);
 
-    // print only once after the HOLD_CHAR flips back to EOF and HOLD_CHAR_TIME is exceeded
-    if (result == 0 && signal_reprint == true && HOLD_CHAR == '\0'){
+    // print only once after the _state->hold_char flips back to EOF and _state->hold_char_time is exceeded
+    if (result == 0 && signal_reprint == true && _state->hold_char == '\0'){
       animate(none);
       signal_reprint = false;
     } else if (result >= 1){

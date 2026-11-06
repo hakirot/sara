@@ -82,8 +82,8 @@ int key(char optional_input){
 
     } else if(_state->win_size != t_tiny){
       _state->last_input_time = clock();
-      HOLD_CHAR = input;
-      mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+      _state->hold_char = input;
+      mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
     }
   }
@@ -91,8 +91,8 @@ int key(char optional_input){
   double time_since_input = (double)(clock() - _state->last_input_time)
                             / CLOCKS_PER_SEC;
 
-  if(time_since_input > HOLD_CHAR_TIME && _state->win_size != t_tiny){
-    HOLD_CHAR = '\0';
+  if(time_since_input > _state->hold_char_time && _state->win_size != t_tiny){
+    _state->hold_char = '\0';
   }
 
   return valid_input;
@@ -875,8 +875,8 @@ void warn(char * warning) {
 
 void slap(char * slap_msg) {
   mvprintw(0, 0, "%s", slap_msg);
-  memset(SLAP_STR, 0, 256 * sizeof(char));
-  strncpy(SLAP_STR, slap_msg, 256);
+  memset(_state->slap_str, 0, 256 * sizeof(char));
+  strncpy(_state->slap_str, slap_msg, 256);
   gettimeofday(&slap_time, NULL);
 }
 
@@ -889,7 +889,7 @@ int _slap_timer() {
 
   int slap_display_time = 1750;
   if(elapsed_time > slap_display_time){
-    memset(SLAP_STR, 0, 256 * sizeof(char));
+    memset(_state->slap_str, 0, 256 * sizeof(char));
     return 1;
   } else {
     return 0;
@@ -1740,8 +1740,9 @@ void _init_state(){
   _state->fg_c              = fg_c;      /* implemented */
   _state->bg_c              = bg_c;      /* implemented */
   _state->hd_c              = hd_c;      /* implemented */
-  _state->glitch_frame_time = 3500;      // not implemented
-  _state->hold_char_time    = 0.00001;;  // not implemented
+  _state->glitch_frame_time = 3500;      /* implemented */
+  _state->hold_char_time    = 0.00001;   /* implemented */
+  _state->hold_char         = '\0';      /* implemented */
   memset(_state->slap_str, 0, 256);      // not implemented
   _state->key_lock          = 0;         /* not implemented */
   _state->reprint           = false;     // not implemented

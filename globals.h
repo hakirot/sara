@@ -172,6 +172,7 @@ typedef struct {
   screen_size win_size;
   int glitch_frame_time;
   float hold_char_time;
+  char hold_char;
   char slap_str[256];
   int key_lock;
   fx fx;
@@ -204,7 +205,6 @@ extern int HD_LENGTH;
 
 extern int HOLOGRAPHIC;
 
-extern char HOLD_CHAR;
 extern int GLITCH_TIME;
 
 extern char global_chars[];
@@ -216,15 +216,11 @@ extern int commandkeys_len;
 extern int builtinkeys_len;
 extern int menukeys_len;
 
-extern char SLAP_STR[256];
 extern struct timeval slap_time;
 
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};
 static const Command FORCE_ECHO_STRUCT = {0, FORCE_ECHO_COMMAND, WAIT,none,none, {NULL, NOCONFIRM, NO_OUT} };
 static const Command * FORCE_ECHO = &FORCE_ECHO_STRUCT;
-
-extern const int GLITCH_FRAME_TIME;
-extern const float HOLD_CHAR_TIME;
 
 extern state * _state;
 

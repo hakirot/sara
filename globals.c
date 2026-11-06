@@ -17,7 +17,6 @@ int BG_GLYPH_LENGTH;
 int FG_GLYPH_LENGTH;
 int HD_LENGTH;
 
-char HOLD_CHAR;
 int HOLOGRAPHIC = 0;
 int GLITCH_TIME = 52;
 
@@ -30,9 +29,6 @@ int commandkeys_len;
 int builtinkeys_len;
 int menukeys_len;
 
-const int GLITCH_FRAME_TIME = 3500;
-const float HOLD_CHAR_TIME = 0.00001;
-char SLAP_STR[256];
 struct timeval slap_time = {0};
 
 state * _state = NULL;

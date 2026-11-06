@@ -95,7 +95,7 @@ void _blink(){
 
     int result = _key();
     if(result == 2) return;
-    if (HOLD_CHAR != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
   }
 
   _none((Arg){.x = 0});
@@ -344,13 +344,13 @@ void _glitch(Arg bigmode){
 
     int result = _key();
     if(result == 2) return;
-    if (HOLD_CHAR) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+    if (_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
     refresh();
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     if (_state->t_cache != _state->t_rows + _state->t_cols) break;
 
-    usleep(GLITCH_FRAME_TIME);
+    usleep(_state->glitch_frame_time);
   }
 
   _none((Arg){.x = 0});
@@ -404,7 +404,7 @@ void _neon(){
 
     int result = _key();
     if(result == 2) return;
-    if (HOLD_CHAR != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
   }
 
   _none((Arg){.x = 0});
@@ -449,7 +449,7 @@ void _neon_reverse(){
 
     int result = _key();
     if(result == 2) return;
-    if (HOLD_CHAR != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
   }
 }
 
@@ -577,7 +577,7 @@ void _pixel_fill(){
     refresh();
     int result = _key();
     if(result == 2) return;
-    if (HOLD_CHAR) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+    if (_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
 
     usleep(12000);
 
@@ -756,8 +756,8 @@ void _none(Arg printColorbar){
     _show_colors();
   }
 
-  if(SLAP_STR[0] != 0){
-    mvprintw(0, 0, "%s", SLAP_STR);
+  if(_state->slap_str[0] != 0){
+    mvprintw(0, 0, "%s", _state->slap_str);
   }
 }
 
@@ -918,7 +918,7 @@ void _down_wipes(){
       mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
       int result = _key();
       if(result == 2) return;
-      if(HOLD_CHAR) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+      if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
       usleep(wipe_time);
     }
@@ -932,7 +932,7 @@ void _down_wipes(){
     attron(COLOR_PAIR(_state->bg_c));
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
       mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
-      if(HOLD_CHAR) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
+      if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
       usleep(wipe_time);
       int result = _key();

@@ -81,14 +81,14 @@ int key(char optional_input){
       valid_input = 2;
 
     } else if(_state->win_size != t_tiny){
-      LAST_INPUT_TIME = clock();
+      _state->last_input_time = clock();
       HOLD_CHAR = input;
       mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", HOLD_CHAR);
       refresh();
     }
   }
 
-  double time_since_input = (double)(clock() - LAST_INPUT_TIME)
+  double time_since_input = (double)(clock() - _state->last_input_time)
                             / CLOCKS_PER_SEC;
 
   if(time_since_input > HOLD_CHAR_TIME && _state->win_size != t_tiny){
@@ -1732,7 +1732,7 @@ void _init_state(){
   _state->show_colors       = false;     // not implemented
   _state->interrupt         = false;     // not implemented
   _state->preflight_check   = false;     /* implemented */
-  _state->last_input_time   = clock();   // not implemented
+  _state->last_input_time   = clock();   /* implemented */
   _state->t_rows            = 1;         /* implemented */
   _state->t_cols            = 1;         /* implemented */
   _state->t_cache           = 10;        /* implemented */

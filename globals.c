@@ -8,11 +8,8 @@
                                                                      */
 
 #include <sys/time.h>
-#include "time.h"
 #include "globals.h"
 #include "config.h"
-
-clock_t LAST_INPUT_TIME;
 
 int BG_GLYPH_HEIGHT;
 int FG_GLYPH_HEIGHT;

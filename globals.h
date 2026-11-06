@@ -204,8 +204,6 @@ extern int HD_LENGTH;
 
 extern int HOLOGRAPHIC;
 
-extern clock_t LAST_INPUT_TIME;
-
 extern char HOLD_CHAR;
 extern int GLITCH_TIME;
 

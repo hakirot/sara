@@ -38,7 +38,6 @@ int main(int argc, char* argv[]){
   _deflect_signals();
 
   _state->t_cache = check_size();
-  LAST_INPUT_TIME = clock();
   int signal_reprint = true;
   int result = 0;
 

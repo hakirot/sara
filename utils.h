@@ -39,7 +39,7 @@ void  _deflect_signals();
 int   __key(key_arg arg);
 void  _preflight_check();
 int   ensure_cache_dir();
-void  reset_glyph_state();
+void  _reset_glyph_state();
 void  _randomize_colors();
 int   roll(int num_sides);
 void  ensure_config_dir();

@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
   load_command_config();
   set_glyph_dimensions();
   _init_state();
-  reset_glyph_state();
+  _reset_glyph_state();
   _args(argc, argv);
   if(_state->preflight_check) _preflight_check();
   launch_window();

@@ -266,19 +266,19 @@ void __builtin__(char input){
   } else if (selection == fx_glint_fg){
     if (_state->fx == glint_f) {
       _state->fx = 0;
-      reset_glyph_state();
+      _reset_glyph_state();
     }
     else  _state->fx = glint_f;
   } else if (selection == fx_glint_bg){
     if (_state->fx == glint_b) {
       _state->fx = 0;
-      reset_glyph_state();
+      _reset_glyph_state();
     }
     else  _state->fx = glint_b;
   } else if (selection == fx_glint_full){
     if (_state->fx == glint_a) {
       _state->fx = 0;
-      reset_glyph_state();
+      _reset_glyph_state();
     }
     else  _state->fx = glint_a;
   } else if (selection == colors){
@@ -289,7 +289,6 @@ void __builtin__(char input){
     }
     _show_colors();
   }
-
 }
 
 void _get_pwd(){
@@ -721,7 +720,7 @@ void _preflight_check() {
     }
   }
 
-  // assert all commands are installed
+  // assert all commands are installed in $PATH
   ensure_cache_dir();
   char run_file[256] = {'\0'};
   char * env_home = getenv("HOME");
@@ -1523,9 +1522,9 @@ void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_
   if(_state->t_rows == 1) offset_y = 0;
   if(_state->t_rows == 2) offset_y = -1;
 
-  wchar_t cursor_w = L'\u2588';
+  wchar_t cursor_w[2] = { L'\u2588', L'\0' };
   cchar_t cursor_c;
-  setcchar(&cursor_c, &cursor_w, 0, 0, NULL);
+  setcchar(&cursor_c, cursor_w, 0, 0, NULL);
   if(_state->t_rows > 1) _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
   attron(COLOR_PAIR(run_c));
   if(run_c_bold == true) attron(A_BOLD);
@@ -1597,7 +1596,7 @@ int _execute_run_args(char * selection, char * args_buffer){
     slap("bad '&' position"); // slap
     return 1;
   } else if(count == 1 && execute_str[execute_len - 2] != ' '){
-    slap("typo?"); // slap
+    slap("typo?"); // slap slap slap
     return 1;
   }
 
@@ -1616,10 +1615,6 @@ int _execute_run_args(char * selection, char * args_buffer){
     count++;
     token = strtok(NULL, " ");
   }
-
-  //char err[128];
-  //sprintf(err, "%s %d", execute_str, count);
-  //crit(err);
 
   if(nohup_flag && ampersand) count--;
   char** cmd = malloc((count + 1) * sizeof(char *));
@@ -1644,14 +1639,6 @@ int _execute_run_args(char * selection, char * args_buffer){
   }
 
   cmd[count] = NULL;
-
-  //for(int i = 0; i < count + 1; i++){
-  //  printf("%s ", cmd[i]);
-  //}
-
-  //char err[128];
-  //sprintf(err, " %d", count);
-  //crit(err);
 
   Command * command = (Command*)malloc(sizeof(Command));
   memset(command, 0, sizeof(Command));
@@ -1717,25 +1704,25 @@ void _init_state(){
 
   _state = (state *)malloc(sizeof(state));
 
-  _state->show_colors       = false;     /* implemented */
-  _state->interrupt         = false;     /* implemented */
-  _state->preflight_check   = false;     /* implemented */
-  _state->last_input_time   = clock();   /* implemented */
-  _state->t_rows            = 1;         /* implemented */
-  _state->t_cols            = 1;         /* implemented */
-  _state->t_cache           = 10;        /* implemented */
-  _state->win_size          = t_full;    /* implemented */
-  _state->fg_c              = fg_c;      /* implemented */
-  _state->bg_c              = bg_c;      /* implemented */
-  _state->hd_c              = hd_c;      /* implemented */
+  _state->show_colors       = false;              /* implemented */
+  _state->interrupt         = false;              /* implemented */
+  _state->preflight_check   = false;              /* implemented */
+  _state->last_input_time   = clock();            /* implemented */
+  _state->t_rows            = 1;                  /* implemented */
+  _state->t_cols            = 1;                  /* implemented */
+  _state->t_cache           = 10;                 /* implemented */
+  _state->win_size          = t_full;             /* implemented */
+  _state->fg_c              = fg_c;               /* implemented */
+  _state->bg_c              = bg_c;               /* implemented */
+  _state->hd_c              = hd_c;               /* implemented */
   if(rand_c) _so_random();
-  _state->glitch_frame_time = 3500;      /* implemented */
-  _state->hold_char_time    = 0.00001;   /* implemented */
-  _state->hold_char         = '\0';      /* implemented */
+  _state->glitch_frame_time = 3500;               /* implemented */
+  _state->hold_char_time    = 0.00001;            /* implemented */
+  _state->hold_char         = '\0';               /* implemented */
   memset(_state->slap_str, 0, 256);
-  _state->key_lock          = 0;         /* implemented */
-  _state->reprint           = true;      /* implemented */
-  _state->fx                = start_fx;  /* implemented */
+  _state->key_lock          = 0;                  /* implemented */
+  _state->reprint           = true;               /* implemented */
+  _state->fx                = start_fx;           /* implemented */
 
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
@@ -1749,7 +1736,7 @@ void _init_state(){
   }
 }
 
-void reset_glyph_state(){
+void _reset_glyph_state(){
 
   for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
     mbstate_t state;

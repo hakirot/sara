@@ -879,6 +879,8 @@ void _hd(){
       offset_x = hd_offset_x_min;
     }
 
+    int center_offset = (int)strlen(hd) / 2;
+
     cchar_t cchar;
 
     mbstate_t state;
@@ -890,7 +892,7 @@ void _hd(){
       size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
 
       setcchar(&cchar, wc, 0, 0, NULL);
-      mvadd_wch(_state->t_rows/2 + offset_y, _state->t_cols/2 + offset_x + iter_col, &cchar);
+      mvadd_wch(_state->t_rows/2 + offset_y, _state->t_cols/2 + offset_x + iter_col - center_offset, &cchar);
 
       iter_row += len;
       iter_col++;

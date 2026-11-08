@@ -473,20 +473,20 @@ int _deduce_dim_y(int requested_dim_y, int entries){
   int dim_y = 0;
 
   // base case
-  if(menu_y < 3){
-    if(menu_y < _state->t_rows){
+  if(requested_dim_y < 3){
+    if(requested_dim_y < _state->t_rows){
       dim_y = 3;
     } else {
       dim_y = _state->t_rows;
     }
-  } else if(_state->t_rows < menu_y){
+  } else if(_state->t_rows < requested_dim_y){
     dim_y = _state->t_rows;    
   } else {
-    dim_y = menu_y;
+    dim_y = requested_dim_y;
   }
 
   if(entries < dim_y - 2 || 
-    (entries < menu_y - 2 && entries < _state->t_rows - 2))
+    (entries < requested_dim_y - 2 && entries < _state->t_rows - 2))
   {
     dim_y = entries+2;
   }
@@ -504,10 +504,10 @@ int _deduce_dim_x(int requested_dim_x){
 
   if(menu_x < 3){
     dim_x = 3;
-  } else if(_state->t_cols < menu_x){
+  } else if(_state->t_cols < requested_dim_x){
     dim_x = _state->t_cols;
   } else {
-    dim_x = menu_x;
+    dim_x = requested_dim_x;
   }
   
   return dim_x;

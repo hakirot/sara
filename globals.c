@@ -28,6 +28,7 @@ char    menukeys_chars[KEY_ARRAY_SIZE];
 int commandkeys_len;
 int builtinkeys_len;
 int menukeys_len;
+int DEBUG = 0;
 
 struct timeval slap_time = {0};
 

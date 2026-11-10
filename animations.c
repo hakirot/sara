@@ -646,15 +646,18 @@ void _tv_static(){
   int roll_result;
   wchar_t wc[2] = { L'\0', L'\0' };
 
+  int frames = 0;
   while(elapsed_time < 0.009){
 
-    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
-    if (_state->t_cache != _state->t_rows + _state->t_cols) return;
+    _get_dims();
+    if (_resized()) return;
+
     int result = _key();
     if(result == 2) return;
 
     attron(COLOR_PAIR(_state->fg_c));
     if(fg_c_bold) attron(A_BOLD);
+
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
       mbstate_t state;
@@ -724,7 +727,13 @@ void _tv_static(){
     usleep(1000);
     refresh();
     elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+    frames++;
   }
+
+  char slap_str[128];
+  sprintf(slap_str, "frames: %d", frames);
+  slap(slap_str);
+  _none((Arg){.x = 0});
 }
 
 void _none(Arg printColorbar){

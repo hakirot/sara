@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
       _state->reprint = true;
     }
 
-    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
+    _get_dims();
     _state->t_cache = check_size();
 
     if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) {
@@ -87,8 +87,7 @@ int main(int argc, char* argv[]){
 // Check screen size, return updated sum of dimensions
 int check_size(){
 
-  if (_state->t_cache != _state->t_rows + _state->t_cols){
-
+  if (_resized()){
     clear();
 
     // small win size jail
@@ -98,11 +97,11 @@ int check_size(){
       tinyprint();
       refresh();
 
-      // 2 milliseconds
+      // 2 millis
       usleep(2000);
       _key();
 
-      getmaxyx(stdscr,_state->t_rows,_state->t_cols);
+      _get_dims();
       _state->t_cache = _state->t_rows + _state->t_cols;
     }
 

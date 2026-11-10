@@ -1809,11 +1809,16 @@ void version(){
   _quit(0);
 }
 
-int _get_dims(){
+void _get_dims(){
   getmaxyx(stdscr, _state->t_rows, _state->t_cols);
 }
 
 int  _resized(){
-  if(_state->t_cache != _state->t_rows + _state->t_cols) return 1;
-  else return 0;
+  int ret_val = 0;
+  if(_state->t_cache != _state->t_rows + _state->t_cols) ret_val = 1;
+  else ret_val = 0;
+
+  _state->t_cache = _state->t_rows + _state->t_cols;
+
+  return ret_val;
 }

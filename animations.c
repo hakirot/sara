@@ -731,15 +731,15 @@ void _tv_static(){
     refresh();
 
     _inc_nanosecs(&next_frame, FRAME_TIME_NS);
-    int clock_result;
-    do {
+    int clock_result = EINTR;
+    while (clock_result == EINTR) {
       clock_result = clock_nanosleep(
           CLOCK_MONOTONIC,
           TIMER_ABSTIME,
           &next_frame,
           NULL
       );
-    } while (clock_result == EINTR);
+    }
 
     frames++;
   }
@@ -1096,6 +1096,9 @@ void _glint(fx mode) {
 }
 
 void _affect(int fx){
+
+  if(HOLOGRAPHIC) _affect_holo();
+
   if(fx == glint_f){
      _glint(glint_f);
   } else if(fx == glint_b){
@@ -1113,4 +1116,16 @@ void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
     timespec->tv_sec++;
     timespec->tv_nsec -= 1000000000L;
   }
+}
+
+void _affect_holo() {
+  if(_state->win_size == t_full){
+    _state->bg_c++;
+    _state->fg_c++;
+    _state->hd_c++;
+    if (_state->bg_c > 7) _state->bg_c = 2;
+    if (_state->fg_c > 7) _state->fg_c = 2;
+    if (_state->hd_c > 7) _state->hd_c = 2;
+  }
+  if(_state->fx == nofx) _state->reprint = true;
 }

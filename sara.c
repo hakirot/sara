@@ -56,17 +56,7 @@ int main(int argc, char* argv[]){
       _state->reprint = true;
     }
 
-    if(HOLOGRAPHIC == 1 && _state->win_size == t_full){
-      _state->bg_c++;
-      _state->fg_c++;
-      _state->hd_c++;
-      if (_state->bg_c > 7) _state->bg_c = 2;
-      if (_state->fg_c > 7) _state->fg_c = 2;
-      if (_state->hd_c > 7) _state->hd_c = 2;
-      _state->reprint = true;
-    }
-
-    if(_state->fx != nofx) _affect(_state->fx);
+    if(_state->fx != nofx || HOLOGRAPHIC == 1) _affect(_state->fx);
 
     // print only once after the _state->hold_char flips back to EOF and _state->hold_char_time is exceeded
     if (result == 0 && _state->reprint == true && _state->hold_char == '\0'){

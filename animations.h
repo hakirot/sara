@@ -15,24 +15,25 @@
 #define glint_b   2
 #define glint_a   3
 
-void animate(animation option);
-void _none(Arg printColorbar);
-void _glitch(Arg bigmode);
-void _shutter_slide();
-void _neon_reverse();
-void _affect(int fx);
-void _down_wipes();
-void _pixel_fill();
-void _tv_static();
-void _neon();
 void _bg();
 void _hd();
+void _neon();
 void _blink();
 void _colorbar();
 void tinyprint();
+void _tv_static();
+void _down_wipes();
+void _pixel_fill();
+void _affect_holo();
 void _glint(fx mode);
+void _affect(int fx);
+void _neon_reverse();
+void _shutter_slide();
 void _overlay_bg(char ch);
+void _glitch(Arg bigmode);
+void _none(Arg printColorbar);
 void _fg(const char * glyph[]);
+void animate(animation option);
 void _print_confirm_selection(int selection);
 void _print_confirm_window(char * command_str);
 void _overlay(const char * glyph[], char fill);

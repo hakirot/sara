@@ -1041,7 +1041,7 @@ void get_helped(int exit_code) {
   printf("  -b [color]      set BACKGROUND color\n");
   printf("  -F [follow]     On exit, write PWD to file\n");
   printf("  -r              Generate a random color profile. Not compatible with -f or -b options\n");
-  printf("  -C              Print possible issues with config.h");
+  printf("  -C              Run in preflight_check mode to catch common detectable config.h issues and exit");
   exit(exit_code);
 }
 

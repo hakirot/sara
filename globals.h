@@ -204,6 +204,9 @@ extern int FG_GLYPH_LENGTH;
 extern int HD_LENGTH;
 extern int DEBUG;
 
+extern int FRAME_RATE;
+extern int FRAME_TIME_NS;
+
 extern int HOLOGRAPHIC;
 
 extern int GLITCH_TIME;

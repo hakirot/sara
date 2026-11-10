@@ -20,6 +20,9 @@ int HD_LENGTH;
 int HOLOGRAPHIC = 0;
 int GLITCH_TIME = 52;
 
+int FRAME_RATE = 60;
+int FRAME_TIME_NS = 16666667LL;
+
 char      global_chars[KEY_ARRAY_SIZE];
 char commandkeys_chars[KEY_ARRAY_SIZE];
 char builtinkeys_chars[KEY_ARRAY_SIZE];

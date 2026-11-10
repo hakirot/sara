@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "animations.h"
 #include "globals.h"
 #include "config.h"
@@ -640,14 +641,17 @@ void _tv_static(){
     }
   }
 
-  double elapsed_time = 0;
   clock_t cycle_start = clock();
   int j = 0;
   int roll_result;
   wchar_t wc[2] = { L'\0', L'\0' };
 
   int frames = 0;
-  while(elapsed_time < 0.009){
+  int total_frames = 15;
+  struct timespec start, next_frame, end;
+  clock_gettime(CLOCK_MONOTONIC, &start);
+  next_frame = start;
+  while(frames < total_frames){
 
     _get_dims();
     if (_resized()) return;
@@ -724,15 +728,22 @@ void _tv_static(){
       attroff(COLOR_PAIR(_state->fg_c));
     }
 
-    usleep(1000);
     refresh();
-    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+
+    _inc_nanosecs(&next_frame, FRAME_TIME_NS);
+    int clock_result;
+    do {
+      clock_result = clock_nanosleep(
+          CLOCK_MONOTONIC,
+          TIMER_ABSTIME,
+          &next_frame,
+          NULL
+      );
+    } while (clock_result == EINTR);
+
     frames++;
   }
 
-  char slap_str[128];
-  sprintf(slap_str, "frames: %d", frames);
-  slap(slap_str);
   _none((Arg){.x = 0});
 }
 
@@ -1094,3 +1105,12 @@ void _affect(int fx){
   }
 }
 
+void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
+  timespec->tv_sec += nanosecs / 1000000000LL;
+  timespec->tv_nsec += nanosecs % 1000000000LL;
+
+  if (timespec->tv_nsec >= 1000000000L) {
+    timespec->tv_sec++;
+    timespec->tv_nsec -= 1000000000L;
+  }
+}

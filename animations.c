@@ -1137,7 +1137,7 @@ void _fetch(){
     return;
   }
   char * fetch_path = _run_fetch();
-  int len = _get_num_fetch_lines(fetch_path);
+  _fetch_reduce(fetch_path);
 
 
 

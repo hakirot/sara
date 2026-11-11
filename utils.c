@@ -1850,7 +1850,7 @@ char * _run_fetch(){
 
     execlp("fastfetch", NULL);
     perror("execl");
-    crit("execl fastfetch critical err");
+    crit("fastfetch exec critical err");
   }
   int status;
   while(kill(pid, 0) == 0){
@@ -1859,18 +1859,35 @@ char * _run_fetch(){
   return fetch_path;
 }
 
-int _get_num_fetch_lines(char* fetch_path){
+void _fetch_reduce(char* fetch_path){
 
-  int num_lines = 0;
   FILE* fp = fopen(fetch_path, "r");
-  char * user = getenv("USER");
-
+  if(!fp){
+    exit(1);
+  }
   char line[256] = {'\0'};
 
+  fgets(line, sizeof(line), fp);
+  char * user = getenv("USER");
+
+  int offset = 0;
+  // Find the number of characters up to to $USER@hostname from line and save in offset variable
+
+  // Create a new char array and write everything in line from $USER onward to new char array
+  char reduced_line[256] = "\0";
+
+  // Create output file
+  const char *env_home = getenv("HOME");
+  const char *home_to_output = "/.cache/fastfetch_reduced";
+  char output_file[256] = "\0";
+  sprintf(output_file, "%s%s", env_home, home_to_output);
+  FILE* fp_out = fopen(fetch_path, "w");
+  // Write new char array line to output_file
+
   while(fgets(line, sizeof(line), fp)){
-    num_lines++;
+    // with the offset, continue pulling lines from fp, copy only from offset onward to reduced_line, and append to fp_out
+    // break when you reach a line that has no data after offset (even if there is more data in fp)
   }
 
   fclose(fp);
-  return num_lines;
 }

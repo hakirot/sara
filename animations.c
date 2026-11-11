@@ -1129,3 +1129,17 @@ void _affect_holo() {
   }
   if(_state->fx == nofx) _state->reprint = true;
 }
+
+void _fetch(){
+
+  if (_is_binary_in_path("fastfetch") == 1) {
+    slap("fastfetch is not installed");
+    return;
+  }
+  char * fetch_path = _run_fetch();
+  int len = _get_num_fetch_lines(fetch_path);
+
+
+
+  free(fetch_path);
+}

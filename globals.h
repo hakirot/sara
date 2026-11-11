@@ -119,6 +119,7 @@ typedef enum {
   fx_glint_fg,
   fx_glint_bg,
   fx_glint_full,
+  fetch,
 } internal;
 
 typedef enum {

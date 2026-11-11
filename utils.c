@@ -269,6 +269,8 @@ void __builtin__(char input){
     _path_run();
   } else if (selection == pwd){
     _get_pwd();
+  } else if (selection == fetch){
+    _fetch();
   } else if (selection == fx_glint_fg){
     if (_state->fx == glint_f) {
       _state->fx = 0;
@@ -1826,4 +1828,49 @@ int  _resized(){
   _state->t_cache = _state->t_rows + _state->t_cols;
 
   return ret_val;
+}
+
+char * _run_fetch(){
+  ensure_cache_dir();
+
+  const char *env_home = getenv("HOME");
+  const char *home_to_fetch = "/.cache/sara/fetch";
+  char * fetch_path = (char*)malloc(256 * sizeof(char));
+  sprintf(fetch_path, "%s%s", env_home, home_to_fetch);
+
+  pid_t pid = fork();
+  if (pid < 0) {
+    crit("forked it up");
+  } else if (pid == 0) {
+
+    int fd = open(fetch_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    dup2(fd, 1);
+    dup2(fd, 2);
+    close(fd);
+
+    execlp("fastfetch", NULL);
+    perror("execl");
+    crit("execl fastfetch critical err");
+  }
+  int status;
+  while(kill(pid, 0) == 0){
+    waitpid(pid, &status, 0);
+  }
+  return fetch_path;
+}
+
+int _get_num_fetch_lines(char* fetch_path){
+
+  int num_lines = 0;
+  FILE* fp = fopen(fetch_path, "r");
+  char * user = getenv("USER");
+
+  char line[256] = {'\0'};
+
+  while(fgets(line, sizeof(line), fp)){
+    num_lines++;
+  }
+
+  fclose(fp);
+  return num_lines;
 }

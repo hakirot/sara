@@ -19,6 +19,7 @@ void _bg();
 void _hd();
 void _neon();
 void _blink();
+void _fetch();
 void _colorbar();
 void tinyprint();
 void _tv_static();

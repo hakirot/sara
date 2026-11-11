@@ -37,6 +37,7 @@ void _invert_colors();
 void crit(char * err);
 void warn(char * err);
 void slap(char * err);
+int  _get_full_width();
 void _write_exit_dir();
 void _deflect_signals();
 int  __key(key_arg arg);

@@ -865,6 +865,50 @@ void _fg(const char * glyph[]){
   attroff(COLOR_PAIR(A_BOLD));
 }
 
+void _fg_offset(const char * glyph[], int offset_y, int offset_x){
+  attron(COLOR_PAIR(_state->fg_c));
+  if(fg_c_bold) attron(A_BOLD);
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + offset_x, "%s", glyph[i]);
+  }
+  refresh();
+  attroff(COLOR_PAIR(_state->fg_c));
+  attroff(COLOR_PAIR(A_BOLD));
+}
+
+// reimp of _overlay_bg
+void _bg_offset(char ch, int offset_y, int offset_x){
+  attron(COLOR_PAIR(_state->bg_c));
+  if(bg_c_bold) attron(A_BOLD);
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = bg[i];
+    int iter_col = 0;
+    while (*iter_row) {
+      wchar_t wc[2] = { L'\0', L'\0' };
+      size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
+
+      if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
+
+      if(*iter_row != ' ' && ch != 0){
+        mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col + offset_x, ch);
+      } else if(wc[0] != ' '){
+        cchar_t cchar;
+        setcchar(&cchar, wc, 0, 0, NULL);
+        mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col + offset_x, &cchar);
+      }
+
+      iter_row += len;
+      iter_col++;
+    }
+  }
+  attroff(A_BOLD);
+  attroff(COLOR_PAIR(_state->bg_c));
+
+}
+
+
 // TODO: add wipe option for pixel_fill
 void _hd(){
 
@@ -913,6 +957,67 @@ void _hd(){
 
       setcchar(&cchar, wc, 0, 0, NULL);
       mvadd_wch(_state->t_rows/2 + offset_y, _state->t_cols/2 + offset_x + iter_col - center_offset, &cchar);
+
+      iter_row += len;
+      iter_col++;
+    }
+
+    refresh();
+    attroff(A_BOLD);
+    attroff(A_STANDOUT);
+    attroff(COLOR_PAIR(_state->hd_c));
+    attroff(COLOR_PAIR(_state->hd_c + 8));
+    attroff(COLOR_PAIR(_state->hd_c + 16));
+  }
+}
+
+void _hd_offset(int offset_y_in, int offset_x_in){
+
+  if(hd[0] != 0){
+
+    int offset_y = 0;
+    int offset_x = 0;
+
+    if((_state->win_size == t_full    && highlight_hd_in_full_mode)  ||
+       (_state->win_size == t_small && highlight_hd_in_small_mode)) {
+      if(hd_c_bold){
+        attron(A_STANDOUT);
+        attron(A_BOLD);
+        attron(COLOR_PAIR(_state->hd_c + 16)); // .. sometimes I even amaze myself
+      } else {
+        attron(COLOR_PAIR(_state->hd_c + 8));
+      }
+    } else {
+      if(hd_c_bold == true) {
+        attron(A_BOLD);
+      } else {
+        attroff(A_BOLD);
+      }
+      attron(COLOR_PAIR(_state->hd_c));
+    }
+
+    if(_state->win_size == t_full){
+      offset_y = hd_offset_y;
+      offset_x = hd_offset_x;
+    } else {
+      offset_y = hd_offset_y_min;
+      offset_x = hd_offset_x_min;
+    }
+
+    int center_offset = (int)strlen(hd) / 2;
+
+    cchar_t cchar;
+
+    mbstate_t state;
+    memset(&state, 0, sizeof(mbstate_t));
+    const char *iter_row = hd;
+    int iter_col = 0;
+    while (*iter_row) {
+      wchar_t wc[2] = { L'\0', L'\0' };
+      size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
+
+      setcchar(&cchar, wc, 0, 0, NULL);
+      mvadd_wch(_state->t_rows/2 + offset_y + offset_y_in, _state->t_cols/2 + offset_x + iter_col - center_offset + offset_x_in, &cchar);
 
       iter_row += len;
       iter_col++;
@@ -1100,11 +1205,11 @@ void _affect(int fx){
   if(HOLOGRAPHIC) _affect_holo();
 
   if(fx == glint_f){
-     _glint(glint_f);
+    _glint(glint_f);
   } else if(fx == glint_b){
-     _glint(glint_b);
+    _glint(glint_b);
   } else if(fx == glint_a){
-     _glint(glint_a);
+    _glint(glint_a);
   }
 }
 
@@ -1139,6 +1244,42 @@ void _fetch(){
   char * fetch_path = _run_fetch();
   _fetch_reduce(fetch_path);
   int num_fetch_cols = _longest_line(fetch_path);
+  int num_ascii_width = _get_full_width(); // todo not complete
+
+  clear();
+  _fg_offset(fg, 0, -(num_ascii_width)/2 - 2);
+  _bg_offset(0, 0, -(num_ascii_width)/2 - 2);
+  _hd_offset(0, -(num_ascii_width)/2 - 2);
+
+  FILE * file = fopen(fetch_path, "r");
+  int entries = 0;
+  char line[256] = {'\0'};
+  while(fgets(line, sizeof(line), file)){
+    entries++;
+  }
+  rewind(file);
+
+  int line_num = 0;
+  while(fgets(line, sizeof(line), file)){
+    for(int i = 0; i < (int)strlen(line); i++){
+      mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
+    }
+    line_num++;
+  }
+
+  fclose(file);
+
+  refresh();
+
+  while(1){
+    char input =  getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) break;
+
+    _get_dims();
+    if(_resized()) break;
+
+    usleep(20000);
+  }
 
   free(fetch_path);
 }

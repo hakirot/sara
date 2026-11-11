@@ -1945,3 +1945,17 @@ int _longest_line(const char *path){
 
   return longest;
 }
+
+int _get_full_width(){
+
+  int larger = BG_GLYPH_LENGTH;
+  int smaller = FG_GLYPH_LENGTH;
+  if(FG_GLYPH_LENGTH > BG_GLYPH_LENGTH) {
+    larger  = FG_GLYPH_LENGTH;
+    smaller = BG_GLYPH_LENGTH;
+  }
+
+  // .. todo finish this implementation
+
+  return larger;
+}

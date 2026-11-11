@@ -38,6 +38,8 @@ void animate(animation option);
 void _print_confirm_selection(int selection);
 void _print_confirm_window(char * command_str);
 void _overlay(const char * glyph[], char fill);
+void _bg_offset(char ch, int offset_y, int offset_x);
+void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);

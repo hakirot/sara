@@ -58,6 +58,7 @@ int  key(char optional_input);
 void __interrupt__(int signum);
 void get_helped(int exit_code);
 void _chdir(char * target_dir);
+int  _input_is_fetch(char input);
 int  _run_exec(char * selection);
 void _args(int argc, char* argv[]);
 void _menuselect(const Menu * menu);

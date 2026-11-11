@@ -1959,3 +1959,15 @@ int _get_full_width(){
 
   return larger;
 }
+
+int  _input_is_fetch(char input){
+  if(strchr(builtinkeys_chars, input)){
+    for(int i = 0; i < builtinkeys_len; i++){
+      if(builtinkeys[i].smashkey == input){
+        if(builtinkeys[i].option == fetch) return 1;
+      }
+    }
+  }
+
+  return 0;
+}

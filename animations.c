@@ -1338,11 +1338,11 @@ void _fetch(){
       break;
     }
 
-    _get_dims();
-    if(_resized()) {
-      animate(start_animation);
-      break;
-    }
+  _get_dims();
+  if(_resized()) {
+    _fetch();
+    return;
+  }
 
     usleep(20000);
   }

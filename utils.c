@@ -1867,27 +1867,81 @@ void _fetch_reduce(char* fetch_path){
   }
   char line[256] = {'\0'};
 
-  fgets(line, sizeof(line), fp);
+  if(!fgets(line, sizeof(line), fp)){
+    fclose(fp);
+    exit(1);
+  }
+
   char * user = getenv("USER");
+  if(!user){
+    fclose(fp);
+    exit(1);
+  }
 
-  int offset = 0;
-  // Find the number of characters up to to $USER@hostname from line and save in offset variable
+  char * match = strstr(line, user);
+  if(!match){
+    fclose(fp);
+    exit(1);
+  }
 
-  // Create a new char array and write everything in line from $USER onward to new char array
-  char reduced_line[256] = "\0";
+  int offset = (int)(match - line);
+  memmove(line, line + offset, strlen(line + offset) + 1);
 
-  // Create output file
+  const char *home_to_output = "/.cache/sara/stripped_fetch";
   const char *env_home = getenv("HOME");
-  const char *home_to_output = "/.cache/fastfetch_reduced";
-  char output_file[256] = "\0";
-  sprintf(output_file, "%s%s", env_home, home_to_output);
-  FILE* fp_out = fopen(fetch_path, "w");
-  // Write new char array line to output_file
+  if(!env_home){
+    fclose(fp);
+    exit(1);
+  }
+
+  char output_file[512] = {'\0'};
+  snprintf(output_file, sizeof(output_file), "%s%s", env_home, home_to_output);
+
+  FILE* fp_out = fopen(output_file, "w");
+  if(!fp_out){
+    fclose(fp);
+    exit(1);
+  }
+  fputs(line, fp_out);
 
   while(fgets(line, sizeof(line), fp)){
-    // with the offset, continue pulling lines from fp, copy only from offset onward to reduced_line, and append to fp_out
-    // break when you reach a line that has no data after offset (even if there is more data in fp)
+    size_t len = strlen(line);
+    if(len <= (size_t)offset || strspn(line + offset, " \t\r\n") == len - offset){
+      break;
+    }
+    memmove(line, line + offset, len - offset + 1);
+    fputs(line, fp_out);
   }
 
   fclose(fp);
+  fclose(fp_out);
+
+  char mv_cmd[256];
+  sprintf(mv_cmd, "%s %s %s", "mv", output_file, fetch_path);
+  system(mv_cmd);
+}
+
+
+int _longest_line(const char *path){
+
+  FILE *fp = fopen(path, "r");
+  if(!fp) return 0;
+  
+  char *line = NULL;
+  size_t capacity = 0;
+  int longest = 0;
+  
+  ssize_t len;
+  
+  while((len = getline(&line, &capacity, fp)) != -1){
+
+    // Exclude trailing newline
+    if(len > 0 && line[len - 1] == '\n') len--;
+    if(len > longest) longest = len;
+  }
+
+  free(line);
+  fclose(fp);
+
+  return longest;
 }

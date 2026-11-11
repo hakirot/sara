@@ -1138,8 +1138,7 @@ void _fetch(){
   }
   char * fetch_path = _run_fetch();
   _fetch_reduce(fetch_path);
-
-
+  int num_fetch_cols = _longest_line(fetch_path);
 
   free(fetch_path);
 }

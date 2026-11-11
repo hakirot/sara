@@ -1252,6 +1252,8 @@ void _fetch(){
   _hd_offset(0, -(num_ascii_width)/2 - 2);
 
   FILE * file = fopen(fetch_path, "r");
+  free(fetch_path);
+
   int entries = 0;
   char line[256] = {'\0'};
   while(fgets(line, sizeof(line), file)){
@@ -1260,10 +1262,61 @@ void _fetch(){
   rewind(file);
 
   int line_num = 0;
+  int first_flag = 0;
+  int latter_half = 0;
   while(fgets(line, sizeof(line), file)){
-    for(int i = 0; i < (int)strlen(line); i++){
-      mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
+
+    latter_half = 0;
+
+    if (line_num != 1){
+      attron(COLOR_PAIR(_state->bg_c));
+      if(bg_c_bold) attron(A_BOLD);
+    } else {
+      attron(COLOR_PAIR(_state->fg_c));
+      if(fg_c_bold) attron(A_BOLD);
     }
+
+    for(int i = 0; i < (int)strlen(line); i++){
+
+      if(line[i] == '@' && line_num == 0){
+        attron(COLOR_PAIR(_state->fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+        first_flag = 1;
+      }
+
+      if(latter_half && line[i] == ')'){
+        attroff(COLOR_PAIR(blue));
+        attron(COLOR_PAIR(_state->fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+      }
+
+      mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
+
+      if(first_flag){
+        attroff(COLOR_PAIR(_state->bg_c));
+        attroff(A_BOLD);
+        attron(COLOR_PAIR(_state->bg_c));
+        if(bg_c_bold) attron(A_BOLD);
+        first_flag--;
+      }
+
+      if(latter_half && line[i] == '('){
+        attroff(COLOR_PAIR(_state->fg_c));
+        attroff(A_BOLD);
+        attron(COLOR_PAIR(blue));
+      }
+
+      if(line[i] == ':'){
+        latter_half = 1;
+        attroff(COLOR_PAIR(_state->bg_c));
+        attroff(A_BOLD);
+        attron(COLOR_PAIR(_state->fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+      }
+    }
+    attroff(COLOR_PAIR(_state->bg_c));
+    attroff(COLOR_PAIR(_state->fg_c));
+    attroff(A_BOLD);
     line_num++;
   }
 
@@ -1271,15 +1324,28 @@ void _fetch(){
 
   refresh();
 
+  char input;
+  int input_flag = 0;
   while(1){
-    char input =  getch();
-    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127) break;
+
+    input =  getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127){
+      if(input == 'q' ) return;
+      input_flag++;
+      break;
+    }
 
     _get_dims();
-    if(_resized()) break;
+    if(_resized()) {
+      animate(start_animation);
+      break;
+    }
 
     usleep(20000);
   }
 
-  free(fetch_path);
+  int result = _key(input);
+  if(result > 0){
+    animate(start_animation);
+  }
 }

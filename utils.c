@@ -164,7 +164,6 @@ int __execute__(const Command * command){
 
   animate(command->pre_animation);
   endwin();
-  //system("clear");
 
   if(strcmp("ranger", ((char **)command->cmd)[0]) == 0 &&
     command->option != EXEC)
@@ -203,7 +202,6 @@ int __execute__(const Command * command){
       }
 
       if(_state->interrupt){
-        // _state->interrupt = false;
         return true;
       }
 
@@ -211,11 +209,20 @@ int __execute__(const Command * command){
           STOP == command->option) {
         printf("\x1b[33m" "Press enter to continue" "\x1b[0m");
 
-        size_t bufsize = 256;
-        char *buff = (char *)malloc(bufsize * sizeof(char));
-        if(buff == NULL) crit("Unable to allocate buff");
-        fgets(buff, 256, stdin);
-        free(buff);
+        while(1){
+          size_t bufsize = 256;
+          char *buff = (char *)malloc(bufsize * sizeof(char));
+          if(buff == NULL) crit("Unable to allocate buff");
+          fgets(buff, 256, stdin);
+          free(buff);
+          refresh();
+          _get_dims();
+          if(!_resized()){
+            break;
+          } else {
+            endwin();
+          }
+        }
       }
     }
 
@@ -228,7 +235,6 @@ int __execute__(const Command * command){
       close(fd);
     }
 
-    //system("clear");
     if(FOLLOW) _write_exit_dir();
     execvp(((char **)command->cmd)[0], (char **)command->cmd);
     perror("execvp");
@@ -388,7 +394,6 @@ void _menuselect(const Menu * menu){
     } else if (input == '\n'){
       if(menu[selection].type == SUBMENU){
         _clear_menu(dim_y+2, dim_x+2, offset_y, offset_x);
-        // TODO Why restrict submenus to parent menu dims
         _menuselect(menu[selection].next.submenu);
       } else if(menu[selection].type == COMMAND){
         int result = __execute__(&menu[selection].next.command);

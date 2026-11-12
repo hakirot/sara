@@ -1231,10 +1231,8 @@ void _affect_holo() {
   if(_state->win_size == t_full && _state->fx == nofx || _state->fx == glint_a){
     _state->bg_c++;
     _state->fg_c++;
-    _state->hd_c++;
     if (_state->bg_c > 7) _state->bg_c = 2;
     if (_state->fg_c > 7) _state->fg_c = 2;
-    if (_state->hd_c > 7) _state->hd_c = 2;
   } else if(_state->fx == glint_f) {
     _state->fg_c++;
     if (_state->fg_c > 7) _state->fg_c = 2;
@@ -1258,6 +1256,7 @@ void _fetch(){
   int num_ascii_width = _get_full_width(); // todo not complete
 
   clear();
+  reset_colors();
   _fg_offset(fg, 0, -(num_ascii_width)/2 - 2);
   _bg_offset(0, 0, -(num_ascii_width)/2 - 2);
   _hd_offset(0, -(num_ascii_width)/2 - 2);
@@ -1324,6 +1323,8 @@ void _fetch(){
         attron(COLOR_PAIR(_state->fg_c));
         if(fg_c_bold) attron(A_BOLD);
       }
+      usleep(250);
+      refresh();
     }
     attroff(COLOR_PAIR(_state->bg_c));
     attroff(COLOR_PAIR(_state->fg_c));

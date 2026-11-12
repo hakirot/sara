@@ -276,13 +276,19 @@ void __builtin__(char input){
       _state->fx = 0;
       _reset_glyph_state();
     }
-    else  _state->fx = glint_f;
+    else {
+      reset_colors();
+      _state->fx = glint_f;
+    }
   } else if (selection == fx_glint_bg){
     if (_state->fx == glint_b) {
       _state->fx = 0;
       _reset_glyph_state();
     }
-    else  _state->fx = glint_b;
+    else  {
+      reset_colors();
+      _state->fx = glint_b;
+    }
   } else if (selection == fx_glint_full){
     if (_state->fx == glint_a) {
       _state->fx = 0;
@@ -1059,9 +1065,7 @@ void _toggle_rave(){
   if(HOLOGRAPHIC == 0){
     HOLOGRAPHIC = 1;
   } else {
-    _state->bg_c = bg_c;
-    _state->fg_c = fg_c;
-    _state->hd_c = hd_c;
+    reset_colors();
     HOLOGRAPHIC = 0;
   }
 }
@@ -1971,4 +1975,10 @@ int  _input_is_fetch(char input){
   }
 
   return 0;
+}
+
+void reset_colors(){
+  _state->bg_c = bg_c;
+  _state->fg_c = fg_c;
+  _state->hd_c = hd_c;
 }

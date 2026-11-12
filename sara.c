@@ -26,7 +26,6 @@ int main(int argc, char* argv[]){
 
   srand((unsigned)time(0));
 
-
   special_chars();
   load_command_config();
   set_glyph_dimensions();

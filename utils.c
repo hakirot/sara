@@ -1921,7 +1921,6 @@ void _fetch_reduce(char* fetch_path){
   system(mv_cmd);
 }
 
-
 int _longest_line(const char *path){
 
   FILE *fp = fopen(path, "r");

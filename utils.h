@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 /*
 --  ██╗   ██╗████████╗██╗██╗     ███████╗  --
 --  ██║   ██║╚══██╔══╝██║██║     ██╔════╝  --
@@ -6,10 +9,6 @@
 --  ╚██████╔╝   ██║   ██║███████╗███████║  --
 --   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝.h--
                                                */
-
-#ifndef UTILS_H
-#define UTILS_H
-
 #include <wchar.h>
 #include "globals.h"
 
@@ -71,7 +70,7 @@ int  _get_confirm(const Command * command);
 int  _is_binary_in_path(const char * binary);
 int  _deduce_dim_y(int requested_dim_y, int len);
 Command * ranger_command(const Command * command);
-void ensure_path_perm(char * file_path, char perm);
+void ensure_path_perm(char * file_path, char perm);              /* orphaned */
 int  _deduce_offset_y(int dim_y, int requested_offset_y);
 int  _deduce_offset_x(int dim_x, int requested_offset_x);
 int  _check_menu(const Menu * menu_ptr, clock_t start_time);

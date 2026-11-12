@@ -1,4 +1,5 @@
 bugs/issues
+  - remove all sleep() calls and globally implement 60fps
 
 planned features
   - Figure a method to optionally execute path_run as WAIT

@@ -810,7 +810,6 @@ void _preflight_check() {
     warn(err);
   }
 
-//if(warning_flag == 0) printf("\x1b[32m" "Precheck passed" "\x1b[0m\n");
   _quit(warning_flag);
 } 
 
@@ -1060,6 +1059,9 @@ void _toggle_rave(){
   if(HOLOGRAPHIC == 0){
     HOLOGRAPHIC = 1;
   } else {
+    _state->bg_c = bg_c;
+    _state->fg_c = fg_c;
+    _state->hd_c = hd_c;
     HOLOGRAPHIC = 0;
   }
 }

@@ -1214,7 +1214,7 @@ void _affect(int fx){
 }
 
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
-  timespec->tv_sec += nanosecs / 1000000000LL;
+  timespec->tv_sec  += nanosecs / 1000000000LL;
   timespec->tv_nsec += nanosecs % 1000000000LL;
 
   if (timespec->tv_nsec >= 1000000000L) {
@@ -1224,14 +1224,25 @@ void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
 }
 
 void _affect_holo() {
-  if(_state->win_size == t_full){
+  if(_state->win_size == t_tiny) {
+    return;
+  }
+
+  if(_state->win_size == t_full && _state->fx == nofx || _state->fx == glint_a){
     _state->bg_c++;
     _state->fg_c++;
     _state->hd_c++;
     if (_state->bg_c > 7) _state->bg_c = 2;
     if (_state->fg_c > 7) _state->fg_c = 2;
     if (_state->hd_c > 7) _state->hd_c = 2;
+  } else if(_state->fx == glint_f) {
+    _state->fg_c++;
+    if (_state->fg_c > 7) _state->fg_c = 2;
+  } else if(_state->fx == glint_b) {
+    _state->bg_c++;
+    if (_state->bg_c > 7) _state->bg_c = 2;
   }
+
   if(_state->fx == nofx) _state->reprint = true;
 }
 

@@ -1256,7 +1256,7 @@ void _fetch(){
   int num_ascii_width = _get_full_width(); // todo not complete
 
   clear();
-  reset_colors();
+  //reset_colors();
   _fg_offset(fg, 0, -(num_ascii_width)/2 - 2);
   _bg_offset(0, 0, -(num_ascii_width)/2 - 2);
   _hd_offset(0, -(num_ascii_width)/2 - 2);

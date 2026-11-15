@@ -116,9 +116,9 @@ typedef enum {
   colors,
   path_run,
   pwd,
-  fx_glint_fg,
-  fx_glint_bg,
-  fx_glint_full,
+  fx_glint_f,
+  fx_glint_b,
+  fx_glint_a,
   fetch,
 } internal;
 

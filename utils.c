@@ -271,7 +271,7 @@ void __builtin__(char input){
     _get_pwd();
   } else if (selection == fetch){
     _fetch();
-  } else if (selection == fx_glint_fg){
+  } else if (selection == fx_glint_f){
     if (_state->fx == glint_f) {
       _state->fx = 0;
       _reset_glyph_state();
@@ -280,7 +280,7 @@ void __builtin__(char input){
       reset_colors();
       _state->fx = glint_f;
     }
-  } else if (selection == fx_glint_bg){
+  } else if (selection == fx_glint_b){
     if (_state->fx == glint_b) {
       _state->fx = 0;
       _reset_glyph_state();
@@ -289,7 +289,7 @@ void __builtin__(char input){
       reset_colors();
       _state->fx = glint_b;
     }
-  } else if (selection == fx_glint_full){
+  } else if (selection == fx_glint_a){
     if (_state->fx == glint_a) {
       _state->fx = 0;
       _reset_glyph_state();

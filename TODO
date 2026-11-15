@@ -1,5 +1,8 @@
 bugs/issues
   - remove all sleep() calls and globally implement 60fps
+  - add short holographic as an animation
+  - split release and dev make targets (remove memory debug flags)
+  - ensure randomize_colors() is actually randomizing all colors
 
 planned features
   - Figure a method to optionally execute path_run as WAIT

@@ -1360,7 +1360,9 @@ void _fetch(){
   }
 
   int result = _key(input);
-  if(result > 0){
+  if(result == 1){
+    animate(start_animation);
+  } else if (input_flag == 1 && result == 0 ) {
     animate(start_animation);
   }
 }

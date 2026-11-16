@@ -35,9 +35,8 @@ void animate(animation option){
   if (option == shutter_slide_neon){ _shutter_slide(); _neon(); }
   if (option == pixel_fill)          _pixel_fill();
   if (option == tv_static)           _tv_static();
-  if (option == print_f)             _fg(fg);
-  if (option == print_b)             _bg();
   if (option == blink)               _blink();
+  if (option == all)                 _a_all();
 }
 
 void _blink(){
@@ -534,8 +533,7 @@ void _pixel_fill(){
 //int break_flag = 0;                           // break flag code will print line-by-line with pixel_fill(2000);
   while(count <= total_fg_chars - 3){
 
-    getmaxyx(stdscr, _state->t_rows, _state->t_cols);
-    if (_state->t_cache != _state->t_rows + _state->t_cols) return;
+    //getmaxyx(stdscr, _state->t_rows, _state->t_cols);
 
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
@@ -581,7 +579,10 @@ void _pixel_fill(){
     if (_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
 
     usleep(12000);
-
+    if (_resized()){
+      animate(none);
+      return;
+    }
   }
 
   _overlay(fg, 0);
@@ -1247,16 +1248,23 @@ void _affect_holo() {
 void _fetch(){
 
   if (_is_binary_in_path("fastfetch") == 1) {
-    slap("fastfetch is not installed");
+    generate_path_run_file();
+    if (_is_binary_in_path("fastfetch") == 1) {
+      slap("fastfetch is not installed");
+    }
     return;
   }
   char * fetch_path = _run_fetch();
+  if(_string_in_file(fetch_path, "No such file or directory")){
+    slap("fastfetch is not installed");
+    free(fetch_path);
+    return;
+  }
   _fetch_reduce(fetch_path);
   int num_fetch_cols = _longest_line(fetch_path);
   int num_ascii_width = _get_full_width(); // todo not complete
 
   clear();
-  //reset_colors();
   _fg_offset(fg, 0, -(num_ascii_width)/2 - 2);
   _bg_offset(0, 0, -(num_ascii_width)/2 - 2);
   _hd_offset(0, -(num_ascii_width)/2 - 2);
@@ -1365,4 +1373,19 @@ void _fetch(){
   } else if (input_flag == 1 && result == 0 ) {
     animate(start_animation);
   }
+}
+
+void _a_all(){
+  _down_wipes();
+  _glitch((Arg){.x = 0});
+  _glitch((Arg){.x = 1});
+  _neon();
+  _neon_reverse();
+  _shutter_slide();
+  _shutter_slide(); _neon();
+  _pixel_fill();
+  _tv_static();
+  _fg(fg);
+  _bg();
+  _blink();
 }

@@ -302,6 +302,8 @@ void __builtin__(char input){
       _state->show_colors = false;
     }
     _show_colors();
+  } else if (selection == a_all){
+    animate(all);
   }
 }
 
@@ -866,12 +868,18 @@ int _is_binary_in_path(const char * binary) {
     char * env_home = getenv("HOME");
     sprintf(run_file, "%s%s", env_home, "/.cache/sara/sara_run");
     FILE * fp = fopen(run_file, "r");
-    char line[256] = {'\0'};
 
     if(fp == NULL){
-      crit("hwat");
+      generate_path_run_file();
+      fp = fopen(run_file, "r");
+      if(fp == NULL){
+        char err[128];
+        sprintf(err, "%s%s%s", "Could not create ", env_home, "/.cache/sara/sara_run");
+        crit(err);
+      }
     }
 
+    char line[256] = {'\0'};
     while(fgets(line, sizeof(line), fp)) {
       line[strcspn(line, "\n")] = 0;
       if(strncmp(binary, line, len) == 0){
@@ -1342,6 +1350,8 @@ void _run_menu(){
         if (ret_val == 0){
           animate(start_animation);
         }
+      } else {
+        animate(glitch_full);
       }
       break;
     } else if (input == 27){
@@ -1981,4 +1991,21 @@ void reset_colors(){
   _state->bg_c = bg_c;
   _state->fg_c = fg_c;
   _state->hd_c = hd_c;
+}
+
+int _string_in_file(const char *path, const char *str){
+
+  FILE *fp = fopen(path, "r");
+  if (!fp) return 0;
+
+  char line[1024];
+  while (fgets(line, sizeof(line), fp)) {
+    if (strstr(line, str)) {
+        fclose(fp);
+        return 1;
+    }
+  }
+
+  fclose(fp);
+  return 0;
 }

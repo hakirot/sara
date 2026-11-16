@@ -20,6 +20,7 @@ void _hd();
 void _neon();
 void _blink();
 void _fetch();
+void _a_all();
 void _colorbar();
 void tinyprint();
 void _tv_static();

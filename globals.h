@@ -62,9 +62,8 @@ typedef enum {
   shutter_slide_neon,
   pixel_fill,
   tv_static,
-  print_b,
-  print_f,
   blink,
+  all,
 } animation;
 
 typedef enum {
@@ -120,6 +119,7 @@ typedef enum {
   fx_glint_b,
   fx_glint_a,
   fetch,
+  a_all,
 } internal;
 
 typedef enum {

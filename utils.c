@@ -530,13 +530,23 @@ int _deduce_dim_x(int requested_dim_x){
 
 int _deduce_offset_y(int dim_y, int req){
 
-  int lower_bound = _state->t_rows/2 - dim_y/2 + dim_y + req;
 
-  if(lower_bound < _state->t_rows) return req;
+  /* calcs lower edge row */
+  if(req > 0){
+    int lower_bound = _state->t_rows/2 - dim_y/2 + dim_y + req;
+    if(lower_bound < _state->t_rows) return req;
+    while(lower_bound > _state->t_rows){
+      lower_bound--;
+      req--;
+    }
+  } else {
+    int upper_bound = _state->t_rows/2 - dim_y/2 + req;
+    if(upper_bound > 0) return req;
 
-  while(lower_bound > _state->t_rows){
-    lower_bound--;
-    req--;
+    while(upper_bound < 0){
+      upper_bound++;
+      req++;
+    }
   }
 
   return req;
@@ -1836,7 +1846,7 @@ void _get_dims(){
   getmaxyx(stdscr, _state->t_rows, _state->t_cols);
 }
 
-int  _resized(){
+int _resized(){
   int ret_val = 0;
   if(_state->t_cache != _state->t_rows + _state->t_cols) ret_val = 1;
   else ret_val = 0;

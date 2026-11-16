@@ -9,7 +9,6 @@ planned features
   - Figure a method to optionally execute path_run as WAIT
   - builtin function to display all user-mapped commands
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
-  - make install?
 
 -- 0.9.5 Patch notes --
 

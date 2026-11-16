@@ -530,10 +530,7 @@ void _pixel_fill(){
   int count = 0;
   int round_fill_max = 1;
   int round_fill_count = 0;
-//int break_flag = 0;                           // break flag code will print line-by-line with pixel_fill(2000);
   while(count <= total_fg_chars - 3){
-
-    //getmaxyx(stdscr, _state->t_rows, _state->t_cols);
 
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
 
@@ -559,7 +556,6 @@ void _pixel_fill(){
           attroff(A_BOLD);
           if (round_fill_count == round_fill_max){
             round_fill_count = 0;
-//          break_flag = 1; // break flag code will print line-by-line with pixel_fill(2000);
             break;
           }
         }
@@ -567,10 +563,6 @@ void _pixel_fill(){
         iter_row += len;
         j++;
       }
-//    if(break_flag){// break flag code will print line-by-line with pixel_fill(2000);
-//      break_flag = 0;
-//      break;
-//    }
     }
 
     refresh();
@@ -578,11 +570,12 @@ void _pixel_fill(){
     if(result == 2) return;
     if (_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
 
-    usleep(12000);
+    _get_dims();
     if (_resized()){
-      animate(none);
+      animate(start_animation);
       return;
     }
+    usleep(12000);
   }
 
   _overlay(fg, 0);

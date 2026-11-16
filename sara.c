@@ -51,9 +51,7 @@ int main(int argc, char* argv[]){
     _get_dims();
     _state->t_cache = check_size();
 
-    if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) {
-      _state->reprint = true;
-    }
+    if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) _state->reprint = true;
 
     if(_state->fx != nofx || HOLOGRAPHIC == 1) _affect(_state->fx);
 

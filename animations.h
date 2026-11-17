@@ -36,6 +36,7 @@ void _glitch(Arg bigmode);
 void _none(Arg printColorbar);
 void _fg(const char * glyph[]);
 void animate(animation option);
+void _fps_sleep(struct timespec * next_frame);
 void _print_confirm_selection(int selection);
 void _print_confirm_window(char * command_str);
 void _overlay(const char * glyph[], char fill);

@@ -41,10 +41,6 @@ void animate(animation option){
 
 void _blink(){
 
-  double cycle_length = 0.3;
-  double elapsed_time = 0;
-  clock_t cycle_start = clock();
-
   int first_frame = 0;
   int second_frame = 0;
   int third_frame = 0;
@@ -53,11 +49,14 @@ void _blink(){
   clear();
   refresh();
 
-  while(cycle_length > elapsed_time){
+  int frames = 0;
+  int total_frames = 15;
+  struct timespec start, next_frame, end;
+  clock_gettime(CLOCK_MONOTONIC, &start);
+  next_frame = start;
+  while(frames < total_frames){
 
-    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
-
-    if(elapsed_time > 0.05 && first_frame == 0){
+    if(frames > 0 && first_frame == 0){
       ch = '.';
       if (_state->win_size == t_small){
         _overlay(fg, ch);
@@ -70,7 +69,7 @@ void _blink(){
       refresh();
     }
 
-    if(elapsed_time > 0.1 && second_frame == 0){
+    if(frames > 5 && second_frame == 0){
       ch = '_';
       if (_state->win_size == t_small){
         _overlay(fg, ch);
@@ -83,7 +82,7 @@ void _blink(){
     }
 
     ch = '-';
-    if(elapsed_time > 0.2 && third_frame == 0){
+    if(frames > 10 && third_frame == 0){
       if (_state->win_size == t_small){
         _overlay(fg, ch);
       } else {
@@ -96,6 +95,19 @@ void _blink(){
     int result = _key();
     if(result == 2) return;
     if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+
+    _inc_nanosecs(&next_frame, FRAME_TIME_NS);
+    int clock_result = EINTR;
+    while (clock_result == EINTR) {
+      clock_result = clock_nanosleep(
+          CLOCK_MONOTONIC,
+          TIMER_ABSTIME,
+          &next_frame,
+          NULL
+      );
+    }
+
+    frames++;
   }
 
   _none((Arg){.x = 0});

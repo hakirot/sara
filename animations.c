@@ -37,6 +37,8 @@ void animate(animation option){
   if (option == tv_static)           _tv_static();
   if (option == blink)               _blink();
   if (option == holo)                _holo();
+  if (option == glimmer)             _glimmer((Arg){.x = 0});
+  if (option == glimmer_full)        _glimmer((Arg){.x = 1});
   if (option == all)                 _a_all();
 }
 
@@ -1448,5 +1450,26 @@ void _holo(){
     _fps_sleep(&next_frame);
     frames++;
   }
+  reset_colors();
+}
+
+void _glimmer(Arg full){
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  int frames = 0;
+  int total_frames = 15;
+  HOLOGRAPHIC = 1;
+  while(frames < total_frames){
+    _affect_holo();
+    if(full.x == 1){
+      _glint(glint_a);
+    } else {
+      _glint(glint_f);
+    }
+    refresh();
+    _fps_sleep(&next_frame);
+    frames++;
+  }
+  HOLOGRAPHIC = 0;
   reset_colors();
 }

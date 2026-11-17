@@ -22,6 +22,5 @@ Backlog
   - ability to pass args to commands
   - Scale menu sizes to longest menu entry
   - consume config function
-  - remove END_OF_MENU requirement by introducing vector structures
     - alternatively a config parser
 

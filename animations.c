@@ -51,7 +51,7 @@ void _blink(){
 
   int frames = 0;
   int total_frames = 15;
-  struct timespec start, next_frame, end;
+  struct timespec start, next_frame;
   clock_gettime(CLOCK_MONOTONIC, &start);
   next_frame = start;
   while(frames < total_frames){
@@ -654,7 +654,7 @@ void _tv_static(){
 
   int frames = 0;
   int total_frames = 15;
-  struct timespec start, next_frame, end;
+  struct timespec start, next_frame;
   clock_gettime(CLOCK_MONOTONIC, &start);
   next_frame = start;
   while(frames < total_frames){
@@ -1044,6 +1044,11 @@ void _down_wipes(){
 
   clear();
   refresh();
+
+  struct timespec start, next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &start);
+  next_frame = start;
+
   if (_state->win_size == t_small){
     attron(COLOR_PAIR(_state->fg_c));
     if(fg_c_bold) attron(A_BOLD);
@@ -1053,7 +1058,17 @@ void _down_wipes(){
       if(result == 2) return;
       if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
-      usleep(wipe_time);
+      //usleep(wipe_time);
+      _inc_nanosecs(&next_frame, FRAME_TIME_NS);
+      int clock_result = EINTR;
+      while (clock_result == EINTR) {
+        clock_result = clock_nanosleep(
+            CLOCK_MONOTONIC,
+            TIMER_ABSTIME,
+            &next_frame,
+            NULL
+        );
+      }
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(_state->fg_c));
@@ -1067,7 +1082,17 @@ void _down_wipes(){
       mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
       if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
-      usleep(wipe_time);
+      _inc_nanosecs(&next_frame, FRAME_TIME_NS);
+      int clock_result = EINTR;
+      while (clock_result == EINTR) {
+        clock_result = clock_nanosleep(
+            CLOCK_MONOTONIC,
+            TIMER_ABSTIME,
+            &next_frame,
+            NULL
+        );
+      }
+      //usleep(wipe_time);
       int result = _key();
       if(result == 2) return;
     }
@@ -1099,7 +1124,17 @@ void _down_wipes(){
         iter_col++;
       }
       refresh();
-      usleep(wipe_time);
+      _inc_nanosecs(&next_frame, FRAME_TIME_NS);
+      int clock_result = EINTR;
+      while (clock_result == EINTR) {
+        clock_result = clock_nanosleep(
+            CLOCK_MONOTONIC,
+            TIMER_ABSTIME,
+            &next_frame,
+            NULL
+        );
+      }
+      //usleep(wipe_time);
       int result = _key();
       if(result == 2) return;
     }

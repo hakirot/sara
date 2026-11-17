@@ -376,7 +376,7 @@ void _neon(){
   refresh();
   int frames = 0;
   int total_frames =  15;
-  struct timespec start, next_frame;
+  struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
 
   while(frames < total_frames){
@@ -431,7 +431,7 @@ void _neon_reverse(){
   int first_frame = 0;
   int second_frame = 0;
 
-  struct timespec start, next_frame;
+  struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
 
   while(frames < total_frames){
@@ -464,6 +464,10 @@ void _neon_reverse(){
 }
 
 void _shutter_slide(){
+
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+
   int num_frames = 8;
   int margin_width = (_state->t_cols - FG_GLYPH_LENGTH) / 2;
   int left_stop = margin_width;
@@ -492,11 +496,12 @@ void _shutter_slide(){
     }
 
     refresh();
-    usleep(10000);
+    _fps_sleep(&next_frame);
     j++;
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(_state->fg_c));
+  animate(none);
   return;
 };
 
@@ -652,7 +657,7 @@ void _tv_static(){
 
   int frames = 0;
   int total_frames = 15;
-  struct timespec start, next_frame;
+  struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(frames < total_frames){
 
@@ -732,17 +737,7 @@ void _tv_static(){
     }
 
     refresh();
-
-    _inc_nanosecs(&next_frame, FRAME_TIME_NS);
-    int clock_result = EINTR;
-    while (clock_result == EINTR) {
-      clock_result = clock_nanosleep(
-          CLOCK_MONOTONIC,
-          TIMER_ABSTIME,
-          &next_frame,
-          NULL
-      );
-    }
+    _fps_sleep(&next_frame);
 
     frames++;
   }

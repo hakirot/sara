@@ -1290,6 +1290,9 @@ void _fetch(){
   int line_num = 0;
   int first_flag = 0;
   int latter_half = 0;
+  int sleep_flag = 0;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(fgets(line, sizeof(line), file)){
 
     latter_half = 0;
@@ -1339,8 +1342,29 @@ void _fetch(){
         attron(COLOR_PAIR(_state->fg_c));
         if(fg_c_bold) attron(A_BOLD);
       }
-      usleep(250);
+      //usleep(250);
       refresh();
+    }
+    if(sleep_flag > 1){
+      _fps_sleep(&next_frame);
+      sleep_flag = 0;
+    } else {
+      sleep_flag++;
+    }
+    int input_flag = 0;
+    char input =  getch();
+    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127){
+      if(input == 'q' || _input_is_fetch(input)) {
+        fclose(file);
+        animate(start_animation);
+        return;
+      } else {
+        int result = _key(input);
+        if(result > 0) {
+          fclose(file);
+          return;
+        }
+      }
     }
     attroff(COLOR_PAIR(_state->bg_c));
     attroff(COLOR_PAIR(_state->fg_c));

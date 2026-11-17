@@ -36,6 +36,7 @@ void animate(animation option){
   if (option == pixel_fill)          _pixel_fill();
   if (option == tv_static)           _tv_static();
   if (option == blink)               _blink();
+  if (option == holo)                _holo();
   if (option == all)                 _a_all();
 }
 
@@ -1414,6 +1415,7 @@ void _a_all(){
   _fg(fg);
   _bg();
   _blink();
+  _holo();
 }
 
 void _fps_sleep(struct timespec *next_frame){
@@ -1427,4 +1429,24 @@ void _fps_sleep(struct timespec *next_frame){
         NULL
     );
   }
+}
+
+void _holo(){
+  int frames =  0;
+  int total_frames = 15;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(frames < total_frames){
+    _state->bg_c++;
+    _state->fg_c++;
+    _state->hd_c++;
+    if (_state->bg_c > 7) _state->bg_c = 2;
+    if (_state->fg_c > 7) _state->fg_c = 2;
+    if (_state->hd_c > 7) _state->fg_c = 2;
+    animate(none);
+    _colorbar();
+    _fps_sleep(&next_frame);
+    frames++;
+  }
+  reset_colors();
 }

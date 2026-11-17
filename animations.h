@@ -18,6 +18,7 @@
 void _bg();
 void _hd();
 void _neon();
+void _holo();
 void _blink();
 void _fetch();
 void _a_all();

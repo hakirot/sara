@@ -1,6 +1,4 @@
 bugs/issues
-  - remove all sleep() calls and globally implement 60fps
-  - add short holographic as an animation
   - split release and dev make targets (remove memory debug flags)
   - ensure randomize_colors() is actually randomizing all colors
   - look into adding some way to Ctrl-C out of SARA
@@ -11,6 +9,8 @@ planned features
   - Press 'E' while in pshd menu to edit pshd file with $EDITOR
 
 -- 0.9.5 Patch notes --
+  - remove all sleep() calls and globally implement 60fps
+  - add short holographic as an animation
 
 Backlog
   - job control

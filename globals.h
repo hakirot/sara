@@ -64,6 +64,7 @@ typedef enum {
   tv_static,
   blink,
   all,
+  holo,
 } animation;
 
 typedef enum {

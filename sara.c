@@ -190,6 +190,8 @@ void _pshd(){
     offset_y = 0;
   }
 
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(1){
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
@@ -452,7 +454,7 @@ void _pshd(){
 
         }
 
-        usleep(20000);
+        _fps_sleep(&next_frame);
       }
     } else if (input != -1){
       int result = _key(input);
@@ -471,7 +473,7 @@ void _pshd(){
       _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, entries);
       reprint = false;
     }
-    usleep(2000);
+    _fps_sleep(&next_frame);
   }
 
   refresh();
@@ -533,3 +535,4 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
   if(pshd_c_bold) attron(A_BOLD);
   rewind(file);
 }
+

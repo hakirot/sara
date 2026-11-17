@@ -1505,6 +1505,8 @@ int _run_args(int offset_y, int offset_x, char * selection){
   char input = {'\0'};
 
   int refresh_ui = true;
+  struct timespec next;
+  clock_gettime(CLOCK_MONOTONIC, &next);
   while(1){
 
     if(_state->fx != nofx){
@@ -1553,7 +1555,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
       refresh_ui = true;
     }
 
-    usleep(10000);
+    _fps_sleep(&next);
   }
 
   refresh();

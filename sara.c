@@ -81,6 +81,8 @@ int check_size(){
     clear();
 
     // small win size jail
+    struct timespec next;
+    clock_gettime(CLOCK_MONOTONIC, &next);
     while (get_win_size() == t_tiny){
       _state->win_size = t_tiny;
       clear();
@@ -88,11 +90,10 @@ int check_size(){
       refresh();
 
       // 2 millis
-      usleep(2000);
       _key();
-
       _get_dims();
       _state->t_cache = _state->t_rows + _state->t_cols;
+      _fps_sleep(&next);
     }
 
     if ((get_win_size() == t_full) || dynamic_resize == false){

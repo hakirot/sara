@@ -120,6 +120,8 @@ int _get_confirm(const Command * command){
   animate(none);
   _print_confirm_window(((char **)command->cmd)[0]);
   _print_confirm_selection(selection);
+  struct timespec next;
+  clock_gettime(CLOCK_MONOTONIC, &next);
   while(1){
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     if (_state->t_cache != _state->t_rows + _state->t_cols) break;
@@ -140,7 +142,7 @@ int _get_confirm(const Command * command){
     }
 
     _print_confirm_selection(selection);
-    usleep(2000);
+    _fps_sleep(&next);
   }
   return false;
 }
@@ -365,6 +367,8 @@ void _menuselect(const Menu * menu){
 
   int selection = 0;
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(1){
 
     _get_dims();
@@ -423,7 +427,7 @@ void _menuselect(const Menu * menu){
     }
 
     _print_menu_selection(menu, selection, entries, dim_y, dim_x, offset_y, offset_x);
-    usleep(20000);
+    _fps_sleep(&next_frame);
   }
 }
 
@@ -1270,12 +1274,11 @@ void _run_menu(){
   int offset_y = _deduce_offset_y(dim_y, run_offset_y);
   int offset_x = _deduce_offset_x(dim_x, run_offset_x);
 
-  _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
-
   if (dim_y == 2){
     offset_y = 0;
-  } else if(dim_y < 3){
-    offset_y = -1;
+  } else if(dim_y < 3 || _state->t_rows < 3){
+    offset_y = 0;
+    dim_y = 3;
   }
 
   char filter_buffer[128] = {"\0"};
@@ -1285,6 +1288,8 @@ void _run_menu(){
   _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
 
   int refresh_ui = true;
+  struct timespec next;
+  clock_gettime(CLOCK_MONOTONIC, &next);
   while(1){
 
     if(_state->fx != nofx){
@@ -1298,7 +1303,9 @@ void _run_menu(){
     }
 
     if(refresh_ui) {
-      _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+      if(_state->t_rows > 1){
+        _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
+      }
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) {
@@ -1375,7 +1382,7 @@ void _run_menu(){
       refresh_ui++;
     }
 
-    usleep(10000);
+    _fps_sleep(&next);
   }
 
   animate(none);

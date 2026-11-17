@@ -374,12 +374,14 @@ void _neon(){
 
   clear();
   refresh();
+  int frames = 0;
+  int total_frames =  15;
+  struct timespec start, next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
 
-  while(cycle_length > elapsed_time){
+  while(frames < total_frames){
 
-    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
-
-    if(elapsed_time > 0.05 && first_frame == 0){
+    if(frames > 0 && first_frame == 0){
       if (_state->win_size == t_small){
         _overlay(fg, '_');
       } else {
@@ -388,18 +390,14 @@ void _neon(){
 
       _colorbar();
       first_frame = 1;
-    }
-
-    if(elapsed_time > 0.1 && second_frame == 0){
+    } else if(frames > 5 && second_frame == 0){
       if (_state->win_size == t_small){
         _fg(fg);
       } else {
         _overlay(fg, '_');
       }
       second_frame = 1;
-    }
-
-    if(elapsed_time > 0.2 && third_frame == 0){
+    } else if(frames > 10 && third_frame == 0){
       if (_state->win_size == t_small && hd[0] != 0){
         _hd();
       } else {
@@ -411,7 +409,10 @@ void _neon(){
     int result = _key();
     if(result == 2) return;
     if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+    _fps_sleep(&next_frame);
+    frames++;
   }
+
 
   _none((Arg){.x = 0});
 }

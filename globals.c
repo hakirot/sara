@@ -32,6 +32,6 @@ int builtinkeys_len;
 int menukeys_len;
 int DEBUG = 0;
 
-struct timeval slap_time = {0};
+int slap_frames = 0;
 
 state * _state = NULL;

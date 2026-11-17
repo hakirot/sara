@@ -908,24 +908,21 @@ void warn(char * warning) {
 }
 
 void slap(char * slap_msg) {
-  mvprintw(0, 0, "%s", slap_msg);
   memset(_state->slap_str, 0, 256 * sizeof(char));
   strncpy(_state->slap_str, slap_msg, 256);
-  gettimeofday(&slap_time, NULL);
+  slap_frames = 0;
 }
 
 int _slap_timer() {
-  struct timeval t2;
-  double elapsed_time;
-  gettimeofday(&t2, NULL);
 
-  elapsed_time = (t2.tv_sec - slap_time.tv_sec) * 1000.0;
-
-  int slap_display_time = 1750;
-  if(elapsed_time > slap_display_time){
+  int slap_display_frames = 140;
+  if(slap_frames >= slap_display_frames){
     memset(_state->slap_str, 0, 256 * sizeof(char));
     return 1;
   } else {
+    mvprintw(0, 0, "%s", _state->slap_str);
+    refresh();
+    slap_frames++;
     return 0;
   }
 }

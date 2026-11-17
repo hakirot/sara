@@ -220,7 +220,7 @@ extern int commandkeys_len;
 extern int builtinkeys_len;
 extern int menukeys_len;
 
-extern struct timeval slap_time;
+extern int slap_frames;
 
 static const char *FORCE_ECHO_COMMAND[] = { "echo", NULL};
 static const Command FORCE_ECHO_STRUCT = {0, FORCE_ECHO_COMMAND, WAIT,none,none, {NULL, NOCONFIRM, NO_OUT} };

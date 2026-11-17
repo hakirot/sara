@@ -37,6 +37,9 @@ int main(int argc, char* argv[]){
   _deflect_signals();
 
   _state->t_cache = check_size();
+
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int result = 0;
 
   while(1){
@@ -62,7 +65,7 @@ int main(int argc, char* argv[]){
     } else if (result >= 1){
       _state->reprint = true;
     }
-    usleep(20000); // chill
+    _fps_sleep(&next_frame);
   }
 
   refresh();

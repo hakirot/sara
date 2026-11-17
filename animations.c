@@ -1053,7 +1053,6 @@ void _down_wipes(){
       if(result == 2) return;
       if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
-      //usleep(wipe_time);
       _fps_sleep(&next_frame);
     }
     attroff(A_BOLD);
@@ -1069,7 +1068,6 @@ void _down_wipes(){
       if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
       _fps_sleep(&next_frame);
-      //usleep(wipe_time);
       int result = _key();
       if(result == 2) return;
     }
@@ -1102,7 +1100,6 @@ void _down_wipes(){
       }
       refresh();
       _fps_sleep(&next_frame);
-      //usleep(wipe_time);
       int result = _key();
       if(result == 2) return;
     }
@@ -1342,7 +1339,6 @@ void _fetch(){
         attron(COLOR_PAIR(_state->fg_c));
         if(fg_c_bold) attron(A_BOLD);
       }
-      //usleep(250);
       refresh();
     }
     if(sleep_flag > 1){
@@ -1353,17 +1349,15 @@ void _fetch(){
     }
     int input_flag = 0;
     char input =  getch();
-    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127){
-      if(input == 'q' || _input_is_fetch(input)) {
+    if(input == 'q' || input == 27 || _input_is_fetch(input)) {
+      fclose(file);
+      animate(start_animation);
+      return;
+    } else {
+      int result = _key(input);
+      if(result > 0) {
         fclose(file);
-        animate(start_animation);
         return;
-      } else {
-        int result = _key(input);
-        if(result > 0) {
-          fclose(file);
-          return;
-        }
       }
     }
     attroff(COLOR_PAIR(_state->bg_c));
@@ -1381,8 +1375,8 @@ void _fetch(){
   while(1){
 
     input =  getch();
-    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127){
-      if(input == 'q' || _input_is_fetch(input)) {
+    if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127 || input == 27){
+      if(input == 'q' || input == 27 || _input_is_fetch(input)) {
         animate(start_animation);
         return;
       }
@@ -1396,7 +1390,7 @@ void _fetch(){
       return;
     }
 
-    usleep(20000);
+    _fps_sleep(&next_frame);
   }
 
   int result = _key(input);

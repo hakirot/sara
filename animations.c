@@ -51,9 +51,8 @@ void _blink(){
 
   int frames = 0;
   int total_frames = 15;
-  struct timespec start, next_frame;
-  clock_gettime(CLOCK_MONOTONIC, &start);
-  next_frame = start;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(frames < total_frames){
 
     if(frames > 0 && first_frame == 0){
@@ -294,54 +293,60 @@ void _glitch(Arg bigmode){
   int rng_row, rng_shift, rng_backdrop = 0;
   int rng_backdrop_rng = 2;
 
-  for( int i = 0 ; i < GLITCH_TIME; i++ ) {
-    rng_row   = rand() % FG_GLYPH_HEIGHT;
-    rng_shift = (rand() % 3) - 1;                       // RNG -1 and 1
-    rng_backdrop = rand() % rng_backdrop_rng;           // RNG 0 and 2
+  int total_frames = 15;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
 
-    if (_state->win_size == t_small) {
-      attron(COLOR_PAIR(_state->fg_c));
-      if(fg_c_bold) attron(A_BOLD);
-      if (rng_backdrop == 0){
-        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
-                (_state->t_cols - FG_GLYPH_LENGTH)/2 - rng_shift,
-                 "%s", fg[rng_row]);
+  for( int i = 0 ; i < total_frames; i++ ) {
+    for( int j = 0 ; j < 5; j++ ) {
+      rng_row   = rand() % FG_GLYPH_HEIGHT;
+      rng_shift = (rand() % 7) - 3;                       // RNG -1 and 1
+      rng_backdrop = rand() % rng_backdrop_rng;           // RNG 0 and 2
+
+      if (_state->win_size == t_small) {
+        attron(COLOR_PAIR(_state->fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+        if (rng_backdrop == 0){
+          mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + rng_row + fg_offset_y,
+                  (_state->t_cols - FG_GLYPH_LENGTH)/2 - rng_shift,
+                   "%s", fg[rng_row]);
+        }
+        attroff(A_BOLD);
+        attroff(COLOR_PAIR(_state->fg_c));
       }
-      attroff(A_BOLD);
-      attroff(COLOR_PAIR(_state->fg_c));
-    }
 
-    if (_state->win_size == t_full) {
+      if (_state->win_size == t_full) {
 
-      if(bigmode.x == 1){
+        if(bigmode.x == 1){
 
-        if(bg_c_bold) attron(A_BOLD);
-        attron(COLOR_PAIR(_state->bg_c));
-        int rng_rowx = rand() % BG_GLYPH_HEIGHT;
-        int rng_shift = (rand() % 2) - 1;               // RNG -1 and 1
+          if(bg_c_bold) attron(A_BOLD);
+          attron(COLOR_PAIR(_state->bg_c));
+          int rng_rowx = rand() % BG_GLYPH_HEIGHT;
+          int rng_shift = (rand() % 7) - 3;               // RNG -1 and 1
 
-        mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + rng_rowx,
-                (_state->t_cols - BG_GLYPH_LENGTH)/2 + bg_offset_x - rng_shift,
-                 "%s", bg[rng_rowx]);
+          mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + rng_rowx,
+                  (_state->t_cols - BG_GLYPH_LENGTH)/2 + bg_offset_x - rng_shift,
+                   "%s", bg[rng_rowx]);
 
-        attroff(COLOR_PAIR(_state->bg_c));
+          attroff(COLOR_PAIR(_state->bg_c));
+          attroff(A_BOLD);
+        }
+
+        if(fg_c_bold) attron(A_BOLD);
+        attron(COLOR_PAIR(_state->fg_c));
+        if (rng_backdrop == 0){
+          mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
+                  (_state->t_cols - FG_GLYPH_LENGTH)/2 + fg_offset_x - rng_shift,
+                   "%s", fg[rng_row]);
+
+        } else if (rng_backdrop == 1){
+          mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
+                  (_state->t_cols - FG_GLYPH_LENGTH)/2 + fg_offset_x - rng_shift,
+                   "%s", fg[rng_row]);
+        }
+        attroff(COLOR_PAIR(_state->fg_c));
         attroff(A_BOLD);
       }
-
-      if(fg_c_bold) attron(A_BOLD);
-      attron(COLOR_PAIR(_state->fg_c));
-      if (rng_backdrop == 0){
-        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
-                (_state->t_cols - FG_GLYPH_LENGTH)/2 + fg_offset_x - rng_shift,
-                 "%s", fg[rng_row]);
-
-      } else if (rng_backdrop == 1){
-        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + rng_row,
-                (_state->t_cols - FG_GLYPH_LENGTH)/2 + fg_offset_x - rng_shift,
-                 "%s", fg[rng_row]);
-      }
-      attroff(COLOR_PAIR(_state->fg_c));
-      attroff(A_BOLD);
     }
 
     int result = _key();
@@ -351,8 +356,7 @@ void _glitch(Arg bigmode){
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     if (_state->t_cache != _state->t_rows + _state->t_cols) break;
-
-    usleep(_state->glitch_frame_time);
+    _fps_sleep(&next_frame);
   }
 
   _none((Arg){.x = 0});

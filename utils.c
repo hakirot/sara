@@ -1763,7 +1763,6 @@ void _init_state(){
   _state->bg_c              = bg_c;               /* implemented */
   _state->hd_c              = hd_c;               /* implemented */
   if(rand_c) _so_random();
-  _state->glitch_frame_time = 3500;               /* implemented */
   _state->hold_char_time    = 0.00001;            /* implemented */
   _state->hold_char         = '\0';               /* implemented */
   memset(_state->slap_str, 0, 256);

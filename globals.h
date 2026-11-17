@@ -171,7 +171,6 @@ typedef struct {
   bool preflight_check;
   clock_t last_input_time;
   screen_size win_size;
-  int glitch_frame_time;
   float hold_char_time;
   char hold_char;
   char slap_str[256];

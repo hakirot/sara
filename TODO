@@ -1,7 +1,5 @@
 bugs/issues
   - split release and dev make targets (remove memory debug flags)
-  - ensure randomize_colors() is actually randomizing all colors
-  - look into adding some way to Ctrl-C out of SARA
 
 planned features
   - Figure a method to optionally execute path_run as WAIT

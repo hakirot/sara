@@ -426,14 +426,17 @@ void _neon_reverse(){
   double cycle_length = 0.2;
   double elapsed_time = 0;
 
+  int frames = 0;
+  int total_frames = 15;
   int first_frame = 0;
   int second_frame = 0;
 
-  while(cycle_length > elapsed_time){
+  struct timespec start, next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
 
-    elapsed_time = (double)(clock() - cycle_start) / CLOCKS_PER_SEC;
+  while(frames < total_frames){
 
-    if(elapsed_time > 0.00 && first_frame == 0){
+    if(frames > 0 && first_frame == 0){
       if (_state->win_size == t_small){
         _overlay(fg, '_');
       } else {
@@ -441,9 +444,7 @@ void _neon_reverse(){
         _overlay(fg, '_');
       }
       first_frame = 1;
-    }
-
-    if(elapsed_time > 0.1 && second_frame == 0){
+    } else if(frames > 5 && second_frame == 0){
       clear();
       _colorbar();
       if (_state->win_size == t_small){
@@ -453,6 +454,8 @@ void _neon_reverse(){
       }
       second_frame = 1;
     }
+    frames++;
+    _fps_sleep(&next_frame);
 
     int result = _key();
     if(result == 2) return;

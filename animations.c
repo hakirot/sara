@@ -510,6 +510,10 @@ void _pixel_fill(){
 
   clear();
   refresh();
+
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+
   if(_state->win_size == t_full) _bg();
 
   // 0 == !'█'
@@ -590,7 +594,7 @@ void _pixel_fill(){
       animate(start_animation);
       return;
     }
-    usleep(12000);
+    _fps_sleep(&next_frame);
   }
 
   _overlay(fg, 0);

@@ -1450,6 +1450,8 @@ void _holo(){
     if (_state->hd_c > 7) _state->fg_c = 2;
     animate(none);
     _colorbar();
+    int result = _key();
+    if(result == 2) return;
     _fps_sleep(&next_frame);
     frames++;
   }
@@ -1457,6 +1459,7 @@ void _holo(){
 }
 
 void _glimmer(Arg full){
+  //clear(); // why do I like this
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int frames = 0;
@@ -1470,6 +1473,8 @@ void _glimmer(Arg full){
       _glint(glint_f);
     }
     _colorbar();
+    int result = _key();
+    if(result == 2) return;
     _fps_sleep(&next_frame);
     frames++;
   }
@@ -1596,6 +1601,8 @@ void _splode(){
 
     _colorbar();
     refresh();
+    int result = _key();
+    if(result == 2) return;
     _fps_sleep(&next_frame);
     frames++;
     factor*=2;

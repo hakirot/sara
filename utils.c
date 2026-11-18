@@ -1544,7 +1544,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
 
     } else if (input == 27){
       // escape
-      return 0;
+      return 1;
     } else if (input > 0) {
       // backspace
       buffer_idx--;

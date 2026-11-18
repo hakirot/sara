@@ -1462,15 +1462,17 @@ void _glimmer(Arg full){
   //clear(); // why do I like this
   int fg = _state->fg_c;
   int bg = _state->bg_c;
-  int hd = _state->hd_c;
   int holo = HOLOGRAPHIC;
+  HOLOGRAPHIC = 1;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int frames = 0;
   int total_frames = 15;
-  HOLOGRAPHIC = 1;
   while(frames < total_frames){
-    _affect_holo();
+    _state->bg_c++;
+    _state->fg_c++;
+    if (_state->bg_c > 7) _state->bg_c = 2;
+    if (_state->fg_c > 7) _state->fg_c = 2;
     if(full.x == 1){
       _glint(glint_a);
     } else {
@@ -1485,7 +1487,6 @@ void _glimmer(Arg full){
   HOLOGRAPHIC = holo;
   _state->fg_c = fg;
   _state->bg_c = bg;
-  _state->hd_c = hd;
   _none((Arg){.x = 0});
 }
 

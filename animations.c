@@ -1454,7 +1454,7 @@ void _holo(){
     _none((Arg){.x = 0});
     _colorbar();
     int result = _key();
-    if(result == 2) return;
+    if(result == 2) break;
     _fps_sleep(&next_frame);
     frames++;
   }
@@ -1485,7 +1485,7 @@ void _glimmer(Arg full){
     }
     _colorbar();
     int result = _key();
-    if(result == 2) return;
+    if(result == 2) break;
     _fps_sleep(&next_frame);
     frames++;
   }
@@ -1505,7 +1505,7 @@ void _splode(){
   int offset_x = 1;
   int offset_y = 1;
   int frames = 0;
-  int total_frames = 15;
+  int total_frames = 10;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(frames < total_frames){

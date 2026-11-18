@@ -1439,6 +1439,9 @@ void _fps_sleep(struct timespec *next_frame){
 void _holo(){
   int frames =  0;
   int total_frames = 15;
+  int fg = _state->fg_c;
+  int bg = _state->bg_c;
+  int hd = _state->hd_c;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(frames < total_frames){
@@ -1455,11 +1458,13 @@ void _holo(){
     _fps_sleep(&next_frame);
     frames++;
   }
-  reset_colors();
+  _state->fg_c = fg;
+  _state->bg_c = bg;
+  _state->hd_c = hd;
 }
 
 void _glimmer(Arg full){
-  //clear(); // why do I like this
+  clear();
   int fg = _state->fg_c;
   int bg = _state->bg_c;
   int holo = HOLOGRAPHIC;

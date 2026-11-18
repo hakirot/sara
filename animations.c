@@ -1447,8 +1447,8 @@ void _holo(){
     _state->hd_c++;
     if (_state->bg_c > 7) _state->bg_c = 2;
     if (_state->fg_c > 7) _state->fg_c = 2;
-    if (_state->hd_c > 7) _state->fg_c = 2;
-    animate(none);
+    if (_state->hd_c > 7) _state->hd_c = 2;
+    _none((Arg){.x = 0});
     _colorbar();
     int result = _key();
     if(result == 2) return;
@@ -1463,6 +1463,7 @@ void _glimmer(Arg full){
   int fg = _state->fg_c;
   int bg = _state->bg_c;
   int hd = _state->hd_c;
+  int holo = HOLOGRAPHIC;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int frames = 0;
@@ -1481,10 +1482,11 @@ void _glimmer(Arg full){
     _fps_sleep(&next_frame);
     frames++;
   }
-  HOLOGRAPHIC = 0;
+  HOLOGRAPHIC = holo;
   _state->fg_c = fg;
   _state->bg_c = bg;
   _state->hd_c = hd;
+  _none((Arg){.x = 0});
 }
 
 void _splode(){

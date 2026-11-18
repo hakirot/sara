@@ -22,6 +22,7 @@ void _holo();
 void _blink();
 void _fetch();
 void _a_all();
+void _splode();
 void _glimmer(Arg full);
 void _colorbar();
 void tinyprint();

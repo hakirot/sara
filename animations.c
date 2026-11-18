@@ -39,6 +39,7 @@ void animate(animation option){
   if (option == holo)                _holo();
   if (option == glimmer)             _glimmer((Arg){.x = 0});
   if (option == glimmer_full)        _glimmer((Arg){.x = 1});
+  if (option == splode)              _splode();
   if (option == all)                 _a_all();
 }
 
@@ -1418,6 +1419,8 @@ void _a_all(){
   _bg();
   _blink();
   _holo();
+  _glimmer((Arg){.x = 1});
+  _glimmer((Arg){.x = 0});
 }
 
 void _fps_sleep(struct timespec *next_frame){
@@ -1466,10 +1469,136 @@ void _glimmer(Arg full){
     } else {
       _glint(glint_f);
     }
-    refresh();
+    _colorbar();
     _fps_sleep(&next_frame);
     frames++;
   }
   HOLOGRAPHIC = 0;
   reset_colors();
+}
+
+void _splode(){
+
+  int row;
+  int col;
+  int vert_b = _state->t_cols/2;
+  int hor_b  = _state->t_rows/2;
+  int factor = 1;
+  int offset_x = 1;
+  int offset_y = 1;
+  int frames = 0;
+  int total_frames = 15;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(frames < total_frames){
+    clear();
+
+    attron(COLOR_PAIR(_state->bg_c));
+    if(bg_c_bold) attron(A_BOLD);
+    for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = bg[i];
+      int iter_col = 0;
+      while (*iter_row) {
+        wchar_t wc[2] = { L'\0', L'\0' };
+        size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
+        if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
+
+        if(*iter_row == ' '){
+          iter_row += len;
+          iter_col++;
+          continue;
+        }
+
+        row = _state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i;
+        if(row < hor_b){
+          offset_y = -factor;
+        } else if(row > hor_b){
+          offset_y = factor;
+        } else {
+          offset_y = 0;
+        }
+
+        int adjustment;
+        col = (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col;
+        if(col < vert_b){
+          adjustment = (vert_b - col) * frames;
+          offset_x = -factor - adjustment;
+        } else if(col > vert_b){
+          adjustment = (col - vert_b) * frames;
+          offset_x = factor + adjustment;
+        } else {
+          offset_x = 0;
+        }
+
+        cchar_t cchar;
+        setcchar(&cchar, wc, 0, 0, NULL);
+        mvadd_wch(row + offset_y, col + offset_x, &cchar);
+
+        iter_row += len;
+        iter_col++;
+      }
+    }
+    attroff(A_BOLD);
+    attroff(COLOR_PAIR(_state->bg_c));
+
+    if(fg_c_bold) attron(A_BOLD);
+    attron(COLOR_PAIR(_state->fg_c));
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+      mbstate_t state;
+      memset(&state, 0, sizeof(mbstate_t));
+      const char *iter_row = fg[i];
+      int iter_col = 0;
+
+      while (*iter_row) {
+        wchar_t wc[2] = { L'\0', L'\0' };
+        size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
+        if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
+
+        if (*iter_row == ' '){
+          iter_row += len;
+          iter_col++;
+          continue;
+        }
+
+        row = _state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i;
+        if(row < hor_b){
+          offset_y = -factor;
+        } else if(row > hor_b){
+          offset_y = factor;
+        } else {
+          offset_y = 0;
+        }
+
+        int adjustment;
+        col = (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x;
+        if(col < vert_b){
+          adjustment = (vert_b - col) * frames;
+          offset_x = -factor - adjustment;
+        } else if (col > vert_b){
+          adjustment = (col - vert_b) * frames;
+          offset_x = factor + adjustment;
+        } else {
+          offset_x = 0;
+        }
+
+
+        cchar_t cchar;
+        setcchar(&cchar, wc, 0, 0, NULL);
+        mvadd_wch(row + offset_y, col + offset_x, &cchar);
+        iter_row += len;
+        iter_col++;
+      }
+    }
+    attroff(COLOR_PAIR(_state->fg_c));
+    attroff(A_BOLD);
+
+    _colorbar();
+    refresh();
+    _fps_sleep(&next_frame);
+    frames++;
+    factor*=2;
+  }
+  _none((Arg){.x = 0});
 }

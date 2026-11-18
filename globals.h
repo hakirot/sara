@@ -67,6 +67,7 @@ typedef enum {
   holo,
   glimmer,
   glimmer_full,
+  splode,
 } animation;
 
 typedef enum {

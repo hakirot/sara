@@ -1460,6 +1460,9 @@ void _holo(){
 
 void _glimmer(Arg full){
   //clear(); // why do I like this
+  int fg = _state->fg_c;
+  int bg = _state->bg_c;
+  int hd = _state->hd_c;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int frames = 0;
@@ -1479,7 +1482,9 @@ void _glimmer(Arg full){
     frames++;
   }
   HOLOGRAPHIC = 0;
-  reset_colors();
+  _state->fg_c = fg;
+  _state->bg_c = bg;
+  _state->hd_c = hd;
 }
 
 void _splode(){

@@ -1100,6 +1100,21 @@ void _randomize_colors(){
 }
 
 void _show_colors(){
+
+  char * colors[] = {
+    "brgybmcw",
+    "lerllayh",
+    "kdnwugnt",
+  };
+
+  for(int i = 0; i < 3; i++){
+    for(int j = 0; j < 8; j++){
+      attron(COLOR_PAIR(j + 1));
+      mvaddch(_state->t_rows - 5 + i, (_state->t_cols-23) + (j*3), colors[i][j]);
+      attroff(COLOR_PAIR(j + 1));
+    }
+  }
+
   for(int j = 0; j < 2; j++){
     for(int i = 1; i < 9; i++){
       attron(COLOR_PAIR(i));

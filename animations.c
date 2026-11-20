@@ -1214,12 +1214,10 @@ void _affect(int fx){
 
   if(HOLOGRAPHIC) _affect_holo();
 
-  if(fx == glint_f){
-    _glint(glint_f);
-  } else if(fx == glint_b){
-    _glint(glint_b);
-  } else if(fx == glint_a){
-    _glint(glint_a);
+  if(fx == glint_f ||
+     fx == glint_b ||
+     fx == glint_a){
+    _glint(fx);
   }
 }
 

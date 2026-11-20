@@ -841,7 +841,6 @@ void _overlay_bg(char ch){
     while (*iter_row) {
       wchar_t wc[2] = { L'\0', L'\0' };
       size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
-
       if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
 
       if(*iter_row != ' ' && ch != 0){
@@ -1419,6 +1418,7 @@ void _a_all(){
   _holo();
   _glimmer((Arg){.x = 1});
   _glimmer((Arg){.x = 0});
+  _splode();
 }
 
 void _fps_sleep(struct timespec *next_frame){
@@ -1528,14 +1528,11 @@ void _splode(){
         }
 
         row = _state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i;
-        if(row < hor_b){
+        if(row <= hor_b){
           offset_y = -factor;
         } else if(row > hor_b){
           offset_y = factor;
-        } else {
-          offset_y = 0;
         }
-
         int adjustment;
         col = (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col;
         if(col < vert_b){
@@ -1579,14 +1576,11 @@ void _splode(){
         }
 
         row = _state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i;
-        if(row < hor_b){
+        if(row <= hor_b){
           offset_y = -factor;
         } else if(row > hor_b){
           offset_y = factor;
-        } else {
-          offset_y = 0;
         }
-
         int adjustment;
         col = (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x;
         if(col < vert_b){
@@ -1598,7 +1592,6 @@ void _splode(){
         } else {
           offset_x = 0;
         }
-
 
         cchar_t cchar;
         setcchar(&cchar, wc, 0, 0, NULL);

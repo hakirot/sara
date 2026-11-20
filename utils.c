@@ -1894,7 +1894,7 @@ char * _run_fetch(){
     dup2(fd, 2);
     close(fd);
 
-    execlp("fastfetch", NULL);
+    execlp("fastfetch", "fastfetch", NULL);
     perror("execl");
     crit("fastfetch exec critical err");
   }

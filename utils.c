@@ -1080,11 +1080,11 @@ int roll(int sides){
 }
 
 void _toggle_rave(){
-  if(HOLOGRAPHIC == 0){
-    HOLOGRAPHIC = 1;
+  if(_state->holo == 0){
+    _state->holo = 1;
   } else {
     reset_colors();
-    HOLOGRAPHIC = 0;
+    _state->holo = 0;
   }
 }
 
@@ -1754,7 +1754,7 @@ void _args(int argc, char* argv[]){
       case 'r':
         _so_random();
         break;
-      case 'H': HOLOGRAPHIC = 1; break;
+      case 'H': _state->holo = 1; break;
       case 'F': FOLLOW = 1; break;
       case 'C': _state->preflight_check = true; break;
       case 'v': version(); break;
@@ -1782,6 +1782,7 @@ void _init_state(){
   _state->fg_c              = fg_c;               /* implemented */
   _state->bg_c              = bg_c;               /* implemented */
   _state->hd_c              = hd_c;               /* implemented */
+  _state->holo              = 0;                  /* implemented */
   if(rand_c) _so_random();
   _state->hold_char_time    = 0.00001;            /* implemented */
   _state->hold_char         = '\0';               /* implemented */

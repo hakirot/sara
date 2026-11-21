@@ -179,6 +179,7 @@ typedef struct {
   char hold_char;
   char slap_str[256];
   int key_lock;
+  int holo;
   fx fx;
   int reprint;
   char ** fg_state;
@@ -210,8 +211,6 @@ extern int DEBUG;
 
 extern int FRAME_RATE;
 extern int FRAME_TIME_NS;
-
-extern int HOLOGRAPHIC;
 
 extern int GLITCH_TIME;
 

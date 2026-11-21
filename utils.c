@@ -364,7 +364,6 @@ void _menuselect(const Menu * menu){
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
   int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 
-
   int selection = 0;
   _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
   struct timespec next_frame;
@@ -2043,8 +2042,17 @@ int _string_in_file(const char *path, const char *str){
 void _execute_edit_pshd(){
 
   char * editor = getenv("EDITOR");
-  if(!editor){
+  if(editor == 0){
     slap("EDITOR not set");
+    return;
+  }
+
+  ensure_cache_dir();
+  if(_is_binary_in_path(editor) == 1){
+    char backhand[128];
+    sprintf(backhand, "%s: %s", "Unknown Editor", editor);
+    slap(backhand);
+    return;
   }
 
   Command * editor_cmd       = (Command*)malloc(sizeof(Command));
@@ -2059,7 +2067,6 @@ void _execute_edit_pshd(){
   char** cmd = malloc(3 * sizeof(char *));
   if(!cmd) crit("malloc error");
 
-  ensure_cache_dir();
   char pshd_file[256] = {'\0'};
   char * env_home = getenv("HOME");
   sprintf(pshd_file, "%s%s", env_home, "/.config/sara/pshd");
@@ -2069,11 +2076,7 @@ void _execute_edit_pshd(){
   cmd[2] = NULL;
   editor_cmd->cmd = cmd;
 
-  char err[128];
-  sprintf(err, "%s %s", editor, pshd_file);
-  slap(err);
-
-  //__execute__(editor_cmd);
+  __execute__(editor_cmd);
 
   char ** free_me = (char**)editor_cmd->cmd;
   free(free_me);

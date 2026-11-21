@@ -214,7 +214,7 @@ void _pshd(){
     } else if (input == 'E'){
       fclose(file);
       _execute_edit_pshd();
-      animate(none);
+      animate(start_animation);
       return;
     } else if (input == 4){
       // ctrl+d

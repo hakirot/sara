@@ -423,9 +423,6 @@ void _neon(){
 
 void _neon_reverse(){
 
-  clear();
-  _colorbar();
-
   clock_t cycle_start = clock();
   double cycle_length = 0.2;
   double elapsed_time = 0;
@@ -441,16 +438,17 @@ void _neon_reverse(){
   while(frames < total_frames){
 
     if(frames > 0 && first_frame == 0){
+      clear();
       if (_state->win_size == t_small){
         _overlay(fg, '_');
       } else {
         _bg();
         _overlay(fg, '_');
       }
+      _colorbar();
       first_frame = 1;
     } else if(frames > 5 && second_frame == 0){
       clear();
-      _colorbar();
       if (_state->win_size == t_small){
         _overlay(fg, '_');
       } else {

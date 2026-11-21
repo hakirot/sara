@@ -2039,3 +2039,43 @@ int _string_in_file(const char *path, const char *str){
   fclose(fp);
   return 0;
 }
+
+void _execute_edit_pshd(){
+
+  char * editor = getenv("EDITOR");
+  if(!editor){
+    slap("EDITOR not set");
+  }
+
+  Command * editor_cmd       = (Command*)malloc(sizeof(Command));
+  memset(editor_cmd, 0, sizeof(Command));
+
+  editor_cmd->smashkey       = 0;
+  editor_cmd->extra_args     = (ExtraArgs){NULL, NOCONFIRM, OUTS};
+  editor_cmd->option         = WAIT;
+  editor_cmd->pre_animation  = none;
+  editor_cmd->post_animation = start_animation;
+
+  char** cmd = malloc(3 * sizeof(char *));
+  if(!cmd) crit("malloc error");
+
+  ensure_cache_dir();
+  char pshd_file[256] = {'\0'};
+  char * env_home = getenv("HOME");
+  sprintf(pshd_file, "%s%s", env_home, "/.config/sara/pshd");
+
+  cmd[0] = editor;
+  cmd[1] = pshd_file;
+  cmd[2] = NULL;
+  editor_cmd->cmd = cmd;
+
+  char err[128];
+  sprintf(err, "%s %s", editor, pshd_file);
+  slap(err);
+
+  //__execute__(editor_cmd);
+
+  char ** free_me = (char**)editor_cmd->cmd;
+  free(free_me);
+  free(editor_cmd);
+}

@@ -48,6 +48,7 @@ void _randomize_colors();
 int  roll(int num_sides);
 void ensure_config_dir();
 void _quit(int exit_code);
+void _execute_edit_pshd();
 void load_command_config();
 void set_glyph_dimensions();
 void __command__(char input);

@@ -360,6 +360,7 @@ void _glitch(Arg bigmode){
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
     if (_state->t_cache != _state->t_rows + _state->t_cols) break;
+    if(_state->holo) _affect_holo();
     _fps_sleep(&next_frame);
   }
 
@@ -484,6 +485,11 @@ void _shutter_slide(){
   while(j < num_frames){
     clear();
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+      if(_state->holo){
+        attroff(COLOR_PAIR(_state->fg_c));
+        _affect_holo();
+        attron(COLOR_PAIR(_state->fg_c));
+      }
       if (i % 2 == 0){
         mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, l_idx + (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);
       } else {
@@ -552,6 +558,8 @@ void _pixel_fill(){
   int round_fill_max = 1;
   int round_fill_count = 0;
   _colorbar();
+  if(fg_c_bold) attron(A_BOLD);
+  attron(COLOR_PAIR(_state->fg_c));
   while(count <= total_fg_chars - 3){
 
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -563,7 +571,7 @@ void _pixel_fill(){
       while (*iter_row) {
 
         wchar_t wc[2] = { L'\0', L'\0' };
-        size_t len = mbrtowc(&wc[0], iter_row, MB_CUR_MAX, &state);
+        size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
 
         if (fg_arr[i][j] == 1 && roll(2) == 2){
           fg_arr[i][j] = 2;
@@ -571,11 +579,12 @@ void _pixel_fill(){
           round_fill_count++;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          attron(COLOR_PAIR(_state->fg_c));
-          if(fg_c_bold) attron(A_BOLD);
+          if(_state->holo && _state->fx != nofx){
+            attroff(COLOR_PAIR(_state->fg_c));
+            _affect_holo();
+            attron(COLOR_PAIR(_state->fg_c));
+          }
           mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
-          attroff(COLOR_PAIR(_state->fg_c));
-          attroff(A_BOLD);
           if (round_fill_count == round_fill_max){
             round_fill_count = 0;
             break;
@@ -589,7 +598,7 @@ void _pixel_fill(){
 
     refresh();
     int result = _key();
-    if(result == 2) return;
+    if(result == 2 && _state->key_lock == 0) return;
     if (_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
 
     _get_dims();
@@ -599,6 +608,8 @@ void _pixel_fill(){
     }
     _fps_sleep(&next_frame);
   }
+  attroff(COLOR_PAIR(_state->fg_c));
+  attroff(A_BOLD);
 
   _none((Arg){.x = 0});
 }
@@ -728,6 +739,11 @@ void _tv_static(){
             bg_arr[i][j] = 0;
             mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, ' ');
           } else if (idx == 0 && roll_result == 2){
+            if(_state->holo){
+              attroff(COLOR_PAIR(_state->bg_c));
+              _affect_holo();
+              attron(COLOR_PAIR(_state->bg_c));
+            }
             bg_arr[i][j] = 1;
             cchar_t cchar;
             setcchar(&cchar, wc, 0, 0, NULL);
@@ -808,6 +824,12 @@ void _overlay(const char * glyph[], char fill){
         iter_row += len;
         iter_col++;
         continue;
+      }
+
+      if(_state->holo){
+        attroff(COLOR_PAIR(_state->fg_c));
+        _affect_holo();
+        attron(COLOR_PAIR(_state->fg_c));
       }
 
       if(fill){
@@ -912,7 +934,6 @@ void _bg_offset(char ch, int offset_y, int offset_x){
 }
 
 
-// TODO: add wipe option for pixel_fill
 void _hd(){
 
   if(hd[0] != 0){
@@ -1037,8 +1058,6 @@ void _hd_offset(int offset_y_in, int offset_x_in){
 
 void _down_wipes(){
 
-  int wipe_time = 12000; // TODO: make this configurable
-
   clear();
   refresh();
 
@@ -1062,22 +1081,46 @@ void _down_wipes(){
 
   } else if (_state->win_size == t_full){
 
-    if(bg_c_bold) attron(A_BOLD);
-    attron(COLOR_PAIR(_state->bg_c));
+    if(!_state->holo){
+      if(bg_c_bold) attron(A_BOLD);
+      attron(COLOR_PAIR(_state->bg_c));
+    }
+
     for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+
+      if(_state->holo) {
+        _affect_holo();
+        if(fg_c_bold) attron(A_BOLD);
+        attron(COLOR_PAIR(_state->fg_c));
+      }
+
       mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
       if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
       refresh();
       _fps_sleep(&next_frame);
       int result = _key();
       if(result == 2) return;
+
+      if(_state->holo) {
+        if(fg_c_bold) attroff(A_BOLD);
+      }
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(_state->bg_c));
 
     if(fg_c_bold) attron(A_BOLD);
-    attron(COLOR_PAIR(_state->fg_c));
+    if(!_state->holo){
+      attron(COLOR_PAIR(_state->fg_c));
+    }
+
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+
+      if(_state->holo){
+        _affect_holo();
+        if(fg_c_bold) attron(A_BOLD);
+        attron(COLOR_PAIR(_state->fg_c));
+      }
+
       mbstate_t state;
       memset(&state, 0, sizeof(mbstate_t));
       const char *iter_row = fg[i];
@@ -1103,10 +1146,15 @@ void _down_wipes(){
       _fps_sleep(&next_frame);
       int result = _key();
       if(result == 2) return;
+
+      if(_state->holo){
+        attroff(COLOR_PAIR(_state->fg_c));
+      }
     }
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(_state->fg_c));
+  _none((Arg){.x = 0});
 }
 
 void tinyprint() {
@@ -1605,7 +1653,7 @@ void _splode(){
     refresh();
     int result = _key();
     if(result == 2) return;
-    //if() _affect_holo();
+    if(_state->holo) _affect_holo();
     _fps_sleep(&next_frame);
     frames++;
     factor*=2;

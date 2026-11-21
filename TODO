@@ -13,12 +13,10 @@ planned features
 Backlog
   - job control
   - path_run local items
-  - Display path_run output
+  - path_run history
+  - optionally display __command__ output in custom SARA windows
   - Add [modifier] + [enter] to change behaviors of launched commands
   - optional single menu mode [launch into a menu]
   - full command list option
-  - ability to pass args to commands
-  - Scale menu sizes to longest menu entry
-  - consume config function
-    - alternatively a config parser
+  - Scale menu_x to longest menu entry
 

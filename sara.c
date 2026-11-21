@@ -143,7 +143,6 @@ int input_color(char * arg){
 }
 
 
-// TODO quickedit pshd
 void _pshd(){
 
   _state->t_cache = _state->t_rows + _state->t_cols;
@@ -210,6 +209,11 @@ void _pshd(){
       }
     } else if (input == 'q' || input == 27){
       fclose(file);
+      animate(none);
+      return;
+    } else if (input == 'E'){
+      fclose(file);
+      _execute_edit_pshd();
       animate(none);
       return;
     } else if (input == 4){

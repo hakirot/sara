@@ -1409,7 +1409,6 @@ void _a_all(){
   _neon();
   _neon_reverse();
   _shutter_slide();
-  _shutter_slide(); _neon();
   _pixel_fill();
   _tv_static();
   _fg(fg);
@@ -1417,8 +1416,8 @@ void _a_all(){
   _blink();
   _holo();
   _glimmer((Arg){.x = 1});
-  _glimmer((Arg){.x = 0});
   _splode();
+  _glimmer((Arg){.x = 0});
 }
 
 void _fps_sleep(struct timespec *next_frame){

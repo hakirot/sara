@@ -256,7 +256,9 @@ void _pshd(){
       }
 
       fclose(file);
-      animate(blink);
+      if(start_animation != none){
+        animate(blink);
+      }
       return;
     } else if (input > 47 && input < 58){
 
@@ -411,7 +413,9 @@ void _pshd(){
                     crit("setenv error");
                   }
                   fclose(file);
-                  animate(neon);
+                  if(start_animation != none){
+                    animate(neon);
+                  }
                   return;
                 }
                 if(pshd_c_bold) {

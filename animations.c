@@ -553,6 +553,7 @@ void _pixel_fill(){
   int count = 0;
   int round_fill_max = 1;
   int round_fill_count = 0;
+  _colorbar();
   while(count <= total_fg_chars - 3){
 
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
@@ -601,8 +602,7 @@ void _pixel_fill(){
     _fps_sleep(&next_frame);
   }
 
-  _overlay(fg, 0);
-  _hd();
+  _none((Arg){.x = 0});
 }
 
 void _tv_static(){

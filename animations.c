@@ -151,20 +151,18 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
   attroff(COLOR_PAIR(c));
 
   _clear_menu(dim_y, dim_x, offset_y, offset_x);
-//refresh();
 }
 
-void _print_confirm_window(char * command_str){
+void _print_confirm_window(){
 
-  // clear();
-  int r_stop = _state->t_cols - 2;
+  int r_stop = _state->t_cols - 0;
   int l_stop = 1;
-  int width = _state->t_cols - 3;
+  int width = _state->t_cols - 1;
 
   if(_state->t_cols > 20){
-    r_stop = _state->t_cols/2 + 8;
-    l_stop = _state->t_cols/2 - 8;;
-    width = 16;
+    r_stop = _state->t_cols/2 + 7;
+    l_stop = _state->t_cols/2 - 7;;
+    width = 14;
   }
 
   _clear_menu(3, width + 1, 0, 0);
@@ -205,30 +203,15 @@ void _print_confirm_window(char * command_str){
   // attron(COLOR_PAIR(menu_c));
   attron(A_STANDOUT);
 
-  // TODO: skip nohup strings
-  char * str = "Execute ";
+  char * str = "Are you sure?";
   int len1 = strlen(str);
-  int len2 = strlen(command_str);
-  int len3 = len1 + len2;
 
   for(int i = 0; i < len1; i++){
-    mvaddch(_state->t_rows/2 - 2, _state->t_cols/2 - len3/2 + i, str[i]);
+    mvaddch(_state->t_rows/2 - 1, _state->t_cols/2 + i - 6, str[i]);
   }
-
-  for(int i = 0; i < len2; i++){
-
-    if(command_str[i] > 96 && command_str[i] < 123){
-      mvaddch(_state->t_rows/2 - 2, _state->t_cols/2 - len3/2 + i + len1, command_str[i] - 32);
-    } else {
-      mvaddch(_state->t_rows/2 - 2, _state->t_cols/2 - len3/2 + i + len1, command_str[i]);
-    }
-  }
-
-  mvaddch(_state->t_rows/2 - 2, _state->t_cols/2 - len3/2 + len3, '?');
 
   attroff(COLOR_PAIR(menu_c));
   attroff(A_STANDOUT);
-  refresh();
 }
 
 void _print_confirm_selection(int selection){
@@ -253,7 +236,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 3; i++){
-    mvaddch(_state->t_rows/2, r_stop - 4 + i, yes[i]);
+    mvaddch(_state->t_rows/2, r_stop - 5 + i, yes[i]);
   }
   attroff(A_STANDOUT);
 
@@ -265,11 +248,12 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 2; i++){
-    mvaddch(_state->t_rows/2, l_stop + 2 + i, no[i]);
+    mvaddch(_state->t_rows/2, l_stop + 3 + i, no[i]);
   }
 
   attroff(A_STANDOUT);
   attroff(COLOR_PAIR(white));
+  refresh();
 }
 
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){

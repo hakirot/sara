@@ -118,7 +118,7 @@ void __command__(char input){
 int _get_confirm(const Command * command){
   int selection = false;
   animate(none);
-  _print_confirm_window(((char **)command->cmd)[0]);
+  _print_confirm_window();
   _print_confirm_selection(selection);
   struct timespec next;
   clock_gettime(CLOCK_MONOTONIC, &next);
@@ -141,6 +141,10 @@ int _get_confirm(const Command * command){
       return selection;
     }
 
+    if(_state->fx != nofx) {
+       _affect(_state->fx);
+       _print_confirm_window();
+    }
     _print_confirm_selection(selection);
     _fps_sleep(&next);
   }
@@ -359,8 +363,8 @@ void _menuselect(const Menu * menu){
     entries++;
   }
 
-  int dim_y = _deduce_dim_y(menu_y, entries);
-  int dim_x = _deduce_dim_x(menu_x);
+  int dim_y    = _deduce_dim_y(menu_y, entries);
+  int dim_x    = _deduce_dim_x(menu_x);
   int offset_y = _deduce_offset_y(dim_y, menu_offset_y);
   int offset_x = _deduce_offset_x(dim_x, menu_offset_x);
 

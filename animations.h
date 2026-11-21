@@ -41,7 +41,7 @@ void _fg(const char * glyph[]);
 void animate(animation option);
 void _fps_sleep(struct timespec * next_frame);
 void _print_confirm_selection(int selection);
-void _print_confirm_window(char * command_str);
+void _print_confirm_window();
 void _overlay(const char * glyph[], char fill);
 void _bg_offset(char ch, int offset_y, int offset_x);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);

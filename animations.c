@@ -1209,7 +1209,7 @@ void _glint(fx mode) {
 
 void _affect(int fx){
 
-  if(HOLOGRAPHIC) _affect_holo();
+  if(_state->holo) _affect_holo();
 
   if(fx == glint_f ||
      fx == glint_b ||
@@ -1462,8 +1462,8 @@ void _glimmer(Arg full){
   clear();
   int fg = _state->fg_c;
   int bg = _state->bg_c;
-  int holo = HOLOGRAPHIC;
-  HOLOGRAPHIC = 1;
+  int holo = _state->holo;
+  _state->holo = 1;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int frames = 0;
@@ -1485,7 +1485,7 @@ void _glimmer(Arg full){
     _fps_sleep(&next_frame);
     frames++;
   }
-  HOLOGRAPHIC = holo;
+  _state->holo = holo;
   _state->fg_c = fg;
   _state->bg_c = bg;
   _none((Arg){.x = 0});
@@ -1605,6 +1605,7 @@ void _splode(){
     refresh();
     int result = _key();
     if(result == 2) return;
+    //if() _affect_holo();
     _fps_sleep(&next_frame);
     frames++;
     factor*=2;

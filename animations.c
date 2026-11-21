@@ -535,7 +535,7 @@ void _pixel_fill(){
     const char *iter_row = fg[i];               // Grabs a line from glyph
     int iter_col = 0;                           // Track the column position
     while (*iter_row) {                         // Iterate through chars in row
-      wchar_t wc[2] = { L'\0', L'\0' };          // Create wide character var
+      wchar_t wc[2] = { L'\0', L'\0' };         // Create wide character var
       // Converts character from iter_row to wide char `wc`
       // Also records length of character at *iter_row in len
       size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
@@ -1470,6 +1470,7 @@ void _glimmer(Arg full){
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int frames = 0;
   int total_frames = 15;
+  if (_state->win_size == t_full) _bg();
   while(frames < total_frames){
     _state->bg_c++;
     _state->fg_c++;

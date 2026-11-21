@@ -1,16 +1,12 @@
 bugs/issues
   - split release and dev make targets (remove memory debug flags)
 
-planned features
-  - Figure a method to optionally execute path_run as WAIT
-  - builtin function to display all user-mapped commands
-  - Press 'E' while in pshd menu to edit pshd file with $EDITOR
-
 -- 0.9.5 Patch notes --
   - remove all sleep() calls and globally implement 60fps
   - add short holographic as an animation
 
 Backlog
+  - builtin function to display all user-mapped commands
   - job control
   - path_run local items
   - path_run history

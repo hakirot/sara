@@ -40,6 +40,8 @@ void animate(animation option){
   if (option == glimmer)             _glimmer((Arg){.x = 0});
   if (option == glimmer_full)        _glimmer((Arg){.x = 1});
   if (option == splode)              _splode();
+  if (option == waves)               _waves((Arg){.x = 0});
+  if (option == waves_full)          _waves((Arg){.x = 1});
   if (option == all)                 _a_all();
 }
 
@@ -1635,7 +1637,6 @@ void _splode(){
     attroff(A_BOLD);
 
     _colorbar();
-    refresh();
     int result = _key();
     if(result == 2) return;
     if(_state->holo) _affect_holo();
@@ -1644,4 +1645,126 @@ void _splode(){
     factor*=2;
   }
   _none((Arg){.x = 0});
+}
+
+void _waves(Arg full){
+  int fg_shift[FG_GLYPH_HEIGHT];
+  int bg_shift[BG_GLYPH_HEIGHT];
+  memset(fg_shift, 0, sizeof(fg_shift));
+  memset(bg_shift, 0, sizeof(bg_shift));
+  int fg_val = 4;
+  int fg_flag = 0;
+  int fg_flip = 0;
+  int fg_spread = 4;
+  int fg_direction = 0;
+  fg_shift[0] = fg_spread;
+  int bg_val = 4;
+  int bg_flag = 0;
+  int bg_flip = 0;
+  int bg_spread = 4;
+  int bg_direction = 0;
+  bg_shift[0] = bg_spread;
+  int frames = 0;
+  int total_frames = 22;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(frames < total_frames){
+
+    clear();
+
+    if(full.x == 1){
+      if(bg_c_bold) attron(A_BOLD);
+      attron(COLOR_PAIR(_state->bg_c));
+      for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+        if(_state->holo){
+          attroff(COLOR_PAIR(_state->bg_c));
+          _affect_holo();
+          attron(COLOR_PAIR(_state->bg_c));
+        }
+        mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y - i + BG_GLYPH_HEIGHT - 1,
+                (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + bg_shift[i],
+                 "%s", bg[BG_GLYPH_HEIGHT - 1 - i]);
+      }
+      if(bg_c_bold) attroff(A_BOLD);
+      attroff(COLOR_PAIR(_state->bg_c));
+
+      if(bg_direction == 0 && bg_val <= -(bg_spread)){
+        bg_direction = 1;
+        bg_spread+=2;
+        bg_val = -bg_spread + 1;
+      } else if(bg_direction == 1 && bg_val >= bg_spread && !bg_flag){
+        bg_val++;
+        bg_spread+=2;
+        bg_flag++;
+      } else if(bg_direction == 1 && bg_val == bg_spread && bg_flag) {
+        bg_direction = 0;
+        bg_flag = 0;
+      } else if(bg_direction == 1){
+        bg_val++;
+      } else {
+        bg_val--;
+      }
+      if(bg_flip){
+        bg_shift[0] = -bg_val;
+        bg_flip = 0;
+      } else {
+        bg_shift[0] = bg_val;
+        bg_flip++;
+      }
+    }
+
+    if(fg_c_bold) attron(A_BOLD);
+    attron(COLOR_PAIR(_state->fg_c));
+    for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+      if(_state->holo){
+        attroff(COLOR_PAIR(_state->fg_c));
+        _affect_holo();
+        attron(COLOR_PAIR(_state->fg_c));
+      }
+      mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y - i + FG_GLYPH_HEIGHT - 1,
+              (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + fg_shift[i],
+               "%s", fg[FG_GLYPH_HEIGHT - 1 - i]);
+    }
+    if(fg_c_bold) attroff(A_BOLD);
+    attroff(COLOR_PAIR(_state->fg_c));
+
+    if(fg_direction == 0 && fg_val <= -(fg_spread)){
+      fg_direction = 1;
+      fg_spread+=2;
+      fg_val = -fg_spread + 1;
+    } else if(fg_direction == 1 && fg_val >= fg_spread && !fg_flag){
+      fg_val++;
+      fg_spread+=2;
+      fg_flag++;
+    } else if(fg_direction == 1 && fg_val == fg_spread && fg_flag) {
+      fg_direction = 0;
+      fg_flag = 0;
+    } else if(fg_direction == 1){
+      fg_val++;
+    } else {
+      fg_val--;
+    }
+    _shift_arr(fg_shift, FG_GLYPH_HEIGHT);
+    _shift_arr(bg_shift, BG_GLYPH_HEIGHT);
+    if(fg_flip){
+      fg_shift[0] = -fg_val;
+      fg_flip = 0;
+    } else {
+      fg_shift[0] = fg_val;
+      fg_flip++;
+    }
+    frames++;
+    _fps_sleep(&next_frame);
+    mvprintw(0,0, "%d", fg_val);
+    _colorbar();
+    //usleep(100000);
+  }
+
+  _none((Arg){.x = 0});
+}
+
+void _shift_arr(int arr[], int size){
+  for(int i = 0; i < size - 1; i++){
+    arr[size - 1 - i] = arr[size - 2 - i];
+  }
 }

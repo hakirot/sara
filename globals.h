@@ -77,7 +77,6 @@ typedef enum {
   glint_f,
   glint_b,
   glint_a,
-  oscillate,
 } fx;
 
 typedef enum {

@@ -59,7 +59,9 @@ int key(char input){
       if(strchr(commandkeys_chars, input)){
         __command__(input);
       } else if(strchr(builtinkeys_chars, input)){
+        if(_state->key_lock == 1) return valid_input;
         __builtin__(input);
+        _state->key_lock = 0;
       } else if(strchr(menukeys_chars, input)){
         if(_state->key_lock == 1) return valid_input;
         _state->key_lock = 1;
@@ -252,6 +254,9 @@ int __execute__(const Command * command){
 }
 
 void __builtin__(char input){
+
+  if(_state->key_lock == 1) return;
+  _state->key_lock = 1;
 
   internal selection = quit;
   for(int i = 0; i < builtinkeys_len; i++){

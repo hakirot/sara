@@ -1239,7 +1239,6 @@ void _glint(fx mode) {
   }
 
   // no refresh() for _affect() functions
-
 }
 
 void _affect(int fx){
@@ -1250,9 +1249,6 @@ void _affect(int fx){
      fx == glint_b ||
      fx == glint_a){
     _glint(fx);
-  }
-  if(fx == waves){
-    _fx_waves();
   }
 }
 
@@ -1679,7 +1675,9 @@ void _waves(Arg full){
       if(bg_c_bold) attron(A_BOLD);
       attron(COLOR_PAIR(_state->bg_c));
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-        if(_state->holo){
+        if(_state->fx == glint_a || _state->fx == glint_b){
+          _affect(_state->fx);
+        } else if(_state->holo){
           attroff(COLOR_PAIR(_state->bg_c));
           _affect_holo();
           attron(COLOR_PAIR(_state->bg_c));
@@ -1764,10 +1762,10 @@ void _waves(Arg full){
       fg_flip++;
     }
     frames++;
+    int result = _key();
+    if(result == 2) return;
     _fps_sleep(&next_frame);
-    mvprintw(0,0, "%d", fg_val);
     _colorbar();
-    //usleep(100000);
   }
 
   _none((Arg){.x = 0});
@@ -1777,8 +1775,4 @@ void _shift_arr(int arr[], int size){
   for(int i = 0; i < size - 1; i++){
     arr[size - 1 - i] = arr[size - 2 - i];
   }
-}
-
-void _fx_waves(){
-
 }

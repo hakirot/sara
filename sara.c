@@ -209,11 +209,13 @@ void _pshd(){
       }
     } else if (input == 'q' || input == 27){
       fclose(file);
+      _state->key_lock = 0;
       animate(none);
       return;
     } else if (input == 'E'){
       fclose(file);
       _execute_edit_pshd();
+      _state->key_lock = 0;
       animate(start_animation);
       return;
     } else if (input == 4){
@@ -260,6 +262,7 @@ void _pshd(){
       }
 
       fclose(file);
+      _state->key_lock = 0;
       if(start_animation != none){
         animate(blink);
       }

@@ -1822,48 +1822,6 @@ void _multiply(){
   _none((Arg){.x = 0});
 }
 
-void _ascend(){
-
-  char ** fg_state = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
-  char ** bg_state = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
-  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    fg_state[i] = (char*)malloc(FG_GLYPH_LENGTH * sizeof(char));
-  }
-  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-    bg_state[i] = (char*)malloc(BG_GLYPH_LENGTH * sizeof(char));
-  }
-
-  int frames = 0;
-  int total_frames = 22;
-  struct timespec next_frame;
-  clock_gettime(CLOCK_MONOTONIC, &next_frame);
-  while(frames < total_frames){
-
-
-
-
-
-    _colorbar();
-    int result = _key();
-    if(result == 2) break;
-    _fps_sleep(&next_frame);
-    frames++;
-  }
-
-  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    free(fg_state[i]); fg_state[i] = NULL;
-  }
-
-  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-    free(bg_state[i]); bg_state[i] = NULL;
-  }
-
-  free(fg_state); fg_state = NULL;
-  free(bg_state); bg_state = NULL;
-
-  _none((Arg){.x = 0});
-}
-
 void _mega_static(Arg reverse){
 
   int fg_y_r;
@@ -1921,5 +1879,34 @@ void _mega_static(Arg reverse){
       }
     }
   }
+  _none((Arg){.x = 0});
+}
+
+void _ascend(){
+
+  int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
+  int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
+  memset(fg_arr, 0, sizeof(fg_arr));
+  memset(bg_arr, 0, sizeof(bg_arr));
+
+  int lazarr[_state->t_rows][FG_GLYPH_LENGTH + 8];
+
+  int frames = 0;
+  int total_frames = 22;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(frames < total_frames){
+
+
+
+
+
+    _colorbar();
+    int result = _key();
+    if(result == 2) break;
+    _fps_sleep(&next_frame);
+    frames++;
+  }
+
   _none((Arg){.x = 0});
 }

@@ -1251,6 +1251,9 @@ void _affect(int fx){
      fx == glint_a){
     _glint(fx);
   }
+  if(fx == waves){
+    _fx_waves();
+  }
 }
 
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
@@ -1711,6 +1714,13 @@ void _waves(Arg full){
         bg_shift[0] = bg_val;
         bg_flip++;
       }
+    } else {
+      if(_state->fx == glint_a || _state->fx == glint_b){
+        if(_state->holo) _affect_holo();
+        _affect(_state->fx);
+      } else {
+        _bg();
+      }
     }
 
     if(fg_c_bold) attron(A_BOLD);
@@ -1767,4 +1777,8 @@ void _shift_arr(int arr[], int size){
   for(int i = 0; i < size - 1; i++){
     arr[size - 1 - i] = arr[size - 2 - i];
   }
+}
+
+void _fx_waves(){
+
 }

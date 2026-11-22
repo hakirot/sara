@@ -23,6 +23,7 @@ void _blink();
 void _fetch();
 void _a_all();
 void _splode();
+void _fx_waves();
 void _colorbar();
 void tinyprint();
 void _tv_static();

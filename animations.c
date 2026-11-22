@@ -43,6 +43,9 @@ void animate(animation option){
   if (option == waves)               _waves((Arg){.x = 0});
   if (option == waves_full)          _waves((Arg){.x = 1});
   if (option == multiply)            _multiply();
+  if (option == ascend)              _ascend();
+  if (option == mega_static)         _mega_static((Arg){.x = 0});
+  if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
   if (option == all)                 _a_all();
 }
 
@@ -1765,7 +1768,7 @@ void _waves(Arg full){
     }
     frames++;
     int result = _key();
-    if(result == 2) return;
+    if(result == 2) break;
     _fps_sleep(&next_frame);
     _colorbar();
   }
@@ -1781,7 +1784,7 @@ void _shift_arr(int arr[], int size){
 
 void _multiply(){
   int frames = 0;
-  int total_frames = 22;
+  int total_frames = 15;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int fg_y_r;
@@ -1789,11 +1792,13 @@ void _multiply(){
   int bg_y_r;
   int bg_x_r;
   while(frames < total_frames){
+
     if(_state->fx != nofx){
       _affect(_state->fx);
     } else if(_state->holo) {
       _affect_holo();
     }
+
     fg_y_r = rand() % _state->t_rows - FG_GLYPH_HEIGHT - FG_GLYPH_HEIGHT/2 - _state->t_rows/3;
     fg_x_r = rand() % _state->t_cols - FG_GLYPH_LENGTH;
     bg_y_r = rand() % _state->t_rows - BG_GLYPH_HEIGHT;
@@ -1809,10 +1814,112 @@ void _multiply(){
 //  mvprintw(0,0, "%s", err);
 
     int result = _key();
-    if(result == 2) return;
+    if(result == 2) break;
     _fps_sleep(&next_frame);
     //usleep(800000);
     frames++;
+  }
+  _none((Arg){.x = 0});
+}
+
+void _ascend(){
+
+  char ** fg_state = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
+  char ** bg_state = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    fg_state[i] = (char*)malloc(FG_GLYPH_LENGTH * sizeof(char));
+  }
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    bg_state[i] = (char*)malloc(BG_GLYPH_LENGTH * sizeof(char));
+  }
+
+  int frames = 0;
+  int total_frames = 22;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(frames < total_frames){
+
+
+
+
+
+    _colorbar();
+    int result = _key();
+    if(result == 2) break;
+    _fps_sleep(&next_frame);
+    frames++;
+  }
+
+  for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
+    free(fg_state[i]); fg_state[i] = NULL;
+  }
+
+  for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
+    free(bg_state[i]); bg_state[i] = NULL;
+  }
+
+  free(fg_state); fg_state = NULL;
+  free(bg_state); bg_state = NULL;
+
+  _none((Arg){.x = 0});
+}
+
+void _mega_static(Arg reverse){
+
+  int fg_y_r;
+  int fg_x_r;
+  int bg_y_r;
+  int bg_x_r;
+
+  int fg_y_max = rand() % _state->t_rows - FG_GLYPH_HEIGHT - FG_GLYPH_HEIGHT/2 - _state->t_rows/3;
+  int fg_x_max = rand() % _state->t_cols - FG_GLYPH_LENGTH;
+  int bg_y_max = rand() % _state->t_rows - BG_GLYPH_HEIGHT;
+  int bg_x_max = rand() % _state->t_cols - BG_GLYPH_LENGTH;
+
+  int frames = 0;
+  int total_frames = 15;
+  int count;
+  if(reverse.x == 1) {
+    count = frames;
+  } else {
+    count = total_frames;
+  }
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(frames < total_frames){
+    clear();
+
+    for(int i = 0; i < count; i++){
+      if(_state->fx != nofx){
+        _affect(_state->fx);
+      } else if(_state->holo) {
+        _affect_holo();
+      }
+
+      fg_y_r = rand() % _state->t_rows - FG_GLYPH_HEIGHT - FG_GLYPH_HEIGHT/2 - _state->t_rows/3 - fg_y_max/total_frames*frames;
+      fg_x_r = rand() % (_state->t_cols - FG_GLYPH_LENGTH) - fg_x_max/total_frames*frames;
+      bg_y_r = rand() % (_state->t_rows - BG_GLYPH_HEIGHT) - bg_y_max/total_frames*frames;
+      bg_x_r = rand() % (_state->t_cols - BG_GLYPH_LENGTH) - bg_x_max/total_frames*frames;;
+
+      _fg_offset(fg, fg_y_r, fg_x_r);
+      _bg_offset(0, bg_y_r, bg_x_r);
+    }
+
+    _colorbar();
+    int result = _key();
+    if(result == 2) break;
+    _fps_sleep(&next_frame);
+    frames++;
+    if(reverse.x == 0){
+      count -= 2;
+      if(count < 1) count = 1;
+    } else {
+      if(frames < 10){
+        count = 1;
+      } else {
+        count+=4;
+      }
+    }
   }
   _none((Arg){.x = 0});
 }

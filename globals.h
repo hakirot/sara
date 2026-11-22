@@ -71,6 +71,9 @@ typedef enum {
   waves_full,
   splode,
   multiply,
+  ascend,
+  mega_static,
+  mega_static_rev,
 } animation;
 
 typedef enum {

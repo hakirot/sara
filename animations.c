@@ -42,6 +42,7 @@ void animate(animation option){
   if (option == splode)              _splode();
   if (option == waves)               _waves((Arg){.x = 0});
   if (option == waves_full)          _waves((Arg){.x = 1});
+  if (option == multiply)            _multiply();
   if (option == all)                 _a_all();
 }
 
@@ -1776,4 +1777,42 @@ void _shift_arr(int arr[], int size){
   for(int i = 0; i < size - 1; i++){
     arr[size - 1 - i] = arr[size - 2 - i];
   }
+}
+
+void _multiply(){
+  int frames = 0;
+  int total_frames = 22;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  int fg_y_r;
+  int fg_x_r;
+  int bg_y_r;
+  int bg_x_r;
+  while(frames < total_frames){
+    if(_state->fx != nofx){
+      _affect(_state->fx);
+    } else if(_state->holo) {
+      _affect_holo();
+    }
+    fg_y_r = rand() % _state->t_rows - FG_GLYPH_HEIGHT - FG_GLYPH_HEIGHT/2 - _state->t_rows/3;
+    fg_x_r = rand() % _state->t_cols - FG_GLYPH_LENGTH;
+    bg_y_r = rand() % _state->t_rows - BG_GLYPH_HEIGHT;
+    bg_x_r = rand() % _state->t_cols - BG_GLYPH_LENGTH;
+
+    _fg_offset(fg, fg_y_r, fg_x_r);
+    _bg_offset(0, bg_y_r, bg_x_r);
+    _colorbar();
+
+//  char err[128];
+//  sprintf(err, "%d %d %d %d", fg_y_r, fg_x_r, bg_y_r, bg_x_r);
+//  mvprintw(0,0, "%s", "                                                   ");
+//  mvprintw(0,0, "%s", err);
+
+    int result = _key();
+    if(result == 2) return;
+    _fps_sleep(&next_frame);
+    //usleep(800000);
+    frames++;
+  }
+  _none((Arg){.x = 0});
 }

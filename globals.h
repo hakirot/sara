@@ -70,6 +70,7 @@ typedef enum {
   waves,
   waves_full,
   splode,
+  multiply,
 } animation;
 
 typedef enum {

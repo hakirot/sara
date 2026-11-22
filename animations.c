@@ -1410,6 +1410,7 @@ void _fetch(){
     input =  getch();
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127 || input == 27){
       if(input == 'q' || input == 27 || _input_is_fetch(input)) {
+        _state->key_lock = 0;
         animate(start_animation);
         return;
       }

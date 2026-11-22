@@ -166,6 +166,7 @@ void _print_confirm_window(){
   }
 
   _clear_menu(3, width + 1, 0, 0);
+  if(_state->t_rows == 1) return;
 
   attron(COLOR_PAIR(menu_c));
   wchar_t wc[2] = { MenuBorder[0], L'\0' };

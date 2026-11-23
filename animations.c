@@ -594,8 +594,7 @@ void _pixel_fill(){
 
     _get_dims();
     if (_resized()){
-      animate(start_animation);
-      return;
+      break;
     }
     _fps_sleep(&next_frame);
   }
@@ -1642,7 +1641,7 @@ void _splode(){
 
     _colorbar();
     int result = _key();
-    if(result == 2) return;
+    if(result == 2) break;
     if(_state->holo) _affect_holo();
     _fps_sleep(&next_frame);
     frames++;
@@ -1884,23 +1883,120 @@ void _mega_static(Arg reverse){
 
 void _ascend(){
 
+  clear();
+
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
+//for(int i = 0; i < FG_GLYPH_LENGTH; i++){
+//  mbstate_t state;
+//  memset(&state, 0, sizeof(mbstate_t));
+//  const char *iter_row = fg[i];
+//  int iter_col = 0;
+//  while (*iter_row) {
+//    wchar_t wc[2] = { L'\0', L'\0' };
+//    size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
+
+//    if(*iter_row != ' '){
+//      fg_arr[0][iter_col] = 1;
+//    }
+
+//    iter_row += len;
+//    iter_col++;
+//  }
+//}
   int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
+  int lazarr_len = FG_GLYPH_LENGTH + 8;
+  int lazarr[_state->t_rows][lazarr_len];
   memset(fg_arr, 0, sizeof(fg_arr));
   memset(bg_arr, 0, sizeof(bg_arr));
+  memset(lazarr, 0, sizeof(lazarr));
 
-  int lazarr[_state->t_rows][FG_GLYPH_LENGTH + 8];
+  // ~49 x ~64
+  int lazer_count = _state->t_rows * lazarr_len / 100;
+  int x = 0;
+  int y = 0;
+  int intensity = 0;
+  int count = 0;
+  for(int i = 0; i < lazer_count; i++){
+    clear();
+    y = rand() % _state->t_rows;
+    x = rand() % (lazarr_len);
+    intensity = rand() % 3 + 1;
+    lazarr[y][x] = intensity;
+    count++;
+    //mvprintw(0, 0, "rows: %d | length: %d | y: %d | x: %d", _state->t_rows, lazarr_len, y, x );
+
+    //char debug[256];
+    //sprintf(debug, "rows: %d | length: %d | y: %d | x: %d | laser_count: %d\n", _state->t_rows, lazarr_len, y, x, lazer_count );
+
+    //char file[64] = "\0";
+    //char * env_home = getenv("HOME");
+    //sprintf(file, "%s%s", env_home, "/git/sara/debug");
+    //FILE * fp = fopen(file, "a");
+    //fprintf(fp, "%s", debug);
+    //fclose(fp);
+
+    refresh();
+    //usleep(200000);
+  }
+
+  wchar_t wc[2] = { L'\u2588', L'\0' };
+  cchar_t cchar;
+  setcchar(&cchar, wc, 0, 0, NULL);
+  char ch = '|';
 
   int frames = 0;
   int total_frames = 22;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   while(frames < total_frames){
+    clear();
 
+    for(int i = 0; i < _state->t_rows; i++){
+      for(int j = 0; j < lazarr_len; j++){
+        if(lazarr[i][j] > 0){
+          if(lazarr[i][j] == 1){
+            mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
+            lazarr[i][j] = 0;
+            if(i > 0){
+              lazarr[i-1][j] = 1;
+            } else {
+              x = rand() % (lazarr_len);
+              lazarr[_state->t_rows - 1][x] = 1;
+            }
+          } else if (lazarr[i][j] == 2) {
+            mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
+            mvaddch(i-1, _state->t_cols/2 - lazarr_len/2 + j, ch);
+            mvaddch(i-2, _state->t_cols/2 - lazarr_len/2 + j, ch);
+            lazarr[i][j] = 0;
+            if(i-2 > 0){
+              lazarr[i-2][j] = 2;
+            } else {
+              x = rand() % (lazarr_len);
+              lazarr[_state->t_rows - 1][x] = 2;
+            }
+          } else {
+            cchar_t cchar;
+            setcchar(&cchar, wc, 0, 0, NULL);
+            mvadd_wch(i, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
+            mvadd_wch(i-1, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
+            mvadd_wch(i-2, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
+            lazarr[i][j] = 0;
+            if(i-3 > 0){
+              lazarr[i-3][j] = 3;
+            } else {
+              x = rand() % (lazarr_len);
+              lazarr[_state->t_rows - 1][x] = 3;
+            }
+          }
+        }
+      }
+    }
+    _fg(fg);
+    _bg();
+    _hd();
 
-
-
-
+    _get_dims();
+    if(_resized()) break;
     _colorbar();
     int result = _key();
     if(result == 2) break;

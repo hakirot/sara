@@ -1,0 +1,26 @@
+int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
+int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
+int lasarr[_state->t_rows][FG_GLYPH_LENGTH + 8];
+memset(fg_arr, 0, sizeof(fg_arr));
+memset(bg_arr, 0, sizeof(bg_arr));
+memset(lasarr, 0, sizeof(lasarr));
+
+// ~49 x ~64
+int lazer_count = _state->t_rows * FG_GLYPH_LENGTH / 100;
+int x = 0;
+int y = 0;
+int intensity = 0;
+int count = 0;
+for(int i = 0; i < lazer_count; i++){
+  y = rand() % _state->t_rows;
+  int r = rand();
+  int m = FG_GLYPH_LENGTH + 8;
+  x = r % m;
+  intensity = rand() % 2 + 1;
+  lasarr[y][x] = intensity;
+  count++;
+  //mvprintw(0, 0, "%d  %d", _state->t_rows, FG_GLYPH_LENGTH+8);
+  mvprintw(0, 0, "rows: %d | length: %d | y: %d | r: %d | m: %d | x: %d", _state->t_rows, FG_GLYPH_LENGTH + 8, y, r, m, x );
+  refresh();
+  usleep(200000);
+}

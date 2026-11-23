@@ -76,6 +76,8 @@
 #define less_partx    0
 #define linger        1
 #define no_linger     0
+#define O             omit
+#define NT            no_travel
 
 void _bg();
 void _neon();

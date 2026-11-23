@@ -43,7 +43,8 @@ void animate(animation option){
   if (option == waves)               _waves((Arg){.x = 0});
   if (option == waves_full)          _waves((Arg){.x = 1});
   if (option == multiply)            _multiply();
-  if (option == ascend)              _ascend();
+  if (option == ascend)              _ascend((Arg){.x = 0});
+  if (option == ascend_home)         _ascend((Arg){.x = 1});
   if (option == mega_static)         _mega_static((Arg){.x = 0});
   if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
   if (option == all)                 _a_all();
@@ -395,7 +396,7 @@ void _neon(){
       second_frame = 1;
     } else if(frames > 10 && third_frame == 0){
       if (_state->win_size == t_small && hd[0] != 0){
-        _hd();
+        _hd(0, 0);
       } else {
         _overlay(fg, 0);
       }
@@ -762,11 +763,11 @@ void _none(Arg printColorbar){
 
   if(dynamic_resize && _state->win_size == t_small){
     _fg(fg);
-    _hd();
+    _hd(0, 0);
   } else if (_state->win_size == t_full){
     _bg();
     _overlay(fg, 0);
-    _hd();
+    _hd(0, 0);
 
     // TODO: abstract this to separate function and add config.h options to it
     //   .. also this is no longer implemented
@@ -924,7 +925,7 @@ void _bg_offset(char ch, int offset_y, int offset_x){
 }
 
 
-void _hd(){
+void _hd(int off_y, int off_x){
 
   if(hd[0] != 0){
 
@@ -970,7 +971,7 @@ void _hd(){
       size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
 
       setcchar(&cchar, wc, 0, 0, NULL);
-      mvadd_wch(_state->t_rows/2 + offset_y, _state->t_cols/2 + offset_x + iter_col - center_offset, &cchar);
+      mvadd_wch(_state->t_rows/2 + offset_y + off_y, _state->t_cols/2 + offset_x + iter_col - center_offset + off_x, &cchar);
 
       iter_row += len;
       iter_col++;
@@ -1067,7 +1068,7 @@ void _down_wipes(){
     }
     attroff(A_BOLD);
     attroff(COLOR_PAIR(_state->fg_c));
-    _hd();
+    _hd(0, 0);
 
   } else if (_state->win_size == t_full){
 
@@ -1881,30 +1882,16 @@ void _mega_static(Arg reverse){
   _none((Arg){.x = 0});
 }
 
-void _ascend(){
+void _ascend(Arg home){
+
+  if(_state->win_size == t_tiny) return;
 
   clear();
 
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
-//for(int i = 0; i < FG_GLYPH_LENGTH; i++){
-//  mbstate_t state;
-//  memset(&state, 0, sizeof(mbstate_t));
-//  const char *iter_row = fg[i];
-//  int iter_col = 0;
-//  while (*iter_row) {
-//    wchar_t wc[2] = { L'\0', L'\0' };
-//    size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
-
-//    if(*iter_row != ' '){
-//      fg_arr[0][iter_col] = 1;
-//    }
-
-//    iter_row += len;
-//    iter_col++;
-//  }
-//}
   int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
   int lazarr_len = FG_GLYPH_LENGTH + 8;
+  if((_state->t_cols * .6) > lazarr_len) lazarr_len = _state->t_cols * .6;
   int lazarr[_state->t_rows][lazarr_len];
   memset(fg_arr, 0, sizeof(fg_arr));
   memset(bg_arr, 0, sizeof(bg_arr));
@@ -1948,8 +1935,24 @@ void _ascend(){
   int total_frames = 22;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  int offset = -1;
+  if(home.x == 1){
+    offset = 7;
+  }
   while(frames < total_frames){
     clear();
+
+    if(_state->fx != nofx){
+      _affect(_state->fx);
+      if (_state->holo){
+        _state->hd_c++;
+        if (_state->hd_c > 7) _state->hd_c = 2;
+      }
+    } else if (_state->holo){
+      _affect_holo();
+      _state->hd_c++;
+      if (_state->hd_c > 7) _state->hd_c = 2;
+    }
 
     for(int i = 0; i < _state->t_rows; i++){
       for(int j = 0; j < lazarr_len; j++){
@@ -1991,9 +1994,12 @@ void _ascend(){
         }
       }
     }
-    _fg(fg);
-    _bg();
-    _hd();
+    if (frames % 3 == 0){
+      _fg_offset(fg, offset, 0);
+      _bg_offset(0, offset, 0);
+      _hd(offset, 0);
+      offset--;
+    }
 
     _get_dims();
     if(_resized()) break;
@@ -2001,6 +2007,7 @@ void _ascend(){
     int result = _key();
     if(result == 2) break;
     _fps_sleep(&next_frame);
+    //usleep(100000);
     frames++;
   }
 

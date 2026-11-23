@@ -72,6 +72,7 @@ typedef enum {
   splode,
   multiply,
   ascend,
+  ascend_home,
   mega_static,
   mega_static_rev,
 } animation;

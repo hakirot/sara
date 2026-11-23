@@ -16,13 +16,12 @@
 #define glint_a   3
 
 void _bg();
-void _hd();
 void _neon();
 void _holo();
 void _blink();
 void _fetch();
 void _a_all();
-void _ascend();
+void _ascend(Arg home);
 void _splode();
 void _multiply();
 void _fx_waves();
@@ -42,6 +41,7 @@ void _overlay_bg(char ch);
 void _glitch(Arg bigmode);
 void _print_confirm_window();
 void _none(Arg printColorbar);
+void _hd(int off_y, int off_x);
 void _mega_static(Arg reverse);
 void _fg(const char * glyph[]);
 void animate(animation option);

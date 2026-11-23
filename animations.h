@@ -53,13 +53,20 @@
 #define ascend(a, b, c, d) ascend_expand(a, b, c, d)
 #define ascend_expand(a, b, c, d) asc_##a##b##c##d
 
-#define no       0
-#define yes      1
+#define no            0
+#define yes           1
 
-#define omit     2
-#define no_omit  0
-#define no_move  3
-#define lingering   1
+#define omit          2
+#define no_omit       0
+#define no_travel     3
+#define go_away       0
+#define go_home       1
+#define no_mini_mode  1
+#define mini_mode     0
+#define more_partx    1
+#define less_partx    0
+#define linger        1
+#define no_linger     0
 
 void _bg();
 void _neon();
@@ -97,7 +104,7 @@ void _overlay(const char * glyph[], char fill);
 void _affect(int fx, int offset_y, int offset_x);
 void _glint(fx mode, int offset_y, int offset_x);
 void _bg_offset(char ch, int offset_y, int offset_x);
-void _ascend(Arg home, Arg mini, Arg more, Arg linger);
+void _ascend(Arg home, Arg mini, Arg more, Arg lingering);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);

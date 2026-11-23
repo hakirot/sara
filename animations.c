@@ -1923,7 +1923,7 @@ void _mega_static(Arg reverse){
   _none((Arg){.x = 0});
 }
 
-void _ascend(Arg home, Arg mini, Arg more, Arg linger){
+void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
 
   int a = _state->fg_c;
   int b = _state->bg_c;  
@@ -1996,9 +1996,11 @@ void _ascend(Arg home, Arg mini, Arg more, Arg linger){
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int offset      = -1;
   int finish_flag = 0;
-  if(linger.x == 1){
-    offset      = 5;
+  if(lingering.x == 1){
     finish_flag = 1;
+  }
+  if(home.x == 1){
+    offset      = 5;
   }
   while(frames < total_frames || finish_flag != 0){
     clear();
@@ -2100,7 +2102,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg linger){
     } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
-      if(linger.x != lingering)_hd(offset, 0);
+      if(lingering.x != linger)_hd(offset, 0);
       if(_state->fx != nofx){
         _affect(_state->fx, 0, 0);
       }
@@ -2108,7 +2110,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg linger){
 
     _get_dims();
     if(_resized()) {
-      _ascend(home, mini, more, linger);
+      _ascend(home, mini, more, lingering);
       break;
     }
     //mvprintw(0, 5, "%d", count);

@@ -43,14 +43,31 @@ void animate(animation option){
   else if (option == waves)               _waves((Arg){.x = 0});
   else if (option == waves_full)          _waves((Arg){.x = 1});
   else if (option == multiply)            _multiply();
-  else if (option == ascend)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_n)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_n)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_t_n)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_t_n)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_l)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_l)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_h_l)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_h_l)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_t_l)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_h_t_l)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_t_l)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_h_t_l)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_n_l)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_t_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_t_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == mega_static)         _mega_static((Arg){.x = 0});
   else if (option == mega_static)         _mega_static((Arg){.x = 0});
   else if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
   else if (option == all)                 _a_all();
@@ -1906,11 +1923,12 @@ void _mega_static(Arg reverse){
   _none((Arg){.x = 0});
 }
 
-void _ascend(Arg home, Arg mini, Arg more){
+void _ascend(Arg home, Arg mini, Arg more, Arg linger){
 
   int a = _state->fg_c;
   int b = _state->bg_c;  
   int c = _state->hd_c;
+  int d = _state->holo;
 
   if(_state->win_size == t_tiny) return;
 
@@ -1978,7 +1996,7 @@ void _ascend(Arg home, Arg mini, Arg more){
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int offset      = -1;
   int finish_flag = 0;
-  if(home.x == 1){
+  if(linger.x == 1){
     offset      = 5;
     finish_flag = 1;
   }
@@ -1986,11 +2004,11 @@ void _ascend(Arg home, Arg mini, Arg more){
     clear();
 
     if(_state->fx != nofx){
-      if(frames < total_frames){
-        _debug(0, "hit", 0);
+      if(frames < total_frames && home.x != omit){
+        _debug(0, "hit glint", 0);
         //_affect(_state->fx, offset, 0);
         glint_if_set(offset, 0);
-//      holo_if_set(offset, 0);
+        holo_if_set(offset, 0);
       }
       if (_state->holo && frames < total_frames){
         _state->hd_c++;
@@ -2073,16 +2091,16 @@ void _ascend(Arg home, Arg mini, Arg more){
         }
       }
     }
-    if (frames % 3 == 0 && frames < 15){
-      _debug(1, "hit", 0);
+    if (frames % 3 == 0 && frames < 15 && home.x != omit){
+      //_debug(1, "hit", 0);
       _fg_offset(fg, offset, 0);
       _bg_offset(0, offset, 0);
       _hd(offset, 0);
       offset--;
-    } else if (frames > 15){
+    } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
-      _hd(offset, 0);
+      if(linger.x != lingering)_hd(offset, 0);
       if(_state->fx != nofx){
         _affect(_state->fx, 0, 0);
       }
@@ -2090,7 +2108,7 @@ void _ascend(Arg home, Arg mini, Arg more){
 
     _get_dims();
     if(_resized()) {
-      _ascend(home, mini, more);
+      _ascend(home, mini, more, linger);
       break;
     }
     //mvprintw(0, 5, "%d", count);
@@ -2114,6 +2132,7 @@ void _ascend(Arg home, Arg mini, Arg more){
   _state->fg_c = a;
   _state->bg_c = b;
   _state->hd_c = c;
+  _state->holo = d;
 
   _none((Arg){.x = 0});
 }

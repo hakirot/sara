@@ -40,6 +40,7 @@
 
 #define T               1
 #define F               0
+#define N               2
 
 #define KEY_ARRAY_SIZE  128
 
@@ -82,6 +83,22 @@ typedef enum {
   ascend_h_t,
   ascend_m_t,
   ascend_m_h_t,
+  ascend_n,
+  ascend_m_n,
+  ascend_t_n,
+  ascend_m_t_n,
+  ascend_l,
+  ascend_h_l,
+  ascend_m_l,
+  ascend_m_h_l,
+  ascend_t_l,
+  ascend_h_t_l,
+  ascend_m_t_l,
+  ascend_m_h_t_l,
+  ascend_n_l,
+  ascend_m_n_l,
+  ascend_t_n_l,
+  ascend_m_t_n_l,
   mega_static,
   mega_static_rev,
 } animation;

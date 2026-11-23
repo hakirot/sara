@@ -26,34 +26,34 @@ void animate(animation option){
   }
 
   if (option == none)                _none((Arg){0});
-  if (option == down_wipes)          _down_wipes();
-  if (option == glitch)              _glitch((Arg){.x = 0});
-  if (option == glitch_full)         _glitch((Arg){.x = 1});
-  if (option == neon)                _neon();
-  if (option == neon_reverse)        _neon_reverse();
-  if (option == shutter_slide)       _shutter_slide();
-  if (option == shutter_slide_neon){ _shutter_slide(); _neon(); }
-  if (option == pixel_fill)          _pixel_fill();
-  if (option == tv_static)           _tv_static();
-  if (option == blink)               _blink();
-  if (option == holo)                _holo();
-  if (option == glimmer)             _glimmer((Arg){.x = 0});
-  if (option == glimmer_full)        _glimmer((Arg){.x = 1});
-  if (option == splode)              _splode();
-  if (option == waves)               _waves((Arg){.x = 0});
-  if (option == waves_full)          _waves((Arg){.x = 1});
-  if (option == multiply)            _multiply();
-  if (option == ascend)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  if (option == mega_static)         _mega_static((Arg){.x = 0});
-  if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
-  if (option == all)                 _a_all();
+  else if (option == down_wipes)          _down_wipes();
+  else if (option == glitch)              _glitch((Arg){.x = 0});
+  else if (option == glitch_full)         _glitch((Arg){.x = 1});
+  else if (option == neon)                _neon();
+  else if (option == neon_reverse)        _neon_reverse();
+  else if (option == shutter_slide)       _shutter_slide();
+  else if (option == shutter_slide_neon){ _shutter_slide(); _neon(); }
+  else if (option == pixel_fill)          _pixel_fill();
+  else if (option == tv_static)           _tv_static();
+  else if (option == blink)               _blink();
+  else if (option == holo)                _holo();
+  else if (option == glimmer)             _glimmer((Arg){.x = 0});
+  else if (option == glimmer_full)        _glimmer((Arg){.x = 1});
+  else if (option == splode)              _splode();
+  else if (option == waves)               _waves((Arg){.x = 0});
+  else if (option == waves_full)          _waves((Arg){.x = 1});
+  else if (option == multiply)            _multiply();
+  else if (option == ascend)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == mega_static)         _mega_static((Arg){.x = 0});
+  else if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
+  else if (option == all)                 _a_all();
 }
 
 void _blink(){
@@ -238,8 +238,8 @@ void _print_confirm_selection(int selection){
     l_stop = _state->t_cols/2 - 8;;
   }
 
-  char * yes = "Yes";
-  char * no = "No";
+  char * yes_str = "Yes";
+  char * no_str = "No";
 
   if(selection == true){
     attron(COLOR_PAIR(white));
@@ -250,7 +250,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 3; i++){
-    mvaddch(_state->t_rows/2, r_stop - 5 + i, yes[i]);
+    mvaddch(_state->t_rows/2, r_stop - 5 + i, yes_str[i]);
   }
   attroff(A_STANDOUT);
 
@@ -262,7 +262,7 @@ void _print_confirm_selection(int selection){
   }
 
   for(int i = 0; i < 2; i++){
-    mvaddch(_state->t_rows/2, l_stop + 3 + i, no[i]);
+    mvaddch(_state->t_rows/2, l_stop + 3 + i, no_str[i]);
   }
 
   attroff(A_STANDOUT);
@@ -775,8 +775,6 @@ void _none(Arg printColorbar){
     _overlay(fg, 0);
     _hd(0, 0);
 
-    // TODO: abstract this to separate function and add config.h options to it
-    //   .. also this is no longer implemented
     if (printColorbar.x){
       _colorbar();
     }
@@ -1175,7 +1173,7 @@ void _colorbar(){
   }
 }
 
-void _glint(fx mode) {
+void _glint(fx mode, int offset_y, int offset_x) {
 
   int j = 0;
   int roll_result;
@@ -1198,12 +1196,12 @@ void _glint(fx mode) {
         roll_result = roll(2);
         if (idx == 1 && roll_result == 2){
           _state->fg_state[i][j] = 2;
-          mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, ' ');
+          mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j + offset_x, ' ');
         } else if (idx == 2 && roll_result == 2){
           _state->fg_state[i][j] = 1;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
+          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j + offset_x, &cchar);
         }
 
         iter_row += len;
@@ -1231,12 +1229,12 @@ void _glint(fx mode) {
         roll_result = roll(2);
         if (idx == 1 && roll_result == 2){
           _state->bg_state[i][j] = 2;
-          mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, ' ');
+          mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j + offset_x, ' ');
         } else if (idx == 2 && roll_result == 2){
           _state->bg_state[i][j] = 1;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, &cchar);
+          mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j + offset_x, &cchar);
         }
 
         iter_row += len;
@@ -1247,17 +1245,35 @@ void _glint(fx mode) {
     attroff(COLOR_PAIR(_state->fg_c));
   }
 
-  _hd(0,0);
+  _hd(offset_y,0);
 
   // no refresh() for _affect() functions
 }
 
-void _affect(int fx){
+void _affect(int fx, int offset_y, int offset_x){
+
+  // todo
+  // split all _affect calls into
+  //   glint_if_set()
+  //   holo_if_set()
+
   if(_state->holo) _affect_holo();
   if(fx == glint_f ||
      fx == glint_b ||
      fx == glint_a){
-    _glint(fx);
+    _glint(fx, offset_y, offset_x);
+  }
+}
+
+void glint_if_set(int offset_y, int offset_x){
+  if(_state->fx != nofx){
+    _glint(_state->fx, offset_y, offset_x);
+  }
+}
+
+void holo_if_set(int offset_y, int offset_x){
+  if(_state->holo){
+    _affect_holo();
   }
 }
 
@@ -1272,10 +1288,8 @@ void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
 }
 
 void _affect_holo() {
-  if(_state->win_size == t_tiny) {
-    return;
-  }
 
+  if(_state->win_size == t_tiny) return;
   if(_state->win_size == t_full && _state->fx == nofx || _state->fx == glint_a){
     _state->bg_c++;
     _state->fg_c++;
@@ -1288,7 +1302,7 @@ void _affect_holo() {
     _state->bg_c++;
     if (_state->bg_c > 7) _state->bg_c = 2;
   }
-
+  
   if(_state->fx == nofx) _state->reprint = true;
 }
 
@@ -1519,9 +1533,9 @@ void _glimmer(Arg full){
     if (_state->bg_c > 7) _state->bg_c = 2;
     if (_state->fg_c > 7) _state->fg_c = 2;
     if(full.x == 1){
-      _glint(glint_a);
+      _glint(glint_a, 0, 0);
     } else {
-      _glint(glint_f);
+      _glint(glint_f, 0, 0);
     }
     _colorbar();
     int result = _key();
@@ -1689,7 +1703,7 @@ void _waves(Arg full){
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
         if(_state->fx == glint_a || _state->fx == glint_b){
           attroff(COLOR_PAIR(_state->bg_c));
-          _affect(_state->fx);
+          _affect(_state->fx, 0, 0);
           attron(COLOR_PAIR(_state->bg_c));
         } else if(_state->holo){
           attroff(COLOR_PAIR(_state->bg_c));
@@ -1729,7 +1743,7 @@ void _waves(Arg full){
     } else {
       if(_state->fx == glint_a || _state->fx == glint_b){
         if(_state->holo) _affect_holo();
-        _affect(_state->fx);
+        _affect(_state->fx, 0, 0);
       } else {
         _bg();
       }
@@ -1804,7 +1818,7 @@ void _multiply(){
   while(frames < total_frames){
 
     if(_state->fx != nofx){
-      _affect(_state->fx);
+      _affect(_state->fx, 0, 0);
     } else if(_state->holo) {
       _affect_holo();
     }
@@ -1859,7 +1873,7 @@ void _mega_static(Arg reverse){
 
     for(int i = 0; i < count; i++){
       if(_state->fx != nofx){
-        _affect(_state->fx);
+        _affect(_state->fx, 0, 0);
       } else if(_state->holo) {
         _affect_holo();
       }
@@ -1965,7 +1979,7 @@ void _ascend(Arg home, Arg mini, Arg more){
   int offset      = -1;
   int finish_flag = 0;
   if(home.x == 1){
-    offset      = 4;
+    offset      = 5;
     finish_flag = 1;
   }
   while(frames < total_frames || finish_flag != 0){
@@ -1973,7 +1987,10 @@ void _ascend(Arg home, Arg mini, Arg more){
 
     if(_state->fx != nofx){
       if(frames < total_frames){
-        _affect(_state->fx);
+        _debug(0, "hit", 0);
+        //_affect(_state->fx, offset, 0);
+        glint_if_set(offset, 0);
+//      holo_if_set(offset, 0);
       }
       if (_state->holo && frames < total_frames){
         _state->hd_c++;
@@ -2057,6 +2074,7 @@ void _ascend(Arg home, Arg mini, Arg more){
       }
     }
     if (frames % 3 == 0 && frames < 15){
+      _debug(1, "hit", 0);
       _fg_offset(fg, offset, 0);
       _bg_offset(0, offset, 0);
       _hd(offset, 0);
@@ -2064,9 +2082,9 @@ void _ascend(Arg home, Arg mini, Arg more){
     } else if (frames > 15){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
-      _hd(0, 0);
+      _hd(offset, 0);
       if(_state->fx != nofx){
-        _affect(_state->fx);
+        _affect(_state->fx, 0, 0);
       }
     }
 

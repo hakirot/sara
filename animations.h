@@ -23,9 +23,20 @@
 #define asc_101 ascend_h_t
 #define asc_011 ascend_m_t
 #define asc_111 ascend_m_h_t
+//#define asc_000 ascend_r
+//#define asc_100 ascend_h_r
+//#define asc_010 ascend_m_r
+//#define asc_110 ascend_m_h_r
+//#define asc_001 ascend_t_r
+//#define asc_101 ascend_h_t_r
+//#define asc_011 ascend_m_t_r
+//#define asc_111 ascend_m_h_t_r
 
 #define ascend(a, b, c) ascend_expand(a, b, c)
 #define ascend_expand(a, b, c) asc_##a##b##c
+
+#define no       0
+#define yes      1
 
 void _bg();
 void _neon();
@@ -42,8 +53,6 @@ void _tv_static();
 void _down_wipes();
 void _pixel_fill();
 void _affect_holo();
-void _glint(fx mode);
-void _affect(int fx);
 void _neon_reverse();
 void _shutter_slide();
 void _waves(Arg full);
@@ -59,8 +68,12 @@ void animate(animation option);
 void _shift_arr(int arr[], int size);
 void _ascend(Arg home, Arg mini, Arg more);
 void _print_confirm_selection(int selection);
+void holo_if_set(int offset_y, int offset_x);
 void _fps_sleep(struct timespec * next_frame);
+void glint_if_set(int offset_y, int offset_x);
 void _overlay(const char * glyph[], char fill);
+void _affect(int fx, int offset_y, int offset_x);
+void _glint(fx mode, int offset_y, int offset_x);
 void _bg_offset(char ch, int offset_y, int offset_x);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);

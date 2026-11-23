@@ -144,7 +144,7 @@ int _get_confirm(const Command * command){
     }
 
     if(_state->fx != nofx) {
-       _affect(_state->fx);
+       _affect(_state->fx, 0, 0);
        _print_confirm_window();
     }
     _print_confirm_selection(selection);
@@ -156,10 +156,7 @@ int _get_confirm(const Command * command){
 int __execute__(const Command * command){
 
   if(command->extra_args.confirmation == CONFIRM &&
-    _get_confirm(command) != true)
-  {
-    return false;
-  }
+    _get_confirm(command) != true) return false;
 
   int RANGER_FLAG=0;
 
@@ -444,7 +441,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(_state->win_size == t_tiny) clear();
 
   if(_state->fx != nofx){
-    _affect(_state->fx);
+    _affect(_state->fx, 0, 0);
     _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
   } else {
     _clear_menu(dim_y, dim_x, offset_y, offset_x);
@@ -789,7 +786,8 @@ void _preflight_check() {
   const char * binary = NULL;
   for(int i = 0; i < commandkeys_len; i++){
     command_ptr = &commandkeys[i];
-    binary = ((char**)command_ptr->cmd)[0];
+    if(command_ptr->cmd != NULL) binary = ((char**)command_ptr->cmd)[0];
+    else continue;
     if(binary != NULL && _is_binary_in_path(binary) == 1){
       char warning[256];
       sprintf(warning, "%s%s%s", "Warning: '", binary, "' either not in $PATH or is not an executable file");
@@ -1316,7 +1314,7 @@ void _run_menu(){
   while(1){
 
     if(_state->fx != nofx){
-      _affect(_state->fx);
+      _affect(_state->fx, 0, 0);
       refresh_ui = true;
     }
 
@@ -1536,7 +1534,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
   while(1){
 
     if(_state->fx != nofx){
-      _affect(_state->fx);
+      _affect(_state->fx, 0, 0);
       refresh_ui = true;
     }
 
@@ -2094,4 +2092,10 @@ void _execute_edit_pshd(){
   char ** free_me = (char**)editor_cmd->cmd;
   free(free_me);
   free(editor_cmd);
+}
+
+void _debug(int row, char * debug, int refresh){
+
+      mvprintw(row, 0, debug);
+      if(refresh) refresh();
 }

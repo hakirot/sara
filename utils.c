@@ -2099,3 +2099,7 @@ void _debug(int row, char * debug, int refresh){
       mvprintw(row, 0, debug);
       if(refresh) refresh();
 }
+
+void reset_hd(){
+  _state->hd_c = hd_c;
+}

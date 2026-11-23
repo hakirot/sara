@@ -2014,21 +2014,14 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
   while(frames < total_frames || finish_flag != 0){
     clear();
 
-    if(_state->fx != nofx){
-      if(frames < total_frames && home.x != omit){
-        //_debug(0, "hit glint", 0);
-        //_affect(_state->fx, offset, 0);
-        glint_if_set(offset, 0);
-        holo_if_set(offset, 0);
-      }
-      if (_state->holo && frames < total_frames){
-        _state->hd_c++;
-        if (_state->hd_c > 7) _state->hd_c = 2;
-      }
-    } else if (_state->holo){
-      _affect_holo();
-      _state->hd_c++;
-      if (_state->hd_c > 7) _state->hd_c = 2;
+//  if(_state->fx != nofx){
+//    if(frames < total_frames && home.x != omit){
+//  glint_if_set(offset, 0);
+//    }
+//  } 
+    if (_state->holo){
+      //_affect_holo();
+      holo_if_set(offset, 0);
     }
 
     for(int i = 0; i < _state->t_rows; i++){
@@ -2102,11 +2095,19 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
         }
       }
     }
-    if (frames % 3 == 0 && frames < 15 && home.x != omit){
+    if (frames % 3 == 0 && frames < 15 && home.x != omit || home.x == no_travel){
       //_debug(1, "hit", 0);
-      _fg_offset(fg, offset, 0);
-      _bg_offset(0, offset, 0);
-      _hd(offset, 0);
+      if(_state->fx == nofx){
+        _fg_offset(fg, offset, 0);
+        _bg_offset(0, offset, 0);
+        _hd(offset, 0);
+      } else {
+        if(home.x != omit){
+          glint_if_set(offset, 0);
+          _bg_offset(0, offset, 0);
+          _hd(offset, 0);
+        }
+      }
       if(home.x != no_travel) offset--;
     } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
@@ -2114,6 +2115,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
       if(lingering.x != linger)_hd(offset, 0);
       if(_state->fx != nofx){
         _affect(_state->fx, 0, 0);
+        //reset_hd();
       }
     }
 
@@ -2128,15 +2130,44 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
       int result = _key();
       if(result == 2) break;
     }
-    _fps_sleep(&next_frame);
-    //usleep(200000);
-    frames++;
+//  if(0){
+      _fps_sleep(&next_frame);
+      //usleep(200000);
+      frames++;
+
+//  } else {
+//    _fps_sleep(&next_frame);
+//    if(home.x != omit) glint_if_set(offset, 0);
+//    refresh();
+//    _fps_sleep(&next_frame);
+//    if(home.x != omit) glint_if_set(offset, 0);
+//    refresh();
+//    _fps_sleep(&next_frame);
+//    if(home.x != omit) glint_if_set(offset, 0);
+//    refresh();
+//    _fps_sleep(&next_frame);
+//    if(home.x != omit) glint_if_set(offset, 0);
+//    refresh();
+//    _fps_sleep(&next_frame);
+//    if(home.x != omit) glint_if_set(offset, 0);
+//    refresh();
+//    if(lingering.x != linger){
+//      frames++;
+//    } else {
+//      frames+=5;
+//    }
+//    char f[128];
+//    sprintf(f, "%d", frames);
+//    _debug(0, f, 1);
+
+//  }
     if(frames > 90) break;
     if(frames == 15 && finish_flag == 1){
       finish_flag = 2;
       _state->fg_c = a;
       _state->bg_c = b;
       _state->hd_c = c;
+      _state->holo = d;
     }
   }
 

@@ -21,6 +21,7 @@ void version();
 int  _confirm();
 void _get_pwd();
 int  _resized();
+void reset_hd();
 void _get_dims();
 void _run_menu();
 void _path_run();

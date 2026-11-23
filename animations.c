@@ -924,7 +924,6 @@ void _bg_offset(char ch, int offset_y, int offset_x){
 
 }
 
-
 void _hd(int off_y, int off_x){
 
   if(hd[0] != 0){
@@ -1961,8 +1960,10 @@ void _ascend(Arg home){
 
           if(_state->holo){
             color = rand() % 6 + 2;
-            attron(COLOR_PAIR(color));
+          } else {
+            color = _state->fg_c;
           }
+          attron(COLOR_PAIR(color));
 
           if(lazarr[i][j] == 1){
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
@@ -2000,7 +2001,6 @@ void _ascend(Arg home){
           }
           if(color){
             attroff(COLOR_PAIR(color));
-            color = 0;
           }
         }
       }
@@ -2015,8 +2015,10 @@ void _ascend(Arg home){
     _get_dims();
     if(_resized()) break;
     _colorbar();
-    int result = _key();
-    if(result == 2) break;
+    if(_state->key_lock ==  0){
+      int result = _key();
+      if(result == 2) break;
+    }
     _fps_sleep(&next_frame);
     //usleep(200000);
     frames++;

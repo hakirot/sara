@@ -171,7 +171,7 @@ static const char *make_cmd[]         = { "make",                               
 
 static const Command commandkeys[] = {
 
-/*  KEY         COMMAND               WAIT_OPTION    PRE_ANIMATION     POST_ ANIMATION   EXTRA ARGS    */
+/*  key         command               wait_option    pre_animation     post_animation   ExtraArgs    */
 
   { 'e',         example_cmd,         STOP,          none,             neon,             confirm },
   { ':',         reload_cmd,          EXEC,          none,             none,             default_args },

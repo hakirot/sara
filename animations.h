@@ -15,13 +15,24 @@
 #define glint_b   2
 #define glint_a   3
 
+#define asc_000 ascend
+#define asc_100 ascend_h
+#define asc_010 ascend_m
+#define asc_110 ascend_m_h
+#define asc_001 ascend_t
+#define asc_101 ascend_h_t
+#define asc_011 ascend_m_t
+#define asc_111 ascend_m_h_t
+
+#define ascend(a, b, c) ascend_expand(a, b, c)
+#define ascend_expand(a, b, c) asc_##a##b##c
+
 void _bg();
 void _neon();
 void _holo();
 void _blink();
 void _fetch();
 void _a_all();
-void _ascend(Arg home);
 void _splode();
 void _multiply();
 void _fx_waves();
@@ -46,6 +57,7 @@ void _mega_static(Arg reverse);
 void _fg(const char * glyph[]);
 void animate(animation option);
 void _shift_arr(int arr[], int size);
+void _ascend(Arg home, Arg mini, Arg more);
 void _print_confirm_selection(int selection);
 void _fps_sleep(struct timespec * next_frame);
 void _overlay(const char * glyph[], char fill);

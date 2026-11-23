@@ -43,8 +43,14 @@ void animate(animation option){
   if (option == waves)               _waves((Arg){.x = 0});
   if (option == waves_full)          _waves((Arg){.x = 1});
   if (option == multiply)            _multiply();
-  if (option == ascend)              _ascend((Arg){.x = 0});
-  if (option == ascend_home)         _ascend((Arg){.x = 1});
+  if (option == ascend)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
   if (option == mega_static)         _mega_static((Arg){.x = 0});
   if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
   if (option == all)                 _a_all();
@@ -1241,13 +1247,13 @@ void _glint(fx mode) {
     attroff(COLOR_PAIR(_state->fg_c));
   }
 
+  _hd(0,0);
+
   // no refresh() for _affect() functions
 }
 
 void _affect(int fx){
-
   if(_state->holo) _affect_holo();
-
   if(fx == glint_f ||
      fx == glint_b ||
      fx == glint_a){
@@ -1640,8 +1646,10 @@ void _splode(){
     attroff(A_BOLD);
 
     _colorbar();
-    int result = _key();
-    if(result == 2) break;
+    if(!_state->key_lock){
+      int result = _key();
+      if(result == 2) break;
+    }
     if(_state->holo) _affect_holo();
     _fps_sleep(&next_frame);
     frames++;
@@ -1881,7 +1889,11 @@ void _mega_static(Arg reverse){
   _none((Arg){.x = 0});
 }
 
-void _ascend(Arg home){
+void _ascend(Arg home, Arg mini, Arg more){
+
+  int a = _state->fg_c;
+  int b = _state->bg_c;  
+  int c = _state->hd_c;
 
   if(_state->win_size == t_tiny) return;
 
@@ -1890,14 +1902,20 @@ void _ascend(Arg home){
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
   int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
   int lazarr_len = FG_GLYPH_LENGTH + 8;
-  if((_state->t_cols * .6) > lazarr_len) lazarr_len = _state->t_cols * .6;
+  if((_state->t_cols * .6) > lazarr_len) 
+    lazarr_len = _state->t_cols * .6;
   int lazarr[_state->t_rows][lazarr_len];
   memset(fg_arr, 0, sizeof(fg_arr));
   memset(bg_arr, 0, sizeof(bg_arr));
   memset(lazarr, 0, sizeof(lazarr));
 
   // ~49 x ~64
-  int lazer_count = _state->t_rows * lazarr_len / 100;
+  float count_scaler = .002;
+  if(more.x == 1) {
+    count_scaler = .006;
+  }
+  int lazer_count = _state->t_rows * lazarr_len * count_scaler;
+  if(lazer_count < 4) lazer_count = 3;
   int x = 0;
   int y = 0;
   int intensity = 0;
@@ -1930,6 +1948,11 @@ void _ascend(Arg home){
   setcchar(&cchar, wc, 0, 0, NULL);
   char ch = '|';
   int color = 0;
+
+  if(mini.x == 0){
+    wc[0] = L'|';
+    ch = '.';
+  }
 
   int frames = 0;
   int total_frames = 15;
@@ -2023,6 +2046,10 @@ void _ascend(Arg home){
     //usleep(200000);
     frames++;
   }
+
+  _state->fg_c = a;
+  _state->bg_c = b;
+  _state->hd_c = c;
 
   _none((Arg){.x = 0});
 }

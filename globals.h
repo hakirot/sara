@@ -38,6 +38,9 @@
 #define cyan_black      23
 #define black_whited    24
 
+#define T               1
+#define F               0
+
 #define KEY_ARRAY_SIZE  128
 
 typedef enum {
@@ -72,7 +75,13 @@ typedef enum {
   splode,
   multiply,
   ascend,
-  ascend_home,
+  ascend_m,
+  ascend_h,
+  ascend_m_h,
+  ascend_t,
+  ascend_h_t,
+  ascend_m_t,
+  ascend_m_h_t,
   mega_static,
   mega_static_rev,
 } animation;

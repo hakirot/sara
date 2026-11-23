@@ -444,7 +444,6 @@ void _neon_reverse(){
         _bg();
         _overlay(fg, '_');
       }
-      _colorbar();
       first_frame = 1;
     } else if(frames > 5 && second_frame == 0){
       clear();
@@ -461,6 +460,7 @@ void _neon_reverse(){
     int result = _key();
     if(result == 2) return;
     if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+    _colorbar();
   }
 }
 
@@ -1925,8 +1925,9 @@ void _ascend(Arg home, Arg mini, Arg more){
     y = rand() % _state->t_rows;
     x = rand() % (lazarr_len);
     intensity = rand() % 3 + 1;
+    if(lazarr[y][x] == 0) count++;
     lazarr[y][x] = intensity;
-    count++;
+
     //mvprintw(0, 0, "rows: %d | length: %d | y: %d | x: %d", _state->t_rows, lazarr_len, y, x );
 
     //char debug[256];
@@ -1958,16 +1959,18 @@ void _ascend(Arg home, Arg mini, Arg more){
   int total_frames = 15;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
-  int offset = -1;
+  int offset      = -1;
+  int finish_flag = 0;
   if(home.x == 1){
-    offset = 5;
+    offset      = 5;
+    finish_flag = 1;
   }
-  while(frames < total_frames){
+  while(frames < total_frames || finish_flag != 0){
     clear();
 
     if(_state->fx != nofx){
       _affect(_state->fx);
-      if (_state->holo){
+      if (_state->holo && frames < total_frames){
         _state->hd_c++;
         if (_state->hd_c > 7) _state->hd_c = 2;
       }
@@ -1992,10 +1995,16 @@ void _ascend(Arg home, Arg mini, Arg more){
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
             lazarr[i][j] = 0;
             if(i > 0){
+              if(lazarr[i-1][j] != 0) count--;
               lazarr[i-1][j] = 1;
             } else {
-              x = rand() % (lazarr_len);
-              lazarr[_state->t_rows - 1][x] = 1;
+              if(finish_flag != 2){
+                x = rand() % (lazarr_len);
+                lazarr[_state->t_rows - 1][x] = 1;
+              } else {
+                count--;
+                if(!count) finish_flag = 0;
+              }
             }
           } else if (lazarr[i][j] == 2) {
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
@@ -2003,10 +2012,16 @@ void _ascend(Arg home, Arg mini, Arg more){
             mvaddch(i-2, _state->t_cols/2 - lazarr_len/2 + j, ch);
             lazarr[i][j] = 0;
             if(i-2 > 0){
+              if(lazarr[i-2][j] != 0) count--;
               lazarr[i-2][j] = 2;
             } else {
-              x = rand() % (lazarr_len);
-              lazarr[_state->t_rows - 1][x] = 2;
+              if(finish_flag != 2) {
+                x = rand() % (lazarr_len);
+                lazarr[_state->t_rows - 1][x] = 2;
+              } else {
+                count--;
+                if(!count) finish_flag = 0;
+              }
             }
           } else {
             cchar_t cchar;
@@ -2016,10 +2031,16 @@ void _ascend(Arg home, Arg mini, Arg more){
             mvadd_wch(i-2, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
             lazarr[i][j] = 0;
             if(i-3 > 0){
+              if(lazarr[i-3][j] != 0) count--;
               lazarr[i-3][j] = 3;
             } else {
-              x = rand() % (lazarr_len);
-              lazarr[_state->t_rows - 1][x] = 3;
+              if(finish_flag != 2) {
+                x = rand() % (lazarr_len);
+                lazarr[_state->t_rows - 1][x] = 3;
+              } else {
+                count--;
+                if(!count) finish_flag = 0;
+              }
             }
           }
           if(color){
@@ -2028,16 +2049,27 @@ void _ascend(Arg home, Arg mini, Arg more){
         }
       }
     }
-    if (frames % 3 == 0){
+    if (frames % 3 == 0 && frames < 15){
       _fg_offset(fg, offset, 0);
       _bg_offset(0, offset, 0);
       _hd(offset, 0);
       offset--;
+    } else if (frames > 15){
+      _fg_offset(fg, 0, 0);
+      _bg_offset(0, 0, 0);
+      _hd(0, 0);
+      if(_state->fx != nofx){
+        _affect(_state->fx);
+      }
     }
 
     _get_dims();
-    if(_resized()) break;
-    _colorbar();
+    if(_resized()) {
+      _ascend(home, mini, more);
+      break;
+    }
+    //mvprintw(0, 5, "%d", count);
+    if(frames < total_frames) _colorbar();
     if(_state->key_lock ==  0){
       int result = _key();
       if(result == 2) break;
@@ -2045,6 +2077,13 @@ void _ascend(Arg home, Arg mini, Arg more){
     _fps_sleep(&next_frame);
     //usleep(200000);
     frames++;
+    if(frames > 90) break;
+    if(frames == 15 && finish_flag == 1){
+      finish_flag = 2;
+      _state->fg_c = a;
+      _state->bg_c = b;
+      _state->hd_c = c;
+    }
   }
 
   _state->fg_c = a;

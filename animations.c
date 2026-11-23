@@ -1995,6 +1995,7 @@ void _ascend(Arg home, Arg mini, Arg more){
             color = _state->fg_c;
           }
           attron(COLOR_PAIR(color));
+          if(fg_c_bold) attron(A_BOLD);
 
           if(lazarr[i][j] == 1){
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
@@ -2051,6 +2052,7 @@ void _ascend(Arg home, Arg mini, Arg more){
           if(color){
             attroff(COLOR_PAIR(color));
           }
+          attroff(A_BOLD);
         }
       }
     }

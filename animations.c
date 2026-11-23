@@ -1684,11 +1684,13 @@ void _waves(Arg full){
     clear();
 
     if(full.x == 1){
-      if(bg_c_bold) attron(A_BOLD);
       attron(COLOR_PAIR(_state->bg_c));
+      if(bg_c_bold) attron(A_BOLD);
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
         if(_state->fx == glint_a || _state->fx == glint_b){
+          attroff(COLOR_PAIR(_state->bg_c));
           _affect(_state->fx);
+          attron(COLOR_PAIR(_state->bg_c));
         } else if(_state->holo){
           attroff(COLOR_PAIR(_state->bg_c));
           _affect_holo();
@@ -1776,6 +1778,7 @@ void _waves(Arg full){
     frames++;
     int result = _key();
     if(result == 2) break;
+    //usleep(200000);
     _fps_sleep(&next_frame);
     _colorbar();
   }

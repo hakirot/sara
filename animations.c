@@ -1930,14 +1930,15 @@ void _ascend(Arg home){
   cchar_t cchar;
   setcchar(&cchar, wc, 0, 0, NULL);
   char ch = '|';
+  int color = 0;
 
   int frames = 0;
-  int total_frames = 22;
+  int total_frames = 15;
   struct timespec next_frame;
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int offset = -1;
   if(home.x == 1){
-    offset = 7;
+    offset = 5;
   }
   while(frames < total_frames){
     clear();
@@ -1957,6 +1958,12 @@ void _ascend(Arg home){
     for(int i = 0; i < _state->t_rows; i++){
       for(int j = 0; j < lazarr_len; j++){
         if(lazarr[i][j] > 0){
+
+          if(_state->holo){
+            color = rand() % 6 + 2;
+            attron(COLOR_PAIR(color));
+          }
+
           if(lazarr[i][j] == 1){
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
             lazarr[i][j] = 0;
@@ -1991,6 +1998,10 @@ void _ascend(Arg home){
               lazarr[_state->t_rows - 1][x] = 3;
             }
           }
+          if(color){
+            attroff(COLOR_PAIR(color));
+            color = 0;
+          }
         }
       }
     }
@@ -2007,7 +2018,7 @@ void _ascend(Arg home){
     int result = _key();
     if(result == 2) break;
     _fps_sleep(&next_frame);
-    //usleep(100000);
+    //usleep(200000);
     frames++;
   }
 

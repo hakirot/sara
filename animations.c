@@ -43,6 +43,7 @@ void animate(animation option){
   else if (option == waves)               _waves((Arg){.x = 0});
   else if (option == waves_full)          _waves((Arg){.x = 1});
   else if (option == multiply)            _multiply();
+
   else if (option == ascend)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
   else if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
   else if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
@@ -55,6 +56,7 @@ void animate(animation option){
   else if (option == ascend_m_n)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
   else if (option == ascend_t_n)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
   else if (option == ascend_m_t_n)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+
   else if (option == ascend_l)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
   else if (option == ascend_m_l)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
   else if (option == ascend_h_l)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
@@ -67,6 +69,16 @@ void animate(animation option){
   else if (option == ascend_m_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
   else if (option == ascend_t_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
   else if (option == ascend_m_t_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+
+  else if (option == ascend_s)              _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_s)            _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_t_s)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_t_s)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_l_s)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_l_s)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_t_l_s)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_t_l_s)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+
   else if (option == mega_static)         _mega_static((Arg){.x = 0});
   else if (option == mega_static)         _mega_static((Arg){.x = 0});
   else if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
@@ -1269,11 +1281,6 @@ void _glint(fx mode, int offset_y, int offset_x) {
 
 void _affect(int fx, int offset_y, int offset_x){
 
-  // todo
-  // split all _affect calls into
-  //   glint_if_set()
-  //   holo_if_set()
-
   if(_state->holo) _affect_holo();
   if(fx == glint_f ||
      fx == glint_b ||
@@ -2001,13 +2008,15 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
   }
   if(home.x == 1){
     offset      = 5;
+  } else if (home.x == no_travel){
+    offset      = 0;
   }
   while(frames < total_frames || finish_flag != 0){
     clear();
 
     if(_state->fx != nofx){
       if(frames < total_frames && home.x != omit){
-        _debug(0, "hit glint", 0);
+        //_debug(0, "hit glint", 0);
         //_affect(_state->fx, offset, 0);
         glint_if_set(offset, 0);
         holo_if_set(offset, 0);
@@ -2098,7 +2107,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
       _fg_offset(fg, offset, 0);
       _bg_offset(0, offset, 0);
       _hd(offset, 0);
-      offset--;
+      if(home.x != no_travel) offset--;
     } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);

@@ -41,6 +41,15 @@
 #define asc_2011 ascend_t_n_l
 #define asc_2111 ascend_m_t_n_l
 
+#define asc_3000 ascend_s
+#define asc_3100 ascend_m_s
+#define asc_3010 ascend_t_s
+#define asc_3110 ascend_m_t_s
+#define asc_3001 ascend_l_s
+#define asc_3101 ascend_m_l_s
+#define asc_3011 ascend_t_l_s
+#define asc_3111 ascend_m_t_l_s
+
 //#define asc_000 ascend_r
 //#define asc_100 ascend_h_r
 //#define asc_010 ascend_m_r

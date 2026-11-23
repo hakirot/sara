@@ -14,9 +14,10 @@
 --   ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝.h --
                                                                          */
 
-static const animation start_animation = none;
-static const fx               start_fx = nofx;
-static const unsigned short   rand_c   = true;          /* random colors */
+static const animation  start_animation = none;
+static const fx                start_fx = nofx;
+static const unsigned short      rand_c = true;          /* random colors */
+static const unsigned short holographic = true;
 
 /* COLORS */
 static const unsigned short fg_c        = green;    /* fg color */

@@ -1794,7 +1794,7 @@ void _init_state(){
   _state->fg_c              = fg_c;               /* implemented */
   _state->bg_c              = bg_c;               /* implemented */
   _state->hd_c              = hd_c;               /* implemented */
-  _state->holo              = 0;                  /* implemented */
+  _state->holo              = holographic;        /* implemented */
   if(rand_c) _so_random();
   _state->hold_char_time    = 0.00001;            /* implemented */
   _state->hold_char         = '\0';               /* implemented */

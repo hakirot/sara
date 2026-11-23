@@ -1962,14 +1962,16 @@ void _ascend(Arg home, Arg mini, Arg more){
   int offset      = -1;
   int finish_flag = 0;
   if(home.x == 1){
-    offset      = 5;
+    offset      = 4;
     finish_flag = 1;
   }
   while(frames < total_frames || finish_flag != 0){
     clear();
 
     if(_state->fx != nofx){
-      _affect(_state->fx);
+      if(frames < total_frames){
+        _affect(_state->fx);
+      }
       if (_state->holo && frames < total_frames){
         _state->hd_c++;
         if (_state->hd_c > 7) _state->hd_c = 2;
@@ -2055,8 +2057,8 @@ void _ascend(Arg home, Arg mini, Arg more){
       _hd(offset, 0);
       offset--;
     } else if (frames > 15){
-      _fg_offset(fg, 0, 0);
-      _bg_offset(0, 0, 0);
+      if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
+      if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
       _hd(0, 0);
       if(_state->fx != nofx){
         _affect(_state->fx);

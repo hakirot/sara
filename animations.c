@@ -43,79 +43,13 @@ void animate(animation option){
   else if (option == waves)               _waves((Arg){.x = 0});
   else if (option == waves_full)          _waves((Arg){.x = 1});
   else if (option == multiply)            _multiply();
-
-  else if (option == ascend)                _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m)              _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_h)              _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_h)            _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_t)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_h_t)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_t)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_n)              _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_n)            _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_t_n)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_t_n)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-
-  else if (option == ascend_l)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_l)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_h_l)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_h_l)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t_l)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_h_t_l)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_t_l)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_h_t_l)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_n_l)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_t_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-
-  else if (option == ascend_s)              _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_s)            _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_t_s)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_t_s)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_l_s)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_l_s)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t_l_s)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_t_l_s)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-
-  else if (option == ascend_r)              _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_r)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_h_r)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_h_r)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_t_r)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_h_t_r)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t_r)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_h_t_r)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_n_r)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_n_r)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_t_n_r)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t_n_r)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_l_r)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_l_r)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_h_l_r)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_h_l_r)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_t_l_r)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_h_t_l_r)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_t_l_r)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_h_t_l_r)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_n_l_r)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_n_l_r)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_t_n_l_r)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_t_n_l_r)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_s_r)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_s_r)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_t_s_r)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_l_s_r)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_l_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_t_l_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_t_l_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-
   else if (option == mega_static)         _mega_static((Arg){.x = 0});
   else if (option == mega_static)         _mega_static((Arg){.x = 0});
   else if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
   else if (option == all)                 _a_all();
+  else {
+    if_ascend(option);
+  }
 }
 
 void _blink(){
@@ -1963,7 +1897,80 @@ void _mega_static(Arg reverse){
   _none((Arg){.x = 0});
 }
 
+void if_ascend(animation option){
+
+  if (option == ascend)                   _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_n)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_n)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_t_n)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_t_n)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+
+  else if (option == ascend_l)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_l)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_h_l)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_h_l)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_t_l)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_h_t_l)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_t_l)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_h_t_l)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_t_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_t_n_l)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+
+  else if (option == ascend_s)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_s)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_t_s)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_m_t_s)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  else if (option == ascend_l_s)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_l_s)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_t_l_s)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_m_t_l_s)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+
+  else if (option == ascend_r)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_r)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_h_r)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_h_r)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_t_r)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_h_t_r)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_t_r)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_h_t_r)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_n_r)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_n_r)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_t_n_r)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_t_n_r)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_l_r)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_l_r)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_h_l_r)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_h_l_r)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_t_l_r)        _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_h_t_l_r)      _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_t_l_r)      _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_h_t_l_r)    _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_n_l_r)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_n_l_r)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_t_n_l_r)      _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_t_n_l_r)    _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_s_r)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_t_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_m_t_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
+  else if (option == ascend_l_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_l_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_t_l_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_m_t_l_s_r)    _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+}
+
 void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
+
+  if(_state->win_size == t_tiny) return;
 
   int a = _state->fg_c;
   int b = _state->bg_c;  

@@ -132,6 +132,7 @@ void _hd(int off_y, int off_x);
 void _mega_static(Arg reverse);
 void _fg(const char * glyph[]);
 void animate(animation option);
+void if_ascend(animation option);
 void _shift_arr(int arr[], int size);
 void _print_confirm_selection(int selection);
 void holo_if_set(int offset_y, int offset_x);

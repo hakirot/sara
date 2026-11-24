@@ -15,52 +15,76 @@
 #define glint_b   2
 #define glint_a   3
 
-#define asc_0000 ascend
-#define asc_1000 ascend_h
-#define asc_0100 ascend_m
-#define asc_1100 ascend_m_h
-#define asc_0010 ascend_t
-#define asc_1010 ascend_h_t
-#define asc_0110 ascend_m_t
-#define asc_1110 ascend_m_h_t
-#define asc_2000 ascend_n
-#define asc_2100 ascend_m_n
-#define asc_2010 ascend_t_n
-#define asc_2110 ascend_m_t_n
+#define asc_00000 ascend
+#define asc_10000 ascend_h
+#define asc_01000 ascend_m
+#define asc_11000 ascend_m_h
+#define asc_00100 ascend_t
+#define asc_10100 ascend_h_t
+#define asc_01100 ascend_m_t
+#define asc_11100 ascend_m_h_t
+#define asc_20000 ascend_n
+#define asc_21000 ascend_m_n
+#define asc_20100 ascend_t_n
+#define asc_21100 ascend_m_t_n
 
-#define asc_0001 ascend_l
-#define asc_1001 ascend_h_l
-#define asc_0101 ascend_m_l
-#define asc_1101 ascend_m_h_l
-#define asc_0011 ascend_t_l
-#define asc_1011 ascend_h_t_l
-#define asc_0111 ascend_m_t_l
-#define asc_1111 ascend_m_h_t_l
-#define asc_2001 ascend_n_l
-#define asc_2101 ascend_m_n_l
-#define asc_2011 ascend_t_n_l
-#define asc_2111 ascend_m_t_n_l
+#define asc_00010 ascend_l
+#define asc_10010 ascend_h_l
+#define asc_01010 ascend_m_l
+#define asc_11010 ascend_m_h_l
+#define asc_00110 ascend_t_l
+#define asc_10110 ascend_h_t_l
+#define asc_01110 ascend_m_t_l
+#define asc_11110 ascend_m_h_t_l
+#define asc_20010 ascend_n_l
+#define asc_21010 ascend_m_n_l
+#define asc_20110 ascend_t_n_l
+#define asc_21110 ascend_m_t_n_l
 
-#define asc_3000 ascend_s
-#define asc_3100 ascend_m_s
-#define asc_3010 ascend_t_s
-#define asc_3110 ascend_m_t_s
-#define asc_3001 ascend_l_s
-#define asc_3101 ascend_m_l_s
-#define asc_3011 ascend_t_l_s
-#define asc_3111 ascend_m_t_l_s
+#define asc_30000 ascend_s
+#define asc_31000 ascend_m_s
+#define asc_30100 ascend_t_s
+#define asc_31100 ascend_m_t_s
+#define asc_30010 ascend_l_s
+#define asc_31010 ascend_m_l_s
+#define asc_30110 ascend_t_l_s
+#define asc_31110 ascend_m_t_l_s
 
-//#define asc_000 ascend_r
-//#define asc_100 ascend_h_r
-//#define asc_010 ascend_m_r
-//#define asc_110 ascend_m_h_r
-//#define asc_001 ascend_t_r
-//#define asc_101 ascend_h_t_r
-//#define asc_011 ascend_m_t_r
-//#define asc_111 ascend_m_h_t_r
+#define asc_00001 ascend_r
+#define asc_10001 ascend_h_r
+#define asc_01001 ascend_m_r
+#define asc_11001 ascend_m_h_r
+#define asc_00101 ascend_t_r
+#define asc_10101 ascend_h_t_r
+#define asc_01101 ascend_m_t_r
+#define asc_11101 ascend_m_h_t_r
+#define asc_20001 ascend_n_r
+#define asc_21001 ascend_m_n_r
+#define asc_20101 ascend_t_n_r
+#define asc_21101 ascend_m_t_n_r
+#define asc_00011 ascend_l_r
+#define asc_10011 ascend_h_l_r
+#define asc_01011 ascend_m_l_r
+#define asc_11011 ascend_m_h_l_r
+#define asc_00111 ascend_t_l_r
+#define asc_10111 ascend_h_t_l_r
+#define asc_01111 ascend_m_t_l_r
+#define asc_11111 ascend_m_h_t_l_r
+#define asc_20011 ascend_n_l_r
+#define asc_21011 ascend_m_n_l_r
+#define asc_20111 ascend_t_n_l_r
+#define asc_21111 ascend_m_t_n_l_r
+#define asc_30001 ascend_s_r
+#define asc_31001 ascend_m_s_r
+#define asc_30101 ascend_t_s_r
+#define asc_31101 ascend_m_t_s_r
+#define asc_30011 ascend_l_s_r
+#define asc_31011 ascend_m_l_s_r
+#define asc_30111 ascend_t_l_s_r
+#define asc_31111 ascend_m_t_l_s_r
 
-#define ascend(a, b, c, d) ascend_expand(a, b, c, d)
-#define ascend_expand(a, b, c, d) asc_##a##b##c##d
+#define ascend(a, b, c, d, e) ascend_expand(a, b, c, d, e)
+#define ascend_expand(a, b, c, d, e) asc_##a##b##c##d##e
 
 #define no            0
 #define yes           1
@@ -76,6 +100,8 @@
 #define less_partx    0
 #define linger        1
 #define no_linger     0
+#define rise          1
+#define fall          0
 #define O             omit
 #define NT            no_travel
 
@@ -115,10 +141,10 @@ void _overlay(const char * glyph[], char fill);
 void _affect(int fx, int offset_y, int offset_x);
 void _glint(fx mode, int offset_y, int offset_x);
 void _bg_offset(char ch, int offset_y, int offset_x);
-void _ascend(Arg home, Arg mini, Arg more, Arg lingering);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
+void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);
 
 #endif

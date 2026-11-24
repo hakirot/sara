@@ -1943,9 +1943,10 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering){
 
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
   int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
-  int lazarr_len = FG_GLYPH_LENGTH + 8;
-  if((_state->t_cols * .6) > lazarr_len) 
-    lazarr_len = _state->t_cols * .6;
+  //int lazarr_len = FG_GLYPH_LENGTH + 8;
+  int lazarr_len = _state->t_cols;
+//if((_state->t_cols * .6) > lazarr_len) 
+//  lazarr_len = _state->t_cols * .6;
   int lazarr[_state->t_rows][lazarr_len];
   memset(fg_arr, 0, sizeof(fg_arr));
   memset(bg_arr, 0, sizeof(bg_arr));

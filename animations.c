@@ -2048,15 +2048,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
   while(frames < total_frames || finish_flag != 0){
     clear();
 
-//  if(_state->fx != nofx){
-//    if(frames < total_frames && home.x != omit){
-//  glint_if_set(offset, 0);
-//    }
-//  } 
-    if (_state->holo){
-      //_affect_holo();
-      holo_if_set(offset, 0);
-    }
+    holo_if_set(offset, 0);
 
     for(int i = 0; i < _state->t_rows; i++){
       for(int j = 0; j < lazarr_len; j++){
@@ -2180,13 +2172,18 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
     if (frames % 3 == 0 && frames < 15 && home.x != omit || home.x == no_travel){
       //_debug(1, "hit", 0);
       if(_state->fx == nofx){
-        _fg_offset(fg, offset, 0);
-        _bg_offset(0, offset, 0);
-        _hd(offset, 0);
+        if(home.x == no_travel) {
+          glint_if_set(offset, 0);
+        } else {
+          _fg_offset(fg, offset, 0);
+          _bg_offset(0, offset, 0);
+          _hd(offset, 0);
+        }
       } else {
         if(home.x != omit){
           glint_if_set(offset, 0);
-          _bg_offset(0, offset, 0);
+          if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, offset, 0);
+          if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, offset, 0);
           _hd(offset, 0);
         }
       }

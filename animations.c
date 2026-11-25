@@ -1330,10 +1330,10 @@ void _fetch(){
   }
   fclose(file);
 
-  int a = _state->fg_c;
-  int b = _state->bg_c;
-  int c = _state->hd_c;
-  _print_fetch(fetch_path, entries, false, a, b, c);
+  int a = fg_c;
+  int b = bg_c;
+  int c = hd_c;
+  _print_fetch(fetch_path, entries, true, a, b, c);
   _fg_offset(fg, 0, x_offset);
   _bg_offset(0, 0, x_offset);
   _hd_offset(0, x_offset);

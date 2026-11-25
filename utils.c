@@ -1371,11 +1371,10 @@ void _run_menu(){
 
     } else if (input == '\n') {
       _state->key_lock = 1;
-      if(_run_exec(selection) == 0){
-        animate(start_animation);
-      } else {
-        animate(glitch_full);
-      }
+      int result =  _run_exec(selection);
+      _state->key_lock = 0;
+      if(result == 0) animate(start_animation);
+      else animate(glitch_full);
       _state->key_lock = 0;
       break;
     } else if (input == 32){

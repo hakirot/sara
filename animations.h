@@ -147,5 +147,6 @@ void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
 void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);
+int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, int hd_c);
 
 #endif

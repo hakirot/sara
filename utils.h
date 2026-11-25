@@ -72,6 +72,7 @@ int  __execute__(const Command * command);
 int  _get_confirm(const Command * command);
 int  _is_binary_in_path(const char * binary);
 void _debug(int row, char * debug, int refresh);
+int  _longest_string_in_file(char * fetch_path);
 int  _deduce_dim_y(int requested_dim_y, int len);
 Command * ranger_command(const Command * command);
 void ensure_path_perm(char * file_path, char perm);              /* orphaned */

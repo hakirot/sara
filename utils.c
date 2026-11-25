@@ -2003,16 +2003,11 @@ int _longest_line(const char *path){
 
 int _get_full_width(){
 
-  int larger = BG_GLYPH_LENGTH;
-  int smaller = FG_GLYPH_LENGTH;
-  if(FG_GLYPH_LENGTH > BG_GLYPH_LENGTH) {
-    larger  = FG_GLYPH_LENGTH;
-    smaller = BG_GLYPH_LENGTH;
-  }
+  int width = FG_GLYPH_LENGTH;
+  if (FG_GLYPH_LENGTH < BG_GLYPH_LENGTH) width = BG_GLYPH_LENGTH;
+  if (strlen(hd) > width) width = strlen(hd);
 
-  // .. todo finish this implementation
-
-  return larger;
+  return width;
 }
 
 int  _input_is_fetch(char input){
@@ -2102,4 +2097,17 @@ void _debug(int row, char * debug, int refresh){
 
 void reset_hd(){
   _state->hd_c = hd_c;
+}
+
+int _longest_string_in_file(char * path){
+  FILE *fp = fopen(path, "r");
+  if (!fp) return -1;
+  int len = 0;
+
+  char line[1024];
+  while (fgets(line, sizeof(line), fp)) {
+    if(strlen(line) > len) len = strlen(line);
+  }
+  fclose(fp);
+  return len;
 }

@@ -1241,7 +1241,7 @@ void _glint(fx mode, int offset_y, int offset_x) {
     attroff(COLOR_PAIR(_state->fg_c));
   }
 
-  _hd(offset_y,0);
+  _hd(offset_y, offset_x);
 
   // no refresh() for _affect() functions
 }
@@ -1314,118 +1314,52 @@ void _fetch(){
   }
   _fetch_reduce(fetch_path);
   int num_fetch_cols = _longest_line(fetch_path);
-  int num_ascii_width = _get_full_width(); // todo not complete
+  int width = _get_full_width();
 
   clear();
-  _fg_offset(fg, 0, -(num_ascii_width)/2 - 2);
-  _bg_offset(0, 0, -(num_ascii_width)/2 - 2);
-  _hd_offset(0, -(num_ascii_width)/2 - 2);
-
+  int longest_line = _longest_string_in_file(fetch_path);
+  int x_offset;
+  if(longest_line < width) x_offset = -width/2;
+  else x_offset = -longest_line/2;
   FILE * file = fopen(fetch_path, "r");
-  free(fetch_path);
 
   int entries = 0;
   char line[256] = {'\0'};
   while(fgets(line, sizeof(line), file)){
     entries++;
   }
-  rewind(file);
-
-  int line_num = 0;
-  int first_flag = 0;
-  int latter_half = 0;
-  int sleep_flag = 0;
-  struct timespec next_frame;
-  clock_gettime(CLOCK_MONOTONIC, &next_frame);
-  while(fgets(line, sizeof(line), file)){
-
-    latter_half = 0;
-
-    if (line_num != 1){
-      attron(COLOR_PAIR(_state->bg_c));
-      if(bg_c_bold) attron(A_BOLD);
-    } else {
-      attron(COLOR_PAIR(_state->fg_c));
-      if(fg_c_bold) attron(A_BOLD);
-    }
-
-    for(int i = 0; i < (int)strlen(line); i++){
-
-      if(line[i] == '@' && line_num == 0){
-        attron(COLOR_PAIR(_state->fg_c));
-        if(fg_c_bold) attron(A_BOLD);
-        first_flag = 1;
-      }
-
-      if(latter_half && line[i] == ')'){
-        attroff(COLOR_PAIR(blue));
-        attron(COLOR_PAIR(_state->fg_c));
-        if(fg_c_bold) attron(A_BOLD);
-      }
-
-      mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
-
-      if(first_flag){
-        attroff(COLOR_PAIR(_state->bg_c));
-        attroff(A_BOLD);
-        attron(COLOR_PAIR(_state->bg_c));
-        if(bg_c_bold) attron(A_BOLD);
-        first_flag--;
-      }
-
-      if(latter_half && line[i] == '('){
-        attroff(COLOR_PAIR(_state->fg_c));
-        attroff(A_BOLD);
-        attron(COLOR_PAIR(blue));
-      }
-
-      if(line[i] == ':'){
-        latter_half = 1;
-        attroff(COLOR_PAIR(_state->bg_c));
-        attroff(A_BOLD);
-        attron(COLOR_PAIR(_state->fg_c));
-        if(fg_c_bold) attron(A_BOLD);
-      }
-      refresh();
-    }
-    if(sleep_flag > 1){
-      _fps_sleep(&next_frame);
-      sleep_flag = 0;
-    } else {
-      sleep_flag++;
-    }
-    int input_flag = 0;
-    char input =  getch();
-    if(input == 'q' || input == 27 || _input_is_fetch(input)) {
-      fclose(file);
-      animate(start_animation);
-      return;
-    } else {
-      int result = _key(input);
-      if(result > 0) {
-        fclose(file);
-        return;
-      }
-    }
-    attroff(COLOR_PAIR(_state->bg_c));
-    attroff(COLOR_PAIR(_state->fg_c));
-    attroff(A_BOLD);
-    line_num++;
-  }
-
   fclose(file);
 
-  refresh();
+  int a = _state->fg_c;
+  int b = _state->bg_c;
+  int c = _state->hd_c;
+  _print_fetch(fetch_path, entries, false, a, b, c);
+  _fg_offset(fg, 0, x_offset);
+  _bg_offset(0, 0, x_offset);
+  _hd_offset(0, x_offset);
 
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
   char input;
   int input_flag = 0;
   while(1){
+
+    if(_state->fx != nofx) {
+      _affect(_state->fx, 0, x_offset);
+//    int result = _print_fetch(fetch_path, entries, false, a, b, c);
+//    if(result) {
+//      free(fetch_path);
+//      return;
+//    }
+    }
 
     input =  getch();
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127 || input == 27){
       if(input == 'q' || input == 27 || _input_is_fetch(input)) {
         _state->key_lock = 0;
         animate(start_animation);
+        free(fetch_path);
+        _state->key_lock = 0;
         return;
       }
       input_flag++;
@@ -1434,6 +1368,7 @@ void _fetch(){
 
     _get_dims();
     if(_resized()) {
+      free(fetch_path);
       _fetch();
       return;
     }
@@ -1447,6 +1382,7 @@ void _fetch(){
   } else if (input_flag == 1 && result == 0 ) {
     animate(start_animation);
   }
+  free(fetch_path);
 }
 
 void _a_all(){
@@ -1895,6 +1831,96 @@ void _mega_static(Arg reverse){
     }
   }
   _none((Arg){.x = 0});
+}
+
+int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, int hd_c){
+
+  FILE * file = fopen(fetch_path, "r");
+
+  char line[256] = {'\0'};
+  int latter_half = 0;
+  int line_num = 0;
+  int first_flag = 0;
+  int sleep_flag = 0;
+  struct timespec next_frame;
+  clock_gettime(CLOCK_MONOTONIC, &next_frame);
+  while(fgets(line, sizeof(line), file)){
+
+    latter_half = 0;
+
+    if (line_num != 1){
+      attron(COLOR_PAIR(bg_c));
+      if(bg_c_bold) attron(A_BOLD);
+    } else {
+      attron(COLOR_PAIR(fg_c));
+      if(fg_c_bold) attron(A_BOLD);
+    }
+
+    for(int i = 0; i < (int)strlen(line); i++){
+
+      if(line[i] == '@' && line_num == 0){
+        attron(COLOR_PAIR(fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+        first_flag = 1;
+      }
+
+      if(latter_half && line[i] == ')'){
+        attroff(COLOR_PAIR(blue));
+        attron(COLOR_PAIR(fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+      }
+
+      mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
+
+      if(first_flag){
+        attroff(COLOR_PAIR(bg_c));
+        attroff(A_BOLD);
+        attron(COLOR_PAIR(bg_c));
+        if(bg_c_bold) attron(A_BOLD);
+        first_flag--;
+      }
+
+      if(latter_half && line[i] == '('){
+        attroff(COLOR_PAIR(fg_c));
+        attroff(A_BOLD);
+        attron(COLOR_PAIR(blue));
+      }
+
+      if(line[i] == ':'){
+        latter_half = 1;
+        attroff(COLOR_PAIR(bg_c));
+        attroff(A_BOLD);
+        attron(COLOR_PAIR(fg_c));
+        if(fg_c_bold) attron(A_BOLD);
+      }
+      refresh();
+    }
+    if(sleep_flag > 1){
+      if(wait) _fps_sleep(&next_frame);
+      sleep_flag = 0;
+    } else {
+      sleep_flag++;
+    }
+    int input_flag = 0;
+    char input =  getch();
+    if(input == 'q' || input == 27 || _input_is_fetch(input)) {
+      fclose(file);
+      animate(start_animation);
+      return 1;
+    } else {
+      int result = _key(input);
+      if(result > 0) {
+        fclose(file);
+        return 1;
+      }
+    }
+    attroff(COLOR_PAIR(bg_c));
+    attroff(COLOR_PAIR(fg_c));
+    attroff(A_BOLD);
+    line_num++;
+  }
+  fclose(file);
+  return 0;
 }
 
 void if_ascend(animation option){

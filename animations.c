@@ -1322,7 +1322,7 @@ void _glint(fx mode, int offset_y, int offset_x) {
 
 void _affect(int offset_y, int offset_x){
 
-  if(_state->partx_fx != nofx && _state->t_cols > 2) partfx_if_set();
+  if(_state->partx_fx != nofx && _state->t_cols > 2) partfx_if_set(offset_y, offset_x);
   if(_state->glint_fx != nofx){
     if(_state->holo) _affect_holo();
     _glint(_state->glint_fx, offset_y, offset_x);
@@ -1423,11 +1423,9 @@ void _fetch(){
 
     if(_state->glint_fx != nofx) {
       _affect(NO_OFFSET, x_offset);
-//    int result = _print_fetch(fetch_path, entries, false, a, b, c);
-//    if(result) {
-//      free(fetch_path);
-//      return;
-//    }
+      if(_state->partx_fx != nofx){
+        _print_fetch(fetch_path, entries, false, a, b, c);
+      }
     }
 
     input = getch();
@@ -2100,7 +2098,7 @@ void _partix(int home, int mini, int more, int lingering, int rising){
   int intensity = 0;
   int count = 0;
   for(int i = 0; i < lazer_count; i++){
-    clear();
+    //clear();
     y = rand() % _state->t_rows;
     x = rand() % (lazarr_len);
     intensity = rand() % 3 + 1;
@@ -2363,7 +2361,7 @@ int _inc_partix_frame(int rows,
   return count;
 }
 
-void partfx_if_set(){
+void partfx_if_set(int offset_y, int offset_x){
 
   if(_state->partx_fx == nofx && _state->partfx_state != NULL) {
     free(_state->partfx_state);
@@ -2380,7 +2378,9 @@ void partfx_if_set(){
   _partfx(_state->partfx_args->mini,
           _state->partfx_args->more,
           _state->partfx_args->rising,
-          &(_state->partfx_args->finish_flag));
+          &(_state->partfx_args->finish_flag),
+          offset_y,
+          offset_x);
 }
 
 void _realloc_partfx_state(){
@@ -2393,16 +2393,11 @@ void _realloc_partfx_state(){
   if(_state->t_cols < 3) return;
 
   // Extra row for data layer
-//size_t size = (_state->t_rows + 1) * _state->t_cols * sizeof(int);
   _state->partfx_state = calloc(_state->t_rows + 1, _state->t_cols * sizeof(int));
   _state->partfx_args  = malloc(sizeof(*_state->partfx_args));
   memset(_state->partfx_args, 0, sizeof(partfx_args));
 
   int (*array)[_state->t_cols] = (void*)_state->partfx_state;
-
-  //char err[128];
-  //sprintf(err, "%d %d", _state->t_rows, _state->t_cols);
-  //crit(err);
 
   _transcode_partfx_args(_state->partx_fx);
 
@@ -2449,7 +2444,7 @@ void _transcode_partfx_args(fx partx_fx){
   _state->partfx_args->finish_flag = 0;
 }
 
-void _partfx(int mini, int more, int rising, int * finish_flag){
+void _partfx(int mini, int more, int rising, int * finish_flag, int offset_y, int offset_x){
   clear();
 
   int (*array)[_state->t_cols] = (void*)_state->partfx_state;
@@ -2487,4 +2482,8 @@ void _partfx(int mini, int more, int rising, int * finish_flag){
                                                ch,
                                                array[_state->t_rows][0],
                                                finish_flag);
+
+  if(_state->glint_fx == nofx || _state->glint_fx == glint_b) _fg_offset(fg, offset_y, offset_x);
+  if(_state->glint_fx == nofx || _state->glint_fx == glint_f) _bg_offset(0, offset_y, offset_x);
+  _hd(offset_y, offset_x);
 }

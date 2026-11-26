@@ -143,7 +143,6 @@ void _pixel_fill();
 void holo_if_set();
 void _init_partfx();
 void _affect_holo();
-void partfx_if_set();
 void _neon_reverse();
 void _shutter_slide();
 void _waves(Arg full);
@@ -165,15 +164,16 @@ void _print_confirm_selection(int selection);
 void _fps_sleep(struct timespec * next_frame);
 void glint_if_set(int offset_y, int offset_x);
 void _overlay(const char * glyph[], char fill);
+void partfx_if_set(int offset_y, int offset_x);
 void _glint(fx mode, int offset_y, int offset_x);
 void _bg_offset(char ch, int offset_y, int offset_x);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
 void _partix(int home, int mini, int more, int lingering, int rising);
-void _partfx(int mini, int more, int rising, int * finish_flag);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);
 int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, int hd_c);
+void _partfx(int mini, int more, int rising, int * finish_flag, int offset_y, int offset_x);
 int _inc_partix_frame(int rows, int cols, int lazarr[rows][cols], int rising, wchar_t wc[], char ch, int count, int* finish_flag);
 #endif
 

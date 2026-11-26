@@ -1083,9 +1083,10 @@ int roll(int sides){
 
 void _toggle_holo(){
   if(_state->holo == 0){
+    _set_prev_colors();
     _state->holo = 1;
   } else {
-    reset_colors();
+    _restore_prev_colors();
     _state->holo = 0;
   }
 }
@@ -1787,6 +1788,9 @@ void _init_state(){
   _state->fg_c              = fg_c;               /* implemented */
   _state->bg_c              = bg_c;               /* implemented */
   _state->hd_c              = hd_c;               /* implemented */
+  _state->prev_fg_c         = fg_c;               /* implemented */
+  _state->prev_bg_c         = bg_c;               /* implemented */
+  _state->prev_hd_c         = hd_c;               /* implemented */
   _state->holo              = holographic;        /* implemented */
   if(rand_c) _so_random();
   _state->hold_char_time    = 0.00001;            /* implemented */
@@ -2105,4 +2109,16 @@ int _longest_string_in_file(char * path){
   }
   fclose(fp);
   return len;
+}
+
+void _set_prev_colors(){
+  _state->prev_fg_c = _state->fg_c;
+  _state->prev_bg_c = _state->bg_c;
+  _state->prev_hd_c = _state->hd_c;
+}
+
+void _restore_prev_colors(){
+  _state->fg_c = _state->prev_fg_c;
+  _state->bg_c = _state->prev_bg_c;
+  _state->hd_c = _state->prev_hd_c;
 }

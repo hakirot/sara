@@ -242,6 +242,10 @@ typedef struct {
   int bg_c;
   int hd_c;
 
+  int prev_fg_c;
+  int prev_bg_c;
+  int prev_hd_c;
+
   int show_colors;
   int interrupt;
   bool preflight_check;

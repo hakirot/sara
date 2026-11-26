@@ -241,6 +241,7 @@ typedef struct {
   int mini;
   int more;
   int rising;
+  int finish_flag;
 } partfx_args;
 
 typedef struct {

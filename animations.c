@@ -1322,7 +1322,7 @@ void _glint(fx mode, int offset_y, int offset_x) {
 
 void _affect(int offset_y, int offset_x){
 
-  if(_state->partx_fx != nofx) partfx_if_set();
+  if(_state->partx_fx != nofx && _state->t_cols > 2) partfx_if_set();
   if(_state->glint_fx != nofx){
     if(_state->holo) _affect_holo();
     _glint(_state->glint_fx, offset_y, offset_x);
@@ -2379,7 +2379,8 @@ void partfx_if_set(){
 
   _partfx(_state->partfx_args->mini,
           _state->partfx_args->more,
-          _state->partfx_args->rising);
+          _state->partfx_args->rising,
+          &(_state->partfx_args->finish_flag));
 }
 
 void _realloc_partfx_state(){
@@ -2389,6 +2390,8 @@ void _realloc_partfx_state(){
   _state->partfx_state = NULL;
   _state->partfx_args  = NULL;
 
+  if(_state->t_cols < 3) return;
+
   // Extra row for data layer
 //size_t size = (_state->t_rows + 1) * _state->t_cols * sizeof(int);
   _state->partfx_state = calloc(_state->t_rows + 1, _state->t_cols * sizeof(int));
@@ -2396,10 +2399,31 @@ void _realloc_partfx_state(){
   memset(_state->partfx_args, 0, sizeof(partfx_args));
 
   int (*array)[_state->t_cols] = (void*)_state->partfx_state;
-  array[_state->t_rows][0] = 55;
+
+  //char err[128];
+  //sprintf(err, "%d %d", _state->t_rows, _state->t_cols);
+  //crit(err);
 
   _transcode_partfx_args(_state->partx_fx);
 
+  float count_scaler = .002;
+  if(_state->partfx_args->more) count_scaler = .006;
+  int total = _state->t_rows * _state->t_cols * count_scaler;
+  if(total < 4) total = 3;
+//int x = 0;
+//int y = 0;
+//int intensity = 0;
+  int count = 0;
+//for(int i = 0; i < total; i++){
+//  clear(); // erm
+//  y = rand() % _state->t_rows;
+//  x = rand() % (_state->t_cols);
+//  intensity = rand() % 3 + 1;
+//  if(array[y][x] == 0) count++;
+//  array[y][x] = intensity;
+//}
+  array[_state->t_rows][0] = count;
+  array[_state->t_rows][1] = total;
 }
 
 void _transcode_partfx_args(fx partx_fx){
@@ -2421,8 +2445,46 @@ void _transcode_partfx_args(fx partx_fx){
      partx_fx == partfx_t_r ||
      partx_fx == partfx_m_t_r) _state->partfx_args->rising = 1;
   else                         _state->partfx_args->rising = 0;
+
+  _state->partfx_args->finish_flag = 0;
 }
 
-void _partfx(int mini, int more, int rising){
+void _partfx(int mini, int more, int rising, int * finish_flag){
+  clear();
 
+  int (*array)[_state->t_cols] = (void*)_state->partfx_state;
+
+                     /* count < total */
+  if(array[_state->t_rows][0] < array[_state->t_rows][1]) {
+    if(rand() % _state->t_cols == 0){
+      int x = rand() % (_state->t_cols);
+      int intensity = rand() % 3 + 1;
+      if(_state->partfx_args->rising){
+        if(array[_state->t_rows-1][x] == 0) array[_state->t_rows][0]++;
+        array[_state->t_rows-1][x] = intensity;
+      } else {
+        if(array[0][x] == 0) array[_state->t_rows][0]++;
+        array[0][x] = intensity;
+      }
+    }
+  }
+
+  wchar_t wc[2] = { L'\u2588', L'\0' };
+  cchar_t cchar;
+  setcchar(&cchar, wc, 0, 0, NULL);
+  char ch = '|';
+
+  if(mini == 0){
+    wc[0] = L'|';
+    ch = '.';
+  }
+
+  array[_state->t_rows][0] = _inc_partix_frame(_state->t_rows,
+                                               _state->t_cols,
+                                               array,
+                                               rising,
+                                               wc,
+                                               ch,
+                                               array[_state->t_rows][0],
+                                               finish_flag);
 }

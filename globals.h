@@ -269,6 +269,7 @@ typedef struct {
   int reprint;
   char ** fg_state;
   char ** bg_state;
+  int  ** partfx_state;
 } state;
 
 typedef struct Menu Menu;

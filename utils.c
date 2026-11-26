@@ -1843,6 +1843,8 @@ void _init_state(){
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
 
+  _state->partfx_state      = NULL;
+
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     _state->fg_state[i] = (char*)malloc(FG_GLYPH_LENGTH * sizeof(char));
   }

@@ -1326,7 +1326,7 @@ void _affect(int offset_y, int offset_x){
     if(_state->holo) _affect_holo();
     _glint(_state->glint_fx, offset_y, offset_x);
   }
-  partfx_if_set();
+  if(_state->partx_fx != nofx) partfx_if_set();
 }
 
 void glint_if_set(int offset_y, int offset_x){
@@ -2365,4 +2365,20 @@ int _inc_partix_frame(int rows,
 
 void partfx_if_set(){
 
+  if(_state->partx_fx == nofx) return;
+
+  if(_state->partfx_state == NULL){
+    _init_partfx();
+  }
+}
+
+void _init_partfx(){
+  // allocate
+
+  // how to get this into _state struct
+  //int (*array)[_state->t_cols] = malloc(_state->t_rows * sizeof(*array));
+
+  // decode _state->partx_fx
+
+  // set state struct partx args
 }

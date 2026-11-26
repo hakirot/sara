@@ -141,6 +141,7 @@ void _tv_static();
 void _down_wipes();
 void _pixel_fill();
 void holo_if_set();
+void _init_partfx();
 void _affect_holo();
 void partfx_if_set();
 void _neon_reverse();

@@ -2390,13 +2390,16 @@ void _realloc_partfx_state(){
   _state->partfx_args  = NULL;
 
   // Extra row for data layer
-  int size = _state->t_rows + 1 * _state->t_cols * sizeof(int);
-  _state->partfx_state = malloc(size);
-  _state->partfx_args  = malloc(sizeof(partfx_args));
-  memset(_state->partfx_state, 0, sizeof(size));
+//size_t size = (_state->t_rows + 1) * _state->t_cols * sizeof(int);
+  _state->partfx_state = calloc(_state->t_rows + 1, _state->t_cols * sizeof(int));
+  _state->partfx_args  = malloc(sizeof(*_state->partfx_args));
   memset(_state->partfx_args, 0, sizeof(partfx_args));
 
+  int (*array)[_state->t_cols] = (void*)_state->partfx_state;
+  array[_state->t_rows][0] = 55;
+
   _transcode_partfx_args(_state->partx_fx);
+
 }
 
 void _transcode_partfx_args(fx partx_fx){

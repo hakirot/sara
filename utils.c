@@ -1927,7 +1927,10 @@ void _get_dims(){
 
 int _resized(){
   int ret_val = 0;
-  if(_state->t_cache != _state->t_rows + _state->t_cols) ret_val = 1;
+  if(_state->t_cache != _state->t_rows + _state->t_cols) {
+    ret_val = 1;
+    if(_state->partx_fx != nofx) _realloc_partfx_state();
+  }
   else ret_val = 0;
 
   _state->t_cache = _state->t_rows + _state->t_cols;

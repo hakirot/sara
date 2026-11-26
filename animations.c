@@ -1333,7 +1333,11 @@ void _fetch(){
   int a = fg_c;
   int b = bg_c;
   int c = hd_c;
-  _print_fetch(fetch_path, entries, true, a, b, c);
+  int result = _print_fetch(fetch_path, entries, true, a, b, c);
+  if(result) {
+    free(fetch_path);
+    return;
+  }
   _fg_offset(fg, 0, x_offset);
   _bg_offset(0, 0, x_offset);
   _hd_offset(0, x_offset);
@@ -1353,7 +1357,7 @@ void _fetch(){
 //    }
     }
 
-    input =  getch();
+    input = getch();
     if (input != ERR && input != '\n' && input != EOF && input > 31 && input < 127 || input == 27){
       if(input == 'q' || input == 27 || _input_is_fetch(input)) {
         _state->key_lock = 0;
@@ -1376,7 +1380,7 @@ void _fetch(){
     _fps_sleep(&next_frame);
   }
 
-  int result = _key(input);
+  result = _key(input);
   if(result == 1){
     animate(start_animation);
   } else if (input_flag == 1 && result == 0 ) {
@@ -1911,7 +1915,7 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
       int result = _key(input);
       if(result > 0) {
         fclose(file);
-        return 1;
+        return result;
       }
     }
     attroff(COLOR_PAIR(bg_c));

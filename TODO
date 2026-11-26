@@ -1,5 +1,8 @@
 bugs/issues
   - split release and dev make targets (remove memory debug flags)
+  - Remove holo as a standalone effect
+  - particle fx effect and function abstraction
+  - reduce glint builtins to single cycle for each
 
 -- 0.9.5 Patch notes --
   - remove all sleep() calls and globally implement 60fps

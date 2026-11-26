@@ -2183,11 +2183,12 @@ void _partix(int home, int mini, int more, int lingering, int rising){
         }
       }
       if(home != NO_TRAVEL) offset--;
-    } else if (frames > 15){
-      if(home != GO_HOME && home != GO_AWAY) {
+    } 
+
+    if (frames > 15){
+      if(home != GO_AWAY) {
         if(_state->glint_fx == nofx || _state->glint_fx == glint_b) _fg_offset(fg, 0, 0);
         if(_state->glint_fx == nofx || _state->glint_fx == glint_f) _bg_offset(0, 0, 0);
-      //if(lingering != LINGER)_hd(offset, 0);
         _hd(0, 0);
         glint_if_set(0, 0);
       }

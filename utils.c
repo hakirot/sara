@@ -955,7 +955,7 @@ int is_char_in_search(wchar_t wc, const wchar_t * search_str) {
 
 /* 0 if no-op */
 /* 1 if created cache_file */
-/* CRIT if ERR */
+/* CRIT on ERR */
 int ensure_cache_dir(){
   int EXIT_VAL = 0;
   const char *env_home = getenv("HOME");
@@ -975,8 +975,8 @@ int ensure_cache_dir(){
     if (status != 0) {
       char error_str[256] = {'\0'};
       sprintf(error_str, "%s%s" , "Error creating directory ", dir_name);
-      crit(error_str);
-      EXIT_VAL = 2; /* CRIT */
+      crit(error_str); /* CRIT */
+      EXIT_VAL = 2;
     }
     EXIT_VAL = 1;
   }
@@ -1375,12 +1375,13 @@ void _run_menu(){
       _state->key_lock = 0;
       if(result == 0) animate(start_animation);
       else animate(glitch_full);
-      _state->key_lock = 0;
       break;
     } else if (input == 32){
       // space
       if(strlen(selection) != 0) {
+        _state->key_lock = 1;
         int ret_val = _run_args(offset_y, offset_x, selection);
+        _state->key_lock = 0;
         if (ret_val == 0){
           animate(start_animation);
         }

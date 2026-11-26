@@ -124,8 +124,7 @@
 #define NO_LINGER     0
 #define RISE          1
 #define FALL          0
-
-int _inc_partix_frame(int rows, int cols, int lazarr[rows][cols], int rising, wchar_t wc[], char ch, int count, int* finish_flag);
+#define NO_OFFSET     0
 
 void _bg();
 void _neon();
@@ -141,7 +140,9 @@ void tinyprint();
 void _tv_static();
 void _down_wipes();
 void _pixel_fill();
+void holo_if_set();
 void _affect_holo();
+void partfx_if_set();
 void _neon_reverse();
 void _shutter_slide();
 void _waves(Arg full);
@@ -156,12 +157,11 @@ void _fg(const char * glyph[]);
 void animate(animation option);
 void if_partix(animation option);
 void _shift_arr(int arr[], int size);
+void _affect(int offset_y, int offset_x);
 void _print_confirm_selection(int selection);
-void holo_if_set(int offset_y, int offset_x);
 void _fps_sleep(struct timespec * next_frame);
 void glint_if_set(int offset_y, int offset_x);
 void _overlay(const char * glyph[], char fill);
-void _affect(int fx, int offset_y, int offset_x);
 void _glint(fx mode, int offset_y, int offset_x);
 void _bg_offset(char ch, int offset_y, int offset_x);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
@@ -170,5 +170,6 @@ void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
 void _partix(int home, int mini, int more, int lingering, int rising);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);
 int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, int hd_c);
-
+int _inc_partix_frame(int rows, int cols, int lazarr[rows][cols], int rising, wchar_t wc[], char ch, int count, int* finish_flag);
 #endif
+

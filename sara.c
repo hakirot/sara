@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 
     if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) _state->reprint = true;
 
-    if(_state->glint_fx != nofx) _affect(_state->glint_fx, 0, 0);
+    if(_state->glint_fx != nofx) _affect(NO_OFFSET, NO_OFFSET);
 
     // print only once after the _state->hold_char flips back to EOF and _state->hold_char_time is exceeded
     if (result == 0 && _state->reprint == true && _state->hold_char == '\0'){
@@ -118,21 +118,21 @@ screen_size get_win_size(){
 }
 
 int input_color(char * arg){
-  if (strcmp(arg, "black") == 0) {
+  if (strcmp(       arg, "black")   == 0) {
       return 1;
-  } else if (strcmp(arg, "red") == 0) {
+  } else if (strcmp(arg, "red")     == 0) {
       return 2;
-  } else if (strcmp(arg, "green") == 0) {
+  } else if (strcmp(arg, "green")   == 0) {
       return 3;
-  } else if (strcmp(arg, "yellow") == 0) {
+  } else if (strcmp(arg, "yellow")  == 0) {
       return 4;
-  } else if (strcmp(arg, "blue") == 0) {
+  } else if (strcmp(arg, "blue")    == 0) {
       return 5;
   } else if (strcmp(arg, "magenta") == 0) {
       return 6;
-  } else if (strcmp(arg, "cyan") == 0) {
+  } else if (strcmp(arg, "cyan")    == 0) {
       return 7;
-  } else if (strcmp(arg, "white") == 0) {
+  } else if (strcmp(arg, "white")   == 0) {
       return 8;
   } else {
       char err[128];
@@ -312,7 +312,7 @@ void _pshd(){
       while(1){ // FIND
 
         if(_state->glint_fx != nofx) {
-          _affect(_state->glint_fx, 0, 0);
+          _affect(0, 0);
           refresh_filter_ui   = true;
           refresh_filter_body = true;
         }
@@ -496,7 +496,7 @@ void _pshd(){
     if(reprint || _state->glint_fx != nofx){
       _clear_menu(dim_y, dim_x, offset_y, offset_x);
       if(_state->glint_fx != nofx) {
-        _affect(_state->glint_fx, 0, 0);
+        _affect(0, 0);
         _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
       }
       _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, entries);

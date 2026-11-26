@@ -144,7 +144,7 @@ int _get_confirm(const Command * command){
     }
 
     if(_state->glint_fx != nofx) {
-       _affect(_state->glint_fx, 0, 0);
+       _affect(0, 0);
        _print_confirm_window();
     }
     _print_confirm_selection(selection);
@@ -441,7 +441,7 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
   if(_state->win_size == t_tiny) clear();
 
   if(_state->glint_fx != nofx){
-    _affect(_state->glint_fx, 0, 0);
+    _affect(0, 0);
     _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
   } else {
     _clear_menu(dim_y, dim_x, offset_y, offset_x);
@@ -1322,7 +1322,7 @@ void _run_menu(){
   while(1){
 
     if(_state->glint_fx != nofx){
-      _affect(_state->glint_fx, 0, 0);
+      _affect(0, 0);
       refresh_ui = true;
     }
 
@@ -1557,7 +1557,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
   while(1){
 
     if(_state->glint_fx != nofx){
-      _affect(_state->glint_fx, 0, 0);
+      _affect(0, 0);
       refresh_ui = true;
     }
 

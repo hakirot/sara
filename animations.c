@@ -533,7 +533,7 @@ void _shutter_slide(){
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(_state->fg_c));
-  animate(none);
+  _none((Arg){.x = 0});
   return;
 };
 
@@ -1320,14 +1320,13 @@ void _glint(fx mode, int offset_y, int offset_x) {
   // no refresh() for _affect() functions
 }
 
-void _affect(int fx, int offset_y, int offset_x){
+void _affect(int offset_y, int offset_x){
 
-  if(fx == glint_f ||
-     fx == glint_b ||
-     fx == glint_a){
+  if(_state->glint_fx != nofx){
     if(_state->holo) _affect_holo();
-    _glint(fx, offset_y, offset_x);
+    _glint(_state->glint_fx, offset_y, offset_x);
   }
+  partfx_if_set();
 }
 
 void glint_if_set(int offset_y, int offset_x){
@@ -1336,7 +1335,7 @@ void glint_if_set(int offset_y, int offset_x){
   }
 }
 
-void holo_if_set(int offset_y, int offset_x){
+void holo_if_set(){
   if(_state->holo){
     _affect_holo();
   }
@@ -1423,7 +1422,7 @@ void _fetch(){
   while(1){
 
     if(_state->glint_fx != nofx) {
-      _affect(_state->glint_fx, 0, x_offset);
+      _affect(NO_OFFSET, x_offset);
 //    int result = _print_fetch(fetch_path, entries, false, a, b, c);
 //    if(result) {
 //      free(fetch_path);
@@ -1705,7 +1704,7 @@ void _waves(Arg full){
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
         if(_state->glint_fx == glint_a || _state->glint_fx == glint_b){
           attroff(COLOR_PAIR(_state->bg_c));
-          _affect(_state->glint_fx, 0, 0);
+          _affect(0, 0);
           attron(COLOR_PAIR(_state->bg_c));
         } else if(_state->holo){
           attroff(COLOR_PAIR(_state->bg_c));
@@ -1745,7 +1744,7 @@ void _waves(Arg full){
     } else {
       if(_state->glint_fx == glint_a || _state->glint_fx == glint_b){
         if(_state->holo) _affect_holo();
-        _affect(_state->glint_fx, 0, 0);
+        _affect(0, 0);
       } else {
         _bg();
       }
@@ -1820,7 +1819,7 @@ void _multiply(){
   while(frames < total_frames){
 
     if(_state->glint_fx != nofx){
-      _affect(_state->glint_fx, 0, 0);
+      _affect(0, 0);
     } else if(_state->holo) {
       _affect_holo();
     }
@@ -1875,7 +1874,7 @@ void _mega_static(Arg reverse){
 
     for(int i = 0; i < count; i++){
       if(_state->glint_fx != nofx){
-        _affect(_state->glint_fx, 0, 0);
+        _affect(0, 0);
       } else if(_state->holo) {
         _affect_holo();
       }
@@ -2152,7 +2151,7 @@ void _partix(int home, int mini, int more, int lingering, int rising){
   while(frames < total_frames || finish_flag != 0){
     clear();
 
-    if(_state->glint_fx != nofx) holo_if_set(offset, 0);
+    if(_state->glint_fx != nofx) holo_if_set();
     count = _inc_partix_frame(_state->t_rows,
                                     lazarr_len,
                                     lazarr,
@@ -2362,4 +2361,8 @@ int _inc_partix_frame(int rows,
     }
   }
   return count;
+}
+
+void partfx_if_set(){
+
 }

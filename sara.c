@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 
     if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) _state->reprint = true;
 
-    if(_state->fx != nofx || _state->holo == 1) _affect(_state->fx, 0, 0);
+    if(_state->fx != nofx) _affect(_state->fx, 0, 0);
 
     // print only once after the _state->hold_char flips back to EOF and _state->hold_char_time is exceeded
     if (result == 0 && _state->reprint == true && _state->hold_char == '\0'){

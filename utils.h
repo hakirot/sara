@@ -29,7 +29,7 @@ void _so_random();
 char* _run_fetch();
 void _init_state();
 int  _slap_timer();
-void _toggle_rave();
+void _toggle_holo();
 void reset_colors();
 void _show_colors();
 void special_chars();

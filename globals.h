@@ -185,9 +185,9 @@ typedef struct {
 typedef enum {
   pshd,
   quit,
-  randomize_colors,
+  rand_colors,
   invert_colors,
-  rave,
+  toggle_holo,
   colors,
   path_run,
   pwd,

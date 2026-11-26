@@ -1248,10 +1248,10 @@ void _glint(fx mode, int offset_y, int offset_x) {
 
 void _affect(int fx, int offset_y, int offset_x){
 
-  if(_state->holo) _affect_holo();
   if(fx == glint_f ||
      fx == glint_b ||
      fx == glint_a){
+    if(_state->holo) _affect_holo();
     _glint(fx, offset_y, offset_x);
   }
 }

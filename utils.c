@@ -267,11 +267,11 @@ void __builtin__(char input){
     _quit(0);
   } else if (selection == pshd){
     _pshd();
-  } else if (selection == rave){
-    _toggle_rave();
+  } else if (selection == toggle_holo){
+    _toggle_holo();
   } else if (selection == invert_colors){
     _invert_colors();
-  } else if (selection == randomize_colors){
+  } else if (selection == rand_colors){
     _randomize_colors();
   } else if (selection == path_run){
     _path_run();
@@ -284,19 +284,14 @@ void __builtin__(char input){
       _state->fx = 0;
       _reset_glyph_state();
     }
-    else {
-      reset_colors();
-      _state->fx = glint_f;
-    }
+    else _state->fx = glint_f;
   } else if (selection == fx_glint_b){
     if (_state->fx == glint_b) {
       _state->fx = 0;
       _reset_glyph_state();
     }
-    else  {
-      reset_colors();
-      _state->fx = glint_b;
-    }
+    else _state->fx = glint_b;
+
   } else if (selection == fx_glint_a){
     if (_state->fx == glint_a) {
       _state->fx = 0;
@@ -1086,7 +1081,7 @@ int roll(int sides){
   return rand() % sides + 1;
 }
 
-void _toggle_rave(){
+void _toggle_holo(){
   if(_state->holo == 0){
     _state->holo = 1;
   } else {

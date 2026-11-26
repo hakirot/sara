@@ -183,9 +183,9 @@ static const Command commandkeys[] = {
 
 /* BUILTIN FUNCTION CONFIG */
 static const Builtin builtinkeys[] = {
-  { 'I', randomize_colors },
+  { 'I', rand_colors },
   { 'i', invert_colors },
-  { 'H', rave },
+  { 'H', toggle_holo },
   { 'p', pshd },
   { 'q', quit },
   { 'C', colors },

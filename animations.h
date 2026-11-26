@@ -125,6 +125,8 @@
 #define RISE          1
 #define FALL          0
 
+int _inc_partix_frame(int rows, int cols, int lazarr[rows][cols], int rising, wchar_t wc[], char ch, int count, int* finish_flag);
+
 void _bg();
 void _neon();
 void _holo();

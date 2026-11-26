@@ -2129,7 +2129,6 @@ void _partix(int home, int mini, int more, int lingering, int rising){
   cchar_t cchar;
   setcchar(&cchar, wc, 0, 0, NULL);
   char ch = '|';
-  int color = 0;
 
   if(mini == 0){
     wc[0] = L'|';
@@ -2150,130 +2149,19 @@ void _partix(int home, int mini, int more, int lingering, int rising){
   } else if (home == NO_TRAVEL){
     offset      = 0;
   }
-  int current = 0;
   while(frames < total_frames || finish_flag != 0){
     clear();
 
-    holo_if_set(offset, 0);
+    if(_state->glint_fx != nofx) holo_if_set(offset, 0);
+    count = _inc_partix_frame(_state->t_rows,
+                                    lazarr_len,
+                                    lazarr,
+                                    rising,
+                                    wc,
+                                    ch,
+                                    count,
+                                    &finish_flag);
 
-    for(int i = 0; i < _state->t_rows; i++){
-      for(int j = 0; j < lazarr_len; j++){
-        if(lazarr[i][j] > 0){
-
-          current = lazarr[i][j];
-          lazarr[i][j] = 0;
-
-          if(_state->holo){
-            color = rand() % 6 + 2;
-          } else {
-            color = _state->fg_c;
-          }
-          attron(COLOR_PAIR(color));
-          if(fg_c_bold) attron(A_BOLD);
-
-          if(current == 1){
-            mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
-            if(i > 0 && rising){
-              if(lazarr[i-1][j] != 0) count--;
-              lazarr[i-1][j] = 1;
-            } else if (rising){
-              if(finish_flag != 2){
-                x = rand() % (lazarr_len);
-                lazarr[_state->t_rows - 1][x] = 1;
-              } else {
-                count--;
-                if(!count) finish_flag = 0;
-              }
-            } else if(i < _state->t_rows-1 && !rising){
-              if(lazarr[i+1][j] != 0) count--;
-              lazarr[i+1][j] = 4;
-            } else if (!rising){
-              if(finish_flag != 2){
-                x = rand() % (lazarr_len);
-                lazarr[0][x] = 1;
-              } else {
-                count--;
-                if(!count) finish_flag = 0;
-              }
-            }
-          } else if (current == 2) {
-            mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
-            if(rising){
-              mvaddch(i-1, _state->t_cols/2 - lazarr_len/2 + j, ch);
-              mvaddch(i-2, _state->t_cols/2 - lazarr_len/2 + j, ch);
-            } else {
-              mvaddch(i+1, _state->t_cols/2 - lazarr_len/2 + j, ch);
-              mvaddch(i+2, _state->t_cols/2 - lazarr_len/2 + j, ch);
-            }
-            if(i-2 > 0 && rising){
-              if(lazarr[i-2][j] != 0) count--;
-              lazarr[i-2][j] = 2;
-            } else if (rising) {
-              if(finish_flag != 2) {
-                x = rand() % (lazarr_len);
-                lazarr[_state->t_rows - 1][x] = 2;
-              } else {
-                count--;
-                if(!count) finish_flag = 0;
-              }
-            } else if (i+2 < _state->t_rows && !rising){
-              if(lazarr[i+2][j] != 0) count--;
-              lazarr[i+2][j] = 5;
-            } else if (!rising) {
-              if(finish_flag != 2) {
-                x = rand() % (lazarr_len);
-                lazarr[0][x] = 2;
-              } else {
-                count--;
-                if(!count) finish_flag = 0;
-              }
-            }
-          } else if (current ==  3 && rising){
-            cchar_t cchar;
-            setcchar(&cchar, wc, 0, 0, NULL);
-            mvadd_wch(i, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
-            mvadd_wch(i-1, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
-            mvadd_wch(i-2, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
-            if(i-3 > 0){
-              if(lazarr[i-3][j] != 0) count--;
-              lazarr[i-3][j] = 3;
-            } else {
-              if(finish_flag != 2) {
-                x = rand() % (lazarr_len);
-                lazarr[_state->t_rows - 1][x] = 3;
-              } else {
-                count--;
-                if(!count) finish_flag = 0;
-              }
-            }
-          } else if (current == 3 && !rising){
-            cchar_t cchar;
-            setcchar(&cchar, wc, 0, 0, NULL);
-            mvadd_wch(i, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
-            mvadd_wch(i+1, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
-            mvadd_wch(i+2, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
-            if(i+3 < _state->t_rows){
-              if(lazarr[i+3][j] != 0) count--;
-              lazarr[i+3][j] = 6;
-            } else {
-              if(finish_flag != 2) {
-                x = rand() % (lazarr_len);
-                lazarr[0][x] = 3;
-              } else {
-                count--;
-                if(!count) finish_flag = 0;
-              }
-            }
-          } else if (current > 3){
-            lazarr[i][j] = current - 3;
-          }
-          if(color){
-            attroff(COLOR_PAIR(color));
-          }
-          attroff(A_BOLD);
-        }
-      }
-    }
     if(!_state->holo) _restore_prev_colors();
     if (frames % 3 == 0 && frames < 15 && home != OMIT || home == NO_TRAVEL){
       if(_state->glint_fx == nofx){
@@ -2295,14 +2183,15 @@ void _partix(int home, int mini, int more, int lingering, int rising){
         }
       }
       if(home != NO_TRAVEL) offset--;
-    } else if (frames > 15 ){
-      if(_state->glint_fx == nofx || _state->glint_fx == glint_b) _fg_offset(fg, 0, 0);
-      if(_state->glint_fx == nofx || _state->glint_fx == glint_f) _bg_offset(0, 0, 0);
+    } else if (frames > 15){
+      if(home != GO_HOME && home != GO_AWAY) {
+        if(_state->glint_fx == nofx || _state->glint_fx == glint_b) _fg_offset(fg, 0, 0);
+        if(_state->glint_fx == nofx || _state->glint_fx == glint_f) _bg_offset(0, 0, 0);
       //if(lingering != LINGER)_hd(offset, 0);
-      _hd(0, 0);
-      if(_state->glint_fx != nofx){
-        _affect(_state->glint_fx, 0, 0);
+        _hd(0, 0);
+        glint_if_set(0, 0);
       }
+      refresh();
     }
 
     _get_dims();
@@ -2316,9 +2205,10 @@ void _partix(int home, int mini, int more, int lingering, int rising){
       int result = _key();
       if(result == 2) break;
     }
-      _fps_sleep(&next_frame);
-      //usleep(200000);
-      frames++;
+
+    _fps_sleep(&next_frame);
+    //usleep(200000);
+    frames++;
 
     if(frames > 90) break;
     if(frames == 15 && finish_flag == 1){
@@ -2337,4 +2227,138 @@ void _partix(int home, int mini, int more, int lingering, int rising){
   _state->holo = d;
 
   _none((Arg){.x = 0});
+}
+
+int _inc_partix_frame(int rows,
+                      int cols,
+                      int lazarr[rows][cols],
+                      int rising,
+                      wchar_t wc[],
+                      char ch,
+                      int count,
+                      int * finish_flag)
+{
+  int color = 0;
+  int current = 0;
+  int x;
+
+  for(int i = 0; i < rows; i++){
+    for(int j = 0; j < cols; j++){
+      if(lazarr[i][j] > 0){
+
+        current = lazarr[i][j];
+        lazarr[i][j] = 0;
+
+        if(_state->holo){
+          color = rand() % 6 + 2;
+        } else {
+          color = _state->fg_c;
+        }
+        attron(COLOR_PAIR(color));
+        if(fg_c_bold) attron(A_BOLD);
+
+        if(current == 1){
+          mvaddch(i, _state->t_cols/2 - cols/2 + j, ch);
+          if(i > 0 && rising){
+            if(lazarr[i-1][j] != 0) count--;
+            lazarr[i-1][j] = 1;
+          } else if (rising){
+            if(*finish_flag != 2){
+              x = rand() % (cols);
+              lazarr[rows - 1][x] = 1;
+            } else {
+              count--;
+              if(!count) *finish_flag = 0;
+            }
+          } else if(i < rows-1 && !rising){
+            if(lazarr[i+1][j] != 0) count--;
+            lazarr[i+1][j] = 4;
+          } else if (!rising){
+            if(*finish_flag != 2){
+              x = rand() % (cols);
+              lazarr[0][x] = 1;
+            } else {
+              count--;
+              if(!count) *finish_flag = 0;
+            }
+          }
+        } else if (current == 2) {
+          mvaddch(i, _state->t_cols/2 - cols/2 + j, ch);
+          if(rising){
+            mvaddch(i-1, _state->t_cols/2 - cols/2 + j, ch);
+            mvaddch(i-2, _state->t_cols/2 - cols/2 + j, ch);
+          } else {
+            mvaddch(i+1, _state->t_cols/2 - cols/2 + j, ch);
+            mvaddch(i+2, _state->t_cols/2 - cols/2 + j, ch);
+          }
+          if(i-2 > 0 && rising){
+            if(lazarr[i-2][j] != 0) count--;
+            lazarr[i-2][j] = 2;
+          } else if (rising) {
+            if(*finish_flag != 2) {
+              x = rand() % (cols);
+              lazarr[rows - 1][x] = 2;
+            } else {
+              count--;
+              if(!count) *finish_flag = 0;
+            }
+          } else if (i+2 < rows && !rising){
+            if(lazarr[i+2][j] != 0) count--;
+            lazarr[i+2][j] = 5;
+          } else if (!rising) {
+            if(*finish_flag != 2) {
+              x = rand() % (cols);
+              lazarr[0][x] = 2;
+            } else {
+              count--;
+              if(!count) *finish_flag = 0;
+            }
+          }
+        } else if (current ==  3 && rising){
+          cchar_t cchar;
+          setcchar(&cchar, wc, 0, 0, NULL);
+          mvadd_wch(i, _state->t_cols/2 - cols/2 + j, &cchar);
+          mvadd_wch(i-1, _state->t_cols/2 - cols/2 + j, &cchar);
+          mvadd_wch(i-2, _state->t_cols/2 - cols/2 + j, &cchar);
+          if(i-3 > 0){
+            if(lazarr[i-3][j] != 0) count--;
+            lazarr[i-3][j] = 3;
+          } else {
+            if(*finish_flag != 2) {
+              x = rand() % (cols);
+              lazarr[rows - 1][x] = 3;
+            } else {
+              count--;
+              if(!count) *finish_flag = 0;
+            }
+          }
+        } else if (current == 3 && !rising){
+          cchar_t cchar;
+          setcchar(&cchar, wc, 0, 0, NULL);
+          mvadd_wch(i, _state->t_cols/2 - cols/2 + j, &cchar);
+          mvadd_wch(i+1, _state->t_cols/2 - cols/2 + j, &cchar);
+          mvadd_wch(i+2, _state->t_cols/2 - cols/2 + j, &cchar);
+          if(i+3 < rows){
+            if(lazarr[i+3][j] != 0) count--;
+            lazarr[i+3][j] = 6;
+          } else {
+            if(*finish_flag != 2) {
+              x = rand() % (cols);
+              lazarr[0][x] = 3;
+            } else {
+              count--;
+              if(!count) *finish_flag = 0;
+            }
+          }
+        } else if (current > 3){
+          lazarr[i][j] = current - 3;
+        }
+        if(color){
+          attroff(COLOR_PAIR(color));
+        }
+        attroff(A_BOLD);
+      }
+    }
+  }
+  return count;
 }

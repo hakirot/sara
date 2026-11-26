@@ -40,7 +40,6 @@
 
 #define T               1
 #define F               0
-#define N               2
 
 #define KEY_ARRAY_SIZE  128
 

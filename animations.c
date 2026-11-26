@@ -25,7 +25,7 @@ void animate(animation option){
     return;
   }
 
-  if (option == none)                _none((Arg){0});
+  if (option == none)                     _none((Arg){0});
   else if (option == down_wipes)          _down_wipes();
   else if (option == glitch)              _glitch((Arg){.x = 0});
   else if (option == glitch_full)         _glitch((Arg){.x = 1});
@@ -1929,76 +1929,76 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
 
 void if_ascend(animation option){
 
-  if (option == ascend)                   _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m)            _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_h)            _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_h)          _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_t)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_h_t)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_t)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_h_t)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_n)            _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_n)          _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_t_n)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_t_n)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
+  if (option == ascend)                   _ascend(0, 0, 0, 0, 0);
+  else if (option == ascend_m)            _ascend(0, 1, 0, 0, 0);
+  else if (option == ascend_h)            _ascend(1, 0, 0, 0, 0);
+  else if (option == ascend_m_h)          _ascend(1, 1, 0, 0, 0);
+  else if (option == ascend_t)            _ascend(0, 0, 1, 0, 0);
+  else if (option == ascend_h_t)          _ascend(1, 0, 1, 0, 0);
+  else if (option == ascend_m_t)          _ascend(0, 1, 1, 0, 0);
+  else if (option == ascend_m_h_t)        _ascend(1, 1, 1, 0, 0);
+  else if (option == ascend_n)            _ascend(2, 0, 0, 0, 0);
+  else if (option == ascend_m_n)          _ascend(2, 1, 0, 0, 0);
+  else if (option == ascend_t_n)          _ascend(2, 0, 1, 0, 0);
+  else if (option == ascend_m_t_n)        _ascend(2, 1, 1, 0, 0);
 
-  else if (option == ascend_l)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_l)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_h_l)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_h_l)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t_l)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_h_t_l)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_t_l)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_h_t_l)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_n_l)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t_n_l)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_t_n_l)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_l)            _ascend(0, 0, 0, 1, 0);
+  else if (option == ascend_m_l)          _ascend(0, 1, 0, 1, 0);
+  else if (option == ascend_h_l)          _ascend(1, 0, 0, 1, 0);
+  else if (option == ascend_m_h_l)        _ascend(1, 1, 0, 1, 0);
+  else if (option == ascend_t_l)          _ascend(0, 0, 1, 1, 0);
+  else if (option == ascend_h_t_l)        _ascend(1, 0, 1, 1, 0);
+  else if (option == ascend_m_t_l)        _ascend(0, 1, 1, 1, 0);
+  else if (option == ascend_m_h_t_l)      _ascend(1, 1, 1, 1, 0);
+  else if (option == ascend_n_l)          _ascend(2, 0, 0, 1, 0);
+  else if (option == ascend_m_n_l)        _ascend(2, 1, 0, 1, 0);
+  else if (option == ascend_t_n_l)        _ascend(2, 0, 1, 1, 0);
+  else if (option == ascend_m_t_n_l)      _ascend(2, 1, 1, 1, 0);
 
-  else if (option == ascend_s)            _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_s)          _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_t_s)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_m_t_s)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0});
-  else if (option == ascend_l_s)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_l_s)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_t_l_s)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
-  else if (option == ascend_m_t_l_s)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0});
+  else if (option == ascend_s)            _ascend(3, 0, 0, 0, 0);
+  else if (option == ascend_m_s)          _ascend(3, 1, 0, 0, 0);
+  else if (option == ascend_t_s)          _ascend(3, 0, 1, 0, 0);
+  else if (option == ascend_m_t_s)        _ascend(3, 1, 1, 0, 0);
+  else if (option == ascend_l_s)          _ascend(3, 0, 0, 1, 0);
+  else if (option == ascend_m_l_s)        _ascend(3, 1, 0, 1, 0);
+  else if (option == ascend_t_l_s)        _ascend(3, 0, 1, 1, 0);
+  else if (option == ascend_m_t_l_s)      _ascend(3, 1, 1, 1, 0);
 
-  else if (option == ascend_r)            _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_r)          _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_h_r)          _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_h_r)        _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_t_r)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_h_t_r)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t_r)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_h_t_r)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_n_r)          _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_n_r)        _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_t_n_r)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t_n_r)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_l_r)          _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_l_r)        _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_h_l_r)        _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_h_l_r)      _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_t_l_r)        _ascend((Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_h_t_l_r)      _ascend((Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_t_l_r)      _ascend((Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_h_t_l_r)    _ascend((Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_n_l_r)        _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_n_l_r)      _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_t_n_l_r)      _ascend((Arg){.x = 2}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_t_n_l_r)    _ascend((Arg){.x = 2}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_s_r)          _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_t_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_m_t_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1});
-  else if (option == ascend_l_s_r)        _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_l_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_t_l_s_r)      _ascend((Arg){.x = 3}, (Arg){.x = 0}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
-  else if (option == ascend_m_t_l_s_r)    _ascend((Arg){.x = 3}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1}, (Arg){.x = 1});
+  else if (option == ascend_r)            _ascend(0, 0, 0, 0, 1);
+  else if (option == ascend_m_r)          _ascend(0, 1, 0, 0, 1);
+  else if (option == ascend_h_r)          _ascend(1, 0, 0, 0, 1);
+  else if (option == ascend_m_h_r)        _ascend(1, 1, 0, 0, 1);
+  else if (option == ascend_t_r)          _ascend(0, 0, 1, 0, 1);
+  else if (option == ascend_h_t_r)        _ascend(1, 0, 1, 0, 1);
+  else if (option == ascend_m_t_r)        _ascend(0, 1, 1, 0, 1);
+  else if (option == ascend_m_h_t_r)      _ascend(1, 1, 1, 0, 1);
+  else if (option == ascend_n_r)          _ascend(2, 0, 0, 0, 1);
+  else if (option == ascend_m_n_r)        _ascend(2, 1, 0, 0, 1);
+  else if (option == ascend_t_n_r)        _ascend(2, 0, 1, 0, 1);
+  else if (option == ascend_m_t_n_r)      _ascend(2, 1, 1, 0, 1);
+  else if (option == ascend_l_r)          _ascend(0, 0, 0, 1, 1);
+  else if (option == ascend_m_l_r)        _ascend(0, 1, 0, 1, 1);
+  else if (option == ascend_h_l_r)        _ascend(1, 0, 0, 1, 1);
+  else if (option == ascend_m_h_l_r)      _ascend(1, 1, 0, 1, 1);
+  else if (option == ascend_t_l_r)        _ascend(0, 0, 1, 1, 1);
+  else if (option == ascend_h_t_l_r)      _ascend(1, 0, 1, 1, 1);
+  else if (option == ascend_m_t_l_r)      _ascend(0, 1, 1, 1, 1);
+  else if (option == ascend_m_h_t_l_r)    _ascend(1, 1, 1, 1, 1);
+  else if (option == ascend_n_l_r)        _ascend(2, 0, 0, 1, 1);
+  else if (option == ascend_m_n_l_r)      _ascend(2, 1, 0, 1, 1);
+  else if (option == ascend_t_n_l_r)      _ascend(2, 0, 1, 1, 1);
+  else if (option == ascend_m_t_n_l_r)    _ascend(2, 1, 1, 1, 1);
+  else if (option == ascend_s_r)          _ascend(3, 0, 0, 0, 1);
+  else if (option == ascend_m_s_r)        _ascend(3, 1, 0, 0, 1);
+  else if (option == ascend_t_s_r)        _ascend(3, 0, 1, 0, 1);
+  else if (option == ascend_m_t_s_r)      _ascend(3, 1, 1, 0, 1);
+  else if (option == ascend_l_s_r)        _ascend(3, 0, 0, 1, 1);
+  else if (option == ascend_m_l_s_r)      _ascend(3, 1, 0, 1, 1);
+  else if (option == ascend_t_l_s_r)      _ascend(3, 0, 1, 1, 1);
+  else if (option == ascend_m_t_l_s_r)    _ascend(3, 1, 1, 1, 1);
 }
 
-void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
+void _ascend(int home, int mini, int more, int lingering, int rising){
 
   if(_state->win_size == t_tiny) return;
 
@@ -2024,7 +2024,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
 
   // ~49 x ~64
   float count_scaler = .002;
-  if(more.x == 1) {
+  if(more == 1) {
     count_scaler = .006;
   }
   int lazer_count = _state->t_rows * lazarr_len * count_scaler;
@@ -2063,7 +2063,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
   char ch = '|';
   int color = 0;
 
-  if(mini.x == 0){
+  if(mini == 0){
     wc[0] = L'|';
     ch = '.';
   }
@@ -2074,12 +2074,12 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
   clock_gettime(CLOCK_MONOTONIC, &next_frame);
   int offset      = -1;
   int finish_flag = 0;
-  if(lingering.x == 1){
+  if(lingering == 1){
     finish_flag = 1;
   }
-  if(home.x == 1){
+  if(home == 1){
     offset      = 5;
-  } else if (home.x == no_travel){
+  } else if (home == no_travel){
     offset      = 0;
   }
   int current = 0;
@@ -2105,10 +2105,10 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
 
           if(current == 1){
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
-            if(i > 0 && rising.x){
+            if(i > 0 && rising){
               if(lazarr[i-1][j] != 0) count--;
               lazarr[i-1][j] = 1;
-            } else if (rising.x){
+            } else if (rising){
               if(finish_flag != 2){
                 x = rand() % (lazarr_len);
                 lazarr[_state->t_rows - 1][x] = 1;
@@ -2116,10 +2116,10 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
                 count--;
                 if(!count) finish_flag = 0;
               }
-            } else if(i < _state->t_rows-1 && !rising.x){
+            } else if(i < _state->t_rows-1 && !rising){
               if(lazarr[i+1][j] != 0) count--;
               lazarr[i+1][j] = 4;
-            } else if (!rising.x){
+            } else if (!rising){
               if(finish_flag != 2){
                 x = rand() % (lazarr_len);
                 lazarr[0][x] = 1;
@@ -2130,17 +2130,17 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
             }
           } else if (current == 2) {
             mvaddch(i, _state->t_cols/2 - lazarr_len/2 + j, ch);
-            if(rising.x){
+            if(rising){
               mvaddch(i-1, _state->t_cols/2 - lazarr_len/2 + j, ch);
               mvaddch(i-2, _state->t_cols/2 - lazarr_len/2 + j, ch);
             } else {
               mvaddch(i+1, _state->t_cols/2 - lazarr_len/2 + j, ch);
               mvaddch(i+2, _state->t_cols/2 - lazarr_len/2 + j, ch);
             }
-            if(i-2 > 0 && rising.x){
+            if(i-2 > 0 && rising){
               if(lazarr[i-2][j] != 0) count--;
               lazarr[i-2][j] = 2;
-            } else if (rising.x) {
+            } else if (rising) {
               if(finish_flag != 2) {
                 x = rand() % (lazarr_len);
                 lazarr[_state->t_rows - 1][x] = 2;
@@ -2148,10 +2148,10 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
                 count--;
                 if(!count) finish_flag = 0;
               }
-            } else if (i+2 < _state->t_rows && !rising.x){
+            } else if (i+2 < _state->t_rows && !rising){
               if(lazarr[i+2][j] != 0) count--;
               lazarr[i+2][j] = 5;
-            } else if (!rising.x) {
+            } else if (!rising) {
               if(finish_flag != 2) {
                 x = rand() % (lazarr_len);
                 lazarr[0][x] = 2;
@@ -2160,7 +2160,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
                 if(!count) finish_flag = 0;
               }
             }
-          } else if (current ==  3 && rising.x){
+          } else if (current ==  3 && rising){
             cchar_t cchar;
             setcchar(&cchar, wc, 0, 0, NULL);
             mvadd_wch(i, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
@@ -2178,7 +2178,7 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
                 if(!count) finish_flag = 0;
               }
             }
-          } else if (current == 3 && !rising.x){
+          } else if (current == 3 && !rising){
             cchar_t cchar;
             setcchar(&cchar, wc, 0, 0, NULL);
             mvadd_wch(i, _state->t_cols/2 - lazarr_len/2 + j, &cchar);
@@ -2206,10 +2206,10 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
         }
       }
     }
-    if (frames % 3 == 0 && frames < 15 && home.x != omit || home.x == no_travel){
+    if (frames % 3 == 0 && frames < 15 && home != omit || home == no_travel){
       //_debug(1, "hit", 0);
       if(_state->fx == nofx){
-        if(home.x == no_travel) {
+        if(home == no_travel) {
           glint_if_set(offset, 0);
         } else {
           _fg_offset(fg, offset, 0);
@@ -2217,18 +2217,18 @@ void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising){
           _hd(offset, 0);
         }
       } else {
-        if(home.x != omit){
+        if(home != omit){
           glint_if_set(offset, 0);
           if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, offset, 0);
           if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, offset, 0);
           _hd(offset, 0);
         }
       }
-      if(home.x != no_travel) offset--;
+      if(home != no_travel) offset--;
     } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
-      if(lingering.x != linger)_hd(offset, 0);
+      if(lingering != linger)_hd(offset, 0);
       if(_state->fx != nofx){
         _affect(_state->fx, 0, 0);
         //reset_hd();

@@ -86,8 +86,16 @@
 #define ascend(a, b, c, d, e) ascend_expand(a, b, c, d, e)
 #define ascend_expand(a, b, c, d, e) asc_##a##b##c##d##e
 
-#define no            0
 #define yes           1
+#define YES           1
+#define Y             1
+#define no            0
+#define NO            0
+#define N             0
+
+#define BG            1
+#define FG            2
+#define ALL           3
 
 #define omit          2
 #define no_omit       0
@@ -145,7 +153,7 @@ void _bg_offset(char ch, int offset_y, int offset_x);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
-void _ascend(Arg home, Arg mini, Arg more, Arg lingering, Arg rising);
+void _ascend(int home, int mini, int more, int lingering, int rising);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);
 int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, int hd_c);
 

@@ -15,7 +15,7 @@
                                                                          */
 
 static const animation  start_animation = none;
-static const fx                start_fx = nofx;
+static const fx                glint_fx = nofx;
 static const unsigned short      rand_c = true;          /* random colors */
 static const unsigned short holographic = true;
 

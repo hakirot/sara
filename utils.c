@@ -143,8 +143,8 @@ int _get_confirm(const Command * command){
       return selection;
     }
 
-    if(_state->fx != nofx) {
-       _affect(_state->fx, 0, 0);
+    if(_state->glint_fx != nofx) {
+       _affect(_state->glint_fx, 0, 0);
        _print_confirm_window();
     }
     _print_confirm_selection(selection);
@@ -281,28 +281,28 @@ void __builtin__(char input){
     _fetch();
   } else if (selection == fx_glint_f){
     _restore_prev_colors();
-    if (_state->fx == glint_f) {
-      _state->fx = 0;
+    if (_state->glint_fx == glint_f) {
+      _state->glint_fx = 0;
       _reset_glyph_state();
     }
     else {
-      _state->fx = glint_f;
+      _state->glint_fx = glint_f;
     }
   } else if (selection == fx_glint_b){
     _restore_prev_colors();
-    if (_state->fx == glint_b) {
-      _state->fx = 0;
+    if (_state->glint_fx == glint_b) {
+      _state->glint_fx = 0;
       _reset_glyph_state();
     }
-    else _state->fx = glint_b;
+    else _state->glint_fx = glint_b;
 
   } else if (selection == fx_glint_a){
     _restore_prev_colors();
-    if (_state->fx == glint_a) {
-      _state->fx = 0;
+    if (_state->glint_fx == glint_a) {
+      _state->glint_fx = 0;
       _reset_glyph_state();
     }
-    else  _state->fx = glint_a;
+    else  _state->glint_fx = glint_a;
   } else if (selection == colors){
     if(_state->show_colors == false){
       _state->show_colors = true;
@@ -440,8 +440,8 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
 
   if(_state->win_size == t_tiny) clear();
 
-  if(_state->fx != nofx){
-    _affect(_state->fx, 0, 0);
+  if(_state->glint_fx != nofx){
+    _affect(_state->glint_fx, 0, 0);
     _print_menu_borders(dim_y, dim_x, offset_y, offset_x, menu_c);
   } else {
     _clear_menu(dim_y, dim_x, offset_y, offset_x);
@@ -1321,8 +1321,8 @@ void _run_menu(){
   clock_gettime(CLOCK_MONOTONIC, &next);
   while(1){
 
-    if(_state->fx != nofx){
-      _affect(_state->fx, 0, 0);
+    if(_state->glint_fx != nofx){
+      _affect(_state->glint_fx, 0, 0);
       refresh_ui = true;
     }
 
@@ -1556,8 +1556,8 @@ int _run_args(int offset_y, int offset_x, char * selection){
   clock_gettime(CLOCK_MONOTONIC, &next);
   while(1){
 
-    if(_state->fx != nofx){
-      _affect(_state->fx, 0, 0);
+    if(_state->glint_fx != nofx){
+      _affect(_state->glint_fx, 0, 0);
       refresh_ui = true;
     }
 
@@ -1612,7 +1612,7 @@ int _run_args(int offset_y, int offset_x, char * selection){
 
 void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_buffer){
 
-  if(_state->t_rows > 1 && _state->fx == nofx) animate(none);
+  if(_state->t_rows > 1 && _state->glint_fx == nofx) animate(none);
   if(_state->t_rows == 1) clear();
   int dim_y = 3;
   int dim_x = run_x; if(run_x < 3) dim_x = 3; if(_state->t_cols < dim_x) dim_x = _state->t_cols;
@@ -1837,7 +1837,8 @@ void _init_state(){
   memset(_state->slap_str, 0, 256);
   _state->key_lock          = 0;                  /* implemented */
   _state->reprint           = true;               /* implemented */
-  _state->fx                = start_fx;           /* implemented */
+  _state->glint_fx          = glint_fx;           /* implemented */
+  _state->partx_fx          = partx_fx;           /* implemented */
 
   _state->fg_state          = (char**)malloc(FG_GLYPH_HEIGHT * sizeof(char*));
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));

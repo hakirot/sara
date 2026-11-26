@@ -603,7 +603,7 @@ void _pixel_fill(){
           round_fill_count++;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          if(_state->holo && _state->fx != nofx){
+          if(_state->holo && _state->glint_fx != nofx){
             attroff(COLOR_PAIR(_state->fg_c));
             _affect_holo();
             attron(COLOR_PAIR(_state->fg_c));
@@ -1331,8 +1331,8 @@ void _affect(int fx, int offset_y, int offset_x){
 }
 
 void glint_if_set(int offset_y, int offset_x){
-  if(_state->fx != nofx){
-    _glint(_state->fx, offset_y, offset_x);
+  if(_state->glint_fx != nofx){
+    _glint(_state->glint_fx, offset_y, offset_x);
   }
 }
 
@@ -1355,20 +1355,20 @@ void _inc_nanosecs(struct timespec *timespec, long long nanosecs) {
 void _affect_holo() {
 
   if(_state->win_size == t_tiny) return;
-  if(_state->win_size == t_full && _state->fx == nofx || _state->fx == glint_a){
+  if(_state->win_size == t_full && _state->glint_fx == nofx || _state->glint_fx == glint_a){
     _state->bg_c++;
     _state->fg_c++;
     if (_state->bg_c > 7) _state->bg_c = 2;
     if (_state->fg_c > 7) _state->fg_c = 2;
-  } else if(_state->fx == glint_f) {
+  } else if(_state->glint_fx == glint_f) {
     _state->fg_c++;
     if (_state->fg_c > 7) _state->fg_c = 2;
-  } else if(_state->fx == glint_b) {
+  } else if(_state->glint_fx == glint_b) {
     _state->bg_c++;
     if (_state->bg_c > 7) _state->bg_c = 2;
   }
   
-  if(_state->fx == nofx) _state->reprint = true;
+  if(_state->glint_fx == nofx) _state->reprint = true;
 }
 
 void _fetch(){
@@ -1422,8 +1422,8 @@ void _fetch(){
   int input_flag = 0;
   while(1){
 
-    if(_state->fx != nofx) {
-      _affect(_state->fx, 0, x_offset);
+    if(_state->glint_fx != nofx) {
+      _affect(_state->glint_fx, 0, x_offset);
 //    int result = _print_fetch(fetch_path, entries, false, a, b, c);
 //    if(result) {
 //      free(fetch_path);
@@ -1703,9 +1703,9 @@ void _waves(Arg full){
       attron(COLOR_PAIR(_state->bg_c));
       if(bg_c_bold) attron(A_BOLD);
       for(int i = 0; i < BG_GLYPH_HEIGHT; i++){
-        if(_state->fx == glint_a || _state->fx == glint_b){
+        if(_state->glint_fx == glint_a || _state->glint_fx == glint_b){
           attroff(COLOR_PAIR(_state->bg_c));
-          _affect(_state->fx, 0, 0);
+          _affect(_state->glint_fx, 0, 0);
           attron(COLOR_PAIR(_state->bg_c));
         } else if(_state->holo){
           attroff(COLOR_PAIR(_state->bg_c));
@@ -1743,9 +1743,9 @@ void _waves(Arg full){
         bg_flip++;
       }
     } else {
-      if(_state->fx == glint_a || _state->fx == glint_b){
+      if(_state->glint_fx == glint_a || _state->glint_fx == glint_b){
         if(_state->holo) _affect_holo();
-        _affect(_state->fx, 0, 0);
+        _affect(_state->glint_fx, 0, 0);
       } else {
         _bg();
       }
@@ -1819,8 +1819,8 @@ void _multiply(){
   int bg_x_r;
   while(frames < total_frames){
 
-    if(_state->fx != nofx){
-      _affect(_state->fx, 0, 0);
+    if(_state->glint_fx != nofx){
+      _affect(_state->glint_fx, 0, 0);
     } else if(_state->holo) {
       _affect_holo();
     }
@@ -1874,8 +1874,8 @@ void _mega_static(Arg reverse){
     clear();
 
     for(int i = 0; i < count; i++){
-      if(_state->fx != nofx){
-        _affect(_state->fx, 0, 0);
+      if(_state->glint_fx != nofx){
+        _affect(_state->glint_fx, 0, 0);
       } else if(_state->holo) {
         _affect_holo();
       }
@@ -2276,7 +2276,7 @@ void _partix(int home, int mini, int more, int lingering, int rising){
     }
     if(!_state->holo) _restore_prev_colors();
     if (frames % 3 == 0 && frames < 15 && home != OMIT || home == NO_TRAVEL){
-      if(_state->fx == nofx){
+      if(_state->glint_fx == nofx){
         if(home == NO_TRAVEL) {
           glint_if_set(offset, 0);
         } else {
@@ -2287,21 +2287,21 @@ void _partix(int home, int mini, int more, int lingering, int rising){
       } else {
         if(home != OMIT){
           glint_if_set(offset, 0);
-          if(_state->fx == nofx || _state->fx == glint_b)
+          if(_state->glint_fx == nofx || _state->glint_fx == glint_b)
             _fg_offset(fg, offset, 0);
-          if(_state->fx == nofx || _state->fx == glint_f)
+          if(_state->glint_fx == nofx || _state->glint_fx == glint_f)
             _bg_offset(0, offset, 0);
           _hd(offset, 0);
         }
       }
       if(home != NO_TRAVEL) offset--;
     } else if (frames > 15 ){
-      if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
-      if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
+      if(_state->glint_fx == nofx || _state->glint_fx == glint_b) _fg_offset(fg, 0, 0);
+      if(_state->glint_fx == nofx || _state->glint_fx == glint_f) _bg_offset(0, 0, 0);
       //if(lingering != LINGER)_hd(offset, 0);
       _hd(0, 0);
-      if(_state->fx != nofx){
-        _affect(_state->fx, 0, 0);
+      if(_state->glint_fx != nofx){
+        _affect(_state->glint_fx, 0, 0);
       }
     }
 

@@ -138,6 +138,16 @@ typedef enum {
   partix_m_l_s_r,
   partix_t_l_s_r,
   partix_m_t_l_s_r,
+
+  partfx,
+  partfx_m,
+  partfx_t,
+  partfx_m_t,
+  partfx_r,
+  partfx_m_r,
+  partfx_t_r,
+  partfx_m_t_r,
+
   mega_static,
   mega_static_rev,
 } animation;
@@ -256,7 +266,8 @@ typedef struct {
   char slap_str[256];
   int key_lock;
   int holo;
-  fx fx;
+  fx glint_fx;
+  fx partx_fx;
   int reprint;
   char ** fg_state;
   char ** bg_state;

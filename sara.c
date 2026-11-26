@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 
     if(strlen(_state->slap_str) > 0 && _slap_timer() == 1 ) _state->reprint = true;
 
-    if(_state->fx != nofx) _affect(_state->fx, 0, 0);
+    if(_state->glint_fx != nofx) _affect(_state->glint_fx, 0, 0);
 
     // print only once after the _state->hold_char flips back to EOF and _state->hold_char_time is exceeded
     if (result == 0 && _state->reprint == true && _state->hold_char == '\0'){
@@ -311,8 +311,8 @@ void _pshd(){
       wchar_t block[2] = { L'\u2588', L'\0' };
       while(1){ // FIND
 
-        if(_state->fx != nofx) {
-          _affect(_state->fx, 0, 0);
+        if(_state->glint_fx != nofx) {
+          _affect(_state->glint_fx, 0, 0);
           refresh_filter_ui   = true;
           refresh_filter_body = true;
         }
@@ -493,10 +493,10 @@ void _pshd(){
       }
     }
 
-    if(reprint || _state->fx != nofx){
+    if(reprint || _state->glint_fx != nofx){
       _clear_menu(dim_y, dim_x, offset_y, offset_x);
-      if(_state->fx != nofx) {
-        _affect(_state->fx, 0, 0);
+      if(_state->glint_fx != nofx) {
+        _affect(_state->glint_fx, 0, 0);
         _print_menu_borders(dim_y, dim_x, offset_y, offset_x, pshd_c);
       }
       _reprint_pshd(dim_y, dim_x, offset_y, offset_x, selection, file, entries);

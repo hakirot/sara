@@ -82,6 +82,24 @@
 #define partix(a, b, c, d, e) partix_expand(a, b, c, d, e)
 #define partix_expand(a, b, c, d, e) partix_##a##b##c##d##e
 
+
+
+#define partfx_000 partfx
+#define partfx_100 partfx_m
+#define partfx_010 partfx_t
+#define partfx_110 partfx_m_t
+#define partfx_001 partfx_r
+#define partfx_101 partfx_m_r
+#define partfx_011 partfx_t_r
+#define partfx_111 partfx_m_t_r
+
+// todo make all these basic ints to decode and scrap the bloat
+//#define partix(a, b, c) partix_expand(a, b, c)
+//#define partix_expand(a, b, c) a ## b ## c) // returns abcde as int [untested]
+
+#define part_fx(a, b, c) part_fx_expand(a, b, c)
+#define part_fx_expand(a, b, c) partfx_##a##b##c
+
 #define YES           1
 #define Y             1
 #define NO            0

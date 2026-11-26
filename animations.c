@@ -1322,11 +1322,11 @@ void _glint(fx mode, int offset_y, int offset_x) {
 
 void _affect(int offset_y, int offset_x){
 
+  if(_state->partx_fx != nofx) partfx_if_set();
   if(_state->glint_fx != nofx){
     if(_state->holo) _affect_holo();
     _glint(_state->glint_fx, offset_y, offset_x);
   }
-  if(_state->partx_fx != nofx) partfx_if_set();
 }
 
 void glint_if_set(int offset_y, int offset_x){
@@ -2365,20 +2365,61 @@ int _inc_partix_frame(int rows,
 
 void partfx_if_set(){
 
-  if(_state->partx_fx == nofx) return;
-
-  if(_state->partfx_state == NULL){
-    _init_partfx();
+  if(_state->partx_fx == nofx && _state->partfx_state != NULL) {
+    free(_state->partfx_state);
+    free(_state->partfx_args);
+    _state->partfx_state = NULL;
+    _state->partfx_args = NULL;
+    return;
+  } else if (_state->partx_fx == nofx) {
+    return;
+  } else if(_state->partx_fx != nofx && _state->partfx_state == NULL){
+    _realloc_partfx_state();
   }
+
+  _partfx(_state->partfx_args->mini,
+          _state->partfx_args->more,
+          _state->partfx_args->rising);
 }
 
-void _init_partfx(){
-  // allocate
+void _realloc_partfx_state(){
 
-  // how to get this into _state struct
-  //int (*array)[_state->t_cols] = malloc(_state->t_rows * sizeof(*array));
+  if(_state->partfx_state != NULL) free(_state->partfx_state);
+  if(_state->partfx_args  != NULL) free(_state->partfx_args);
+  _state->partfx_state = NULL;
+  _state->partfx_args  = NULL;
 
-  // decode _state->partx_fx
+  // Extra row for data layer
+  int size = _state->t_rows + 1 * _state->t_cols * sizeof(int);
+  _state->partfx_state = malloc(size);
+  _state->partfx_args  = malloc(sizeof(partfx_args));
+  memset(_state->partfx_state, 0, sizeof(size));
+  memset(_state->partfx_args, 0, sizeof(partfx_args));
 
-  // set state struct partx args
+  _transcode_partfx_args(_state->partx_fx);
+}
+
+void _transcode_partfx_args(fx partx_fx){
+
+  if(partx_fx == partfx_m   ||
+     partx_fx == partfx_m_t ||
+     partx_fx == partfx_m_r ||
+     partx_fx == partfx_m_t_r) _state->partfx_args->mini = 1;
+  else                         _state->partfx_args->mini = 0;
+
+  if(partx_fx == partfx_t   ||
+     partx_fx == partfx_m_t ||
+     partx_fx == partfx_t_r ||
+     partx_fx == partfx_m_t_r) _state->partfx_args->more = 1;
+  else                         _state->partfx_args->more = 0;
+
+  if(partx_fx == partfx_r   ||
+     partx_fx == partfx_m_r ||
+     partx_fx == partfx_t_r ||
+     partx_fx == partfx_m_t_r) _state->partfx_args->rising = 1;
+  else                         _state->partfx_args->rising = 0;
+}
+
+void _partfx(int mini, int more, int rising){
+
 }

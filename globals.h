@@ -237,6 +237,11 @@ typedef struct {
 
 } config;
 
+typedef struct {
+  int mini;
+  int more;
+  int rising;
+} partfx_args;
 
 typedef struct {
 
@@ -269,7 +274,8 @@ typedef struct {
   int reprint;
   char ** fg_state;
   char ** bg_state;
-  int  ** partfx_state;
+  int  *  partfx_state;
+  partfx_args* partfx_args;
 } state;
 
 typedef struct Menu Menu;

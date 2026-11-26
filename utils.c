@@ -1157,6 +1157,13 @@ void _quit(int exit_code){
   move(0, 0);
   endwin();
 
+  if(_state->partfx_state != NULL) {
+    free(_state->partfx_state);
+    free(_state->partfx_args);
+    _state->partfx_state = NULL;
+    _state->partfx_args = NULL;
+  }
+
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     free(_state->fg_state[i]); _state->fg_state[i] = NULL;
   }
@@ -1844,6 +1851,7 @@ void _init_state(){
   _state->bg_state          = (char**)malloc(BG_GLYPH_HEIGHT * sizeof(char*));
 
   _state->partfx_state      = NULL;
+  _state->partfx_args       = NULL;
 
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
     _state->fg_state[i] = (char*)malloc(FG_GLYPH_LENGTH * sizeof(char));

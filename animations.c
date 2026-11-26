@@ -2079,7 +2079,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
   }
   if(home == 1){
     offset      = 5;
-  } else if (home == no_travel){
+  } else if (home == NO_TRAVEL){
     offset      = 0;
   }
   int current = 0;
@@ -2206,10 +2206,10 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
         }
       }
     }
-    if (frames % 3 == 0 && frames < 15 && home != omit || home == no_travel){
+    if (frames % 3 == 0 && frames < 15 && home != OMIT || home == NO_TRAVEL){
       //_debug(1, "hit", 0);
       if(_state->fx == nofx){
-        if(home == no_travel) {
+        if(home == NO_TRAVEL) {
           glint_if_set(offset, 0);
         } else {
           _fg_offset(fg, offset, 0);
@@ -2217,18 +2217,18 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
           _hd(offset, 0);
         }
       } else {
-        if(home != omit){
+        if(home != OMIT){
           glint_if_set(offset, 0);
           if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, offset, 0);
           if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, offset, 0);
           _hd(offset, 0);
         }
       }
-      if(home != no_travel) offset--;
+      if(home != NO_TRAVEL) offset--;
     } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
-      if(lingering != linger)_hd(offset, 0);
+      if(lingering != LINGER)_hd(offset, 0);
       if(_state->fx != nofx){
         _affect(_state->fx, 0, 0);
         //reset_hd();

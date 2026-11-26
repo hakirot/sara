@@ -86,10 +86,8 @@
 #define ascend(a, b, c, d, e) ascend_expand(a, b, c, d, e)
 #define ascend_expand(a, b, c, d, e) asc_##a##b##c##d##e
 
-#define yes           1
 #define YES           1
 #define Y             1
-#define no            0
 #define NO            0
 #define N             0
 
@@ -97,21 +95,21 @@
 #define FG            2
 #define ALL           3
 
-#define omit          2
-#define no_omit       0
-#define no_travel     3
-#define go_away       0
-#define go_home       1
-#define no_mini_mode  1
-#define mini_mode     0
-#define more_partx    1
-#define less_partx    0
-#define linger        1
-#define no_linger     0
-#define rise          1
-#define fall          0
-#define O             omit
-#define NT            no_travel
+#define OMIT          2
+#define O             OMIT
+#define NO_OMIT       0
+#define NO_TRAVEL     3
+#define NT            NO_TRAVEL
+#define GO_AWAY       0
+#define GO_HOME       1
+#define NO_MINI_MODE  1
+#define MINI_MODE     0
+#define MORE_PARTX    1
+#define LESS_PARTX    0
+#define LINGER        1
+#define NO_LINGER     0
+#define RISE          1
+#define FALL          0
 
 void _bg();
 void _neon();

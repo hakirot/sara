@@ -106,7 +106,9 @@ void _blink(){
 
     int result = _key();
     if(result == 2) return;
-    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2,
+                                            _state->t_cols/2,
+                                            "%c", _state->hold_char);
 
     _fps_sleep(&next_frame);
     frames++;
@@ -129,32 +131,48 @@ void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c
   wchar_t wc[2] = { MenuBorder[0], L'\0' };
   cchar_t cchar;
   setcchar(&cchar, wc, 0, 0, NULL);
-  mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, &cchar);
+  mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y,
+            _state->t_cols/2 - dim_x/2 + offset_x,
+            &cchar);
 
   wc[0] = MenuBorder[1];
   setcchar(&cchar, wc, 0, 0, NULL);
-  mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
+  mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y,
+            _state->t_cols/2 - dim_x/2 + dim_x - 1 + offset_x,
+            &cchar);
 
   wc[0] = MenuBorder[2];
   setcchar(&cchar, wc, 0, 0, NULL);
-  mvadd_wch(_state->t_rows/2 - dim_y/2 + dim_y - 1 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, &cchar);
+  mvadd_wch(_state->t_rows/2 - dim_y/2 + dim_y - 1 + offset_y,
+            _state->t_cols/2 - dim_x/2 + offset_x,
+            &cchar);
 
   wc[0] = MenuBorder[3];
   setcchar(&cchar, wc, 0, 0, NULL);
-  mvadd_wch(_state->t_rows/2 - dim_y/2 + dim_y - 1 + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
+  mvadd_wch(_state->t_rows/2 - dim_y/2 + dim_y - 1 + offset_y,
+            _state->t_cols/2 - dim_x/2 + dim_x - 1 + offset_x,
+            &cchar);
 
   wc[0] = MenuBorder[4];
   setcchar(&cchar, wc, 0, 0, NULL);
   for(int i = 1; i < dim_x - 1; i++){
-    mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + i + offset_x, &cchar);
-    mvadd_wch(_state->t_rows/2 - dim_y/2 + dim_y - 1 + offset_y, _state->t_cols/2 - dim_x/2 + i + offset_x, &cchar);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y,
+              _state->t_cols/2 - dim_x/2 + i + offset_x,
+              &cchar);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + dim_y - 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + i + offset_x,
+              &cchar);
   }
 
   wc[0] = MenuBorder[5];
   setcchar(&cchar, wc, 0, 0, NULL);
   for(int i = 1; i < dim_y - 1; i++){
-    mvadd_wch(_state->t_rows/2 - dim_y/2 + i + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, &cchar);
-    mvadd_wch(_state->t_rows/2 - dim_y/2 + i + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 1 + offset_x, &cchar);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + i + offset_y,
+              _state->t_cols/2 - dim_x/2 + offset_x,
+              &cchar);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + i + offset_y,
+              _state->t_cols/2 - dim_x/2 + dim_x - 1 + offset_x,
+              &cchar);
   }
   attroff(A_BOLD);
   attroff(COLOR_PAIR(c));
@@ -278,7 +296,9 @@ void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x){
   setcchar(&cchar, wc, 0, 0, NULL);
   for(int i = 1; i < dim_y - 1; i++){
     for(int j = 1; j < dim_x - 1; j++){
-      mvadd_wch(_state->t_rows/2 - dim_y/2 + i + offset_y, _state->t_cols/2 - dim_x/2 + j + offset_x, &cchar);
+      mvadd_wch(_state->t_rows/2 - dim_y/2 + i + offset_y,
+                _state->t_cols/2 - dim_x/2 + j + offset_x,
+                &cchar);
     }
   }
 }
@@ -349,7 +369,9 @@ void _glitch(Arg bigmode){
 
     int result = _key();
     if(result == 2) return;
-    if (_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+    if (_state->hold_char) mvprintw(_state->t_rows/2,
+                                    _state->t_cols/2,
+                                    "%c", _state->hold_char);
     refresh();
 
     getmaxyx(stdscr, _state->t_rows, _state->t_cols);
@@ -407,7 +429,9 @@ void _neon(){
 
     int result = _key();
     if(result == 2) return;
-    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2,
+                                            _state->t_cols/2,
+                                            "%c", _state->hold_char);
     _fps_sleep(&next_frame);
     frames++;
   }
@@ -455,7 +479,9 @@ void _neon_reverse(){
 
     int result = _key();
     if(result == 2) return;
-    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+    if (_state->hold_char != '\0') mvprintw(_state->t_rows/2,
+                                            _state->t_cols/2,
+                                            "%c", _state->hold_char);
     _colorbar();
   }
 }
@@ -485,9 +511,13 @@ void _shutter_slide(){
         attron(COLOR_PAIR(_state->fg_c));
       }
       if (i % 2 == 0){
-        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, l_idx + (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);
+        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                 l_idx + (frame_travel_width * j) + fg_offset_x,
+                 "%s", fg[i]);
       } else {
-        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, r_idx - (frame_travel_width * j) + fg_offset_x, "%s", fg[i]);
+        mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                 r_idx - (frame_travel_width * j) + fg_offset_x,
+                 "%s", fg[i]);
       }
     }
     l_idx++;
@@ -578,7 +608,9 @@ void _pixel_fill(){
             _affect_holo();
             attron(COLOR_PAIR(_state->fg_c));
           }
-          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
+          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                   (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j,
+                    &cchar);
           if (round_fill_count == round_fill_max){
             round_fill_count = 0;
             break;
@@ -696,12 +728,16 @@ void _tv_static(){
 
         if (idx == 1 && roll_result == 2){
           fg_arr[i][j] = 0;
-          mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, ' ');
+          mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                 (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j,
+                  ' ');
         } else if (idx == 0 && roll_result == 2){
           fg_arr[i][j] = 1;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j, &cchar);
+          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                   (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j,
+                    &cchar);
         }
 
         iter_row += len;
@@ -730,7 +766,9 @@ void _tv_static(){
 
           if (idx == 1 && roll_result == 2){
             bg_arr[i][j] = 0;
-            mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, ' ');
+            mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i,
+                   (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j,
+                    ' ');
           } else if (idx == 0 && roll_result == 2){
             if(_state->holo){
               attroff(COLOR_PAIR(_state->bg_c));
@@ -740,7 +778,9 @@ void _tv_static(){
             bg_arr[i][j] = 1;
             cchar_t cchar;
             setcchar(&cchar, wc, 0, 0, NULL);
-            mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j, &cchar);
+            mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i,
+                     (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j,
+                      &cchar);
           }
 
           iter_row += len;
@@ -818,13 +858,17 @@ void _overlay(const char * glyph[], char fill){
       }
 
       if(fill){
-        mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, fill);
+        mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+               (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x,
+                fill);
         iter_row += len;
         iter_col++;
       } else {
         cchar_t cchar;
         setcchar(&cchar, wc, 0, 0, NULL);
-        mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, &cchar);
+        mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                 (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x,
+                  &cchar);
         iter_row += len;
         iter_col++;
       }
@@ -849,11 +893,15 @@ void _overlay_bg(char ch){
       if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
 
       if(*iter_row != ' ' && ch != 0){
-        mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, ch);
+        mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i,
+               (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col,
+                ch);
       } else if(wc[0] != ' '){
         cchar_t cchar;
         setcchar(&cchar, wc, 0, 0, NULL);
-        mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col, &cchar);
+        mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i,
+                 (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col,
+                  &cchar);
       }
 
       iter_row += len;
@@ -868,7 +916,9 @@ void _fg(const char * glyph[]){
   attron(COLOR_PAIR(_state->fg_c));
   if(fg_c_bold) attron(A_BOLD);
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", glyph[i]);
+    mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+            (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x,
+             "%s", glyph[i]);
   }
   refresh();
   attroff(COLOR_PAIR(_state->fg_c));
@@ -879,7 +929,9 @@ void _fg_offset(const char * glyph[], int offset_y, int offset_x){
   attron(COLOR_PAIR(_state->fg_c));
   if(fg_c_bold) attron(A_BOLD);
   for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-    mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + offset_x, "%s", glyph[i]);
+    mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y,
+            (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + offset_x,
+             "%s", glyph[i]);
   }
   refresh();
   attroff(COLOR_PAIR(_state->fg_c));
@@ -902,11 +954,15 @@ void _bg_offset(char ch, int offset_y, int offset_x){
       if (len == (size_t)-1 || len == (size_t)-2 || len == 0) break;
 
       if(*iter_row != ' ' && ch != 0){
-        mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col + offset_x, ch);
+        mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y,
+               (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col + offset_x,
+                ch);
       } else if(wc[0] != ' '){
         cchar_t cchar;
         setcchar(&cchar, wc, 0, 0, NULL);
-        mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col + offset_x, &cchar);
+        mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y,
+                 (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + iter_col + offset_x,
+                  &cchar);
       }
 
       iter_row += len;
@@ -964,7 +1020,9 @@ void _hd(int off_y, int off_x){
       size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
 
       setcchar(&cchar, wc, 0, 0, NULL);
-      mvadd_wch(_state->t_rows/2 + offset_y + off_y, _state->t_cols/2 + offset_x + iter_col - center_offset + off_x, &cchar);
+      mvadd_wch(_state->t_rows/2 + offset_y + off_y,
+                _state->t_cols/2 + offset_x + iter_col - center_offset + off_x,
+                &cchar);
 
       iter_row += len;
       iter_col++;
@@ -1025,7 +1083,9 @@ void _hd_offset(int offset_y_in, int offset_x_in){
       size_t len = mbrtowc(wc, iter_row, MB_CUR_MAX, &state);
 
       setcchar(&cchar, wc, 0, 0, NULL);
-      mvadd_wch(_state->t_rows/2 + offset_y + offset_y_in, _state->t_cols/2 + offset_x + iter_col - center_offset + offset_x_in, &cchar);
+      mvadd_wch(_state->t_rows/2 + offset_y + offset_y_in,
+                _state->t_cols/2 + offset_x + iter_col - center_offset + offset_x_in,
+                &cchar);
 
       iter_row += len;
       iter_col++;
@@ -1052,10 +1112,14 @@ void _down_wipes(){
     attron(COLOR_PAIR(_state->fg_c));
     if(fg_c_bold) attron(A_BOLD);
     for(int i = 0; i < FG_GLYPH_HEIGHT; i++){
-      mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x, "%s", fg[i]);
+      mvprintw(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+              (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x,
+               "%s", fg[i]);
       int result = _key();
       if(result == 2) return;
-      if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+      if(_state->hold_char) mvprintw(_state->t_rows/2,
+         _state->t_cols/2,
+         "%c", _state->hold_char);
       refresh();
       _fps_sleep(&next_frame);
     }
@@ -1078,8 +1142,12 @@ void _down_wipes(){
         attron(COLOR_PAIR(_state->fg_c));
       }
 
-      mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x, "%s", bg[i]);
-      if(_state->hold_char) mvprintw(_state->t_rows/2, _state->t_cols/2, "%c", _state->hold_char);
+      mvprintw(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i,
+              (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x,
+               "%s", bg[i]);
+      if(_state->hold_char) mvprintw(_state->t_rows/2,
+                                     _state->t_cols/2,
+                                     "%c", _state->hold_char);
       refresh();
       _fps_sleep(&next_frame);
       int result = _key();
@@ -1122,7 +1190,9 @@ void _down_wipes(){
 
         cchar_t cchar;
         setcchar(&cchar, wc, 0, 0, NULL);
-        mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, &cchar);
+        mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i,
+                 (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x,
+                  &cchar);
         iter_row += len;
         iter_col++;
       }
@@ -1156,7 +1226,9 @@ void _colorbar(){
   if (_state->win_size == t_full) {
     for(int i = 1; i < 9; i++){
       attron(COLOR_PAIR(i));
-      mvaddwstr(_state->t_rows - 1, (_state->t_cols-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      mvaddwstr(_state->t_rows - 1,
+               (_state->t_cols-27) + (i*3),
+                L"\u2588\u2588\u2588"); // Unicode full block █
       attroff(COLOR_PAIR(i));
       refresh();
     }
@@ -1186,12 +1258,16 @@ void _glint(fx mode, int offset_y, int offset_x) {
         roll_result = roll(2);
         if (idx == 1 && roll_result == 2){
           _state->bg_state[i][j] = 2;
-          mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j + offset_x, ' ');
+          mvaddch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y,
+                 (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j + offset_x,
+                  ' ');
         } else if (idx == 2 && roll_result == 2){
           _state->bg_state[i][j] = 1;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y, (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j + offset_x, &cchar);
+          mvadd_wch(_state->t_rows/2 - BG_GLYPH_HEIGHT/2 + bg_offset_y + i + offset_y,
+                   (_state->t_cols-BG_GLYPH_LENGTH)/2 + bg_offset_x + j + offset_x,
+                    &cchar);
         }
 
         iter_row += len;
@@ -1219,12 +1295,16 @@ void _glint(fx mode, int offset_y, int offset_x) {
         roll_result = roll(2);
         if (idx == 1 && roll_result == 2){
           _state->fg_state[i][j] = 2;
-          mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j + offset_x, ' ');
+          mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y,
+                 (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j + offset_x,
+                  ' ');
         } else if (idx == 2 && roll_result == 2){
           _state->fg_state[i][j] = 1;
           cchar_t cchar;
           setcchar(&cchar, wc, 0, 0, NULL);
-          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y, (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j + offset_x, &cchar);
+          mvadd_wch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i + offset_y,
+                   (_state->t_cols-FG_GLYPH_LENGTH)/2 + fg_offset_x + j + offset_x,
+                    &cchar);
         }
 
         iter_row += len;
@@ -1865,7 +1945,9 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
         if(fg_c_bold) attron(A_BOLD);
       }
 
-      mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
+      mvaddch(_state->t_rows/2 - entries/2 + line_num,
+              _state->t_cols/2 + 2 + i,
+              line[i]);
 
       if(first_flag){
         attroff(COLOR_PAIR(_state->prev_bg_c));
@@ -2210,8 +2292,10 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
       } else {
         if(home != OMIT){
           glint_if_set(offset, 0);
-          if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, offset, 0);
-          if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, offset, 0);
+          if(_state->fx == nofx || _state->fx == glint_b)
+            _fg_offset(fg, offset, 0);
+          if(_state->fx == nofx || _state->fx == glint_f)
+            _bg_offset(0, offset, 0);
           _hd(offset, 0);
         }
       }

@@ -291,11 +291,15 @@ void _pshd(){
         attron(COLOR_PAIR(pshd_c));
         attron(A_STANDOUT);
       }
-      mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "FILTER");
+      mvprintw(_state->t_rows/2 - dim_y/2 + offset_y,
+               _state->t_cols/2 - dim_x/2 + offset_x,
+               "FILTER");
       attroff(A_BOLD);
       attroff(A_STANDOUT);
 
-      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6, ' ');
+      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
+              _state->t_cols/2 - dim_x/2 + offset_x + 6,
+              ' ');
 
       refresh();
       char search_buffer[256] = {'\0'};
@@ -366,24 +370,34 @@ void _pshd(){
             attron(COLOR_PAIR(pshd_c));
             attron(A_STANDOUT);
           }
-          mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "FILTER");
+          mvprintw(_state->t_rows/2 - dim_y/2 + offset_y,
+                   _state->t_cols/2 - dim_x/2 + offset_x,
+                   "FILTER");
           attroff(A_BOLD);
           attroff(A_STANDOUT);
 
           attron(COLOR_PAIR(white));
           cchar_t cchar;
           setcchar(&cchar, block, 0, 0, NULL);
-          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6 + char_idx, ' ');
-          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x + 6, ' ');
+          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
+                  _state->t_cols/2 - dim_x/2 + offset_x + 6 + char_idx,
+                  ' ');
+          mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
+                  _state->t_cols/2 - dim_x/2 + offset_x + 6,
+                  ' ');
           attroff(COLOR_PAIR(white));
 
           attron(COLOR_PAIR(pshd_c));
           if(pshd_c_bold) attron(A_BOLD);
           int i = 0;
           for(i = 0; i < (int)strlen(search_buffer); i++){
-            mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + i + offset_x + 1, search_buffer[i]);
+            mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
+                    _state->t_cols/2 - dim_x/2 +  6 + i + offset_x + 1,
+                    search_buffer[i]);
           }
-          mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  6 + i + offset_x + 1, &cchar);
+          mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y,
+                    _state->t_cols/2 - dim_x/2 +  6 + i + offset_x + 1,
+                    &cchar);
           attroff(COLOR_PAIR(pshd_c));
           attroff(A_BOLD);
 
@@ -401,7 +415,9 @@ void _pshd(){
 
               attron(COLOR_PAIR(pshd_c));
               if(pshd_c_bold) attron(A_BOLD);
-              mvprintw(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 2 + offset_x, "%d", k);
+              mvprintw(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+                       _state->t_cols/2 - dim_x/2 + 2 + offset_x,
+                       "%d", k);
               attroff(COLOR_PAIR(pshd_c));
 
               if(i == 0) {
@@ -447,7 +463,9 @@ void _pshd(){
 
               int len = strlen(line);
               for(int j = 0; j < len; j++){
-                mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
+                mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+                        _state->t_cols/2 - dim_x/2 + j + 1 + line_offset + offset_x,
+                        line[j]);
                 if((j + 8) > dim_x) break;
               }
               attroff(A_BOLD);
@@ -520,7 +538,9 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     if(pshd_c_bold) attron(A_BOLD);
 
     int len = strlen(line);
-    mvprintw(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 2 + offset_x, "%d", k);
+    mvprintw(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+             _state->t_cols/2 - dim_x/2 + 2 + offset_x,
+             "%d", k);
 
     if(k == selection) {
       attron(COLOR_PAIR(pshd_c));
@@ -530,7 +550,9 @@ void _reprint_pshd(int dim_y, int dim_x, int offset_y, int offset_x, int selecti
     }
 
     for(int j = 0; j < len; j++){
-      mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + line_offset + offset_x, line[j]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + j + 1 + line_offset + offset_x,
+              line[j]);
       if((j + 8) > dim_x) break;
     }
 

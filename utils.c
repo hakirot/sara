@@ -481,7 +481,9 @@ void _print_menu_selection(const Menu * menu, int selection, int len, int dim_y,
       str_len = dim_x - 2;
     }
     for(int j = 0; j < str_len; j++){
-      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + k + offset_y, _state->t_cols/2 - dim_x/2 + 1 + j + offset_x, menu[i].name[j]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + k + offset_y,
+              _state->t_cols/2 - dim_x/2 + 1 + j + offset_x,
+              menu[i].name[j]);
     }
 
     attroff(A_STANDOUT);
@@ -1119,7 +1121,9 @@ void _show_colors(){
   for(int i = 0; i < 3; i++){
     for(int j = 0; j < 8; j++){
       attron(COLOR_PAIR(j + 1));
-      mvaddch(_state->t_rows - 5 + i, (_state->t_cols-23) + (j*3), colors[i][j]);
+      mvaddch(_state->t_rows - 5 + i,
+             (_state->t_cols-23) + (j*3),
+             colors[i][j]);
       attroff(COLOR_PAIR(j + 1));
     }
   }
@@ -1127,7 +1131,9 @@ void _show_colors(){
   for(int j = 0; j < 2; j++){
     for(int i = 1; i < 9; i++){
       attron(COLOR_PAIR(i));
-      mvaddwstr(_state->t_rows - 2 + j, (_state->t_cols-27) + (i*3), L"\u2588\u2588\u2588"); // Unicode full block █
+      mvaddwstr(_state->t_rows - 2 + j,
+               (_state->t_cols-27) + (i*3),
+               L"\u2588\u2588\u2588"); // Unicode full block █
       attroff(COLOR_PAIR(i));
     }
     attron(A_BOLD);
@@ -1341,19 +1347,25 @@ void _run_menu(){
       }
       mvprintw(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 + offset_x, "RUN");
       attroff(A_STANDOUT);
-      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + offset_x, ' ');
+      mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
+              _state->t_cols/2 - dim_x/2 +  3 + offset_x,
+              ' ');
 
       attron(COLOR_PAIR(run_c));
       if(run_c_bold) attron(A_BOLD);
 
       for(int i = 0; i < (int)strlen(filter_buffer); i++){
-        mvaddch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  4 + i + offset_x , filter_buffer[i]);
+        mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
+                _state->t_cols/2 - dim_x/2 +  4 + i + offset_x,
+                filter_buffer[i]);
       }
 
       wchar_t cursor_w[2] = { L'\u2588', L'\0' };
       cchar_t cchar;
       setcchar(&cchar, cursor_w, 0, 0, NULL);
-      mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y, _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1, &cchar);
+      mvadd_wch(_state->t_rows/2 - dim_y/2 + offset_y,
+                _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1,
+                &cchar);
       attroff(COLOR_PAIR(pshd_c));
       attroff(A_BOLD);
       _populate_run_body(dim_y, dim_x, offset_y, offset_x, filter_buffer, selection);
@@ -1402,7 +1414,8 @@ void _run_menu(){
       }
       if(dim_y == 2 || idx > (int)strlen(selection)){
         mvaddch(_state->t_rows/2 - dim_y/2 + offset_y,
-                _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1, ' ');
+                _state->t_cols/2 - dim_x/2 +  3 + idx + offset_x + 1,
+                ' ');
       }
       idx--;
       filter_buffer[idx] = '\0';
@@ -1427,7 +1440,9 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
     cchar_t cchar;
     setcchar(&cchar, wc, 0, 0, NULL);
     for(int j = 1; j < dim_x - 1; j++){
-      mvadd_wch(_state->t_rows/2 - dim_y/2 + 1, _state->t_cols/2 - dim_x/2 + j + offset_x, &cchar);
+      mvadd_wch(_state->t_rows/2 - dim_y/2 + 1,
+                _state->t_cols/2 - dim_x/2 + j + offset_x,
+                &cchar);
     }
   }
 
@@ -1455,13 +1470,17 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
         attron(A_STANDOUT);
         for(int j = 0; j < len; j++){
           if((j) == dim_x - 2) break;
-          mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+          mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+                  _state->t_cols/2 - dim_x/2 + j + 1 + offset_x,
+                  line[j]);
         }
         attroff(A_STANDOUT);
       } else {
         for(int j = 0; j < len; j++){
           if((j) == dim_x - 2) break;
-          mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+          mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+                  _state->t_cols/2 - dim_x/2 + j + 1 + offset_x,
+                  line[j]);
         }
       }
       i++;
@@ -1473,7 +1492,9 @@ void _populate_run_body(int dim_y, int dim_x, int offset_y, int offset_x, char *
       int len = strlen(line);
       for(int j = 0; j < len; j++){
         if((j) == dim_x - 2) break;
-        mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y, _state->t_cols/2 - dim_x/2 + j + 1 + offset_x, line[j]);
+        mvaddch(_state->t_rows/2 - dim_y/2 + i + 1 + offset_y,
+                _state->t_cols/2 - dim_x/2 + j + 1 + offset_x,
+                line[j]);
       }
       i++;
       if (i == dim_y) break;
@@ -1608,18 +1629,26 @@ void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_
   if(_state->t_rows > 1) _print_menu_borders(dim_y, dim_x, offset_y, offset_x, run_c);
   attron(COLOR_PAIR(run_c));
   if(run_c_bold == true) attron(A_BOLD);
-  mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 2 + offset_x, '>');
+  mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y,
+          _state->t_cols/2 - dim_x/2 + 2 + offset_x,
+          '>');
   int selection_len = (int)strlen(selection);
   int args_buffer_len = (int)strlen(args_buffer);
 
   if(args_buffer_len + selection_len < dim_x - 6){
     for(int i = 0; i < selection_len; i++){
-      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 4 + i + offset_x, selection[i]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + 4 + i + offset_x,
+              selection[i]);
     }
     for(int i = 0; i < args_buffer_len; i++){
-      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 5 + selection_len + i + offset_x, args_buffer[i]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + 5 + selection_len + i + offset_x,
+              args_buffer[i]);
     }
-    mvadd_wch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + 5 + selection_len + args_buffer_len + offset_x, &cursor_c);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + 5 + selection_len + args_buffer_len + offset_x,
+              &cursor_c);
   } else {
 
     int buffer_size = selection_len + args_buffer_len + 4;
@@ -1637,9 +1666,13 @@ void _run_args_refresh(int offset_y, int offset_x, char *selection, char * args_
       overflow_buffer[4 + selection_len + i] = args_buffer[i];
     }
 
-    mvadd_wch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 2 + offset_x, &cursor_c);
+    mvadd_wch(_state->t_rows/2 - dim_y/2 + 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + dim_x - 2 + offset_x,
+              &cursor_c);
     for(int i = 0; i < dim_x - 3; i++){
-      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y, _state->t_cols/2 - dim_x/2 + dim_x - 3 - i + offset_x, overflow_buffer[buffer_size - 1 - i]);
+      mvaddch(_state->t_rows/2 - dim_y/2 + 1 + offset_y,
+              _state->t_cols/2 - dim_x/2 + dim_x - 3 - i + offset_x,
+              overflow_buffer[buffer_size - 1 - i]);
     }
     free(overflow_buffer);
   }

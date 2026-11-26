@@ -1969,23 +1969,25 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
       }
       refresh();
     }
-    if(sleep_flag > 1){
-      if(wait) _fps_sleep(&next_frame);
-      sleep_flag = 0;
-    } else {
-      sleep_flag++;
-    }
-    int input_flag = 0;
-    char input =  getch();
-    if(input == 'q' || input == 27 || _input_is_fetch(input)) {
-      fclose(file);
-      animate(start_animation);
-      return 1;
-    } else {
-      int result = _key(input);
-      if(result > 0) {
+    if(wait){
+      if(sleep_flag > 1){
+        _fps_sleep(&next_frame);
+        sleep_flag = 0;
+      } else {
+        sleep_flag++;
+      }
+      int input_flag = 0;
+      char input =  getch();
+      if(input == 'q' || input == 27 || _input_is_fetch(input)) {
         fclose(file);
-        return result;
+        animate(start_animation);
+        return 1;
+      } else {
+        int result = _key(input);
+        if(result > 0) {
+          fclose(file);
+          return result;
+        }
       }
     }
     attroff(COLOR_PAIR(_state->prev_bg_c));
@@ -2451,7 +2453,7 @@ void _partfx(int mini, int more, int rising, int * finish_flag, int offset_y, in
 
                      /* count < total */
   if(array[_state->t_rows][0] < array[_state->t_rows][1]) {
-    if(rand() % _state->t_cols == 0){
+    if(rand() % (_state->t_cols/2) == 0){
       int x = rand() % (_state->t_cols);
       int intensity = rand() % 3 + 1;
       if(_state->partfx_args->rising){

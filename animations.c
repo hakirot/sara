@@ -2086,16 +2086,12 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
 
   int fg_arr[FG_GLYPH_HEIGHT][FG_GLYPH_LENGTH];
   int bg_arr[BG_GLYPH_HEIGHT][BG_GLYPH_LENGTH];
-  //int lazarr_len = FG_GLYPH_LENGTH + 8;
   int lazarr_len = _state->t_cols;
-  //if((_state->t_cols * .6) > lazarr_len) 
-  //  lazarr_len = _state->t_cols * .6;
   int lazarr[_state->t_rows][lazarr_len];
   memset(fg_arr, 0, sizeof(fg_arr));
   memset(bg_arr, 0, sizeof(bg_arr));
   memset(lazarr, 0, sizeof(lazarr));
 
-  // ~49 x ~64
   float count_scaler = .002;
   if(more == 1) {
     count_scaler = .006;
@@ -2114,6 +2110,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
     if(lazarr[y][x] == 0) count++;
     lazarr[y][x] = intensity;
 
+    // TODO abstract these to a logging function
     //mvprintw(0, 0, "rows: %d | length: %d | y: %d | x: %d", _state->t_rows, lazarr_len, y, x );
 
     //char debug[256];
@@ -2126,7 +2123,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
     //fprintf(fp, "%s", debug);
     //fclose(fp);
 
-    refresh();
+    //refresh();
     //usleep(200000);
   }
 
@@ -2279,8 +2276,8 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
         }
       }
     }
+    _restore_prev_colors();
     if (frames % 3 == 0 && frames < 15 && home != OMIT || home == NO_TRAVEL){
-      //_debug(1, "hit", 0);
       if(_state->fx == nofx){
         if(home == NO_TRAVEL) {
           glint_if_set(offset, 0);
@@ -2303,10 +2300,10 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
     } else if (frames > 15 ){
       if(_state->fx == nofx || _state->fx == glint_b) _fg_offset(fg, 0, 0);
       if(_state->fx == nofx || _state->fx == glint_f) _bg_offset(0, 0, 0);
-      if(lingering != LINGER)_hd(offset, 0);
+      //if(lingering != LINGER)_hd(offset, 0);
+      _hd(0, 0);
       if(_state->fx != nofx){
         _affect(_state->fx, 0, 0);
-        //reset_hd();
       }
     }
 
@@ -2315,43 +2312,15 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
       _ascend(home, mini, more, lingering, rising);
       break;
     }
-    //mvprintw(0, 5, "%d", count);
+
     if(frames < total_frames) _colorbar();
     if(_state->key_lock ==  0){
       int result = _key();
       if(result == 2) break;
     }
-//  if(0){
       _fps_sleep(&next_frame);
       //usleep(200000);
       frames++;
-
-//  } else {
-//    _fps_sleep(&next_frame);
-//    if(home.x != omit) glint_if_set(offset, 0);
-//    refresh();
-//    _fps_sleep(&next_frame);
-//    if(home.x != omit) glint_if_set(offset, 0);
-//    refresh();
-//    _fps_sleep(&next_frame);
-//    if(home.x != omit) glint_if_set(offset, 0);
-//    refresh();
-//    _fps_sleep(&next_frame);
-//    if(home.x != omit) glint_if_set(offset, 0);
-//    refresh();
-//    _fps_sleep(&next_frame);
-//    if(home.x != omit) glint_if_set(offset, 0);
-//    refresh();
-//    if(lingering.x != linger){
-//      frames++;
-//    } else {
-//      frames+=5;
-//    }
-//    char f[128];
-//    sprintf(f, "%d", frames);
-//    _debug(0, f, 1);
-
-//  }
 
     if(frames > 90) break;
     if(frames == 15 && finish_flag == 1){
@@ -2363,7 +2332,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
     }
   }
 
-  // TODO This ignores toggle_holo if it was inputted during main function loop
+  // TODO This resets/ignores toggle_holo/invert/rand_colors if it was inputted during main function loop
   _state->fg_c = a;
   _state->bg_c = b;
   _state->hd_c = c;

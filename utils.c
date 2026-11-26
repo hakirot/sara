@@ -280,27 +280,26 @@ void __builtin__(char input){
   } else if (selection == fetch){
     _fetch();
   } else if (selection == fx_glint_f){
-    _set_prev_colors();
+    _restore_prev_colors();
     if (_state->fx == glint_f) {
       _state->fx = 0;
-      _restore_prev_colors();
       _reset_glyph_state();
     }
-    else _state->fx = glint_f;
+    else {
+      _state->fx = glint_f;
+    }
   } else if (selection == fx_glint_b){
-    _set_prev_colors();
+    _restore_prev_colors();
     if (_state->fx == glint_b) {
       _state->fx = 0;
-      _restore_prev_colors();
       _reset_glyph_state();
     }
     else _state->fx = glint_b;
 
   } else if (selection == fx_glint_a){
-    _set_prev_colors();
+    _restore_prev_colors();
     if (_state->fx == glint_a) {
       _state->fx = 0;
-      _restore_prev_colors();
       _reset_glyph_state();
     }
     else  _state->fx = glint_a;

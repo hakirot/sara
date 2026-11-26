@@ -817,12 +817,6 @@ void _overlay(const char * glyph[], char fill){
         continue;
       }
 
-      if(_state->holo){
-        attroff(COLOR_PAIR(_state->fg_c));
-        _affect_holo();
-        attron(COLOR_PAIR(_state->fg_c));
-      }
-
       if(fill){
         mvaddch(_state->t_rows/2 - FG_GLYPH_HEIGHT/2 + fg_offset_y + i, (_state->t_cols-FG_GLYPH_LENGTH)/2 + iter_col + fg_offset_x, fill);
         iter_row += len;

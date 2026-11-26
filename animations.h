@@ -11,80 +11,76 @@
                                                                                        */
 #include "globals.h"
 
-#define glint_f   1
-#define glint_b   2
-#define glint_a   3
+#define partix_00000 partix
+#define partix_10000 partix_h
+#define partix_01000 partix_m
+#define partix_11000 partix_m_h
+#define partix_00100 partix_t
+#define partix_10100 partix_h_t
+#define partix_01100 partix_m_t
+#define partix_11100 partix_m_h_t
+#define partix_20000 partix_n
+#define partix_21000 partix_m_n
+#define partix_20100 partix_t_n
+#define partix_21100 partix_m_t_n
 
-#define asc_00000 ascend
-#define asc_10000 ascend_h
-#define asc_01000 ascend_m
-#define asc_11000 ascend_m_h
-#define asc_00100 ascend_t
-#define asc_10100 ascend_h_t
-#define asc_01100 ascend_m_t
-#define asc_11100 ascend_m_h_t
-#define asc_20000 ascend_n
-#define asc_21000 ascend_m_n
-#define asc_20100 ascend_t_n
-#define asc_21100 ascend_m_t_n
+#define partix_00010 partix_l
+#define partix_10010 partix_h_l
+#define partix_01010 partix_m_l
+#define partix_11010 partix_m_h_l
+#define partix_00110 partix_t_l
+#define partix_10110 partix_h_t_l
+#define partix_01110 partix_m_t_l
+#define partix_11110 partix_m_h_t_l
+#define partix_20010 partix_n_l
+#define partix_21010 partix_m_n_l
+#define partix_20110 partix_t_n_l
+#define partix_21110 partix_m_t_n_l
 
-#define asc_00010 ascend_l
-#define asc_10010 ascend_h_l
-#define asc_01010 ascend_m_l
-#define asc_11010 ascend_m_h_l
-#define asc_00110 ascend_t_l
-#define asc_10110 ascend_h_t_l
-#define asc_01110 ascend_m_t_l
-#define asc_11110 ascend_m_h_t_l
-#define asc_20010 ascend_n_l
-#define asc_21010 ascend_m_n_l
-#define asc_20110 ascend_t_n_l
-#define asc_21110 ascend_m_t_n_l
+#define partix_30000 partix_s
+#define partix_31000 partix_m_s
+#define partix_30100 partix_t_s
+#define partix_31100 partix_m_t_s
+#define partix_30010 partix_l_s
+#define partix_31010 partix_m_l_s
+#define partix_30110 partix_t_l_s
+#define partix_31110 partix_m_t_l_s
 
-#define asc_30000 ascend_s
-#define asc_31000 ascend_m_s
-#define asc_30100 ascend_t_s
-#define asc_31100 ascend_m_t_s
-#define asc_30010 ascend_l_s
-#define asc_31010 ascend_m_l_s
-#define asc_30110 ascend_t_l_s
-#define asc_31110 ascend_m_t_l_s
+#define partix_00001 partix_r
+#define partix_10001 partix_h_r
+#define partix_01001 partix_m_r
+#define partix_11001 partix_m_h_r
+#define partix_00101 partix_t_r
+#define partix_10101 partix_h_t_r
+#define partix_01101 partix_m_t_r
+#define partix_11101 partix_m_h_t_r
+#define partix_20001 partix_n_r
+#define partix_21001 partix_m_n_r
+#define partix_20101 partix_t_n_r
+#define partix_21101 partix_m_t_n_r
+#define partix_00011 partix_l_r
+#define partix_10011 partix_h_l_r
+#define partix_01011 partix_m_l_r
+#define partix_11011 partix_m_h_l_r
+#define partix_00111 partix_t_l_r
+#define partix_10111 partix_h_t_l_r
+#define partix_01111 partix_m_t_l_r
+#define partix_11111 partix_m_h_t_l_r
+#define partix_20011 partix_n_l_r
+#define partix_21011 partix_m_n_l_r
+#define partix_20111 partix_t_n_l_r
+#define partix_21111 partix_m_t_n_l_r
+#define partix_30001 partix_s_r
+#define partix_31001 partix_m_s_r
+#define partix_30101 partix_t_s_r
+#define partix_31101 partix_m_t_s_r
+#define partix_30011 partix_l_s_r
+#define partix_31011 partix_m_l_s_r
+#define partix_30111 partix_t_l_s_r
+#define partix_31111 partix_m_t_l_s_r
 
-#define asc_00001 ascend_r
-#define asc_10001 ascend_h_r
-#define asc_01001 ascend_m_r
-#define asc_11001 ascend_m_h_r
-#define asc_00101 ascend_t_r
-#define asc_10101 ascend_h_t_r
-#define asc_01101 ascend_m_t_r
-#define asc_11101 ascend_m_h_t_r
-#define asc_20001 ascend_n_r
-#define asc_21001 ascend_m_n_r
-#define asc_20101 ascend_t_n_r
-#define asc_21101 ascend_m_t_n_r
-#define asc_00011 ascend_l_r
-#define asc_10011 ascend_h_l_r
-#define asc_01011 ascend_m_l_r
-#define asc_11011 ascend_m_h_l_r
-#define asc_00111 ascend_t_l_r
-#define asc_10111 ascend_h_t_l_r
-#define asc_01111 ascend_m_t_l_r
-#define asc_11111 ascend_m_h_t_l_r
-#define asc_20011 ascend_n_l_r
-#define asc_21011 ascend_m_n_l_r
-#define asc_20111 ascend_t_n_l_r
-#define asc_21111 ascend_m_t_n_l_r
-#define asc_30001 ascend_s_r
-#define asc_31001 ascend_m_s_r
-#define asc_30101 ascend_t_s_r
-#define asc_31101 ascend_m_t_s_r
-#define asc_30011 ascend_l_s_r
-#define asc_31011 ascend_m_l_s_r
-#define asc_30111 ascend_t_l_s_r
-#define asc_31111 ascend_m_t_l_s_r
-
-#define ascend(a, b, c, d, e) ascend_expand(a, b, c, d, e)
-#define ascend_expand(a, b, c, d, e) asc_##a##b##c##d##e
+#define partix(a, b, c, d, e) partix_expand(a, b, c, d, e)
+#define partix_expand(a, b, c, d, e) partix_##a##b##c##d##e
 
 #define YES           1
 #define Y             1
@@ -138,7 +134,7 @@ void _hd(int off_y, int off_x);
 void _mega_static(Arg reverse);
 void _fg(const char * glyph[]);
 void animate(animation option);
-void if_ascend(animation option);
+void if_partix(animation option);
 void _shift_arr(int arr[], int size);
 void _print_confirm_selection(int selection);
 void holo_if_set(int offset_y, int offset_x);
@@ -151,7 +147,7 @@ void _bg_offset(char ch, int offset_y, int offset_x);
 void _fg_offset(const char * glyph[], int offset_y, int offset_x);
 void _inc_nanosecs(struct timespec *timespec, long long nanosecs);
 void _clear_menu(int dim_y, int dim_x, int offset_y, int offset_x);
-void _ascend(int home, int mini, int more, int lingering, int rising);
+void _partix(int home, int mini, int more, int lingering, int rising);
 void _print_menu_borders(int dim_y, int dim_x, int offset_y, int offset_x, int c);
 int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, int hd_c);
 

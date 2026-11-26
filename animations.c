@@ -48,7 +48,7 @@ void animate(animation option){
   else if (option == mega_static_rev)     _mega_static((Arg){.x = 1});
   else if (option == all)                 _a_all();
   else {
-    if_ascend(option);
+    if_partix(option);
   }
 }
 
@@ -2000,78 +2000,78 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
   return 0;
 }
 
-void if_ascend(animation option){
+void if_partix(animation option){
 
-  if      (option == ascend)              _ascend(0, 0, 0, 0, 0);
-  else if (option == ascend_m)            _ascend(0, 1, 0, 0, 0);
-  else if (option == ascend_h)            _ascend(1, 0, 0, 0, 0);
-  else if (option == ascend_m_h)          _ascend(1, 1, 0, 0, 0);
-  else if (option == ascend_t)            _ascend(0, 0, 1, 0, 0);
-  else if (option == ascend_h_t)          _ascend(1, 0, 1, 0, 0);
-  else if (option == ascend_m_t)          _ascend(0, 1, 1, 0, 0);
-  else if (option == ascend_m_h_t)        _ascend(1, 1, 1, 0, 0);
-  else if (option == ascend_n)            _ascend(2, 0, 0, 0, 0);
-  else if (option == ascend_m_n)          _ascend(2, 1, 0, 0, 0);
-  else if (option == ascend_t_n)          _ascend(2, 0, 1, 0, 0);
-  else if (option == ascend_m_t_n)        _ascend(2, 1, 1, 0, 0);
+  if      (option == partix)              _partix(0, 0, 0, 0, 0);
+  else if (option == partix_m)            _partix(0, 1, 0, 0, 0);
+  else if (option == partix_h)            _partix(1, 0, 0, 0, 0);
+  else if (option == partix_m_h)          _partix(1, 1, 0, 0, 0);
+  else if (option == partix_t)            _partix(0, 0, 1, 0, 0);
+  else if (option == partix_h_t)          _partix(1, 0, 1, 0, 0);
+  else if (option == partix_m_t)          _partix(0, 1, 1, 0, 0);
+  else if (option == partix_m_h_t)        _partix(1, 1, 1, 0, 0);
+  else if (option == partix_n)            _partix(2, 0, 0, 0, 0);
+  else if (option == partix_m_n)          _partix(2, 1, 0, 0, 0);
+  else if (option == partix_t_n)          _partix(2, 0, 1, 0, 0);
+  else if (option == partix_m_t_n)        _partix(2, 1, 1, 0, 0);
 
-  else if (option == ascend_l)            _ascend(0, 0, 0, 1, 0);
-  else if (option == ascend_m_l)          _ascend(0, 1, 0, 1, 0);
-  else if (option == ascend_h_l)          _ascend(1, 0, 0, 1, 0);
-  else if (option == ascend_m_h_l)        _ascend(1, 1, 0, 1, 0);
-  else if (option == ascend_t_l)          _ascend(0, 0, 1, 1, 0);
-  else if (option == ascend_h_t_l)        _ascend(1, 0, 1, 1, 0);
-  else if (option == ascend_m_t_l)        _ascend(0, 1, 1, 1, 0);
-  else if (option == ascend_m_h_t_l)      _ascend(1, 1, 1, 1, 0);
-  else if (option == ascend_n_l)          _ascend(2, 0, 0, 1, 0);
-  else if (option == ascend_m_n_l)        _ascend(2, 1, 0, 1, 0);
-  else if (option == ascend_t_n_l)        _ascend(2, 0, 1, 1, 0);
-  else if (option == ascend_m_t_n_l)      _ascend(2, 1, 1, 1, 0);
+  else if (option == partix_l)            _partix(0, 0, 0, 1, 0);
+  else if (option == partix_m_l)          _partix(0, 1, 0, 1, 0);
+  else if (option == partix_h_l)          _partix(1, 0, 0, 1, 0);
+  else if (option == partix_m_h_l)        _partix(1, 1, 0, 1, 0);
+  else if (option == partix_t_l)          _partix(0, 0, 1, 1, 0);
+  else if (option == partix_h_t_l)        _partix(1, 0, 1, 1, 0);
+  else if (option == partix_m_t_l)        _partix(0, 1, 1, 1, 0);
+  else if (option == partix_m_h_t_l)      _partix(1, 1, 1, 1, 0);
+  else if (option == partix_n_l)          _partix(2, 0, 0, 1, 0);
+  else if (option == partix_m_n_l)        _partix(2, 1, 0, 1, 0);
+  else if (option == partix_t_n_l)        _partix(2, 0, 1, 1, 0);
+  else if (option == partix_m_t_n_l)      _partix(2, 1, 1, 1, 0);
 
-  else if (option == ascend_s)            _ascend(3, 0, 0, 0, 0);
-  else if (option == ascend_m_s)          _ascend(3, 1, 0, 0, 0);
-  else if (option == ascend_t_s)          _ascend(3, 0, 1, 0, 0);
-  else if (option == ascend_m_t_s)        _ascend(3, 1, 1, 0, 0);
-  else if (option == ascend_l_s)          _ascend(3, 0, 0, 1, 0);
-  else if (option == ascend_m_l_s)        _ascend(3, 1, 0, 1, 0);
-  else if (option == ascend_t_l_s)        _ascend(3, 0, 1, 1, 0);
-  else if (option == ascend_m_t_l_s)      _ascend(3, 1, 1, 1, 0);
+  else if (option == partix_s)            _partix(3, 0, 0, 0, 0);
+  else if (option == partix_m_s)          _partix(3, 1, 0, 0, 0);
+  else if (option == partix_t_s)          _partix(3, 0, 1, 0, 0);
+  else if (option == partix_m_t_s)        _partix(3, 1, 1, 0, 0);
+  else if (option == partix_l_s)          _partix(3, 0, 0, 1, 0);
+  else if (option == partix_m_l_s)        _partix(3, 1, 0, 1, 0);
+  else if (option == partix_t_l_s)        _partix(3, 0, 1, 1, 0);
+  else if (option == partix_m_t_l_s)      _partix(3, 1, 1, 1, 0);
 
-  else if (option == ascend_r)            _ascend(0, 0, 0, 0, 1);
-  else if (option == ascend_m_r)          _ascend(0, 1, 0, 0, 1);
-  else if (option == ascend_h_r)          _ascend(1, 0, 0, 0, 1);
-  else if (option == ascend_m_h_r)        _ascend(1, 1, 0, 0, 1);
-  else if (option == ascend_t_r)          _ascend(0, 0, 1, 0, 1);
-  else if (option == ascend_h_t_r)        _ascend(1, 0, 1, 0, 1);
-  else if (option == ascend_m_t_r)        _ascend(0, 1, 1, 0, 1);
-  else if (option == ascend_m_h_t_r)      _ascend(1, 1, 1, 0, 1);
-  else if (option == ascend_n_r)          _ascend(2, 0, 0, 0, 1);
-  else if (option == ascend_m_n_r)        _ascend(2, 1, 0, 0, 1);
-  else if (option == ascend_t_n_r)        _ascend(2, 0, 1, 0, 1);
-  else if (option == ascend_m_t_n_r)      _ascend(2, 1, 1, 0, 1);
-  else if (option == ascend_l_r)          _ascend(0, 0, 0, 1, 1);
-  else if (option == ascend_m_l_r)        _ascend(0, 1, 0, 1, 1);
-  else if (option == ascend_h_l_r)        _ascend(1, 0, 0, 1, 1);
-  else if (option == ascend_m_h_l_r)      _ascend(1, 1, 0, 1, 1);
-  else if (option == ascend_t_l_r)        _ascend(0, 0, 1, 1, 1);
-  else if (option == ascend_h_t_l_r)      _ascend(1, 0, 1, 1, 1);
-  else if (option == ascend_m_t_l_r)      _ascend(0, 1, 1, 1, 1);
-  else if (option == ascend_m_h_t_l_r)    _ascend(1, 1, 1, 1, 1);
-  else if (option == ascend_n_l_r)        _ascend(2, 0, 0, 1, 1);
-  else if (option == ascend_m_n_l_r)      _ascend(2, 1, 0, 1, 1);
-  else if (option == ascend_t_n_l_r)      _ascend(2, 0, 1, 1, 1);
-  else if (option == ascend_m_t_n_l_r)    _ascend(2, 1, 1, 1, 1);
-  else if (option == ascend_s_r)          _ascend(3, 0, 0, 0, 1);
-  else if (option == ascend_m_s_r)        _ascend(3, 1, 0, 0, 1);
-  else if (option == ascend_t_s_r)        _ascend(3, 0, 1, 0, 1);
-  else if (option == ascend_m_t_s_r)      _ascend(3, 1, 1, 0, 1);
-  else if (option == ascend_l_s_r)        _ascend(3, 0, 0, 1, 1);
-  else if (option == ascend_m_l_s_r)      _ascend(3, 1, 0, 1, 1);
-  else if (option == ascend_t_l_s_r)      _ascend(3, 0, 1, 1, 1);
-  else if (option == ascend_m_t_l_s_r)    _ascend(3, 1, 1, 1, 1);
+  else if (option == partix_r)            _partix(0, 0, 0, 0, 1);
+  else if (option == partix_m_r)          _partix(0, 1, 0, 0, 1);
+  else if (option == partix_h_r)          _partix(1, 0, 0, 0, 1);
+  else if (option == partix_m_h_r)        _partix(1, 1, 0, 0, 1);
+  else if (option == partix_t_r)          _partix(0, 0, 1, 0, 1);
+  else if (option == partix_h_t_r)        _partix(1, 0, 1, 0, 1);
+  else if (option == partix_m_t_r)        _partix(0, 1, 1, 0, 1);
+  else if (option == partix_m_h_t_r)      _partix(1, 1, 1, 0, 1);
+  else if (option == partix_n_r)          _partix(2, 0, 0, 0, 1);
+  else if (option == partix_m_n_r)        _partix(2, 1, 0, 0, 1);
+  else if (option == partix_t_n_r)        _partix(2, 0, 1, 0, 1);
+  else if (option == partix_m_t_n_r)      _partix(2, 1, 1, 0, 1);
+  else if (option == partix_l_r)          _partix(0, 0, 0, 1, 1);
+  else if (option == partix_m_l_r)        _partix(0, 1, 0, 1, 1);
+  else if (option == partix_h_l_r)        _partix(1, 0, 0, 1, 1);
+  else if (option == partix_m_h_l_r)      _partix(1, 1, 0, 1, 1);
+  else if (option == partix_t_l_r)        _partix(0, 0, 1, 1, 1);
+  else if (option == partix_h_t_l_r)      _partix(1, 0, 1, 1, 1);
+  else if (option == partix_m_t_l_r)      _partix(0, 1, 1, 1, 1);
+  else if (option == partix_m_h_t_l_r)    _partix(1, 1, 1, 1, 1);
+  else if (option == partix_n_l_r)        _partix(2, 0, 0, 1, 1);
+  else if (option == partix_m_n_l_r)      _partix(2, 1, 0, 1, 1);
+  else if (option == partix_t_n_l_r)      _partix(2, 0, 1, 1, 1);
+  else if (option == partix_m_t_n_l_r)    _partix(2, 1, 1, 1, 1);
+  else if (option == partix_s_r)          _partix(3, 0, 0, 0, 1);
+  else if (option == partix_m_s_r)        _partix(3, 1, 0, 0, 1);
+  else if (option == partix_t_s_r)        _partix(3, 0, 1, 0, 1);
+  else if (option == partix_m_t_s_r)      _partix(3, 1, 1, 0, 1);
+  else if (option == partix_l_s_r)        _partix(3, 0, 0, 1, 1);
+  else if (option == partix_m_l_s_r)      _partix(3, 1, 0, 1, 1);
+  else if (option == partix_t_l_s_r)      _partix(3, 0, 1, 1, 1);
+  else if (option == partix_m_t_l_s_r)    _partix(3, 1, 1, 1, 1);
 }
 
-void _ascend(int home, int mini, int more, int lingering, int rising){
+void _partix(int home, int mini, int more, int lingering, int rising){
 
   if(_state->win_size == t_tiny) return;
 
@@ -2093,9 +2093,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
   memset(lazarr, 0, sizeof(lazarr));
 
   float count_scaler = .002;
-  if(more == 1) {
-    count_scaler = .006;
-  }
+  if(more == 1) count_scaler = .006;
   int lazer_count = _state->t_rows * lazarr_len * count_scaler;
   if(lazer_count < 4) lazer_count = 3;
   int x = 0;
@@ -2276,7 +2274,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
         }
       }
     }
-    _restore_prev_colors();
+    if(!_state->holo) _restore_prev_colors();
     if (frames % 3 == 0 && frames < 15 && home != OMIT || home == NO_TRAVEL){
       if(_state->fx == nofx){
         if(home == NO_TRAVEL) {
@@ -2309,7 +2307,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
 
     _get_dims();
     if(_resized()) {
-      _ascend(home, mini, more, lingering, rising);
+      _partix(home, mini, more, lingering, rising);
       break;
     }
 

@@ -1443,8 +1443,6 @@ void _holo(){
 
 void _glimmer(Arg full){
   clear();
-  int fg = _state->fg_c;
-  int bg = _state->bg_c;
   int holo = _state->holo;
   _state->holo = 1;
   struct timespec next_frame;
@@ -1469,8 +1467,7 @@ void _glimmer(Arg full){
     frames++;
   }
   _state->holo = holo;
-  _state->fg_c = fg;
-  _state->bg_c = bg;
+  _restore_prev_colors();
   _none((Arg){.x = 0});
 }
 
@@ -1847,48 +1844,48 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
     latter_half = 0;
 
     if (line_num != 1){
-      attron(COLOR_PAIR(bg_c));
+      attron(COLOR_PAIR(_state->prev_bg_c));
       if(bg_c_bold) attron(A_BOLD);
     } else {
-      attron(COLOR_PAIR(fg_c));
+      attron(COLOR_PAIR(_state->prev_fg_c));
       if(fg_c_bold) attron(A_BOLD);
     }
 
     for(int i = 0; i < (int)strlen(line); i++){
 
       if(line[i] == '@' && line_num == 0){
-        attron(COLOR_PAIR(fg_c));
+        attron(COLOR_PAIR(_state->prev_fg_c));
         if(fg_c_bold) attron(A_BOLD);
         first_flag = 1;
       }
 
       if(latter_half && line[i] == ')'){
-        attroff(COLOR_PAIR(blue));
-        attron(COLOR_PAIR(fg_c));
+        attroff(COLOR_PAIR(_state->prev_hd_c));
+        attron(COLOR_PAIR(_state->prev_fg_c));
         if(fg_c_bold) attron(A_BOLD);
       }
 
       mvaddch(_state->t_rows/2 - entries/2 + line_num, _state->t_cols/2 + 2 + i, line[i]);
 
       if(first_flag){
-        attroff(COLOR_PAIR(bg_c));
+        attroff(COLOR_PAIR(_state->prev_bg_c));
         attroff(A_BOLD);
-        attron(COLOR_PAIR(bg_c));
+        attron(COLOR_PAIR(_state->prev_bg_c));
         if(bg_c_bold) attron(A_BOLD);
         first_flag--;
       }
 
       if(latter_half && line[i] == '('){
-        attroff(COLOR_PAIR(fg_c));
+        attroff(COLOR_PAIR(_state->prev_fg_c));
         attroff(A_BOLD);
-        attron(COLOR_PAIR(blue));
+        attron(COLOR_PAIR(_state->prev_hd_c));
       }
 
       if(line[i] == ':'){
         latter_half = 1;
-        attroff(COLOR_PAIR(bg_c));
+        attroff(COLOR_PAIR(_state->prev_bg_c));
         attroff(A_BOLD);
-        attron(COLOR_PAIR(fg_c));
+        attron(COLOR_PAIR(_state->prev_fg_c));
         if(fg_c_bold) attron(A_BOLD);
       }
       refresh();
@@ -1912,8 +1909,8 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
         return result;
       }
     }
-    attroff(COLOR_PAIR(bg_c));
-    attroff(COLOR_PAIR(fg_c));
+    attroff(COLOR_PAIR(_state->prev_bg_c));
+    attroff(COLOR_PAIR(_state->prev_fg_c));
     attroff(A_BOLD);
     line_num++;
   }
@@ -1923,7 +1920,7 @@ int _print_fetch(char * fetch_path, int entries, int wait, int fg_c, int bg_c, i
 
 void if_ascend(animation option){
 
-  if (option == ascend)                   _ascend(0, 0, 0, 0, 0);
+  if      (option == ascend)              _ascend(0, 0, 0, 0, 0);
   else if (option == ascend_m)            _ascend(0, 1, 0, 0, 0);
   else if (option == ascend_h)            _ascend(1, 0, 0, 0, 0);
   else if (option == ascend_m_h)          _ascend(1, 1, 0, 0, 0);
@@ -2271,6 +2268,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
 //    _debug(0, f, 1);
 
 //  }
+
     if(frames > 90) break;
     if(frames == 15 && finish_flag == 1){
       finish_flag = 2;
@@ -2281,6 +2279,7 @@ void _ascend(int home, int mini, int more, int lingering, int rising){
     }
   }
 
+  // TODO This ignores toggle_holo if it was inputted during main function loop
   _state->fg_c = a;
   _state->bg_c = b;
   _state->hd_c = c;

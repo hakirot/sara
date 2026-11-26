@@ -3,6 +3,7 @@ bugs/issues
   - Remove holo as a standalone effect
   - particle fx effect and function abstraction
   - reduce glint builtins to single cycle for each
+  - recheck if NULL is available as a cmd
 
 -- 0.9.5 Patch notes --
   - remove all sleep() calls and globally implement 60fps
